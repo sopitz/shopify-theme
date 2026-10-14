@@ -187,3 +187,62 @@ for (const missingFeature of ['main-image-area', 'dialog-api']) {
     } finally {dom.window.close();}
   });
 }
+
+test('The mobile quick-buy bar waits for a measured original button to scroll entirely above the header',async()=>{
+  const errors=[];
+  const virtualConsole=new VirtualConsole();virtualConsole.on('jsdomError',error=>errors.push(error));
+  const dom=new JSDOM(`<!doctype html><html><body><header class="site-header"></header>
+    <section data-product-section data-product-media-context>
+      <div data-product-overview><div class="product-gallery"><div data-product-gallery-sticky><div class="product-gallery-main"><img data-product-image src="/black.jpg"></div></div></div>
+        <div class="product-info"><h1>Aarau black</h1><span data-product-price>CHF 330.00</span>
+          <form data-product-form><input name="id" type="hidden" value="1043"><input name="quantity" type="number" value="1" min="1"><button type="submit" class="enhanced-add-button"><span data-add-label>In den Warenkorb</span></button></form>
+        </div>
+      </div>
+      <aside class="product-image-preview" data-product-image-preview hidden><button data-image-preview-top><img data-context-image></button><div class="product-image-preview-copy"><strong>Aarau black</strong></div><strong data-context-price>CHF 330.00</strong><span data-context-availability></span><div data-context-options></div><input data-context-quantity type="number" value="1" min="1"><button data-context-add><span data-context-add-label>In den Warenkorb</span></button><p data-context-error hidden></p></aside>
+      <section id="ProductInformation"></section><div class="product-policies"></div>
+    </section></body></html>`,{url:'https://example.test/products/kybun-aarau-black-women',runScripts:'outside-only',pretendToBeVisual:true,virtualConsole});
+  const {window}=dom,document=window.document;
+  window.ResizeObserver=class{observe(){} disconnect(){}};
+  window.matchMedia=query=>({matches:query==='(max-width:600px)'});
+  window.innerWidth=390;window.innerHeight=844;
+  window.scrollTo=()=>{};
+  window.HTMLDialogElement.prototype.showModal=function(){this.open=true;};
+  window.HTMLDialogElement.prototype.close=function(){this.open=false;this.dispatchEvent(new window.Event('close'));};
+  const button=document.querySelector('.enhanced-add-button');
+  const preview=document.querySelector('[data-product-image-preview]');
+  const rectangle=(top,width=300,height=46)=>({top,left:20,right:20+width,bottom:top+height,width,height,x:20,y:top});
+  let bounds=rectangle(0,0,0),hasBox=false;
+  button.getBoundingClientRect=()=>bounds;
+  button.getClientRects=()=>hasBox?[bounds]:[];
+  document.querySelector('.site-header').getBoundingClientRect=()=>rectangle(0,390,100);
+  const scroll=async(top,width=300,height=46,box=true)=>{bounds=rectangle(top,width,height);hasBox=box;window.dispatchEvent(new window.Event('scroll'));await tick();};
+  try{
+    window.eval(script);document.dispatchEvent(new window.Event('DOMContentLoaded'));await tick();
+    assert.equal(preview.classList.contains('is-active'),false,'Initial zero bounds must not count as a scrolled-away purchase button');
+    assert.equal(preview.getAttribute('aria-hidden'),'true');
+    await scroll(1500);
+    assert.equal(preview.classList.contains('is-active'),false,'A button below the viewport has not been scrolled past');
+    await scroll(300);
+    assert.equal(preview.classList.contains('is-active'),false,'Keep the bar hidden while the original purchase button is visible');
+    await scroll(70);
+    assert.equal(preview.classList.contains('is-active'),false,'Wait until the whole button disappears behind the header');
+    await scroll(30);
+    assert.equal(preview.classList.contains('is-active'),true);
+    assert.equal(preview.getAttribute('aria-hidden'),'false');
+    const quantity=preview.querySelector('[data-context-quantity]');quantity.focus();
+    await scroll(300);
+    assert.equal(preview.classList.contains('is-active'),false,'Focus restoration must not keep the duplicate purchase bar visible');
+    assert.equal(document.activeElement,document.querySelector('form input[name="quantity"]'));
+    await scroll(30,0,46);
+    assert.equal(preview.classList.contains('is-active'),false,'Zero-width or collapsed original controls are not valid scroll anchors');
+    await scroll(30,300,0);
+    assert.equal(preview.classList.contains('is-active'),false);
+    await scroll(30,300,46,false);
+    assert.equal(preview.classList.contains('is-active'),false,'A hidden original control has no client rectangles');
+    await scroll(30);
+    assert.equal(preview.classList.contains('is-active'),true);
+    button.remove();window.dispatchEvent(new window.Event('scroll'));await tick();
+    assert.equal(preview.classList.contains('is-active'),false,'A removed purchase button must not activate the bar');
+    assert.deepEqual(errors,[]);
+  }finally{dom.window.close();}
+});

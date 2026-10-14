@@ -620,7 +620,10 @@
           root.classList.toggle('is-gallery-too-tall', available < 200);
           root.style.setProperty('--product-gallery-main-max-height', Math.max(200, Math.floor(available)) + 'px');
         }
-        const purchaseGone = (primaryAdd || overview).getBoundingClientRect().bottom <= headerHeight;
+        const purchaseTarget = primaryAdd || overview;
+        const purchaseBounds = purchaseTarget.getBoundingClientRect();
+        const purchaseGone = purchaseTarget.isConnected && purchaseTarget.getClientRects().length > 0 &&
+          purchaseBounds.width > 0 && purchaseBounds.height > 0 && purchaseBounds.bottom <= headerHeight;
         let focused = preview.contains(document.activeElement) || purchase.hasFocus?.();
         if (!purchaseGone && focused) { purchase.releaseFocus?.(); focused = false; }
         const mobileDock = window.matchMedia('(max-width:600px)').matches;

@@ -7,7 +7,7 @@ const script=fs.readFileSync(path.join(__dirname,'../assets/product-color-prefet
 const tick=()=>new Promise(resolve=>setImmediate(resolve));
 const until=async predicate=>{for(let i=0;i<40;i++){if(predicate())return;await tick();}assert.fail('Expected asynchronous prefetch state');};
 
-function sectionMarkup(color='black',id=101,{product=color,section='main',executable=false}={}) {
+function sectionMarkup(color='black',id=101,{product=color,section='main',executable=false,noscript=false}={}) {
   const size=String(id).endsWith('2')?'37':String(id).endsWith('3')?'38':'36';
   const delivery=id%2===0?'Sofort verfügbar · Lieferzeit: 2–3 Werktage':'Online verfügbar · Lieferzeit: 3–5 Werktage';
   return `<section data-product-section data-product-url="/fr/products/${product}" data-section-id="${section}">
@@ -15,12 +15,13 @@ function sectionMarkup(color='black',id=101,{product=color,section='main',execut
     <img data-product-image src="/images/${color}-${id}.jpg">
     <div class="model-colors"><div class="swatches">${['black','blue','red'].map(name=>`<a href="/fr/products/${name}"${name===color?' aria-current="page"':''}>${name}</a>`).join('')}</div></div>
     <form action="/fr/cart/add" method="post" data-product-form data-high-variants="3">
-      <fieldset data-option-group="1" data-option-name="2/3 französische Grössen"><legend>2/3 französische Grössen</legend>
+      <fieldset class="enhanced-variant-picker" data-option-group="1" data-option-name="2/3 französische Grössen"><legend>2/3 französische Grössen</legend>
       ${['36','37','38'].map(value=>`<input type="radio" name="options[Grösse]" value="${value}" data-option-select data-option-position="1"${value===size?' checked':''}>`).join('')}</fieldset>
-      <input name="id" type="hidden" value="${id}"><input name="quantity" type="number" value="2">
+      ${noscript ? `<div data-variant-fallback><label for="Variant-${color}">Variante wählen</label><select name="id" id="Variant-${color}" data-variant-id><option value="${id}" selected>${size}</option></select></div>` : `<input name="id" type="hidden" value="${id}">`}<input name="quantity" type="number" value="2">
       <script type="application/json" data-variants>${JSON.stringify([{id,options:[size],available:true,sku:'SKU-'+id,delivery:{text:delivery,status:id%2===0?'fast':'normal'}}])}</script>
       <p data-product-availability data-delivery-status="${id%2===0?'fast':'normal'}">${delivery}</p>
-      <button type="submit">In den Warenkorb</button>
+      <button class="enhanced-add-button" type="submit" name="add">In den Warenkorb</button>
+      ${noscript ? '<noscript><style>.enhanced-variant-picker,.enhanced-add-button{display:none!important}</style><button class="button product-add-button" type="submit" name="add">In den Warenkorb</button></noscript>' : ''}
     </form>
     ${executable?'<script>window.badAppScriptExecuted = true;</script>':''}
   </section>`;
@@ -93,6 +94,30 @@ test('colour click reuses the warmed native form, target SKU/delivery and varian
     assert.equal(f.window.location.pathname,'/fr/products/blue');assert.equal(f.window.location.search,'?variant=202');
     assert.equal(f.document.querySelector('link[rel=canonical]').href,'https://upswing.test/fr/products/blue');
     assert.equal(f.document.querySelector('meta[name=description]').content,'Le blue.');
+    assert.equal(f.errors.length,0);
+  }finally{f.dom.window.close();}
+});
+
+test('a parsed native noscript fallback never hides the live product controls after a colour swap',async()=>{
+  const f=fixture();try{
+    const markup=sectionMarkup('blue',201,{noscript:true});
+    const parsed=new f.window.DOMParser().parseFromString(markup,'text/html');
+    assert.ok(parsed.querySelector('noscript style'),'The fixture reproduces DOMParser activating a real native fallback STYLE node');
+    const pending=f.warm('blue');await until(()=>f.requests.length===1);await f.resolve(0,{markup});
+    const warmed=await pending;
+    assert.equal(warmed.section.querySelector('noscript'),null,'Remove the no-JavaScript fallback before caching or importing it');
+    assert.equal(warmed.section.querySelector('style'),null);
+    f.click('blue');await until(()=>f.history.length===1);
+    const incoming=f.root();
+    const add=incoming.querySelector('.enhanced-add-button');
+    const picker=incoming.querySelector('.enhanced-variant-picker');
+    assert.ok(add&&picker,'Keep the original JavaScript purchase controls');
+    assert.equal(incoming.querySelector('noscript'),null);
+    assert.equal(incoming.querySelector('style'),null);
+    assert.equal(incoming.querySelectorAll('button[type="submit"]').length,1,'Do not import the extra no-JavaScript submit button');
+    assert.equal(incoming.querySelector('select[data-variant-id]').value,'201','Keep the native variant fallback field');
+    assert.notEqual(f.window.getComputedStyle(add).display,'none');
+    assert.notEqual(f.window.getComputedStyle(picker).display,'none');
     assert.equal(f.errors.length,0);
   }finally{f.dom.window.close();}
 });

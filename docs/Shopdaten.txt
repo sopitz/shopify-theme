@@ -1,5 +1,5 @@
 upswing – Datenübersicht für Farben und Lieferzeiten
-Stand: Theme 1.0.4
+Stand: Theme 1.0.5
 
 Bereits angeschlossen; dafür sind keine neuen Metafelder nötig:
 

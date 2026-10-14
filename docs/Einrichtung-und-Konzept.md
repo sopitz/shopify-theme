@@ -1,5 +1,9 @@
 # Einrichtung und Konzept für upswing
 
+## Version 1.0.5 · Kaufleisten-Sichtbarkeit und Preisfilter
+
+Vorgeladene Produktbereiche setzen keine Fallback-Styles für deaktiviertes JavaScript ein. Die obere Kaufaktion bleibt nach dem Farbwechsel sichtbar; die Kaufleiste verlangt einen tatsächlich vermessenen Button, der beim Scrollen oberhalb des Headers liegt. Die Preisfilter stehen als zwei gleich breite Felder mit den Labels darüber. Native Such- und Kollektionsfilter behalten ihre Shopify-Parameter.
+
 ## Version 1.0.4 · Farbfelder, Lieferzeit und Kaufleisten
 
 Die bestehenden V2-Felder `aico.pd_color_v2`, `mm-google-shopping.color` und `aico.pd_colors_v2` liefern die Hauptfarbnamen. Karten zeigen runde Farbpunkte mit Farbanzahl, die Produktseite zeigt beschriftete Auswahlfelder. Farbname und Darstellung werden für jedes verknüpfte Produkt aus dessen eigenen Daten aufgelöst. Eine kleine Shopify-Section liefert diese Metafelder beim Nachladen; die normale Produkt-JSON-Schnittstelle liefert sie nicht. Bekannte Namen erhalten repräsentative Farbtöne, vorhandene explizite Farbwerte haben Vorrang, unbekannte Farben bleiben als Text wählbar. Produktfotos dienen weiterhin der Produktansicht. Daten, die optional noch ergänzt werden können, stehen in `docs/Shopdaten.txt`.
@@ -44,7 +48,7 @@ Die Korrekturen aus Version 1.0.1 bleiben enthalten: 13 von Shopify nicht erlaub
 
 Im bestehenden upswing-Shop sind Logo, Gestaltung, Originalbilder, bekannte Seiten- und Sortimentsziele sowie ausgewählte Produkt-Handles bereits vorbereitet. Produkte, Varianten, Kollektionen, Menüs und vorhandene Seiten müssen für die erste Vorschau nicht neu angelegt werden. Neue Seitenressourcen und die spätere Modellzuordnung sind separate Einrichtungsschritte. Ein leerer Testshop benötigt zunächst Shopdaten.
 
-Zum erneuten Testen **upswing-shopify-theme-1.0.4.zip** aus dem [GitHub-Release 1.0.4](https://github.com/sopitz/shopify-theme/releases/tag/v1.0.4) als neuen unveröffentlichten Theme-Entwurf hochladen und die Startseite `/` öffnen. Die auf dem früheren Screenshot sichtbare Route `/en` lieferte zusätzlich eine 404-Seite; Sprach- und Market-Konfiguration werden durch dieses Paket nicht verändert.
+Zum erneuten Testen **upswing-shopify-theme-1.0.5.zip** aus dem [GitHub-Release 1.0.4](https://github.com/sopitz/shopify-theme/releases/tag/v1.0.5) als neuen unveröffentlichten Theme-Entwurf hochladen und die Startseite `/` öffnen. Die auf dem früheren Screenshot sichtbare Route `/en` lieferte zusätzlich eine 404-Seite; Sprach- und Market-Konfiguration werden durch dieses Paket nicht verändert.
 
 
 1. Im Shopify Admin **Onlineshop → Themes** öffnen. **upswing-shopify-theme.zip** im Bereich der Theme Entwürfe über **Theme importieren → ZIP Datei hochladen** hinzufügen.

@@ -34,6 +34,9 @@
           const section = parsed.querySelector('[data-product-section][data-product-url]');
           const actual = targetURL(section?.dataset.productUrl);
           if (!section || actual?.pathname !== url.pathname) {resolve(null); return;}
+          // DOMParser parses with scripting disabled: noscript fallback styles
+          // become active CSS when imported into the live JavaScript document.
+          section.querySelectorAll('noscript').forEach(node => node.remove());
           const form = section.querySelector('form[data-product-form]');
           const requestedVariant = url.searchParams.get('variant');
           if (section.dataset.sectionId !== url.searchParams.get('section_id') || !form || !form.querySelector('[data-variants]') || (requestedVariant && form.querySelector('[name="id"]')?.value !== requestedVariant)) {resolve(null); return;}

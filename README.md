@@ -32,7 +32,7 @@ npm ci --ignore-scripts --no-audit --no-fund
 npm test
 python3 tools/validate_schema.py --self-test .
 shopify theme check --path . --fail-level warning
-python3 tools/build_release.py --tag v1.0.4
+python3 tools/build_release.py --tag v1.0.5
 ```
 
 Die GitHub-Prüfungen verwenden die offizielle Shopify-Prüfung, zusätzliche Schema-Regeln und portable Funktionstests für Suche, bestehende Farbzuordnungen, Kaufsteuerungen und das Vorladen der Vollbildgalerien. Die Schema-Regeln erfassen insbesondere die URL-Voreinstellungen, die bei Version 1.0.0 trotz unauffälligem Theme Check den Shopify-Upload beschädigten.

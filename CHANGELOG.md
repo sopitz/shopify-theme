@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.5] - 2026-10-14
+
+- No-JavaScript-Fallbacks beim vorgeladenen Farbwechsel aus dem eingesetzten Produktbereich entfernt. Der obere Kaufbutton und seine Auswahl bleiben sichtbar; die Kaufleiste erscheint erst nach tatsächlichem Vorbeiscrollen.
+- Preisfilter verwenden zwei gleich breite Eingabefelder mit Beschriftung darüber; Checkbox-Regeln verkleinern die Felder nicht mehr.
+- Regressionen für Farbwechsel mit No-JavaScript-Markup und die initiale Sichtbarkeit der Kaufleiste ergänzt.
+
 ## [1.0.4] - 2026-10-14
 
 ### Farben und Produktkarten
