@@ -1,0 +1,49 @@
+{%- comment -%}
+  Delivery rules retained from the merchant's upswing-delivery-time block.
+  Shopify only supplies store_availabilities for the selected / first available
+  variant. Unselected sizes must be rendered through product-delivery with a
+  variant URL before their delivery estimate is known.
+{%- endcomment -%}
+{%- liquid
+  assign delivery_variant = variant | default: product.selected_or_first_available_variant
+  assign delivery_known = false
+  assign delivery_status = 'neutral'
+  assign delivery_text = 'Lieferzeit abhängig von der gewählten Variante'
+  assign in_own_stock = false
+  if delivery_variant != blank
+    if delivery_variant.selected or delivery_variant.id == product.selected_or_first_available_variant.id or delivery_variant.id == product.first_available_variant.id or delivery_variant.available == false
+      assign delivery_known = true
+    endif
+    if delivery_known
+      for store in delivery_variant.store_availabilities
+        if store.pick_up_enabled and store.available
+          assign in_own_stock = true
+          break
+        endif
+      endfor
+      assign brand = product.vendor | downcase | strip
+      assign delivery_status = 'normal'
+      if in_own_stock
+        assign delivery_text = 'Sofort verfügbar · Lieferzeit: 2–3 Werktage'
+        assign delivery_status = 'fast'
+      elsif delivery_variant.available
+        case brand
+          when 'kybun', 'joya'
+            assign delivery_text = 'Online verfügbar · Lieferzeit: 3–5 Werktage'
+          when 'leguano', 'elten', 'venen engel', 'venenengel', 'bellabambi', 'bella bambi'
+            assign delivery_text = 'Online verfügbar · Lieferzeit: ca. 14 Werktage'
+          else
+            assign delivery_text = 'Online verfügbar · Lieferzeit auf Anfrage'
+        endcase
+      else
+        assign delivery_text = 'Aktuell nicht lieferbar'
+        assign delivery_status = 'unavailable'
+      endif
+    endif
+  endif
+-%}
+{%- if output == 'json' -%}
+  {%- if delivery_known -%}{"text":{{ delivery_text | json }},"status":{{ delivery_status | json }}}{%- else -%}null{%- endif -%}
+{%- else -%}
+  <p class="product-availability" data-product-availability data-delivery-status="{{ delivery_status }}" data-delivery-variant="{{ delivery_variant.id }}" role="status">{{ delivery_text | escape }}</p>
+{%- endif -%}

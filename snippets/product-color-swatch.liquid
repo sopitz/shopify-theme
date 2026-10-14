@@ -1,7 +1,7 @@
-{%- liquid
-  assign color_label = color_product.metafields.upswing.color_name.value | default: color_product.title
-  assign color_hex = color_product.metafields.upswing.color_hex.value
--%}
-<a class="swatch{% if selected %} is-selected{% endif %}" href="{{ color_product.url }}"{% if selected %} aria-current="page"{% endif %} aria-label="{{ color_label | escape }}" title="{{ color_label | escape }}"{% if color_product.featured_image %} data-card-swatch="{{ color_product.featured_image | image_url: width: 720 }}"{% endif %}{% if color_hex != blank %} style="--swatch-color: {{ color_hex | escape }}"{% endif %}>
-  {%- if color_hex == blank and color_product.featured_image -%}{{ color_product.featured_image | image_url: width: 100 | image_tag: loading: 'lazy', width: 44, height: 44, alt: '' }}{%- endif -%}
+{%- capture color_label -%}{% render 'product-color-label', color_product: color_product %}{%- endcapture -%}
+{%- capture color_hex -%}{% render 'product-color-value', color_product: color_product %}{%- endcapture -%}
+{%- assign color_label = color_label | strip -%}
+{%- assign color_hex = color_hex | strip -%}
+<a class="swatch swatch--labeled{% if color_hex == blank %} swatch--text{% endif %}{% if selected %} is-selected{% endif %}" href="{{ color_product.url }}"{% if selected %} aria-current="page"{% endif %} aria-label="{{ color_label | escape }}" title="{{ color_label | escape }}"{% if color_product.featured_image %} data-card-swatch="{{ color_product.featured_image | image_url: width: 720 }}"{% endif %}{% if color_hex != blank %} style="--swatch-color: {{ color_hex | escape }}"{% endif %}>
+  <span class="swatch-label">{{ color_label | escape }}</span>
 </a>

@@ -10,9 +10,10 @@
   assign modern_siblings = product.metafields.upswing.model_products.value
   assign legacy_field = product.metafields.custom_fields.custom_rel_farbe
   assign legacy_payload = legacy_field.value | default: legacy_field
-  assign current_color_label = product.metafields.upswing.color_name.value | default: product.title
   assign seen_ids = '|' | append: product.id | append: '|'
 -%}
+{%- capture current_color_label -%}{% render 'product-color-label', color_product: product %}{%- endcapture -%}
+{%- assign current_color_label = current_color_label | strip -%}
 {%- unless native_color -%}
   {%- capture sibling_links -%}
     {%- if modern_siblings != blank -%}
@@ -50,7 +51,7 @@
       </div>
       {%- if modern_siblings == blank -%}{% render 'legacy-color-data', product: product, mode: 'pdp', server_resolved: sibling_links %}{%- endif -%}
     </div>
-  {%- elsif product.metafields.upswing.color_name.value != blank -%}
-    <p class="option-label">Farbe: <strong>{{ product.metafields.upswing.color_name.value | escape }}</strong></p>
+  {%- elsif current_color_label != product.title -%}
+    <p class="option-label">Farbe: <strong>{{ current_color_label | escape }}</strong></p>
   {%- endif -%}
 {%- endunless -%}

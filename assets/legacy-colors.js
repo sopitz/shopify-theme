@@ -58,7 +58,8 @@
   }
 
   function fetchProduct(handle, root) {
-    const url = new URL(`products/${encodeURIComponent(handle)}.js`, rootURL(root));
+    const url = new URL(`products/${encodeURIComponent(handle)}`, rootURL(root));
+    url.searchParams.set('section_id', 'product-color-data');
     const key = url.href;
     if (cache.has(key)) return cache.get(key);
     const result = new Promise(resolve => {
@@ -66,10 +67,13 @@
         try {
           const response = await fetch(url.href, {credentials:'same-origin', redirect:'error', cache:'force-cache'});
           if (!response.ok) { resolve(null); return; }
-          const product = await response.json();
+          const html = new DOMParser().parseFromString(await response.text(), 'text/html');
+          const payload = html.querySelector('script[type="application/json"][data-product-color-payload]');
+          if (!payload) { resolve(null); return; }
+          const product = JSON.parse(payload.textContent);
           if (!product || String(product.handle) !== handle || !product.id || typeof product.title !== 'string') { resolve(null); return; }
-          const image = typeof product.featured_image === 'string' ? product.featured_image : product.featured_image?.src;
-          resolve({id:product.id, handle, title:product.title, image:image || null, url:new URL(`products/${encodeURIComponent(handle)}`, rootURL(root)).pathname, color:null});
+          const color = /^#(?:[\da-f]{3}|[\da-f]{4}|[\da-f]{6}|[\da-f]{8})$/i.test(product.color || '') ? product.color : null;
+          resolve({id:product.id, handle, title:product.title, image:product.image || null, options:product.options || [], variants:product.variants || [], productTitle:product.productTitle || product.title, url:new URL(`products/${encodeURIComponent(handle)}`, rootURL(root)).pathname, color});
         } catch { resolve(null); }
       });
       pump();
@@ -80,7 +84,7 @@
 
   function swatch(product, selected, card) {
     const link = document.createElement('a');
-    link.className = `swatch${selected ? ' is-selected' : ''}`;
+    link.className = `swatch swatch--labeled${product.color ? '' : ' swatch--text'}${selected ? ' is-selected' : ''}`;
     link.href = product.url;
     link.title = product.title;
     link.setAttribute('aria-label', product.title);
@@ -88,13 +92,9 @@
     if (product.color) link.style.setProperty('--swatch-color', product.color);
     if (product.image) {
       link.dataset.cardSwatch = product.image;
-      if (!product.color) {
-        const image = document.createElement('img');
-        image.src = product.image; image.alt = ''; image.loading = 'lazy';
-        image.width = image.height = card ? 32 : 44;
-        link.append(image);
-      }
     }
+    const label = document.createElement('span'); label.className = 'swatch-label';
+    label.textContent = product.title; link.append(label);
     return link;
   }
 
@@ -134,7 +134,7 @@
       const actions = content?.querySelector('.product-card-actions');
       if (!content || !actions) return;
       list = document.createElement('div'); list.className = 'swatches';
-      list.setAttribute('aria-label', `Farben für ${data.current.title}`);
+      list.setAttribute('aria-label', `Farben für ${data.current.productTitle || data.current.title}`);
       content.insertBefore(list, actions);
     }
     list.replaceChildren(...resolved.map((product, index) => swatch(product, index === 0, card)));
@@ -180,7 +180,7 @@
     if (!intersection) checkVisible();
   }
 
-  window.upswingLegacyColors = {bind};
+  window.upswingLegacyColors = {bind,fetchProduct};
   if (!intersection) {
     let frame = 0;
     const schedule = () => { if (!frame) frame = requestAnimationFrame(() => { frame = 0; checkVisible(); }); };

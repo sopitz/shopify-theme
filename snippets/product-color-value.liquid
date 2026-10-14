@@ -1,0 +1,7 @@
+{%- assign explicit_color = color_product.metafields.upswing.color_hex.value -%}
+{%- if explicit_color != blank -%}
+  {{- explicit_color -}}
+{%- else -%}
+  {%- capture color_label -%}{% render 'product-color-label', color_product: color_product %}{%- endcapture -%}
+  {% render 'color-name-value', color_label: color_label %}
+{%- endif -%}

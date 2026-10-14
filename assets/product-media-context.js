@@ -104,6 +104,7 @@
       trigger.setAttribute('aria-controls', panel.id);
       const buttons = entries.map(entry => {
         const button = document.createElement('button'); button.type = 'button'; button.className = 'product-context-color-choice';
+        if (entry.swatch?.tagName === 'A') button.dataset.colorTarget = entry.swatch.href;
         button.setAttribute('role', 'option'); button.setAttribute('aria-selected', 'false'); button.tabIndex = -1;
         const swatch = copySwatch(entry.swatch); if (swatch) button.append(swatch);
         const text = document.createElement('span'); text.textContent = entry.label; button.append(text);
@@ -221,7 +222,8 @@
     form.querySelectorAll('fieldset[data-option-group]').forEach(group => {
       const controls = [...group.querySelectorAll('input[type="radio"], select[data-option-select]')];
       if (!controls.length) return;
-      const title = group.dataset.optionName || group.querySelector('legend')?.firstChild?.textContent.trim() || 'Ausführung';
+      const originalTitle = group.dataset.optionName || group.querySelector('legend')?.firstChild?.textContent.trim() || 'Ausführung';
+      const title = /schuh|shoe/i.test(root.dataset.productContextKind || '') && /gr[öo]ss|size|pointure|misura/i.test(originalTitle) ? 'Schuhgrösse' : originalTitle;
       const colorOption = /^(farbe|color|colour)$/i.test(title.trim());
       if (colorOption && controls[0].tagName === 'SELECT') {
         const original = controls[0];
@@ -265,6 +267,11 @@
       mirrors.forEach(mirror => {
         if (mirror.sync) { mirror.sync(); return; }
         const {select, selected, entries} = mirror;
+        if (!entries.some(entry => entry.value === selected()) && !select.querySelector('option[value=""]')) {
+          const placeholder = document.createElement('option');
+          placeholder.value = ''; placeholder.textContent = 'Bitte wählen'; placeholder.disabled = true;
+          select.prepend(placeholder);
+        }
         select.value = selected();
         entries.forEach(entry => {
           const option = [...select.options].find(item => item.value === entry.value);
@@ -274,10 +281,15 @@
       setText(price, originalPrice?.textContent.trim() || '');
       setText(buttonPrice, originalPrice?.textContent.trim() || '');
       const label = originalAdd.querySelector('[data-add-label]')?.textContent.trim() || originalAdd.textContent.trim();
-      setText(add.querySelector('[data-context-add-label]'), navigating ? 'Auswahl wird geladen …' : label);
-      add.disabled = navigating || originalAdd.disabled;
-      add.setAttribute('aria-busy', navigating ? 'true' : originalAdd.getAttribute('aria-busy') || form.getAttribute('aria-busy') || 'false');
+      const colorPending = root.dataset.colorPending === 'true';
+      setText(add.querySelector('[data-context-add-label]'), navigating || colorPending ? 'Auswahl wird geladen …' : label);
+      add.disabled = navigating || colorPending || originalAdd.disabled;
+      add.setAttribute('aria-busy', navigating || colorPending ? 'true' : originalAdd.getAttribute('aria-busy') || form.getAttribute('aria-busy') || 'false');
       setText(availability, /^Bitte .* wählen/.test(label) ? 'Auswahl erforderlich' : originalAvailability?.textContent.trim().replace(/\s+/g, ' ') || '');
+      if (availability) {
+        availability.dataset.deliveryStatus = originalAvailability?.dataset.deliveryStatus || '';
+        availability.setAttribute('aria-busy',originalAvailability?.getAttribute('aria-busy') || 'false');
+      }
       add.setAttribute('aria-label', [navigating ? 'Auswahl wird geladen' : label, price?.textContent, availability?.textContent].filter(Boolean).join(' · '));
       ['min','max','step'].forEach(attribute => {
         const value = originalQuantity.getAttribute(attribute);
@@ -448,27 +460,66 @@
       root.classList.add('is-viewer-open'); opened = true; document.body.style.overflow = 'hidden';
       sync(); purchase.sync?.(); dialog.showModal(); closeButton.focus({preventScroll:true});
     };
-    const prepare = (action, url) => {
-      if (!opened || !originalForm) return;
+    const prepare = (action, url, allowClosed = false) => {
+      if ((!opened && !allowClosed) || !originalForm) return;
       const selections = [...originalForm.querySelectorAll('fieldset[data-option-group]')].map(group => {
         const control = group.querySelector('input:checked, select[data-option-select]');
         const name = group.dataset.optionName || group.querySelector('legend')?.firstChild?.textContent.trim();
         return {name, label:control?.tagName === 'SELECT' ? control.selectedOptions[0]?.textContent.trim() : control?.labels?.[0]?.textContent.trim()};
       }).filter(item => item.label && !/^(farbe|color|colour)$/i.test(item.name));
-      saveContinuation({at:Date.now(),path:new URL(url, location.href).pathname,action,index:action === 'color' ? 0 : currentIndex,selections,quantity:originalForm.querySelector('[name="quantity"]')?.value});
+      saveContinuation({at:Date.now(),path:new URL(url, location.href).pathname,action,viewer:opened,index:action === 'color' ? 0 : currentIndex,selections,quantity:originalForm.querySelector('[name="quantity"]')?.value});
     };
     const resume = state => {
       if (!root.isConnected || !originalForm) return;
+      let missingSelection = false, missingSize = false;
       if (Number(originalForm.dataset.highVariants) <= 250 || !originalForm.dataset.highVariants) {
         state.selections?.forEach(selection => {
           const group = [...originalForm.querySelectorAll('fieldset[data-option-group]')].find(group => (group.dataset.optionName || group.querySelector('legend')?.firstChild?.textContent.trim()) === selection.name);
           const control = group && [...group.querySelectorAll('input[type="radio"], select[data-option-select]')].find(control => control.tagName === 'SELECT' || control.labels?.[0]?.textContent.trim() === selection.label);
-          if (!control || control.disabled) return;
+          const clearSelection = () => {
+            missingSelection = true;
+            missingSize ||= /gr(?:ö|o)(?:ss|ß)|size|pointure|misura/i.test(selection.name || '');
+            group?.querySelectorAll('input[type="radio"], select[data-option-select]').forEach(input => {
+              if (input.tagName === 'SELECT') {
+                if (!input.querySelector('option[value=""]')) {
+                  const placeholder = document.createElement('option');
+                  placeholder.value = ''; placeholder.textContent = 'Bitte wählen'; placeholder.disabled = true;
+                  input.prepend(placeholder);
+                }
+                input.value = '';
+              } else input.checked = false;
+            });
+            const selectedLabel = group?.querySelector('[data-option-selected]');
+            if (selectedLabel) selectedLabel.textContent = '';
+            group?.querySelector('[data-option-select]')?.dispatchEvent(new Event('change', {bubbles:true}));
+          };
+          if (!control || control.disabled) { clearSelection(); return; }
           if (control.tagName === 'SELECT') {
-            const option = [...control.options].find(option => option.textContent.trim() === selection.label && !option.disabled); if (!option) return; control.value = option.value;
+            const option = [...control.options].find(option => option.textContent.trim() === selection.label && !option.disabled);
+            if (!option) { clearSelection(); return; }
+            control.value = option.value;
           } else control.checked = true;
           control.dispatchEvent(new Event('change', {bubbles:true}));
         });
+      }
+      if (missingSelection) {
+        // A different colour can have a different size range. Never leave its
+        // first variant purchasable in place of the size the customer chose.
+        originalForm.querySelectorAll('[name="id"]').forEach(control => { control.value = ''; control.disabled = true; });
+        const add = originalForm.querySelector('.enhanced-add-button, button[type="submit"]');
+        if (add) add.disabled = true;
+        const label = originalForm.querySelector('[data-add-label]');
+        if (label) label.textContent = missingSize ? 'Bitte Schuhgrösse neu wählen' : 'Bitte Auswahl neu wählen';
+        const sku = root.querySelector('[data-product-sku]');
+        if (sku) sku.textContent = '';
+        const skuRow = root.querySelector('[data-product-sku-row]');
+        if (skuRow) skuRow.hidden = true;
+        const availability = originalForm.querySelector('[data-product-availability]');
+        if (availability) {
+          availability.textContent = missingSize ? 'Die bisherige Schuhgrösse ist in dieser Farbe nicht verfügbar.' : 'Bitte wählen Sie eine passende Ausführung.';
+          availability.dataset.deliveryStatus = 'unavailable'; availability.removeAttribute('data-delivery-variant');
+          availability.setAttribute('aria-busy', 'false');
+        }
       }
       const quantity = originalForm.querySelector('[name="quantity"]');
       if (quantity && state.quantity) {
@@ -478,6 +529,7 @@
       }
       if (state.index && images[state.index]) selectImage(state.index);
       purchase.sync?.();
+      if (state.viewer === false) { schedule(); return; }
       const formError = originalForm.querySelector('[data-product-error]:not([hidden]), .errors')?.textContent.trim();
       if (state.action === 'add' && !formError) {
         // The original submission has succeeded and replaced the product view.
@@ -608,7 +660,7 @@
       viewer = bindViewer(root, gallery, source, main, preview, overview, purchase, schedule);
       Object.assign(viewerHooks, {isOpen:viewer.isOpen, close:viewer.close, prepare:viewer.prepare});
       syncImage(); update();
-      controllers.set(root,{destroy:() => {
+      controllers.set(root,{prepareColor:url => viewer.prepare?.('color', url, true),destroy:() => {
         viewer.destroy(); purchase.destroy();
         identity.remove();
         resize.disconnect(); mutation.disconnect(); cancelAnimationFrame(frame);
@@ -630,7 +682,7 @@
   const scheduleBind = () => {
     if (!pending) pending = requestAnimationFrame(() => { pending = 0; bind(); });
   };
-  window.upswingProductMedia = {bind};
+  window.upswingProductMedia = {bind,prepareColor:(root,url) => controllers.get(root)?.prepareColor(url)};
   const start = () => {
     bind();
     new MutationObserver(scheduleBind).observe(document.body,{childList:true,subtree:true});

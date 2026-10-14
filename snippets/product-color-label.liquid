@@ -1,0 +1,7 @@
+{%- liquid
+  assign main_color = color_product.metafields.aico.pd_color_v2.value
+  assign shopping_color = color_product.metafields['mm-google-shopping'].color.value
+  assign listed_color = color_product.metafields.aico.pd_colors_v2.value | first
+  assign label = main_color | default: shopping_color | default: listed_color | default: color_product.metafields.upswing.color_name.value | default: color_product.title
+-%}
+{{- label | strip -}}

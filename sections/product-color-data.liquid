@@ -1,0 +1,6 @@
+{%- if product != blank -%}
+  <script type="application/json" data-product-color-payload>{% render 'product-color-json', product: product %}</script>
+{%- endif -%}
+{% schema %}
+{"name":"Produktfarbdaten","settings":[]}
+{% endschema %}

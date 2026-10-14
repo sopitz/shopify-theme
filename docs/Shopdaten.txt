@@ -1,0 +1,41 @@
+upswing – Datenübersicht für Farben und Lieferzeiten
+Stand: Theme 1.0.4
+
+Bereits angeschlossen; dafür sind keine neuen Metafelder nötig:
+
+1. Farbprodukt-Verknüpfungen: custom_fields.custom_rel_farbe.
+   Die deutschen Quell-Handles müssen auf die vorhandenen Farbprodukte zeigen.
+
+2. Hauptfarbname: aico.pd_color_v2 (single_line_text_field).
+   Ersatzquelle: mm-google-shopping.color; danach erster Wert aus
+   aico.pd_colors_v2 (list.single_line_text_field).
+   Diese Felddefinitionen stammen aus dem bestätigten V2-Sync.
+   Jeder verknüpfte Artikel verwendet seinen eigenen Hauptfarbnamen.
+
+3. Kartentyp: bestehender Shopify-Produkttyp product.type.
+   Angaben wie Damenschuhe, Herrenschuhe oder Barfussschuhe erscheinen neben
+   der Marke. Fehlende oder uneinheitliche Produkttypen im Katalog prüfen.
+
+4. Lieferzeit: bestehende Verkaufsverfügbarkeit der Variante plus tatsächliche
+   Shopify-Abholverfügbarkeit der ausgewählten Variante.
+   Lieferregeln stammen aus dem Originaltheme, Block upswing-delivery-time:
+   verfügbarer Filialbestand: 2–3 Werktage;
+   kybun/Joya ohne diesen Bestand: 3–5 Werktage;
+   leguano/ELTEN/Venen Engel/BellaBambi: ca. 14 Werktage;
+   andere Marken: Lieferzeit auf Anfrage;
+   nicht verfügbare Variante: Aktuell nicht lieferbar.
+   Für die kurze Frist müssen Standortbestände und Abholung in Shopify stimmen.
+
+Optional noch ergänzen:
+
+5. Genaue Farbtöne und ungewöhnliche Farbnamen.
+   V2 liefert Namen, keine Hexcodes. Die Punkte stellen die benannte Farbe
+   vereinfacht dar. Für genaue Materialtöne bitte Farbname und gewünschten
+   Hexcode liefern. Bereits gesetztes upswing.color_hex wird bevorzugt.
+   Nicht erkannte Namen bleiben als beschriftete Auswahl sichtbar.
+
+6. Genauere Lieferzeiten für die lokale Designvorschau.
+   Der lokale Produktsnapshot enthält keine Filialbestände. Für echte Tages-
+   beispiele dort pro Varianten-ID den bestätigten Liefertext und Status
+   aus dem Shop exportieren. Bis dahin zeigt die Vorschau bei verfügbarer
+   Auswahl Lieferzeit auf Anfrage. Das native Theme liest die Shopdaten selbst.

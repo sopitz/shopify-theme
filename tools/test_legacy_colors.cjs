@@ -38,7 +38,7 @@ const render = (name, p, extra={}) => {
 };
 function createDocument(mode, payload, options={}) {
   const storefrontRoot = options.root || '/fr/';
-  const data = {payload, locale:options.locale || 'fr', root:storefrontRoot, current:{id:black.id,handle:black.handle,title:black.title,url:storefrontRoot+'products/'+black.handle,image:'/black.jpg',color:null}};
+  const data = {payload, locale:options.locale || 'fr', root:storefrontRoot, current:{id:black.id,handle:black.handle,title:black.title,url:storefrontRoot+'products/'+black.handle,image:'/black.jpg',color:null,...options.current}};
   const script = `<script type="application/json" data-legacy-color-data data-legacy-mode="${mode}"${options.server ? ' data-legacy-server-resolved' : ''}>${JSON.stringify(data).replace(/</g, '\\u003c')}</script>`;
   const inner = mode === 'pdp' ? `<section data-product-section><div class="model-colors" hidden><p class="option-label">Farbe: <strong>Aarau black</strong></p><div class="swatches swatches-large"></div>${script}</div></section>` : `<article class="product-card"><div class="product-card-content">${script}<div class="product-card-actions"><a href="/products/x">Modell entdecken</a></div></div></article>`;
   const dom = new JSDOM(inner, {url:'https://upswing.ch/fr/products/'+black.handle,runScripts:'outside-only',pretendToBeVisual:true});
@@ -59,7 +59,9 @@ function createDocument(mode, payload, options={}) {
     const handle=decodeURIComponent(new URL(url).pathname.split('/').pop().replace(/\.js$/,''));
     const products=options.products || {[blue.handle]:{...blue,featured_image:'/blue.jpg'}};
     const found=products[handle];
-    return {ok:!!found,json:async()=>found};
+    const image=typeof found?.featured_image==='string'?found.featured_image:found?.featured_image?.src;
+    const responsePayload=found?{...found,image:found.image||image,color:found.color||null}:null;
+    return {ok:!!found,text:async()=>`<div><script type="application/json" data-product-color-payload>${JSON.stringify(responsePayload).replace(/</g,'\\u003c')}</script></div>`};
   };
   dom.window.eval(js);
   return {dom,calls,events,IO,get maxActive(){return maxActive;}};
@@ -70,6 +72,53 @@ async function flush(test, predicate=()=>test.dom.window.document.querySelector(
 }
 
 (async()=>{
+  await check('V2 primary colour names drive identical named swatches in cards and PDP',async()=>{
+    const p=product({type:'json',value:legacy});
+    p.vendor='kybun';p.type='Damenschuhe';p.price_min=p.price_max=33000;
+    p.metafields.aico={pd_color_v2:{value:'Schwarz'},pd_colors_v2:{value:['Schwarz','Weiss']}};
+    const sibling=clone(blue);sibling.metafields.aico={pd_color_v2:{value:'Blau'}};
+    p.metafields.upswing.model_products={value:[sibling]};
+    const swatch=new JSDOM(await render('product-color-swatch',p,{color_product:p,selected:true})).window.document.querySelector('.swatch');
+    assert.equal(swatch.title,'Schwarz');assert.equal(swatch.style.getPropertyValue('--swatch-color'),'#343835');assert.equal(swatch.querySelector('img'),null);
+    const card=new JSDOM(await render('product-card',p)).window.document;
+    assert.equal(card.querySelector('.product-card-meta .product-type').textContent,'Damenschuhe');
+    assert.equal(card.querySelector('.product-copy'),null,'Product type must not appear twice');
+    assert.deepEqual([...card.querySelectorAll('.swatch-label')].map(x=>x.textContent),['Schwarz','Blau']);
+    assert.equal(card.querySelectorAll('.swatches img').length,0);
+    assert.equal(card.querySelector('.swatches a').style.getPropertyValue('--swatch-color'),'#343835');
+  });
+  await check('V2 colour fallback priority, translated names and exact explicit colour remain consistent',async()=>{
+    const p=clone(black);p.metafields.aico={pd_colors_v2:{value:['Beige','Schwarz']}};
+    p.metafields['mm-google-shopping']={color:{value:'Blau'}};
+    assert.equal((await render('product-color-label',p,{color_product:p})).trim(),'Blau');
+    delete p.metafields['mm-google-shopping'];
+    assert.equal((await render('product-color-label',p,{color_product:p})).trim(),'Beige');
+    for(const name of ['Schwarz','black','NOIR','Nero']){
+      p.metafields.aico.pd_color_v2={value:name};
+      assert.equal((await render('product-color-value',p,{color_product:p})).trim(),'#343835');
+    }
+    p.metafields.upswing.color_hex={value:'#123456'};
+    assert.equal((await render('product-color-value',p,{color_product:p})).trim(),'#123456');
+  });
+  await check('Unknown colour labels remain readable without a thumbnail or invented dot',async()=>{
+    const p=clone(black);p.metafields.aico={pd_color_v2:{value:'Sonderfarbe <Muster>'}};
+    const html=await render('product-color-swatch',p,{color_product:p});
+    const dom=new JSDOM(html),link=dom.window.document.querySelector('a');
+    assert.equal(link.textContent.trim(),'Sonderfarbe <Muster>');
+    assert(link.classList.contains('swatch--text'));assert.equal(link.querySelector('img'),null);
+    assert.equal(link.style.getPropertyValue('--swatch-color'),'');assert(!html.includes('<Muster>'));
+  });
+  await check('Hydrated siblings use rendered metafield colour data in the current language',async()=>{
+    const t=createDocument('card',legacy,{current:{title:'Schwarz',color:'#343835'},products:{[blue.handle]:{...blue,title:'Blau',color:'#486782'}}});
+    await new Promise(resolve=>setTimeout(resolve,15));t.IO.instance.fire();await flush(t);
+    const links=[...t.dom.window.document.querySelectorAll('.swatches a')];
+    assert.deepEqual(links.map(a=>a.textContent),['Schwarz','Blau']);
+    assert.deepEqual(links.map(a=>a.style.getPropertyValue('--swatch-color')),['#343835','#486782']);
+    assert.equal(t.dom.window.document.querySelectorAll('.swatches img').length,0);
+    assert.equal(new URL(t.calls[0].url).searchParams.get('section_id'),'product-color-data');
+    assert.equal(links[1].getAttribute('href'),'/fr/products/'+blue.handle);
+    t.dom.window.close();
+  });
   await check('typed json .value resolves de_CH once, ignoring stale/empty translations',async()=>{
     const p=product({type:'json',value:legacy});
     const html=await render('product-model-colors',p);
@@ -164,7 +213,8 @@ async function flush(test, predicate=()=>test.dom.window.document.querySelector(
   await check('opaque French/English/Italian data keep the current language root and ignore stale aliases',async()=>{
     for(const locale of ['fr','en','it']){
       const t=createDocument('pdp',JSON.stringify(JSON.stringify(legacy)),{locale,root:'/'+locale+'/'});await flush(t);
-      assert.equal(t.calls.length,1);assert.equal(new URL(t.calls[0].url).pathname,'/'+locale+'/products/'+blue.handle+'.js');
+      assert.equal(new URL(t.calls[0].url).searchParams.get('section_id'),'product-color-data');
+      assert.equal(t.calls.length,1);assert.equal(new URL(t.calls[0].url).pathname,'/'+locale+'/products/'+blue.handle);
       assert.equal(t.dom.window.document.querySelectorAll('.swatch')[1].getAttribute('href'),'/'+locale+'/products/'+blue.handle);
       t.dom.window.close();
     }

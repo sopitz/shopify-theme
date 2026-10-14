@@ -1,0 +1,8 @@
+{%- if product != blank -%}
+  <div data-product-delivery data-product-id="{{ product.id }}" data-variant-id="{{ product.selected_or_first_available_variant.id }}">
+    {% render 'product-delivery', product: product, variant: product.selected_or_first_available_variant %}
+  </div>
+{%- endif -%}
+{% schema %}
+{"name":"Lieferzeit der Variante","settings":[]}
+{% endschema %}

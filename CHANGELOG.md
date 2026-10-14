@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.0.4] - 2026-10-14
+
+### Farben und Produktkarten
+
+- Bestehende V2-Farbnamen aus `aico.pd_color_v2`, `mm-google-shopping.color` und `aico.pd_colors_v2` angeschlossen. Benannte Hauptfarben erhalten repräsentative Farbpunkte; explizite Farbwerte behalten Vorrang, unbekannte Namen bleiben als Text nutzbar.
+- Farbprodukte liefern ihre Metafelder über eine kleine Shopify-Section. Karten zeigen runde Punkte mit Farbanzahl; die PDP zeigt beschriftete Auswahlfelder, beide ohne verkleinerte Produktfotos.
+- Produkttyp neben Marke und Modelllink rechts unten angeordnet; doppelte Typzeile entfernt.
+
+### Produktseite und Kaufsteuerung
+
+- Artikelnummer direkt unter dem Namen, Steuer- und Versandhinweis direkt unter dem Preis; Bildunterschrift entfernt.
+- Farbe, Grösse, Menge und Kaufbutton in Kaufleisten und Vollbild auf 46 px angeglichen, Beschriftungen ausgerichtet und Grössenpfeil vereinheitlicht.
+- Bestehende Lieferregeln aus dem exportierten Händler-Theme übernommen: Filialbestand 2–3 Werktage, weitere Fristen nach Marke. Grössenwechsel fragen echte Abhol-/Bestandsdaten für die ausgewählte Variante ab und synchronisieren Hauptformular, Leiste und Vollbild.
+- Farbwechsel laden variantengenaue Produktbereiche und Bilder vor. Sichere Antworten werden direkt wiederverwendet; gewählte Grösse, Menge und Vollbild bleiben erhalten. Fehler, abweichende Produktdaten und ausführbare App-Scripts nutzen normale Navigation.
+- Fehlt die bisherige Grösse in einer anderen Farbe, bleibt der Kauf bis zur erneuten Auswahl gesperrt.
+- Gezielte Regressionen für Farbfelder, Lieferfristen, Datenrennen, native Formulare und Vorladen ergänzt. Datenübersicht in `docs/Shopdaten.txt` dokumentiert bestehende und optionale Angaben.
+
 ## [1.0.3] - 2026-10-14
 
 ### Vollbildgalerien
