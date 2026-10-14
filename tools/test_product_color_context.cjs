@@ -13,7 +13,9 @@ test('Late legacy colours update the open viewer purchase controls without losin
   const dom = new JSDOM(`<!doctype html><html><body><header class="site-header"></header>
     <section data-product-section data-product-media-context>
       <div data-product-overview>
-        <div class="product-gallery"><div data-product-gallery-sticky><div class="product-gallery-main"><img data-product-image src="/black.jpg" alt="Aarau black"></div></div></div>
+        <div class="product-gallery"><div data-product-gallery-sticky><div class="product-gallery-main"><img data-product-image src="/black.jpg" alt="Aarau black"></div>
+          <div>${['black','second','third','fourth'].map(name => `<button type="button" data-gallery-image="/${name}.jpg"><img src="/${name}-thumb.jpg"></button>`).join('')}</div>
+        </div></div>
         <div class="product-info"><h1>Aarau black</h1><span data-product-price>CHF 330.00</span>
           <form data-product-form><fieldset data-option-group="1" data-option-name="Grösse"><legend>Grösse</legend>
             <input type="radio" id="size-42" name="options[Grösse]" value="42" data-option-select data-option-position="1"><label for="size-42">42</label>
@@ -32,15 +34,23 @@ test('Late legacy colours update the open viewer purchase controls without losin
   window.scrollTo = () => {};
   window.HTMLDialogElement.prototype.showModal = function(){this.open=true;};
   window.HTMLDialogElement.prototype.close = function(){this.open=false;this.dispatchEvent(new window.Event('close'));};
+  const warmCalls = []; let clearCalls = 0;
+  window.upswingGalleryImagePreload = {create:() => ({warm:urls => warmCalls.push([...urls]), clear:() => clearCalls++, destroy(){}})};
+  document.querySelectorAll('[data-gallery-image]').forEach(button => button.addEventListener('click', () => {document.querySelector('[data-product-image]').src = button.dataset.galleryImage;}));
   try {
     window.eval(script);
     document.dispatchEvent(new window.Event('DOMContentLoaded'));
     await tick();
     const size = document.querySelector('[data-context-options] select');
     assert.equal(size.value, '43');
+    assert.equal(warmCalls.length, 0, 'A hidden viewer must not start full-size preloads during page sync');
     document.querySelector('[data-product-image-open]').click();
     const viewer = document.querySelector('[data-product-viewer]');
     assert.equal(viewer.open, true);
+    assert.deepEqual(warmCalls.at(-1), ['/second.jpg','/fourth.jpg','/third.jpg']);
+    viewer.querySelector('[data-viewer-next]').click();
+    assert.equal(viewer.querySelector('[data-viewer-image]').getAttribute('src'), '/second.jpg');
+    assert.deepEqual(warmCalls.at(-1), ['/third.jpg','/black.jpg','/fourth.jpg']);
     const colours = document.createElement('div');
     colours.className='model-colors';
     colours.innerHTML='<div class="swatches"><a href="/products/kybun-aarau-black-women" aria-current="page" title="Aarau black"><img src="/black.jpg"></a><a href="/products/kybun-aarau-blue-women" title="Aarau blue"><img src="/blue.jpg"></a></div>';
@@ -58,8 +68,12 @@ test('Late legacy colours update the open viewer purchase controls without losin
     root.dispatchEvent(new window.CustomEvent('upswing:colors-ready', {bubbles:true}));
     await tick();
     assert.equal(viewer.querySelectorAll('[data-context-color-toggle]').length, 1, 'Repeated ready events must not duplicate colour controls');
+    const beforeClose = warmCalls.length;
     document.querySelector('[data-viewer-close]').click();
     assert.equal(viewer.open, false);
+    await tick();
+    assert.equal(warmCalls.length, beforeClose, 'Restoring focus on close must not restart the pending preload queue');
+    assert.ok(clearCalls > 0);
     assert.equal(document.querySelector('[data-product-image-preview] [data-context-options] select'), size);
     assert.equal(document.querySelector('[data-product-image-preview] [data-context-color-toggle]').textContent, 'Aarau black');
     assert.deepEqual(errors, []);

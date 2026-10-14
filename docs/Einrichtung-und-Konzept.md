@@ -1,5 +1,9 @@
 # Einrichtung und Konzept für upswing
 
+## Version 1.0.3 · Bilder im Vollbild vorladen
+
+Produkt- und Filialgalerien laden in der Vollbildansicht gezielt die nächsten zwei Bilder und das vorherige Bild vor, mit denselben Bildadressen wie in der grossen Ansicht. Hover oder Tastaturfokus auf dem Öffner bereiten diese Bilder bereits vor. Die Bilder werden auch dekodiert, damit der anschliessende Wechsel möglichst ohne Ladepause erfolgt. Zwei parallele Anfragen mit niedriger Priorität und ein Cache mit höchstens acht fertigen Bildern begrenzen den Aufwand. Beim Schliessen startet keine weitere wartende Anfrage; bereits geladene Bilder bleiben für ein erneutes Öffnen verfügbar. Seitenwechsel entfernen die zugehörigen Galeriesteuerungen. Sehr schnelles Weiterblättern vor dem Abschluss der ersten Anfragen bleibt von Verbindung und Bildgrösse abhängig.
+
 ## Version 1.0.2 · Suche, vorhandene Farbfelder und kompakte Karten
 
 Die Suchformulare verwenden die native Shopify-Suche. Header und mobiles Menü zeigen jetzt Shopify-Suchvorschläge mit Bildern, Preisen und weiterführenden Ergebnissen. Ohne JavaScript oder bei einer fehlgeschlagenen Anfrage bleibt die normale Suche nutzbar.
@@ -24,12 +28,12 @@ Zusätzlich zeigt **/theme-preview.html** die Startseite aus den tatsächlichen 
 
 ## Shopify Theme installieren
 
-**Aktuelles Installationspaket: Version 1.0.2 vom 14. Oktober 2026.**
+**Aktuelles Installationspaket: Version 1.0.3 vom 14. Oktober 2026.**
 Die Korrekturen aus Version 1.0.1 bleiben enthalten: 13 von Shopify nicht erlaubte Link-Voreinstellungen in acht Section-Schemas sind entfernt; dieselben Ziele bleiben als gespeicherte Einstellungen und Liquid-Fallbacks erhalten. Version 1.0.2 ergänzt Suchvorschläge, vorhandene Farbbeziehungen und kompakte Produktkarten. Alle 25 Section-Schemas, 21 JSON-Vorlagen und gespeicherten Einstellungen wurden zusätzlich zur offiziellen Theme-Prüfung gegen die betreffenden Shopify-Regeln geprüft. Der tatsächliche Upload und Betrieb im Shop bleiben die abschliessende Kontrolle.
 
 Im bestehenden upswing-Shop sind Logo, Gestaltung, Originalbilder, bekannte Seiten- und Sortimentsziele sowie ausgewählte Produkt-Handles bereits vorbereitet. Produkte, Varianten, Kollektionen, Menüs und vorhandene Seiten müssen für die erste Vorschau nicht neu angelegt werden. Neue Seitenressourcen und die spätere Modellzuordnung sind separate Einrichtungsschritte. Ein leerer Testshop benötigt zunächst Shopdaten.
 
-Zum erneuten Testen **upswing-shopify-theme-1.0.2.zip** aus dem [GitHub-Release 1.0.2](https://github.com/sopitz/shopify-theme/releases/tag/v1.0.2) als neuen unveröffentlichten Theme-Entwurf hochladen und die Startseite `/` öffnen. Die auf dem früheren Screenshot sichtbare Route `/en` lieferte zusätzlich eine 404-Seite; Sprach- und Market-Konfiguration werden durch dieses Paket nicht verändert.
+Zum erneuten Testen **upswing-shopify-theme-1.0.3.zip** aus dem [GitHub-Release 1.0.3](https://github.com/sopitz/shopify-theme/releases/tag/v1.0.3) als neuen unveröffentlichten Theme-Entwurf hochladen und die Startseite `/` öffnen. Die auf dem früheren Screenshot sichtbare Route `/en` lieferte zusätzlich eine 404-Seite; Sprach- und Market-Konfiguration werden durch dieses Paket nicht verändert.
 
 
 1. Im Shopify Admin **Onlineshop → Themes** öffnen. **upswing-shopify-theme.zip** im Bereich der Theme Entwürfe über **Theme importieren → ZIP Datei hochladen** hinzufügen.

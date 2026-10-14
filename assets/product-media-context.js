@@ -382,10 +382,19 @@
     const color = document.createElement('span'); color.className = 'product-viewer-color';
     heading.append(eyebrow, title, color); preview.prepend(heading);
     root.append(dialog);
-    let bodyOverflow = '', opened = false, currentIndex = 0;
+    let bodyOverflow = '', opened = false, currentIndex = 0, restoringFocus = false;
     const originalThumbs = [...gallery.querySelectorAll('[data-gallery-image], .gallery-thumb[data-image]')];
     const imageKey = value => { try { return new URL(value, location.href).pathname; } catch (_) { return value; } };
     const images = originalThumbs.map(button => ({button, image:button.querySelector('img'), key:imageKey(button.dataset.galleryImage || button.querySelector('img')?.src || '')}));
+    const preload = window.upswingGalleryImagePreload?.create();
+    const warmImages = () => {
+      if (images.length < 2) return;
+      const index = Math.max(0, images.findIndex(item => item.key === imageKey(source.getAttribute('src') || source.currentSrc)));
+      preload?.warm([1, -1, 2].map(offset => (index + offset + images.length) % images.length).filter(position => position !== index).map(position => {
+        const item = images[position];
+        return item.button.dataset.galleryImage || item.image?.currentSrc || item.image?.src;
+      }));
+    };
     const thumbButtons = images.map((item, index) => {
       const button = document.createElement('button'); button.type = 'button'; button.className = 'product-viewer-thumb'; button.setAttribute('data-viewer-thumbnail', '');
       button.setAttribute('aria-label', `Produktbild ${index + 1} ansehen`);
@@ -408,6 +417,7 @@
       });
       previous.hidden = next.hidden = images.length < 2;
       thumbs.hidden = images.length < 2;
+      if (opened) warmImages();
     };
     const selectImage = index => {
       if (!images.length) return;
@@ -416,12 +426,14 @@
     };
     const finishClose = (restoreFocus = true) => {
       if (!opened) return;
-      opened = false; purchase.close?.();
+      opened = false; preload?.clear(); purchase.close?.();
       home.after(preview); root.classList.remove('is-viewer-open');
       preview.setAttribute('aria-label', 'Produktauswahl und Warenkorb beim Lesen');
       document.body.style.overflow = bodyOverflow;
       schedule();
-      if (restoreFocus && opener.isConnected) opener.focus({preventScroll:true});
+      if (restoreFocus && opener.isConnected) {
+        restoringFocus = true; opener.focus({preventScroll:true}); restoringFocus = false;
+      }
     };
     const close = (restoreFocus = true) => {
       if (!opened) return;
@@ -475,6 +487,9 @@
       open();
     };
     listen(opener, 'click', open); listen(closeButton, 'click', () => close());
+    listen(opener, 'pointerenter', warmImages); listen(opener, 'focus', () => { if (!restoringFocus) warmImages(); });
+    listen(opener, 'pointerleave', () => { if (!opened) preload?.clear(); });
+    listen(opener, 'blur', () => { if (!opened) preload?.clear(); });
     listen(dialog, 'cancel', event => { event.preventDefault(); close(); });
     listen(dialog, 'close', () => finishClose());
     listen(previous, 'click', () => selectImage(currentIndex - 1)); listen(next, 'click', () => selectImage(currentIndex + 1));
@@ -483,7 +498,7 @@
       if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); selectImage(currentIndex + (event.key === 'ArrowLeft' ? -1 : 1)); }
     });
     return {isOpen:() => opened, open, close, sync, prepare, resume, destroy() {
-      close(false); lifetime.abort(); dialog.remove(); heading.remove(); home.remove();
+      close(false); preload?.destroy(); lifetime.abort(); dialog.remove(); heading.remove(); home.remove();
       if (opener.isConnected) { opener.before(source); opener.remove(); }
     }};
   };

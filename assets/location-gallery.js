@@ -3,9 +3,32 @@
   if (window.upswingLocationGallery) return;
   window.upswingLocationGallery = true;
   let active = null;
+  let restoringFocus = false;
+  const preloaders = new WeakMap();
   const thumbs = root => [...root.querySelectorAll('[data-location-thumb]')];
   const selectedIndex = root => Math.max(0, thumbs(root).findIndex(button => button.getAttribute('aria-pressed') === 'true'));
   const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function preloaderFor(root) {
+    if (!preloaders.has(root) && window.upswingGalleryImagePreload) {
+      preloaders.set(root, window.upswingGalleryImagePreload.create());
+    }
+    return preloaders.get(root);
+  }
+
+  function warmNeighbours(root, index) {
+    const photos = thumbs(root);
+    if (photos.length < 2) return;
+    preloaderFor(root)?.warm([1, -1, 2]
+      .map(offset => (index + offset + photos.length) % photos.length)
+      .filter(position => position !== index)
+      .map(position => photos[position].dataset.imageSrc));
+  }
+
+  function destroyPreloader(root) {
+    preloaders.get(root)?.destroy();
+    preloaders.delete(root);
+  }
 
   function updateView(container, photo, index) {
     const image = container.querySelector('[data-location-main-image]');
@@ -25,7 +48,10 @@
     if (!photos.length) return;
     index = (index + photos.length) % photos.length;
     updateView(root, photos[index], index);
-    if (active?.root === root) updateView(active.dialog, photos[index], index);
+    if (active?.root === root) {
+      updateView(active.dialog, photos[index], index);
+      warmNeighbours(root, index);
+    }
   }
 
   function open(root) {
@@ -44,14 +70,39 @@
     active = { root, dialog, focus: document.activeElement };
     dialog.addEventListener('close', () => {
       const focus = active?.focus;
+      if (root.isConnected) preloaders.get(root)?.clear();
+      else destroyPreloader(root);
       active = null;
       dialog.remove();
-      if (focus?.isConnected) focus.focus({ preventScroll: true });
+      if (focus?.isConnected) {
+        restoringFocus = true;
+        focus.focus({ preventScroll: true });
+        restoringFocus = false;
+      }
     }, { once: true });
     document.body.append(dialog);
     dialog.showModal();
     select(root, selectedIndex(root));
   }
+
+  function anticipateOpen(event) {
+    if (active || restoringFocus) return;
+    const button = event.target.closest('[data-location-open]');
+    if (!button || (event.relatedTarget && button.contains(event.relatedTarget))) return;
+    const root = button.closest('[data-location-gallery]');
+    if (root) warmNeighbours(root, selectedIndex(root));
+  }
+  document.addEventListener('pointerover', anticipateOpen);
+  document.addEventListener('focusin', anticipateOpen);
+  function stopAnticipation(event) {
+    if (active) return;
+    const button = event.target.closest('[data-location-open]');
+    if (!button || (event.relatedTarget && button.contains(event.relatedTarget))) return;
+    const root = button.closest('[data-location-gallery]');
+    if (root) preloaders.get(root)?.clear();
+  }
+  document.addEventListener('pointerout', stopAnticipation);
+  document.addEventListener('focusout', stopAnticipation);
 
   document.addEventListener('click', event => {
     const button = event.target.closest('button');
@@ -89,4 +140,7 @@
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', watchNavigation, { once: true });
   else watchNavigation();
+  window.addEventListener('pagehide', () => {
+    if (active) destroyPreloader(active.root);
+  });
 })();

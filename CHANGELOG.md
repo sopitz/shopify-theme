@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.0.3] - 2026-10-14
+
+### Vollbildgalerien
+
+- Produkt- und Filialgalerien laden die nächsten zwei Bilder und das vorherige Bild in ihrer tatsächlichen Vollbildgrösse vor. Das Vorladen beginnt auch bei Hover oder Tastaturfokus auf dem Öffner.
+- Bilder werden vorab dekodiert und in einem begrenzten Cache gehalten. Maximal zwei Anfragen laufen gleichzeitig, mit niedriger Priorität gegenüber sichtbaren Bildern.
+- Schliessen entfernt wartende Anfragen; beim Wiederöffnen werden vorhandene Bilder und laufende Anfragen wiederverwendet. Fehler und späte Antworten ändern keine Bildauswahl oder Kaufsteuerung.
+- Gezielte Prüfungen für Vorladen, Navigation, Schliessen, Wiederöffnen und Seitenwechsel ergänzt.
+
 ## [1.0.2] - 2026-10-14
 
 ### Suche

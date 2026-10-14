@@ -32,9 +32,9 @@ npm ci --ignore-scripts --no-audit --no-fund
 npm test
 python3 tools/validate_schema.py --self-test .
 shopify theme check --path . --fail-level warning
-python3 tools/build_release.py --tag v1.0.2
+python3 tools/build_release.py --tag v1.0.3
 ```
 
-Die GitHub-Prüfungen verwenden die offizielle Shopify-Prüfung, zusätzliche Schema-Regeln und portable Funktionstests für Suche, bestehende Farbzuordnungen und Kaufsteuerungen. Letztere erfassen insbesondere die URL-Voreinstellungen, die bei Version 1.0.0 trotz unauffälligem Theme Check den Shopify-Upload beschädigten.
+Die GitHub-Prüfungen verwenden die offizielle Shopify-Prüfung, zusätzliche Schema-Regeln und portable Funktionstests für Suche, bestehende Farbzuordnungen, Kaufsteuerungen und das Vorladen der Vollbildgalerien. Die Schema-Regeln erfassen insbesondere die URL-Voreinstellungen, die bei Version 1.0.0 trotz unauffälligem Theme Check den Shopify-Upload beschädigten.
 
 Version 1.0.1 wurde zusätzlich lokal auf erhaltene Links geprüft: 24 Section-Schemas, 21 JSON-Vorlagen, 290 gespeicherte Werte, 18 gezielte Prüffälle sowie 224 unveränderte Startseitenlinks. Diese Prüfung ersetzt keine bestätigte Shopify-Laufzeit. Der erneute Upload, Apps, Formularzustellung und echter Checkout sind im unveröffentlichten Shop-Theme zu prüfen. Der Produktberater ist im nativen Theme bislang eine statische Auswahl; die separate Designvorschau enthält einen interaktiven Ablauf.

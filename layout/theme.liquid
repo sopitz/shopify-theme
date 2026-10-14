@@ -39,6 +39,7 @@
     <script src="{{ 'upswing.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'quantity-stepper.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'legacy-colors.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'gallery-image-preload.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'product-media-context.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":{{ shop.name | json }},"url":{{ shop.url | json }}{% if settings.logo != blank %},"logo":{{ settings.logo | image_url: width: 600 | prepend: 'https:' | json }}{% endif %}}</script>
