@@ -7,7 +7,11 @@
         "b2b_url": "/pages/firmenkunden",
         "shipping_note": "Schweiz: CHF 8 Versand. Ab CHF 99 Warenwert versandkostenfrei."
       }
+    },
+    "related": {
+      "type": "product-recommendations",
+      "settings": {"heading":"Das könnte Ihnen auch gefallen."}
     }
   },
-  "order": ["main"]
+  "order": ["main", "related"]
 }

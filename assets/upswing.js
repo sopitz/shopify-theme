@@ -2,6 +2,24 @@
 document.documentElement.classList.replace('no-js', 'js');
 (() => {
   const bind = (scope = document) => {
+    scope.querySelectorAll('select[data-sort-select][name="sort_by"]').forEach(select => {
+      if (select.dataset.sortBound || !select.form || select.form.method.toLowerCase() !== 'get') return;
+      select.dataset.sortBound = 'true';
+      select.addEventListener('change', () => {
+        if (!select.value || select.selectedOptions[0]?.disabled) return;
+        // Sort the applied URL state; sidebar edits still wait for its Apply button.
+        // Keeping that state also retains repeated filters, search and page-size options.
+        const url = new URL(window.location.href);
+        url.searchParams.set('sort_by', select.value);
+        url.searchParams.delete('page');
+        if (select.dataset.sortPageParam) url.searchParams.delete(select.dataset.sortPageParam);
+        url.hash = '';
+        window.location.assign(url.href);
+      });
+      select.closest('.sort-control')?.querySelectorAll('[data-sort-apply]').forEach(button => {
+        if (button.form === select.form) button.hidden = true;
+      });
+    });
     scope.querySelectorAll('[data-menu-toggle]').forEach(button => {
       if (button.dataset.bound) return;
       button.dataset.bound = 'true';
@@ -184,4 +202,5 @@ document.documentElement.classList.replace('no-js', 'js');
     });
   };
   bind(); document.addEventListener('shopify:section:load', event => bind(event.target));
+  document.addEventListener('upswing:colors-ready', event => bind(event.target));
 })();

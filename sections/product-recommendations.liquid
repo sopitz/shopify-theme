@@ -1,0 +1,30 @@
+<product-recommendations data-recommendations data-url="{{ routes.product_recommendations_url }}" data-product-id="{{ product.id }}" data-section-id="{{ section.id }}" style="display:block;min-height:1px">
+  {%- if recommendations.performed? and recommendations.products_count > 0 and recommendations.intent == 'related' -%}
+    {%- capture recommendation_cards -%}
+      {%- for recommended_product in recommendations.products limit: 4 -%}
+        {%- if recommended_product.id != product.id -%}
+          {% render 'product-card', product: recommended_product %}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endcapture -%}
+    {%- assign recommendation_cards = recommendation_cards | strip -%}
+    {%- if recommendation_cards != blank -%}
+      <section class="section-space product-recommendations" data-recommendations-content aria-labelledby="RecommendationsTitle-{{ section.id }}">
+        <div class="container">
+          <div class="section-heading"><h2 id="RecommendationsTitle-{{ section.id }}">{{ section.settings.heading | default: 'Das könnte Ihnen auch gefallen.' | escape }}</h2></div>
+          <div class="product-grid">{{ recommendation_cards }}</div>
+        </div>
+      </section>
+    {%- endif -%}
+  {%- endif -%}
+</product-recommendations>
+{% schema %}
+{
+  "name": "Produktempfehlungen",
+  "enabled_on": {"templates": ["product"]},
+  "settings": [
+    {"type":"text","id":"heading","label":"Überschrift","default":"Das könnte Ihnen auch gefallen."}
+  ],
+  "presets": [{"name":"Produktempfehlungen"}]
+}
+{% endschema %}

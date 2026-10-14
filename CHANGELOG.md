@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.6] - 2026-10-14
+
+- Sortierung in Kollektion und Suche wird bei Auswahl sofort angewendet. Aktive URL-Filter und Suchbegriffe bleiben erhalten, die Pagination wird zurückgesetzt; ohne JavaScript bleibt der Anwendenbutton nutzbar.
+- PDP-Vorschaubilder verwenden vier quadratische Kacheln pro Reihe und brechen bei weiteren Bildern um. Vollbildnavigation bleibt erhalten.
+- Native Produktempfehlungen auf der PDP ergänzt, mit bestehenden Produktkarten und echten Shopify-Empfehlungsdaten; Farbwechsel aktualisieren das zugrunde liegende Produkt.
+
 ## [1.0.5] - 2026-10-14
 
 - No-JavaScript-Fallbacks beim vorgeladenen Farbwechsel aus dem eingesetzten Produktbereich entfernt. Der obere Kaufbutton und seine Auswahl bleiben sichtbar; die Kaufleiste erscheint erst nach tatsächlichem Vorbeiscrollen.

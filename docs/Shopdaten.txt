@@ -1,5 +1,5 @@
 upswing – Datenübersicht für Farben und Lieferzeiten
-Stand: Theme 1.0.5
+Stand: Theme 1.0.6
 
 Bereits angeschlossen; dafür sind keine neuen Metafelder nötig:
 
@@ -39,3 +39,24 @@ Optional noch ergänzen:
    beispiele dort pro Varianten-ID den bestätigten Liefertext und Status
    aus dem Shop exportieren. Bis dahin zeigt die Vorschau bei verfügbarer
    Auswahl Lieferzeit auf Anfrage. Das native Theme liest die Shopdaten selbst.
+
+7. Strukturierte Produktinformationen für den ganzen Katalog.
+   Der gestaltete Informationsbereich für Magglingen und weitere Beispielmodelle
+   enthält derzeit fest im Theme hinterlegte Designtexte nach Produkt-Handle.
+   Andere Artikel nutzen ihre normale Shopify-Beschreibung.
+   Vorhandene strukturierte upswing-Felder haben Vorrang vor den Beispielen.
+   Bitte die bestehenden Sync-Felder für Eigenschaften, Eignung, Material,
+   technische Daten, Eingewöhnung, Grössenhilfe, Pflege und FAQ nennen bzw.
+   deren Struktur liefern, damit wir den Aufbau auf echte Katalogdaten abbilden.
+   Die Beispieldaten sind kein allgemeiner Beschreibungsparser.
+
+8. Google-Bewertungen als integrierter Social Proof.
+   Im Originaltheme ist ReviewsPlugin als globales Floating-App-Embed aktiv.
+   Google-Profilzuordnung, Bewertungsschnitt und Anzahl liegen beim Anbieter
+   und sind im Export nicht enthalten. Für Inline-Platzierung bitte klären:
+   welche Google-Profile gehören zu welchen Filialen bzw. zum Unternehmen,
+   und welche Widget-IDs sollen für diese Profile verwendet werden?
+   ReviewsPlugin unterstützt laut Anbieter den Inline-Appblock Google Reviews.
+   Quelle: https://reviewsplugin.com/add-google-reviews-to-shopify
+   Werte und Zitate sollen aus dieser echten Quelle kommen. Die alte manuelle
+   Fünf-Sterne-Zeile ohne Bewertungsdaten wird nicht als Produktbewertung genutzt.

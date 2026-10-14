@@ -63,7 +63,7 @@
         <div class="collection-results">
           <div class="collection-toolbar">
             <p class="result-count" role="status">{{ collection.products_count }} {% if section.settings.model_collection %}{% if collection.products_count == 1 %}Modell{% else %}Modelle{% endif %}{% else %}{% if collection.products_count == 1 %}Produkt{% else %}Produkte{% endif %}{% endif %}</p>
-            <div class="sort-control"><label for="CollectionSort-{{ section.id }}">Sortieren</label><select id="CollectionSort-{{ section.id }}" name="sort_by" form="CollectionFilters-{{ section.id }}">{%- for option in collection.sort_options -%}<option value="{{ option.value | escape }}"{% if option.value == current_sort %} selected{% endif %}>{{ option.name | escape }}</option>{%- endfor -%}</select><button class="text-link sort-apply" type="submit" form="CollectionFilters-{{ section.id }}">Anwenden</button></div>
+            <div class="sort-control"><label for="CollectionSort-{{ section.id }}">Sortieren</label><select id="CollectionSort-{{ section.id }}" name="sort_by" form="CollectionFilters-{{ section.id }}" data-sort-select data-sort-page-param="{{ paginate.page_param }}">{%- for option in collection.sort_options -%}<option value="{{ option.value | escape }}"{% if option.value == current_sort %} selected{% endif %}>{{ option.name | escape }}</option>{%- endfor -%}</select><button class="text-link sort-apply" type="submit" form="CollectionFilters-{{ section.id }}" data-sort-apply>Anwenden</button></div>
           </div>
           {%- if section.settings.model_collection -%}<p class="collection-model-note">Ein Modell, alle Farben. Wählen Sie Ihre Farbe direkt beim Produkt.</p>{%- endif -%}
           <div class="active-filters" aria-label="Aktive Filter">
