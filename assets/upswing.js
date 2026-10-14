@@ -192,14 +192,6 @@ document.documentElement.classList.replace('no-js', 'js');
         container.querySelectorAll('[data-gallery-image]').forEach(item => { item.classList.toggle('active', item === link); item.classList.toggle('is-selected', item === link); });
       });
     });
-    scope.querySelectorAll('[data-card-swatch]').forEach(button => {
-      if (button.dataset.bound) return; button.dataset.bound = 'true';
-      const preview = () => {
-        const card = button.closest('.product-card'); const image = card?.querySelector('.product-media img');
-        if (!image || !button.dataset.cardSwatch) return; image.src = button.dataset.cardSwatch; image.removeAttribute('srcset');
-      };
-      button.addEventListener('mouseenter', preview); button.addEventListener('focus', preview);
-    });
   };
   bind(); document.addEventListener('shopify:section:load', event => bind(event.target));
   document.addEventListener('upswing:colors-ready', event => bind(event.target));

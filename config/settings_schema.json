@@ -2,7 +2,7 @@
   {
     "name": "theme_info",
     "theme_name": "Upswing Wellbeing",
-    "theme_version": "1.0.6",
+    "theme_version": "1.0.7",
     "theme_author": "Upswing",
     "theme_documentation_url": "https://upswing.ch",
     "theme_support_url": "https://upswing.ch/pages/kontakt"
@@ -93,6 +93,46 @@
         "label": "Erlaubte Modellfilter in der Suche",
         "default": "filter.p.vendor,filter.p.product_type,filter.p.m.upswing.model_colors",
         "info": "Kommagetrennte Parameternamen. Preis, Grösse und Lager nur freigeben, wenn diese Daten für das gesamte Modell zuverlässig gepflegt werden."
+      }
+    ]
+  },
+  {
+    "name": "Lieferzeiten",
+    "settings": [
+      {
+        "type": "text",
+        "id": "delivery_stock_days",
+        "label": "Lieferzeit bei Filialbestand",
+        "default": "2–3 Werktage",
+        "info": "Gilt für die gewählte Variante, wenn sie in einer für Abholung aktivierten Filiale verfügbar ist. Dauer mit Einheit angeben; leer bedeutet Lieferzeit auf Anfrage."
+      },
+      {
+        "type": "text",
+        "id": "delivery_standard_days",
+        "label": "Lieferzeit für Standard-Anbieter",
+        "default": "3–5 Werktage",
+        "info": "Dauer mit Einheit angeben. Eine individuelle Lieferzeit am Produkt oder an der Variante hat Vorrang, wenn kein Filialbestand verfügbar ist."
+      },
+      {
+        "type": "text",
+        "id": "delivery_standard_vendors",
+        "label": "Standard-Anbieter",
+        "default": "kybun, joya",
+        "info": "Anbieternamen aus dem Shopify-Produktfeld, durch Kommas getrennt. Gross- und Kleinschreibung sowie äussere Leerzeichen spielen keine Rolle."
+      },
+      {
+        "type": "text",
+        "id": "delivery_extended_days",
+        "label": "Lieferzeit für weitere Anbieter",
+        "default": "ca. 14 Werktage",
+        "info": "Dauer mit Einheit angeben; leer bedeutet Lieferzeit auf Anfrage."
+      },
+      {
+        "type": "text",
+        "id": "delivery_extended_vendors",
+        "label": "Weitere Anbieter",
+        "default": "leguano, elten, venen engel, venenengel, bellabambi, bella bambi",
+        "info": "Anbieternamen aus dem Shopify-Produktfeld, durch Kommas getrennt. Für nicht aufgeführte Anbieter wird die Lieferzeit auf Anfrage angezeigt."
       }
     ]
   }

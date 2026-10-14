@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.0.7] - 2026-10-15
+
+- Fest hinterlegte PDP-Produkttexte und Produkt-Handle-Sonderfälle entfernt. Informationsbereiche verwenden echte Metafields, Metaobject-Referenzen und die vollständige native Produktbeschreibung; leere Inhalte bleiben verborgen.
+- Bestehende Artikelmerkmale aus `aico_metafields` als Fallback erhalten; neue strukturierte technische Werte haben Vorrang. Kurzbeschreibungen unterstützen vorhandene Text- und Richtext-Felder.
+- Lieferfristen und Markenregeln sind Händler-Einstellungen; variantenspezifische beziehungsweise produktspezifische Live-Fristen können sie ergänzen. Reale Verfügbarkeit und Abholbestand bleiben massgeblich.
+- Produktkarten zeigen beim Hover oder Tastaturfokus die zweite echte Ansicht. Farbhover hat Vorrang, anschliessend wird die passende Originalansicht wiederhergestellt; Touch erzeugt keinen anhaltenden Hover.
+- Vergleichsfunktion einschliesslich Kartenknöpfen, Leiste, Dialog, Skript und Styles entfernt.
+- Datenvertrag für alle Hauptkategorien: 35 vorgeschlagene PDP-Typen, Zuordnung sämtlicher 49 Menülinks, Feldtypen, Inhalte, Beispiele und AICO-/Shopify-Exportregeln. Separate Typvorlagen sind ein nachfolgender Schritt.
+
 ## [1.0.6] - 2026-10-14
 
 - Sortierung in Kollektion und Suche wird bei Auswahl sofort angewendet. Aktive URL-Filter und Suchbegriffe bleiben erhalten, die Pagination wird zurückgesetzt; ohne JavaScript bleibt der Anwendenbutton nutzbar.

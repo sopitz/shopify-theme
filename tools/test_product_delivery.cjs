@@ -6,6 +6,8 @@ const {Liquid} = require('liquidjs');
 const {JSDOM} = require('jsdom');
 const root = path.resolve(__dirname, '..');
 const script = fs.readFileSync(path.join(root, 'assets/upswing.js'), 'utf8');
+const themeSchema = JSON.parse(fs.readFileSync(path.join(root, 'config/settings_schema.json'), 'utf8'));
+const themeSettings = JSON.parse(fs.readFileSync(path.join(root, 'config/settings_data.json'), 'utf8')).current;
 const engine = new Liquid({root:path.join(root, 'snippets'), extname:'.liquid', strictFilters:true});
 const tick = () => new Promise(resolve => setImmediate(resolve));
 const variant = (id, options, delivery = null) => ({id,options,delivery,available:true,price:33000,price_formatted:'CHF 330.00',sku:'SKU-'+id,quantity_rule:{min:1,increment:1}});
@@ -13,7 +15,7 @@ const variant = (id, options, delivery = null) => ({id,options,delivery,availabl
 test('merchant delivery rules preserve pickup-enabled stock and vendor lead times', async () => {
   const selected = {id:1,selected:true,available:true,store_availabilities:[{pick_up_enabled:true,available:true}]};
   const product = {vendor:'kybun',selected_or_first_available_variant:selected,first_available_variant:selected};
-  const render = async (v=selected) => JSON.parse(await engine.renderFile('product-delivery',{product,variant:v,output:'json'}));
+  const render = async (v=selected) => JSON.parse(await engine.renderFile('product-delivery',{product,variant:v,settings:themeSettings,output:'json'}));
   assert.deepEqual(await render(),{text:'Sofort verfügbar · Lieferzeit: 2–3 Werktage',status:'fast'});
   selected.store_availabilities = [{pick_up_enabled:false,available:true},{pick_up_enabled:true,available:false}];
   assert.deepEqual(await render(),{text:'Online verfügbar · Lieferzeit: 3–5 Werktage',status:'normal'});
@@ -29,11 +31,62 @@ test('merchant delivery rules preserve pickup-enabled stock and vendor lead time
 test('unselected available sizes do not fabricate pickup stock from undefined store_availabilities', async () => {
   const first={id:1,available:true}, current={id:2,selected:true,available:true};
   const product={vendor:'kybun',selected_or_first_available_variant:current,first_available_variant:first};
-  const render = async v => JSON.parse(await engine.renderFile('product-delivery',{product,variant:v,output:'json'}));
+  const render = async v => JSON.parse(await engine.renderFile('product-delivery',{product,variant:v,settings:themeSettings,output:'json'}));
   assert.equal(await render({id:3,available:true}),null);
   assert.match((await render(first)).text,/3–5/);
   assert.match((await render(current)).text,/3–5/);
   assert.equal((await render({id:4,available:false})).status,'unavailable');
+});
+
+test('editable delivery policy defaults are declared and saved consistently',()=>{
+  const group=themeSchema.find(group=>group.name==='Lieferzeiten');
+  assert.ok(group,'The merchant can change delivery policy in the theme editor');
+  for(const key of ['delivery_stock_days','delivery_standard_days','delivery_standard_vendors','delivery_extended_days','delivery_extended_vendors']){
+    const setting=group.settings.find(setting=>setting.id===key);
+    assert.ok(setting);assert.equal(setting.type,'text');assert.equal(themeSettings[key],setting.default);
+  }
+});
+
+test('changed policy values and exact vendor lists replace the original delivery estimates',async()=>{
+  const selected={id:1,selected:true,available:true,store_availabilities:[]};
+  const product={vendor:' Custom Supplier ',selected_or_first_available_variant:selected,first_available_variant:selected};
+  const settings={delivery_stock_days:'1 Werktag',delivery_standard_days:'10–12 Werktage',delivery_standard_vendors:'Other Supplier, custom supplier',delivery_extended_days:'6 Wochen',delivery_extended_vendors:'Long Supplier'};
+  const render=async()=>JSON.parse(await engine.renderFile('product-delivery',{product,variant:selected,settings,output:'json'}));
+  assert.deepEqual(await render(),{text:'Online verfügbar · Lieferzeit: 10–12 Werktage',status:'normal'});
+  product.vendor='LONG SUPPLIER';assert.match((await render()).text,/6 Wochen$/);
+  product.vendor='Supplier';assert.match((await render()).text,/Lieferzeit auf Anfrage$/,'Vendor lists must use complete names rather than substring matches');
+  product.vendor='kybun';assert.match((await render()).text,/Lieferzeit auf Anfrage$/,'Removed default vendors must not retain a code-level delivery policy');
+  selected.store_availabilities=[{pick_up_enabled:true,available:true}];
+  assert.deepEqual(await render(),{text:'Sofort verfügbar · Lieferzeit: 1 Werktag',status:'fast'});
+});
+
+test('variant delivery data takes priority over product data and vendor policy without overriding actual stock',async()=>{
+  const selected={id:1,selected:true,available:true,store_availabilities:[],metafields:{upswing:{delivery_time:{value:' 7–9 Werktage '}}}};
+  const product={vendor:'kybun',selected_or_first_available_variant:selected,first_available_variant:selected,metafields:{upswing:{delivery_time:{value:'2 Wochen'}}}};
+  const render=async()=>JSON.parse(await engine.renderFile('product-delivery',{product,variant:selected,settings:themeSettings,output:'json'}));
+  assert.match((await render()).text,/7–9 Werktage$/);
+  selected.metafields.upswing.delivery_time.value='   ';assert.match((await render()).text,/2 Wochen$/,'Blank variant data falls back to the actual product field');
+  product.metafields.upswing.delivery_time.value='';assert.match((await render()).text,/3–5 Werktage$/,'No individual data falls back to the editable merchant policy');
+  selected.metafields.upswing.delivery_time.value='7–9 Werktage';
+  selected.store_availabilities=[{pick_up_enabled:true,available:true}];
+  assert.deepEqual(await render(),{text:'Sofort verfügbar · Lieferzeit: 2–3 Werktage',status:'fast'},'Actual own stock uses its configured policy before supplier estimates');
+  selected.available=false;
+  assert.deepEqual(await render(),{text:'Aktuell nicht lieferbar',status:'unavailable'},'Unavailable always wins over contradictory pickup stock or individual estimates');
+});
+
+test('empty policies never invent a duration and plain delivery fields stay escaped in HTML and JSON',async()=>{
+  const selected={id:1,selected:true,available:true,store_availabilities:[]};
+  const product={vendor:'kybun',selected_or_first_available_variant:selected,first_available_variant:selected};
+  const settings={delivery_stock_days:'',delivery_standard_days:'',delivery_standard_vendors:'kybun',delivery_extended_days:'',delivery_extended_vendors:''};
+  const render=async(output='json')=>engine.renderFile('product-delivery',{product,variant:selected,settings,output});
+  assert.deepEqual(JSON.parse(await render()),{text:'Online verfügbar · Lieferzeit auf Anfrage',status:'normal'});
+  selected.store_availabilities=[{pick_up_enabled:true,available:true}];
+  assert.deepEqual(JSON.parse(await render()),{text:'Sofort verfügbar · Lieferzeit auf Anfrage',status:'fast'});
+  selected.store_availabilities=[];
+  selected.metafields={upswing:{delivery_time:{value:'3–5 Werktage </script><b>auf Anfrage</b>'}}};
+  const json=await render();assert.equal(json.includes('</script>'),false,'Plain catalog fields cannot close an inline JSON script');
+  assert.equal(JSON.parse(json).text,'Online verfügbar · Lieferzeit: 3–5 Werktage </script><b>auf Anfrage</b>');
+  const html=await render('html');assert.ok(html.includes('&lt;/script&gt;'));assert.equal(html.includes('<b>'),false,'Catalog text is presented as text rather than HTML');
 });
 
 function fixture({initialDelivery={text:'Sofort verfügbar · Lieferzeit: 2–3 Werktage',status:'fast'},serverVariant='',serverStatus='fast',serverText='Sofort verfügbar · Lieferzeit: 2–3 Werktage'}={}) {

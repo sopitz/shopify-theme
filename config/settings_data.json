@@ -6,6 +6,11 @@
     "color_sage": "#dfe9df",
     "color_text": "#263c34",
     "color_accent": "#bc7a49",
+    "delivery_stock_days": "2–3 Werktage",
+    "delivery_standard_days": "3–5 Werktage",
+    "delivery_standard_vendors": "kybun, joya",
+    "delivery_extended_days": "ca. 14 Werktage",
+    "delivery_extended_vendors": "leguano, elten, venen engel, venenengel, bellabambi, bella bambi",
     "sections": {
       "header": {
         "type": "header",

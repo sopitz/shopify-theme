@@ -1,0 +1,9 @@
+{%- comment -%}Only supported live text fields are displayed; JSON and other unknown field types have no prose fallback.{%- endcomment -%}
+{%- if field.value != blank -%}
+  {%- capture field_markup -%}
+    {%- if field.type == 'rich_text_field' -%}{{- field | metafield_tag -}}
+    {%- elsif field.type == 'single_line_text_field' or field.type == 'multi_line_text_field' or field.type == blank -%}<p>{{ field.value | escape | newline_to_br }}</p>{%- endif -%}
+  {%- endcapture -%}
+  {%- assign field_text = field_markup | strip_html | replace: '&nbsp;', ' ' | replace: '&#160;', ' ' | replace: '&#xA0;', ' ' | replace: '&#xa0;', ' ' | replace: ' ', ' ' | strip -%}
+  {%- if field_text != blank -%}{{- field_markup -}}{%- endif -%}
+{%- endif -%}

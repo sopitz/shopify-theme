@@ -1,0 +1,32 @@
+{%- comment -%}Live aico_metafields behaviour retained from the merchant's exported product-features block.{%- endcomment -%}
+{%- assign aico_fields = product.metafields.aico_metafields -%}
+{%- for field in aico_fields -%}
+  {%- assign key = field.first -%}
+  {%- assign key_suffix = key | slice: -5, 5 -%}
+  {%- unless key_suffix == '_list' -%}
+    {%- assign list_key = key | append: '_list' -%}
+    {%- capture attribute_value -%}{% render 'product-metafield-value', field: aico_fields[list_key] %}{%- endcapture -%}
+    {%- assign attribute_value = attribute_value | strip -%}
+    {%- if attribute_value == blank -%}
+      {%- capture attribute_value -%}{% render 'product-metafield-value', field: field.last %}{%- endcapture -%}
+      {%- assign attribute_value = attribute_value | strip -%}
+    {%- endif -%}
+    {%- assign attribute_label = key | replace: '_', ' ' | capitalize | strip -%}
+    {%- if attribute_value != blank and attribute_label != blank -%}<div><dt>{{ attribute_label | escape }}</dt><dd>{{ attribute_value }}</dd></div>{%- endif -%}
+  {%- endunless -%}
+{%- endfor -%}
+{%- for field in aico_fields -%}
+  {%- assign key = field.first -%}
+  {%- assign key_suffix = key | slice: -5, 5 -%}
+  {%- if key_suffix == '_list' -%}
+    {%- assign key_length = key | size -%}
+    {%- assign base_length = key_length | minus: 5 -%}
+    {%- assign base_key = key | slice: 0, base_length -%}
+    {%- if aico_fields[base_key] == blank -%}
+      {%- capture attribute_value -%}{% render 'product-metafield-value', field: field.last %}{%- endcapture -%}
+      {%- assign attribute_value = attribute_value | strip -%}
+      {%- assign attribute_label = base_key | replace: '_', ' ' | capitalize | strip -%}
+      {%- if attribute_value != blank and attribute_label != blank -%}<div><dt>{{ attribute_label | escape }}</dt><dd>{{ attribute_value }}</dd></div>{%- endif -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endfor -%}

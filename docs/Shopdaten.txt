@@ -1,62 +1,40 @@
-upswing – Datenübersicht für Farben und Lieferzeiten
-Stand: Theme 1.0.6
+upswing – Datenübersicht
+Stand: Theme 1.0.7 · 15. Oktober 2026
 
-Bereits angeschlossen; dafür sind keine neuen Metafelder nötig:
+Vollständige Feld-, Inhalts- und Beispielaufstellung:
+  Metafelder-und-Seitentypen.txt
+  Produktdaten-Vertrag.json
+35 vorgeschlagene fachliche Typen decken alle 49 Menülinks ab.
 
-1. Farbprodukt-Verknüpfungen: custom_fields.custom_rel_farbe.
-   Die deutschen Quell-Handles müssen auf die vorhandenen Farbprodukte zeigen.
+Bereits angeschlossene Quellen:
+- Native Produkte, Beschreibung, Varianten, Preise, SKU, Bilder und Bestände.
+- aico.pd_color_v2, mm-google-shopping.color, aico.pd_colors_v2.
+- custom_fields.custom_rel_farbe für Farbgeschwister.
+- custom_fields.small_description als optionaler Legacy-Einleitungstext.
+- aico_metafields: bestehende Artikelmerkmale als technische Tabellenquelle,
+  wenn keine gültigen upswing.technical_specs vorhanden sind.
+- Strukturierte upswing-Felder und referenzierte Metaobjects laut Spezifikation.
 
-2. Hauptfarbname: aico.pd_color_v2 (single_line_text_field).
-   Ersatzquelle: mm-google-shopping.color; danach erster Wert aus
-   aico.pd_colors_v2 (list.single_line_text_field).
-   Diese Felddefinitionen stammen aus dem bestätigten V2-Sync.
-   Jeder verknüpfte Artikel verwendet seinen eigenen Hauptfarbnamen.
+Noch zu klären beziehungsweise zu pflegen:
+1. Je vorgeschlagenem Typ einen echten Artikel mit den gemeinsamen Inhalts-
+   feldern und den passenden technischen Werten in AICO vollständig befüllen.
+2. Neue Definitionen und vier Metaobject-Typen samt Storefront-Zugriff einrichten.
+   Ein Theme-Upload legt diese Shopdaten nicht an. Leere Inhalte bleiben leer;
+   die native Produktbeschreibung wird dennoch vollständig dargestellt.
+3. Gewünschte exakte Farbwerte: V2 liefert Namen, keine Hexcodes. Optional
+   upswing.color_hex pflegen; unbekannte Namen bleiben als Text wählbar.
+4. Reale Abholbestände/Standorte in Shopify prüfen. Fristen und Markenregeln
+   sind unter Theme-Einstellungen → Lieferzeiten editierbar. Optionale
+   upswing.delivery_time am Produkt oder an der Variante mit Einheit pflegen.
+5. Für die lokale Designvorschau fehlen echte Abhol-/Filialbestände. Ohne
+   bestätigten Export zeigt sie Lieferzeit auf Anfrage statt erfundener Tage.
+6. Google Reviews: Profil pro Filiale/Unternehmen und ReviewsPlugin-Widget-ID
+   zuordnen. Im Originalexport ist nur das globale App-Embed erkennbar; Werte,
+   Zitate und Profildaten liegen beim Anbieter. Keine Screenshotzahlen einbauen.
+   Inline-Appblock: https://reviewsplugin.com/add-google-reviews-to-shopify
+7. Filialen, Team, Galerie, Chronik, Stellen und Servicebedingungen sind ein
+   separates späteres Inhaltsmodell. Aktuelle Über-uns-Vorlagen bieten auch
+   Shopify-Seiteninhalt und Editor-Blöcke; die Produktmetafields ersetzen sie nicht.
 
-3. Kartentyp: bestehender Shopify-Produkttyp product.type.
-   Angaben wie Damenschuhe, Herrenschuhe oder Barfussschuhe erscheinen neben
-   der Marke. Fehlende oder uneinheitliche Produkttypen im Katalog prüfen.
-
-4. Lieferzeit: bestehende Verkaufsverfügbarkeit der Variante plus tatsächliche
-   Shopify-Abholverfügbarkeit der ausgewählten Variante.
-   Lieferregeln stammen aus dem Originaltheme, Block upswing-delivery-time:
-   verfügbarer Filialbestand: 2–3 Werktage;
-   kybun/Joya ohne diesen Bestand: 3–5 Werktage;
-   leguano/ELTEN/Venen Engel/BellaBambi: ca. 14 Werktage;
-   andere Marken: Lieferzeit auf Anfrage;
-   nicht verfügbare Variante: Aktuell nicht lieferbar.
-   Für die kurze Frist müssen Standortbestände und Abholung in Shopify stimmen.
-
-Optional noch ergänzen:
-
-5. Genaue Farbtöne und ungewöhnliche Farbnamen.
-   V2 liefert Namen, keine Hexcodes. Die Punkte stellen die benannte Farbe
-   vereinfacht dar. Für genaue Materialtöne bitte Farbname und gewünschten
-   Hexcode liefern. Bereits gesetztes upswing.color_hex wird bevorzugt.
-   Nicht erkannte Namen bleiben als beschriftete Auswahl sichtbar.
-
-6. Genauere Lieferzeiten für die lokale Designvorschau.
-   Der lokale Produktsnapshot enthält keine Filialbestände. Für echte Tages-
-   beispiele dort pro Varianten-ID den bestätigten Liefertext und Status
-   aus dem Shop exportieren. Bis dahin zeigt die Vorschau bei verfügbarer
-   Auswahl Lieferzeit auf Anfrage. Das native Theme liest die Shopdaten selbst.
-
-7. Strukturierte Produktinformationen für den ganzen Katalog.
-   Der gestaltete Informationsbereich für Magglingen und weitere Beispielmodelle
-   enthält derzeit fest im Theme hinterlegte Designtexte nach Produkt-Handle.
-   Andere Artikel nutzen ihre normale Shopify-Beschreibung.
-   Vorhandene strukturierte upswing-Felder haben Vorrang vor den Beispielen.
-   Bitte die bestehenden Sync-Felder für Eigenschaften, Eignung, Material,
-   technische Daten, Eingewöhnung, Grössenhilfe, Pflege und FAQ nennen bzw.
-   deren Struktur liefern, damit wir den Aufbau auf echte Katalogdaten abbilden.
-   Die Beispieldaten sind kein allgemeiner Beschreibungsparser.
-
-8. Google-Bewertungen als integrierter Social Proof.
-   Im Originaltheme ist ReviewsPlugin als globales Floating-App-Embed aktiv.
-   Google-Profilzuordnung, Bewertungsschnitt und Anzahl liegen beim Anbieter
-   und sind im Export nicht enthalten. Für Inline-Platzierung bitte klären:
-   welche Google-Profile gehören zu welchen Filialen bzw. zum Unternehmen,
-   und welche Widget-IDs sollen für diese Profile verwendet werden?
-   ReviewsPlugin unterstützt laut Anbieter den Inline-Appblock Google Reviews.
-   Quelle: https://reviewsplugin.com/add-google-reviews-to-shopify
-   Werte und Zitate sollen aus dieser echten Quelle kommen. Die alte manuelle
-   Fünf-Sterne-Zeile ohne Bewertungsdaten wird nicht als Produktbewertung genutzt.
+Keine native PDP verwendet fest hinterlegte Produkttexte oder Handle-Beispiele.
+Die separate Designvorschau enthält ausdrücklich Entwurfs-/Snapshotdaten.

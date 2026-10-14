@@ -1,5 +1,5 @@
 {%- comment -%}
-  Delivery rules retained from the merchant's upswing-delivery-time block.
+  Delivery estimates use editable merchant policies and current Shopify data.
   Shopify only supplies store_availabilities for the selected / first available
   variant. Unselected sizes must be rendered through product-delivery with a
   variant URL before their delivery estimate is known.
@@ -21,20 +21,51 @@
           break
         endif
       endfor
-      assign brand = product.vendor | downcase | strip
+      assign stock_delivery = settings.delivery_stock_days | strip
+      assign standard_delivery = settings.delivery_standard_days | strip
+      assign extended_delivery = settings.delivery_extended_days | strip
+      assign variant_delivery = delivery_variant.metafields.upswing.delivery_time.value | strip
+      assign product_delivery = product.metafields.upswing.delivery_time.value | strip
+      assign individual_delivery = variant_delivery | default: product_delivery
       assign delivery_status = 'normal'
-      if in_own_stock
-        assign delivery_text = 'Sofort verfügbar · Lieferzeit: 2–3 Werktage'
+      if delivery_variant.available == false
+        assign delivery_text = 'Aktuell nicht lieferbar'
+        assign delivery_status = 'unavailable'
+      elsif in_own_stock
+        if stock_delivery != blank
+          assign delivery_text = stock_delivery | prepend: 'Sofort verfügbar · Lieferzeit: '
+        else
+          assign delivery_text = 'Sofort verfügbar · Lieferzeit auf Anfrage'
+        endif
         assign delivery_status = 'fast'
       elsif delivery_variant.available
-        case brand
-          when 'kybun', 'joya'
-            assign delivery_text = 'Online verfügbar · Lieferzeit: 3–5 Werktage'
-          when 'leguano', 'elten', 'venen engel', 'venenengel', 'bellabambi', 'bella bambi'
-            assign delivery_text = 'Online verfügbar · Lieferzeit: ca. 14 Werktage'
-          else
-            assign delivery_text = 'Online verfügbar · Lieferzeit auf Anfrage'
-        endcase
+        assign lead_time = individual_delivery
+        if lead_time == blank
+          assign brand = product.vendor | downcase | strip
+          assign standard_vendors = settings.delivery_standard_vendors | split: ','
+          assign extended_vendors = settings.delivery_extended_vendors | split: ','
+          for vendor in standard_vendors
+            assign normalized_vendor = vendor | downcase | strip
+            if normalized_vendor != blank and normalized_vendor == brand
+              assign lead_time = standard_delivery
+              break
+            endif
+          endfor
+          if lead_time == blank
+            for vendor in extended_vendors
+              assign normalized_vendor = vendor | downcase | strip
+              if normalized_vendor != blank and normalized_vendor == brand
+                assign lead_time = extended_delivery
+                break
+              endif
+            endfor
+          endif
+        endif
+        if lead_time != blank
+          assign delivery_text = lead_time | prepend: 'Online verfügbar · Lieferzeit: '
+        else
+          assign delivery_text = 'Online verfügbar · Lieferzeit auf Anfrage'
+        endif
       else
         assign delivery_text = 'Aktuell nicht lieferbar'
         assign delivery_status = 'unavailable'
@@ -43,7 +74,8 @@
   endif
 -%}
 {%- if output == 'json' -%}
-  {%- if delivery_known -%}{"text":{{ delivery_text | json }},"status":{{ delivery_status | json }}}{%- else -%}null{%- endif -%}
+  {%- capture delivery_json_escape -%}\u003c{%- endcapture -%}
+  {%- if delivery_known -%}{"text":{{ delivery_text | json | replace: '<', delivery_json_escape }},"status":{{ delivery_status | json }}}{%- else -%}null{%- endif -%}
 {%- else -%}
   <p class="product-availability" data-product-availability data-delivery-status="{{ delivery_status }}" data-delivery-variant="{{ delivery_variant.id }}" role="status">{{ delivery_text | escape }}</p>
 {%- endif -%}

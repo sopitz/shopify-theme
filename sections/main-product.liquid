@@ -6,15 +6,6 @@
   assign primary_alt = primary_image.alt | default: product.title
   assign model_title = product.metafields.upswing.model_name.value | default: product.title
   assign context_kind = product.metafields.upswing.product_kind.value | default: product.type
-  assign vendor_key = product.vendor | downcase
-  assign type_key = product.type | downcase
-  if product.metafields.upswing.product_kind.value == blank and type_key contains 'schuh'
-    if vendor_key == 'kybun'
-      assign context_kind = 'Luftkissenschuh'
-    elsif vendor_key == 'leguano'
-      assign context_kind = 'Barfussschuh'
-    endif
-  endif
   assign consultation_url = section.settings.consultation_url | default: '/pages/filialubersicht'
   assign context_color = resolved_product_color | strip
   for option in product.options_with_values
@@ -27,6 +18,8 @@
 -%}
 {%- capture onsite_consultation_url -%}{%- render 'filial-anchor-url', url: consultation_url, fallback_url: '/pages/filialubersicht' -%}{%- endcapture -%}
 {%- assign onsite_consultation_url = onsite_consultation_url | strip -%}
+{%- capture product_knowledge -%}{% render 'product-knowledge', product: product, consultation_url: onsite_consultation_url %}{%- endcapture -%}
+{%- assign product_knowledge = product_knowledge | strip -%}
 <section class="product-section section-space" id="Product-{{ section.id }}" data-product-section data-product-media-context data-product-context-kind="{{ context_kind | escape }}" data-product-context-brand="{{ product.vendor | escape }}" data-section-id="{{ section.id }}" data-product-url="{{ product.url }}">
   <div class="container">
     <nav class="breadcrumbs" aria-label="Brotkrumennavigation">
@@ -66,17 +59,15 @@
         {%- endfor -%}
       </div>
       <div class="product-info">
-        <p class="eyebrow">{{ product.vendor | escape }}{% if product.type != blank %} · {{ product.type | escape }}{% endif %}</p>
+        <p class="eyebrow">{{ product.vendor | escape }}{% if context_kind != blank %} · {{ context_kind | escape }}{% endif %}</p>
         <h1>{{ model_title | escape }}</h1>
         <p class="product-sku" data-product-sku-row{% if current_variant.sku == blank %} hidden{% endif %}>Artikelnr.: <span data-product-sku>{{ current_variant.sku | escape }}</span></p>
         {% render 'product-intro', product: product %}
         <div class="product-price product-price-large">{% render 'price', product: product, variant: current_variant, live: true %}</div>
         <p class="price-tax">{% if cart.taxes_included %}Inklusive Steuern.{% else %}Steuern werden an der Kasse berechnet.{% endif %} {% if shop.shipping_policy != blank %}<a href="{{ shop.shipping_policy.url }}">Versandbedingungen</a>{% else %}Versand wird an der Kasse berechnet.{% endif %}</p>
-        {%- if product.metafields.upswing.benefits.value != blank -%}
-          <ul class="product-benefits">
-            {%- for benefit in product.metafields.upswing.benefits.value -%}<li>{% render 'icon', name: 'check' %}<span>{{ benefit | escape }}</span></li>{%- endfor -%}
-          </ul>
-        {%- endif -%}
+        {%- capture product_benefit_items -%}{%- for benefit in product.metafields.upswing.benefits.value -%}{%- assign benefit_text = benefit | strip -%}{%- if benefit_text != blank -%}<li>{% render 'icon', name: 'check' %}<span>{{ benefit_text | escape }}</span></li>{%- endif -%}{%- endfor -%}{%- endcapture -%}
+        {%- assign product_benefit_items = product_benefit_items | strip -%}
+        {%- if product_benefit_items != blank -%}<ul class="product-benefits">{{ product_benefit_items }}</ul>{%- endif -%}
         {% render 'product-model-colors', product: product %}
         {%- form 'product', product, id: product_form_id, class: 'product-form', data-product-form: '', data-product-id: product.id, data-product-url: product.url, data-section-id: section.id, data-high-variants: product.variants_count -%}
           {{ form.errors | default_errors }}
@@ -165,7 +156,7 @@
           <div><strong>Passt dieses Produkt zu Ihnen?</strong><p>Wir helfen Ihnen bei Auswahl, Passform und Anwendung.</p><a class="text-link" href="{{ onsite_consultation_url | escape }}">Persönliche Beratung finden</a></div>
         </div>
         {%- if section.settings.b2b_url != blank -%}<p class="product-b2b-link">Für Mitarbeitende einkaufen? <a href="{{ section.settings.b2b_url }}">Firmenberatung anfragen</a></p>{%- endif -%}
-        <a class="text-link description-jump" href="#ProductInformation">Alle Produktinformationen lesen {% render 'icon', name: 'arrow' %}</a>
+        {%- if product_knowledge != blank -%}<a class="text-link description-jump" href="#ProductInformation">Alle Produktinformationen lesen {% render 'icon', name: 'arrow' %}</a>{%- endif -%}
       </div>
     </div>
     {%- if primary_image -%}
@@ -187,7 +178,7 @@
         <p class="product-context-error" data-context-error role="alert" hidden></p>
       </aside>
     {%- endif -%}
-    {% render 'product-knowledge', product: product, consultation_url: onsite_consultation_url %}
+    {{ product_knowledge }}
     <div class="product-accordions product-policies">
         <details class="product-accordion"><summary>Versand & Rückgabe {% render 'icon', name: 'plus' %}</summary><div class="rte"><p>{{ section.settings.shipping_note | escape }}</p>{% if shop.shipping_policy != blank %}<p><a href="{{ shop.shipping_policy.url }}">Vollständige Versandbedingungen</a></p>{% endif %}{% if shop.refund_policy != blank %}{{ shop.refund_policy.body }}{% else %}<p>Für Fragen zur Rückgabe wenden Sie sich bitte an <a href="{{ consultation_url }}">unser Beratungsteam</a>.</p>{% endif %}</div></details>
         {%- for block in section.blocks -%}{%- case block.type -%}{%- when '@app' -%}{% render block %}{%- when 'information' -%}<details class="product-accordion" {{ block.shopify_attributes }}><summary>{{ block.settings.heading | escape }} {% render 'icon', name: 'plus' %}</summary><div class="rte">{{ block.settings.content }}</div></details>{%- endcase -%}{%- endfor -%}

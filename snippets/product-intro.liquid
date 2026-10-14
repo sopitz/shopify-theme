@@ -1,5 +1,29 @@
-{%- if product.metafields.upswing.short_description != blank -%}
-  <div class="product-intro">{{ product.metafields.upswing.short_description | metafield_tag }}</div>
+{%- liquid
+  assign valid_text_types = 'single_line_text_field,multi_line_text_field,rich_text_field' | split: ','
+  assign legacy_description_field = product.metafields.custom_fields.small_description
+  assign has_legacy_description = false
+  if legacy_description_field.value != blank
+    if legacy_description_field.type == blank or valid_text_types contains legacy_description_field.type
+      assign has_legacy_description = true
+    endif
+  endif
+-%}
+{%- capture short_description_markup -%}{% render 'product-metafield-content', field: product.metafields.upswing.short_description %}{%- endcapture -%}
+{%- assign short_description_markup = short_description_markup | strip -%}
+{%- capture legacy_description_markup -%}
+  {%- if has_legacy_description -%}
+    {%- if legacy_description_field.type == 'rich_text_field' -%}{% render 'product-metafield-content', field: legacy_description_field %}
+    {%- else -%}
+      {%- assign legacy_plain_text = legacy_description_field.value | strip_html | replace: '&nbsp;', ' ' | replace: '&#160;', ' ' | replace: '&#xA0;', ' ' | replace: '&#xa0;', ' ' | replace: ' ', ' ' | strip -%}
+      {%- if legacy_plain_text != blank -%}{{ legacy_plain_text | escape_once | newline_to_br }}{%- endif -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endcapture -%}
+{%- assign legacy_description_text = legacy_description_markup | strip_html | replace: '&nbsp;', ' ' | replace: '&#160;', ' ' | replace: '&#xA0;', ' ' | replace: '&#xa0;', ' ' | replace: ' ', ' ' | strip -%}
+{%- if short_description_markup != blank -%}
+  <div class="product-intro">{{ short_description_markup }}</div>
+{%- elsif legacy_description_text != blank -%}
+  <div class="product-intro">{{ legacy_description_markup }}</div>
 {%- elsif product.description != blank -%}
   {%- liquid
     assign description = product.description | replace: '<P', '<p' | replace: '</P>', '</p>'
@@ -11,7 +35,7 @@
       if opening_character == '>' or trimmed_opening_character == blank
         assign opening_attributes = candidate | split: '>' | first | append: '>'
         assign paragraph = candidate | remove_first: opening_attributes | split: '</p>' | first
-        assign intro_text = paragraph | replace: '<br>', ' ' | replace: '<br/>', ' ' | replace: '<br />', ' ' | strip_html | strip
+        assign intro_text = paragraph | replace: '<br>', ' ' | replace: '<br/>', ' ' | replace: '<br />', ' ' | strip_html | replace: '&nbsp;', ' ' | replace: '&#160;', ' ' | replace: '&#xA0;', ' ' | replace: '&#xa0;', ' ' | replace: ' ', ' ' | strip
         if intro_text != blank
           break
         endif
@@ -19,7 +43,7 @@
     endfor
     if intro_text == blank
       assign plain_paragraphs = description | newline_to_br | strip_newlines | split: '<br /><br />'
-      assign intro_text = plain_paragraphs | first | replace: '<br />', ' ' | strip_html | strip
+      assign intro_text = plain_paragraphs | first | replace: '<br />', ' ' | strip_html | replace: '&nbsp;', ' ' | replace: '&#160;', ' ' | replace: '&#xA0;', ' ' | replace: '&#xa0;', ' ' | replace: ' ', ' ' | strip
     endif
   -%}
   {%- if intro_text != blank -%}<p class="product-intro">{{ intro_text | escape_once }}</p>{%- endif -%}

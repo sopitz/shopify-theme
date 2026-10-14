@@ -10,6 +10,13 @@
     assign card_title = product.metafields.upswing.model_name.value | default: product.title
     assign card_image = product.featured_media.preview_image | default: product.featured_image
     assign card_alt = card_image.alt | default: card_title
+    assign card_hover_image = nil
+    for image in product.images
+      if image.id != card_image.id
+        assign card_hover_image = image
+        break
+      endif
+    endfor
     assign model_min_price = product.price_min
     assign model_max_price = product.price_max
     assign card_available = product.available
@@ -44,7 +51,9 @@
       assign show_from = true
     endif
   -%}
-  <article class="product-card" data-product-card data-product-handle="{{ product.handle }}">
+  {%- capture card_copy -%}{% render 'product-intro', product: product %}{%- endcapture -%}
+  {%- assign card_copy = card_copy | replace: '</p>', ' ' | replace: '</li>', ' ' | replace: '<br>', ' ' | replace: '<br/>', ' ' | replace: '<br />', ' ' | strip_html | strip -%}
+  <article class="product-card" data-product-card data-product-handle="{{ product.handle }}"{% if card_hover_image %} data-card-secondary-image="{{ card_hover_image | image_url: width: 720 }}" data-card-secondary-alt="{{ card_hover_image.alt | default: card_alt | escape }}"{% endif %}>
     <a class="product-media" href="{{ product.url }}" aria-label="{{ card_title | escape }} ansehen">
       {%- if card_image -%}
         {{ card_image | image_url: width: 720 | image_tag: loading: 'lazy', widths: '240, 360, 540, 720', sizes: '(min-width: 1000px) 24vw, (min-width: 600px) 45vw, 90vw', alt: card_alt }}
@@ -59,8 +68,8 @@
         {%- if product.type != blank -%}<p class="product-type">{{ product.type | escape }}</p>{%- endif -%}
       </div>
       <h3 class="product-title"><a href="{{ product.url }}">{{ card_title | escape }}</a></h3>
-      {%- if product.metafields.upswing.short_description.value != blank -%}
-        <p class="product-copy">{{ product.metafields.upswing.short_description.value | strip_html | truncate: 115 }}</p>
+      {%- if card_copy != blank -%}
+        <p class="product-copy">{{ card_copy | truncate: 115 | escape_once }}</p>
       {%- endif -%}
       <div class="product-price">{% render 'price', product: product, from_price: model_min_price, show_from: show_from %}</div>
       {%- if siblings != blank and card_has_native_color == false -%}
@@ -103,7 +112,6 @@
       {%- endif -%}
       <div class="product-card-actions">
         <a class="text-link model-link" href="{{ product.url }}">Modell entdecken {% render 'icon', name: 'arrow' %}</a>
-        <button class="compare-button" type="button" data-compare="{{ product.metafields.upswing.model_key.value | default: product.handle | escape }}" data-product-title="{{ card_title | escape }}" data-product-url="{{ product.url }}"{% if card_image %} data-product-image="{{ card_image | image_url: width: 360 }}"{% endif %} data-product-price="{% if show_from %}ab {% endif %}{{ model_min_price | money_with_currency | escape }}" data-product-description="{{ product.metafields.upswing.short_description.value | default: product.description | strip_html | truncate: 180 | escape }}" aria-pressed="false" aria-label="{{ card_title | escape }} zum Vergleich merken">{% render 'icon', name: 'plus' %}<span class="visually-hidden">Vergleichen</span></button>
       </div>
     </div>
   </article>

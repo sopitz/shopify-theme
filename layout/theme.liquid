@@ -42,6 +42,7 @@
     <script src="{{ 'legacy-colors.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'product-recommendations.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'gallery-image-preload.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'product-cards.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'product-media-context.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'product-color-prefetch.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
@@ -53,6 +54,5 @@
     <main id="MainContent" tabindex="-1">{{ content_for_layout }}</main>
     {% section 'footer' %}
     <div class="sr-only" role="status" aria-live="polite" data-live-region></div>
-    <script src="{{ 'compare.js' | asset_url }}" defer></script>
   </body>
 </html>

@@ -10,9 +10,9 @@ Shopify-Theme für upswing.ch. Die sieben Theme-Ordner liegen direkt im Reposito
 
 Bitte das benannte **Release-Asset** verwenden. GitHubs automatisch erzeugtes „Source code“-ZIP enthält zusätzlich Repository-Dateien und ist kein vorbereitetes Shopify-Installationspaket.
 
-Im bestehenden upswing-Shop nutzt das Theme vorhandene Produkte, Varianten, Kollektionen und Menüs. Logo, Bilder, Gestaltung und bekannte Über-uns-/Filialseiten sind vorbereitet. Zusätzliche strukturierte Produktfelder sind optional. Bestehende Farbverknüpfungen in `custom_fields.custom_rel_farbe` werden ohne neue Metafelder für die Farbauswahl verwendet. Für eine vollständig nach Modellen geführte, korrekt paginierte Kollektionsliste ist weiterhin eine geprüfte Katalogzuordnung nötig; neue Seiten müssen als Shop-Ressourcen vorhanden sein. Ein leerer Testshop benötigt zunächst Shopdaten.
+Im bestehenden upswing-Shop nutzt das Theme vorhandene Produkte, Varianten, Kollektionen und Menüs. Logo, Bilder, Gestaltung und bekannte Über-uns-/Filialseiten sind vorbereitet. Produkttexte und Artikelmerkmale stammen ausschliesslich aus den Shopdaten. Zusätzliche strukturierte Produktfelder sind optional und werden in der Datenspezifikation beschrieben. Bestehende Farbverknüpfungen in `custom_fields.custom_rel_farbe` werden ohne neue Metafelder für die Farbauswahl verwendet. Für eine vollständig nach Modellen geführte, korrekt paginierte Kollektionsliste ist weiterhin eine geprüfte Katalogzuordnung nötig; neue Seiten müssen als Shop-Ressourcen vorhanden sein. Ein leerer Testshop benötigt zunächst Shopdaten.
 
-[Ausführliche Einrichtung und Konzept](docs/Einrichtung-und-Konzept.md) · [Änderungen je Version](CHANGELOG.md)
+[Produktfelder und Seitentypen](docs/Metafelder-und-Seitentypen.txt) · [Datenvertrag als JSON](docs/Produktdaten-Vertrag.json) · [Ausführliche Einrichtung und Konzept](docs/Einrichtung-und-Konzept.md) · [Änderungen je Version](CHANGELOG.md)
 
 ## Releases
 
@@ -32,7 +32,7 @@ npm ci --ignore-scripts --no-audit --no-fund
 npm test
 python3 tools/validate_schema.py --self-test .
 shopify theme check --path . --fail-level warning
-python3 tools/build_release.py --tag v1.0.6
+python3 tools/build_release.py --tag v1.0.7
 ```
 
 Die GitHub-Prüfungen verwenden die offizielle Shopify-Prüfung, zusätzliche Schema-Regeln und portable Funktionstests für Suche, bestehende Farbzuordnungen, Kaufsteuerungen und das Vorladen der Vollbildgalerien. Die Schema-Regeln erfassen insbesondere die URL-Voreinstellungen, die bei Version 1.0.0 trotz unauffälligem Theme Check den Shopify-Upload beschädigten.

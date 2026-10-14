@@ -1,0 +1,29 @@
+{%- comment -%}Typed scalar/list attribute values from the merchant's existing catalogue; no JSON-object display or guessed units.{%- endcomment -%}
+{%- liquid
+  assign scalar_types = 'single_line_text_field,multi_line_text_field,number_integer,number_decimal' | split: ','
+  assign list_types = 'list.single_line_text_field,list.number_integer,list.number_decimal,list.boolean' | split: ','
+-%}
+{%- if field.type == 'boolean' -%}
+  {%- if field.value == true -%}Ja{%- elsif field.value == false -%}Nein{%- endif -%}
+{%- elsif scalar_types contains field.type -%}
+  {%- assign scalar_json = field.value | json -%}
+  {%- assign scalar_opening = scalar_json | slice: 0, 1 -%}
+  {%- assign scalar_value = field.value | strip -%}
+  {%- if field.value != blank and scalar_value != blank and scalar_opening != '{' and scalar_opening != '[' -%}{{- field.value | escape | newline_to_br -}}{%- endif -%}
+{%- elsif list_types contains field.type -%}
+  {%- assign shown_count = 0 -%}
+  {%- for item in field.value -%}
+    {%- capture item_value -%}
+      {%- if field.type == 'list.boolean' -%}
+        {%- if item == true -%}Ja{%- elsif item == false -%}Nein{%- endif -%}
+      {%- else -%}
+        {%- assign item_json = item | json -%}
+        {%- assign item_opening = item_json | slice: 0, 1 -%}
+        {%- assign item_text = item | strip -%}
+        {%- if item != blank and item_text != blank and item_opening != '{' and item_opening != '[' -%}{{- item | escape -}}{%- endif -%}
+      {%- endif -%}
+    {%- endcapture -%}
+    {%- assign item_value = item_value | strip -%}
+    {%- if item_value != blank -%}{%- if shown_count > 0 -%}, {% endif -%}{{- item_value -}}{%- assign shown_count = shown_count | plus: 1 -%}{%- endif -%}
+  {%- endfor -%}
+{%- endif -%}

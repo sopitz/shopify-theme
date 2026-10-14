@@ -1,5 +1,15 @@
 # Einrichtung und Konzept für upswing
 
+## Version 1.0.7 · Live-Produktinhalte und Datenvertrag
+
+Die PDP enthält keine fest eingebauten Produkttexte oder Sonderfälle für einzelne Handles mehr. Eigenschaften, Anwendung, technische Daten und FAQ kommen aus echten Produktmetafields und referenzierten Metaobjects. Die vollständige native Shopify-Beschreibung bleibt zusätzlich erhalten. Leere oder unpassend typisierte Inhalte erzeugen keine leeren Bereiche. Bestehende Artikelmerkmale im Namespace `aico_metafields` dienen als Tabellenfallback, solange keine gültigen `upswing.technical_specs` vorhanden sind.
+
+Die [Datenspezifikation für alle Produktwelten](Metafelder-und-Seitentypen.txt) beschreibt 35 vorgeschlagene fachliche PDP-Typen und deckt alle 49 Menülinks ab. Je Typ stehen fachliche AICO-Felder, Datentypen, Beispielwerte und Inhalte der gemeinsamen Informationsblöcke zur Verfügung. [Produktdaten-Vertrag.json](Produktdaten-Vertrag.json) enthält dieselben Angaben strukturiert. Die Beispiele sind illustrative Inhalte und keine freigegebenen Live-Produktdaten. `upswing.page_type` und separate Typvorlagen sind ausdrücklich Vorschläge für den nächsten Modellierungsschritt.
+
+Unter **Theme-Einstellungen → Lieferzeiten** sind Fristen und Markenlisten editierbar. Die bisherigen Händlerregeln sind als Startwerte gespeichert. Reale Variantenverfügbarkeit und Abholbestände bleiben massgeblich; optionale Live-Fristen unter `upswing.delivery_time` lassen sich am Produkt oder an der Variante pflegen. Unbekannte Fristen bleiben „auf Anfrage“.
+
+Karten zeigen beim Hover oder Tastaturfokus die zweite echte Produktansicht. Farbhover hat Vorrang; beim Verlassen kehrt die ursprüngliche Ansicht zurück. Touch erzeugt keinen hängenbleibenden Hover. Die Vergleichsfunktion ist vollständig entfernt, einschliesslich Kartenknöpfen, Leiste, Dialog und Skript. Alte gespeicherte Vergleichsauswahlen erzeugen keine Oberfläche.
+
 ## Version 1.0.6 · Sortierung, Bildreihen und Empfehlungen
 
 Kollektion und Suche wenden die Sortierung direkt bei Auswahl an. Bereits aktive Filter und Suchbegriffe bleiben erhalten; noch nicht angewandte Filterfelder werden dabei nicht zusätzlich abgesendet. Weitere PDP-Bilder beginnen nach vier quadratischen Kacheln eine neue Reihe. Native Shopify-Produktempfehlungen folgen unter dem Produktbereich und verwenden das vorhandene Kartendesign. Sie laden bis zu vier echte Vorschläge aus Shopify; fehlen Empfehlungen, bleibt der Bereich leer. Nach einem Farbproduktwechsel werden passende neue Empfehlungen geladen. Die lokale Designvorschau zeigt hier ihre vorhandenen Beispielmodelle.
@@ -33,7 +43,7 @@ Die Quelle für das konkrete Datenbeispiel ist die Nutzerangabe; der private Met
 
 Produktkarten verwenden kompakte Inhaltsabstände bei weiterhin gleichen Höhen und bündigen Preisen/Links pro sichtbarer Reihe. Die PDP-Einleitung übernimmt den vollständigen ersten Absatz; alle weiteren Produktinformationen bleiben darunter verfügbar. Die Beratungslinks führen direkt zur Filialauswahl; seit Version 1.0.4 entfällt die zusätzliche Bildunterschrift.
 
-Das Redesign führt durch Bedürfnisse, Modellvergleich und Beratung. Produktinformationen, transparente Kosten und eine übersichtliche Farbauswahl unterstützen die Entscheidung bei hochwertigen Produkten. Das Shopify Theme verwendet den bestehenden Produktkatalog; die lokale Vorschau zeigt ausgewählte reale Produkte und Preise als Entwurf.
+Das Redesign führt durch Bedürfnisse, Produktinformationen und Beratung. Produktinformationen, transparente Kosten und eine übersichtliche Farbauswahl unterstützen die Entscheidung bei hochwertigen Produkten. Das Shopify Theme verwendet den bestehenden Produktkatalog; die lokale Vorschau zeigt ausgewählte reale Produkte und Preise als Entwurf.
 
 Die Überschriften verwenden die serifenlose Manrope: besonders kräftig im Einstieg, mit abgestuften Gewichten für Bereiche und Produktnamen. Die farbige letzte Zeile bleibt aufrecht gesetzt. Die variablen WOFF2-Schriftdateien sind lokal im Theme enthalten; die Original-SIL-Lizenz liegt unter `assets/manrope-license.txt`. Lange Überschriften können auf kleinen Bildschirmen sauber umbrechen. Das Original-Logo bleibt erhalten.
 
@@ -41,18 +51,18 @@ Die Überschriften verwenden die serifenlose Manrope: besonders kräftig im Eins
 
 Den Ordner **upswing-preview** öffnen und auf diesem Mac **START.command** doppelklicken. Die Vorschau öffnet sich unter **http://127.0.0.1:4173**; das Terminalfenster geöffnet lassen. Mit Ctrl+C wird der lokale Server beendet. Das Vorschaupaket kann auch entpackt auf einem anderen Rechner mit Python 3 gestartet werden.
 
-Die interaktive Vorschau enthält acht echte Produktmodelle mit Farben, Grössen und Preisen als Momentaufnahme vom 12. Oktober 2026. Die vollständigen Originalbeschreibungen der 13 dargestellten Produktseiten wurden am 13. Oktober 2026 erneut abgeglichen. Produktberater, Modellvergleich, Suchvorschläge, Filter, Sortierung und ein lokal gespeicherter Warenkorb sind ausprobierbar. Der Checkout ist als Vorschau gekennzeichnet. Formulare versenden keine Nachrichten; die Anfrage kann als Text gespeichert werden.
+Die interaktive Vorschau enthält acht echte Produktmodelle mit Farben, Grössen und Preisen als Momentaufnahme vom 12. Oktober 2026. Die vollständigen Originalbeschreibungen der 13 dargestellten Produktseiten wurden am 13. Oktober 2026 erneut abgeglichen. Produktberater, Suchvorschläge, Filter, Sortierung und ein lokal gespeicherter Warenkorb sind ausprobierbar. Der Checkout ist als Vorschau gekennzeichnet. Formulare versenden keine Nachrichten; die Anfrage kann als Text gespeichert werden.
 
 Zusätzlich zeigt **/theme-preview.html** die Startseite aus den tatsächlichen Theme-Dateien mit lokalen Produkt- und Menübeispielen. Beide Ansichten benutzen das gemeinsame Gestaltungssystem. Diese lokale Renderingprüfung ersetzt keine Prüfung im Shopify-Shop.
 
 ## Shopify Theme installieren
 
-**Aktuelles Installationspaket: Version 1.0.4 vom 14. Oktober 2026.**
-Die Korrekturen aus Version 1.0.1 bleiben enthalten: 13 von Shopify nicht erlaubte Link-Voreinstellungen in acht Section-Schemas sind entfernt; dieselben Ziele bleiben als gespeicherte Einstellungen und Liquid-Fallbacks erhalten. Version 1.0.2 ergänzt Suchvorschläge, vorhandene Farbbeziehungen und kompakte Produktkarten. Alle 27 Section-Schemas, 21 JSON-Vorlagen und gespeicherten Einstellungen wurden zusätzlich zur offiziellen Theme-Prüfung gegen die betreffenden Shopify-Regeln geprüft. Der tatsächliche Upload und Betrieb im Shop bleiben die abschliessende Kontrolle.
+**Aktuelles Installationspaket: Version 1.0.7 vom 15. Oktober 2026.**
+Die Korrekturen aus Version 1.0.1 bleiben enthalten: 13 von Shopify nicht erlaubte Link-Voreinstellungen in acht Section-Schemas sind entfernt; dieselben Ziele bleiben als gespeicherte Einstellungen und Liquid-Fallbacks erhalten. Version 1.0.2 ergänzt Suchvorschläge, vorhandene Farbbeziehungen und kompakte Produktkarten. Alle 28 Section-Schemas, 21 JSON-Vorlagen und gespeicherten Einstellungen wurden zusätzlich zur offiziellen Theme-Prüfung gegen die betreffenden Shopify-Regeln geprüft. Der tatsächliche Upload und Betrieb im Shop bleiben die abschliessende Kontrolle.
 
 Im bestehenden upswing-Shop sind Logo, Gestaltung, Originalbilder, bekannte Seiten- und Sortimentsziele sowie ausgewählte Produkt-Handles bereits vorbereitet. Produkte, Varianten, Kollektionen, Menüs und vorhandene Seiten müssen für die erste Vorschau nicht neu angelegt werden. Neue Seitenressourcen und die spätere Modellzuordnung sind separate Einrichtungsschritte. Ein leerer Testshop benötigt zunächst Shopdaten.
 
-Zum erneuten Testen **upswing-shopify-theme-1.0.6.zip** aus dem [GitHub-Release 1.0.4](https://github.com/sopitz/shopify-theme/releases/tag/v1.0.6) als neuen unveröffentlichten Theme-Entwurf hochladen und die Startseite `/` öffnen. Die auf dem früheren Screenshot sichtbare Route `/en` lieferte zusätzlich eine 404-Seite; Sprach- und Market-Konfiguration werden durch dieses Paket nicht verändert.
+Zum erneuten Testen **upswing-shopify-theme-1.0.7.zip** aus dem [GitHub-Release 1.0.7](https://github.com/sopitz/shopify-theme/releases/tag/v1.0.7) als neuen unveröffentlichten Theme-Entwurf hochladen und die Startseite `/` öffnen. Die auf dem früheren Screenshot sichtbare Route `/en` lieferte zusätzlich eine 404-Seite; Sprach- und Market-Konfiguration werden durch dieses Paket nicht verändert.
 
 
 1. Im Shopify Admin **Onlineshop → Themes** öffnen. **upswing-shopify-theme.zip** im Bereich der Theme Entwürfe über **Theme importieren → ZIP Datei hochladen** hinzufügen.
@@ -80,9 +90,9 @@ Die Produktseite beantwortet zuerst: Was ist das Produkt, für wen passt es, was
 
 Die Produktseite führt mit vier kurzen Einstiegen durch Überblick, Alltag, Details und Fragen. Drei konkrete Eigenschaften eröffnen den Informationsbereich; Anwendungen und Eignung folgen als gegliederte Abschnitte. Material und technische Werte stehen in einer übersichtlichen Tabelle, Grössenhilfe und Pflege in eigenen Bereichen. Häufige Fragen öffnen sich einzeln. Ein Beratungsabschluss erscheint einmal am Ende.
 
-Die acht Beispielmodelle sind als kuratierte Designinhalte im Theme und in der Vorschau enthalten. Sie zeigen die spätere Darstellung vor einer Katalogmigration. Quell-Emojis, unzugeordnete Kundenstimmen und die wiederholte Beratungsaside werden in diesen Beispielen nicht dargestellt. Die gespeicherten Originalbeschreibungen bleiben in den Vorschau-Daten als Quelle erhalten; Beispielinhalte sind bewusst gegliedert und redaktionell für das Layout aufbereitet.
+Die gemeinsame native PDP verwendet ausschliesslich Shopdaten. Ein kurzer vorhandener Einleitungstext hat Vorrang vor dem ersten Absatz der echten Produktbeschreibung. Zusätzliche Metafields und Metaobjects steuern die gestalteten Bereiche; die vollständige Beschreibung bleibt unabhängig davon erhalten. Fehlende Daten aktivieren keine Beispieltexte. Die separate lokale Designvorschau zeigt weiterhin redaktionelle Snapshot-Beispiele, um den vorgesehenen Aufbau zu demonstrieren.
 
-Für die spätere Datenpflege bevorzugt das Theme die strukturierten Produktfelder. Ohne solche Felder greifen bei den gezeigten Modellen die Designbeispiele; bei weiteren Produkten bleibt die vollständige native Beschreibung als einmaliger, formatierter Fallback erhalten. Die Inhalte werden im Shopify-Theme serverseitig ausgegeben. Kaufbereich, echte Varianten und Warenkorb bleiben an die Shopify-Produktdaten gebunden.
+Felder, Datentypen, Inhalte und Beispiele je Produktwelt sind in [Metafelder-und-Seitentypen.txt](Metafelder-und-Seitentypen.txt) vollständig aufgeführt. Die Inhalte werden im Shopify-Theme serverseitig aus dem jeweiligen Artikel ausgegeben. Kaufbereich, Varianten und Warenkorb bleiben an Shopify gebunden.
 
 ## Galerie beim Auswählen und Lesen
 
@@ -149,27 +159,7 @@ Alle Farbprodukte erhalten denselben Modellschlüssel und Modellnamen. `model_pr
 
 Für saubere Zählung und Pagination eigene **Modellkollektionen** mit nur den Primärprodukten pflegen und diese in Navigation und Startseite zuordnen. Das Theme unterdrückt keine Farbprodukte automatisch: Eine bestehende Kollektion mit allen Farben zeigt weiterhin alle Einträge. Die Farbauswahl öffnet die verknüpften Produktseiten. Farb- und Grössenfilter vor Veröffentlichung mit den tatsächlichen Kollektionen prüfen. Native Shopify Filter berücksichtigen die Daten der Primärprodukte; verknüpfte Farbgeschwister werden nicht automatisch als Filterdaten zusammengeführt. Im Modellmodus werden deshalb nur ausdrücklich erlaubte Filter angezeigt. Die Editor Einstellung `model_filter_parameters` enthält standardmässig Marke, Produkttyp und `filter.p.m.upswing.model_colors`. Ein optionales `upswing.model_colors` als `list.single_line_text_field` muss dafür alle Farben des Modells am Primärprodukt abbilden und in Shopify Search & Discovery als Filter eingerichtet werden. Preis, Grösse, einzelne Produktfarben und Lagerfilter bleiben im Modellmodus verborgen, bis passende Modelldaten geprüft sind. [Shopify Filter einrichten](https://help.shopify.com/en/manual/online-store/storefront-search/search-and-discovery-filters).
 
-Optional ergänzen diese Produkt Metafields die ausführliche Kaufberatung. Die strukturierten Bereiche bevorzugen diese Felder; die native Produktbeschreibung bleibt als Fallback erhalten.
-
-| Schlüssel im Namespace `upswing` | Shopify Typ | Inhalt |
-|---|---|---|
-| `short_description` | `multi_line_text_field` | Kurze verständliche Einordnung |
-| `benefits` | `list.single_line_text_field` | Wenige belegte Eigenschaften beziehungsweise Nutzen Hinweise |
-| `suitability`, `specifications`, `size_guide`, `care`, `faq` | `rich_text_field` | Eignung, technische Daten, Grössenhilfe, Pflege und häufige Fragen |
-| `delivery_note` | `multi_line_text_field` | Produktspezifische Lieferinformation |
-| `related_products` | `list.product_reference` | Passende ergänzende Produkte |
-
-Für die gestalteten Informationsbereiche sind zusätzlich diese optionalen Felder vorgesehen. Listen referenzieren Metaobjects mit den genannten Feldern; deren Pflichtfelder werden bei der späteren Dateneinrichtung festgelegt.
-
-| Schlüssel im Namespace `upswing` | Shopify Typ | Felder beziehungsweise Inhalt |
-|---|---|---|
-| `features` | `list.metaobject_reference` | `title` als Text, `body` als mehrzeiliger Text; bis zu drei Eigenschaften |
-| `everyday_topics` | `list.metaobject_reference` | `title` als Text, `body` als Richtext; Anwendung und Gehgefühl |
-| `introduction` | `rich_text_field` | Eingewöhnung beziehungsweise erste Anwendung |
-| `technical_specs` | `list.metaobject_reference` | `label` und `value` als Text; technische Angaben |
-| `faq_items` | `list.metaobject_reference` | `question` als Text, `answer` als Richtext |
-
-Ein Modellvergleich kann bis zu drei Modelle auf dem jeweiligen Gerät merken. Er verwendet localStorage; gespeicherte Preise sind eine Orientierung und werden auf der Produktseite erneut geprüft.
+Die vollständige aktuelle Aufstellung der optionalen Inhaltsfelder, vier Metaobject-Strukturen und bestehenden AICO-Quellen steht in [Metafelder-und-Seitentypen.txt](Metafelder-und-Seitentypen.txt). Sie enthält je fachlichem Typ ein Feld- und Inhaltsbeispiel. Der [JSON-Datenvertrag](Produktdaten-Vertrag.json) kann als Grundlage für die Sync-Implementierung genutzt werden; er ist kein unmittelbar importierbares API-Payload.
 
 ## Unternehmen und Fachhandel getrennt führen
 
@@ -203,7 +193,7 @@ Die erlaubten Modellfilter in der Suche sind explizit konfigurierbar. Für die v
 
 ## Durchgeführte Prüfung
 
-Shopifys offizieller Theme Check: **keine Fehler und keine Warnungen**. JSON-Vorlagen, Section-Schemas und Assetverweise geprüft. In der interaktiven Vorschau wurden Produktberater, Farbwechsel, Vergleich, Grössenwahl, Warenkorb hinzufügen/ändern/entfernen, Suche, Preisfilter, Sortierung und lokale Firmenanfrage ausprobiert. Desktop und 390-Pixel-Mobilansicht geprüft; keine fehlenden Bilder oder horizontale Überläufe in den geprüften Ansichten.
+Shopifys offizieller Theme Check: **keine Fehler und keine Warnungen**. JSON-Vorlagen, Section-Schemas und Assetverweise geprüft. In der interaktiven Vorschau wurden Produktberater, Farbwechsel, Grössenwahl, Warenkorb hinzufügen/ändern/entfernen, Suche, Preisfilter, Sortierung und lokale Firmenanfrage ausprobiert. Desktop und 390-Pixel-Mobilansicht geprüft; keine fehlenden Bilder oder horizontale Überläufe in den geprüften Ansichten.
 
 Die Originalbeschreibungen aller 13 Produktseiten sind als Quellen gespeichert. Die aktuelle gestaltete Ausgabe wurde auf eindeutige Fakten, gegliederte Inhalte, einen einzigen Beratungsabschluss, FAQ-Bedienung und mobile Umbrüche geprüft. Die 49 Menülinks und 46 Bildzuordnungen wurden gegen das Originalmenü abgeglichen.
 
@@ -219,7 +209,7 @@ Bei der bestehenden 46-cm-Matte verweisen die öffentlich übernommenen Daten f�
 
 ## Vollbildgalerie und Kaufbereich
 
-Unter dem Hauptbild zeigt die Vorschaureihe vier gleich grosse, quadratische Bilder pro sichtbarer Reihe. Zusammen mit den Abständen füllen sie die gesamte Breite des Hauptbilds aus. Weitere Shopify-Originalbilder bleiben horizontal erreichbar. Die lokale Magglingen-Vorschau enthält je Farbe die ersten vier Originalbilder.
+Unter dem Hauptbild zeigt die Vorschaureihe vier gleich grosse, quadratische Bilder pro sichtbarer Reihe. Zusammen mit den Abständen füllen sie die gesamte Breite des Hauptbilds aus. Weitere Shopify-Originalbilder beginnen in einer neuen Reihe mit weiterhin vier quadratischen Spalten. Die lokale Magglingen-Vorschau enthält je Farbe die ersten vier Originalbilder.
 
 Die Produktbilder öffnen per Klick eine Vollbildgalerie. Auf dem Desktop stehen die Kaufoptionen rechts, mobil unter dem Bild. Dieser Kaufbereich ist ausschliesslich in der geöffneten Galerie sichtbar. Bildpfeile und Vorschaubilder wechseln die Ansicht; X beziehungsweise Escape schliessen den Dialog. Ein geöffnetes Farbmenü wird mit dem ersten Escape geschlossen, die Bildansicht mit dem nächsten.
 
@@ -247,7 +237,7 @@ Auf Mobilgeräten sitzt die Kaufleiste am unteren Bildschirmrand. Beim Weiterles
 
 Die mobile Vollbildgalerie verwendet wieder die bisherige Bildgalerie mit eigenem Kaufpanel. Dort bleiben Produktname, Farbe, Preis und Verfügbarkeit sichtbar. Die kompakte mobile Leseleiste erscheint ausschliesslich ausserhalb der Vollbildgalerie. Bildwechsel, Produktauswahl und Mengenregeln verwenden weiterhin das ursprüngliche Formular.
 
-Für die spätere Datenpflege kann optional `upswing.product_kind` als `single_line_text_field` eingerichtet werden. Ohne dieses Feld dient der native Shopify Wert `product.type` als Grundlage. Eine kybun- oder leguano-Schuhart wird nur bei einem bestätigten Produkttyp **Schuh** verwendet; die Marke allein bestimmt den Produkttyp nicht.
+Für die spätere Datenpflege kann optional `upswing.product_kind` als `single_line_text_field` eingerichtet werden. Ohne dieses Feld dient der native Shopify Wert `product.type` als Grundlage. Das Feld wird als bestätigte Produktart in Kopfbereich und Kaufleiste verwendet. Aus der Marke wird keine Schuhart abgeleitet.
 
 
 Die mobile Quick-buy-Leiste bleibt nach dem Verschwinden des ursprünglichen Kaufbuttons bis zum Seitenende verfügbar, auch bei den Produktempfehlungen und im Footer. Beim Zurückscrollen zum ursprünglichen Kaufbutton blendet sie sich wieder aus. Ein reservierter Abstand am Seitenende hält die Footer-Links erreichbar. Die Desktop-Begrenzung und die mobile Vollbildansicht bleiben unverändert.
