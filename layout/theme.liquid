@@ -30,13 +30,17 @@
     {{ 'product-media-context.css' | asset_url | stylesheet_tag }}
     {{ 'quantity-stepper.css' | asset_url | stylesheet_tag }}
     {{ 'row-alignment.css' | asset_url | stylesheet_tag }}
+    {{ 'product-cards.css' | asset_url | stylesheet_tag }}
+    {{ 'predictive-search.css' | asset_url | stylesheet_tag }}
     {{ 'manrope-latin.woff2' | asset_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
     <script>document.documentElement.classList.replace('no-js','js');</script>
     <script src="{{ 'filial-links.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'contact-locations.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'upswing.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'quantity-stepper.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'legacy-colors.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'product-media-context.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":{{ shop.name | json }},"url":{{ shop.url | json }}{% if settings.logo != blank %},"logo":{{ settings.logo | image_url: width: 600 | prepend: 'https:' | json }}{% endif %}}</script>
   </head>
   <body class="template-{{ request.page_type | handle }}">

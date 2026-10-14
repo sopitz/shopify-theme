@@ -13,6 +13,17 @@
     assign model_min_price = product.price_min
     assign model_max_price = product.price_max
     assign card_available = product.available
+    assign card_has_native_color = false
+    for option in product.options_with_values
+      assign option_name = option.name | downcase
+      if option_name contains 'farbe' or option_name contains 'color' or option_name contains 'colour'
+        assign card_has_native_color = true
+        break
+      endif
+    endfor
+    if card_has_native_color
+      assign siblings = nil
+    endif
     assign model_color_count = 1
     for sibling in siblings
       if sibling.id != product.id
@@ -51,7 +62,7 @@
         <p class="product-copy">{{ product.type | escape }}</p>
       {%- endif -%}
       <div class="product-price">{% render 'price', product: product, from_price: model_min_price, show_from: show_from %}</div>
-      {%- if siblings != blank -%}
+      {%- if siblings != blank and card_has_native_color == false -%}
         <div class="swatches" aria-label="Farben für {{ card_title | escape }}">
           <a class="swatch is-selected" href="{{ product.url }}" title="{{ product.metafields.upswing.color_name.value | default: product.title | escape }}" aria-label="{{ product.metafields.upswing.color_name.value | default: product.title | escape }}" {% if card_image %}data-card-swatch="{{ card_image | image_url: width: 720 }}"{% endif %} style="--swatch-color: {{ product.metafields.upswing.color_hex.value | default: '#d9ddd6' | escape }}">
             {%- if product.metafields.upswing.color_hex == blank and card_image -%}{{ card_image | image_url: width: 64 | image_tag: loading: 'lazy', alt: '', width: 32, height: 32 }}{%- endif -%}
@@ -87,6 +98,9 @@
             {%- break -%}
           {%- endif -%}
         {%- endfor -%}
+      {%- endif -%}
+      {%- if siblings == blank and card_has_native_color == false -%}
+        {% render 'legacy-color-data', product: product, mode: 'card' %}
       {%- endif -%}
       <div class="product-card-actions">
         <a class="text-link model-link" href="{{ product.url }}">Modell entdecken {% render 'icon', name: 'arrow' %}</a>

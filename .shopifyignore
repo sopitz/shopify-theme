@@ -1,6 +1,9 @@
 .github/**
 docs/**
 tools/**
+node_modules/**
+package.json
+package-lock.json
 dist/**
 work/**
 README.md

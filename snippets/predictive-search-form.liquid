@@ -1,0 +1,15 @@
+{%- liquid
+  assign search_input_id = id | append: '-' | append: section.id
+  assign search_results_id = search_input_id | append: '-Results'
+-%}
+<upswing-predictive-search class="{{ class | escape }}" data-search-url="{{ routes.predictive_search_url | escape }}" data-loading-label="Suchvorschläge werden geladen." data-results-label="Suchvorschläge verfügbar." data-error-label="Suchvorschläge sind gerade nicht verfügbar. Mit Enter können Sie trotzdem suchen.">
+  <form class="predictive-search-form" action="{{ routes.search_url }}" method="get" role="search">
+    <label class="sr-only" for="{{ search_input_id }}">Produkte, Marken und Informationen suchen</label>
+    <input type="search" name="q" id="{{ search_input_id }}" placeholder="{{ placeholder | escape }}" value="{{ search.terms | escape }}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-predictive-input>
+    <input type="hidden" name="options[prefix]" value="last">
+    {% if settings.group_model_search %}<input type="hidden" name="type" value="product"><input type="hidden" name="filter.p.m.upswing.model_primary" value="true">{% endif %}
+    <button type="submit" class="icon-button" aria-label="Suchen">{% render 'icon', name: 'search' %}</button>
+    <div class="predictive-search-panel" id="{{ search_results_id }}" data-predictive-panel hidden></div>
+    <span class="sr-only" role="status" aria-live="polite" aria-atomic="true" data-predictive-status></span>
+  </form>
+</upswing-predictive-search>

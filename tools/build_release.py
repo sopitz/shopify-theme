@@ -25,6 +25,9 @@ def main():
         raise SystemExit('Theme version must use X.Y.Z semantic versioning.')
     if args.tag is not None and args.tag != f'v{version}':
         raise SystemExit(f'Tag {args.tag!r} does not match theme version v{version}.')
+    development_package = ROOT / 'package.json'
+    if development_package.is_file() and json.loads(development_package.read_text()).get('version') != version:
+        raise SystemExit('package.json version does not match the theme version.')
 
     changelog = (ROOT / 'CHANGELOG.md').read_text()
     match = re.search(r'^## \[' + re.escape(version) + r'\] - [^\n]+\n(.*?)(?=^## \[|\Z)', changelog, re.M | re.S)

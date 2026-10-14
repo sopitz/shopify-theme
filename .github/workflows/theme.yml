@@ -27,6 +27,10 @@ jobs:
           persist-credentials: false
       - name: Schema und gespeicherte Einstellungen prüfen
         run: python3 tools/validate_schema.py --self-test .
+      - name: Entwicklungsabhängigkeiten installieren
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Suche und Farbauswahl prüfen
+        run: npm test
       - name: Offizieller Shopify Theme Check
         uses: Shopify/theme-check-action@58fd69afdfc30110f997ba9e212b302671e00d3b # v2.2.0
         with:

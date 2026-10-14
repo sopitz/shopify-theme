@@ -198,15 +198,26 @@
       mirrors.push({sync:syncColor, close, restoreFocus:() => entries.find(entry => entry.value === selected())?.control || entries.find(entry => entry.value === selected())?.swatch, owns:element => container.contains(element) || panel.contains(element)});
     };
     // Controls refer to the original options; no second variant catalogue or form.
-    const colorLinks = [...overview.querySelectorAll('.color-options > a, .model-colors .swatches > a')];
-    if (colorLinks.length > 1) {
+    let hasSiblingColors = false;
+    const addSiblingColors = () => {
+      if (hasSiblingColors) return;
+      const colorLinks = [...overview.querySelectorAll('.color-options > a, .model-colors .swatches > a')];
+      if (colorLinks.length < 2) return;
       makeColorDropdown(colorLinks.map((link, index) => ({value:String(index), label:link.getAttribute('title') || link.getAttribute('aria-label') || link.textContent.trim(),swatch:link})),
         () => String(Math.max(0, colorLinks.findIndex(link => link.getAttribute('aria-current') === 'page'))),
         value => {
           const link = colorLinks[Number(value)];
           if (link) { viewerHooks.prepare?.('color', link.href); link.click(); }
         });
-    }
+      // Older colour fields can resolve after the purchase controls were bound.
+      // Add the colour control to the existing mirrors without rebuilding the
+      // open image viewer or resetting its chosen size and quantity.
+      options.prepend(options.lastElementChild);
+      options.hidden = false;
+      preview.classList.add('has-context-options');
+      hasSiblingColors = true;
+    };
+    addSiblingColors();
     form.querySelectorAll('fieldset[data-option-group]').forEach(group => {
       const controls = [...group.querySelectorAll('input[type="radio"], select[data-option-select]')];
       if (!controls.length) return;
@@ -281,6 +292,7 @@
     const scheduleSync = () => {
       if (!pendingSync) { pendingSync = true; queueMicrotask(() => { pendingSync = false; sync(); }); }
     };
+    listen(root, 'upswing:colors-ready', () => { addSiblingColors(); scheduleSync(); });
     const copyQuantity = () => {
       clearError(); originalQuantity.value = quantity.value;
       originalQuantity.dispatchEvent(new Event('input', {bubbles:true}));

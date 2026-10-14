@@ -1,0 +1,12 @@
+{%- liquid
+  assign legacy_field = product.metafields.custom_fields.custom_rel_farbe
+  assign legacy_payload = legacy_field.value | default: legacy_field
+  assign legacy_mode = mode | default: 'pdp'
+  assign legacy_color_name = product.metafields.upswing.color_name.value | default: product.title
+-%}
+{%- if legacy_payload != blank -%}
+  {%- capture legacy_json_escape -%}\u003c{%- endcapture -%}
+  <script type="application/json" data-legacy-color-data data-legacy-mode="{{ legacy_mode | escape }}"{% if server_resolved != blank %} data-legacy-server-resolved{% endif %}>
+    {"payload":{{ legacy_payload | json | replace: '<', legacy_json_escape }},"locale":{{ request.locale.iso_code | default: 'de' | json }},"root":{{ routes.root_url | default: '/' | json }},"current":{"id":{{ product.id | json }},"handle":{{ product.handle | json }},"title":{{ legacy_color_name | json | replace: '<', legacy_json_escape }},"url":{{ product.url | json }},"image":{% if product.featured_image %}{{ product.featured_image | image_url: width: 720 | json }}{% else %}null{% endif %},"color":{% if product.metafields.upswing.color_hex.value != blank %}{{ product.metafields.upswing.color_hex.value | json }}{% else %}null{% endif %}}}
+  </script>
+{%- endif -%}

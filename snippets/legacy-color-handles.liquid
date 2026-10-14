@@ -1,0 +1,49 @@
+{%- comment -%}
+  Candidate handles only; the caller must resolve them to real products.
+  Modern json metafields expose .value; deprecated json_string exposes the
+  object directly. Opaque strings are left to legacy-colors.js, not parsed
+  with an unsupported Liquid filter. German source handles are tried first
+  because the legacy translations can contain empty or obsolete handles.
+{%- endcomment -%}
+{%- liquid
+  assign legacy_field = product.metafields.custom_fields.custom_rel_farbe
+  assign legacy_payload = legacy_field.value | default: legacy_field
+  assign language = request.locale.iso_code | default: 'de'
+  assign normalized_language = language | replace: '-', '_'
+  assign language_base = language | split: '-' | first | split: '_' | first
+  assign language_order = 'de_CH,de-CH,de,' | append: language | append: ',' | append: normalized_language | append: ',' | append: language_base | append: ',fr,it,en' | split: ','
+  assign seen = '|'
+  assign seen_references = '|'
+  assign product_lookups = 0
+  for language_key in language_order
+    assign entries = legacy_payload[language_key]
+    for entry in entries
+      assign handle = entry.handle | strip
+      assign normalized_handle = handle | handleize
+      assign reference_key = entry.id | default: entry.name | default: handle | replace: '|', ''
+      assign reference_token = '|' | append: reference_key | append: '|'
+      if entry.type == 'product' and handle != blank and handle == normalized_handle
+        assign token = '|' | append: handle | append: '|'
+        unless seen contains token or seen_references contains reference_token
+          assign valid_handle = true
+          if resolve
+            assign valid_handle = false
+            if product_lookups < 20
+              assign target_product = all_products[handle]
+              assign product_lookups = product_lookups | plus: 1
+              if target_product.id != blank and target_product.handle == handle
+                assign valid_handle = true
+              endif
+            endif
+          endif
+          assign seen = seen | append: handle | append: '|'
+          if valid_handle
+            echo handle
+            echo '|'
+            assign seen_references = seen_references | append: reference_key | append: '|'
+          endif
+        endunless
+      endif
+    endfor
+  endfor
+-%}

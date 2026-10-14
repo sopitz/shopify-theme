@@ -1,5 +1,15 @@
 # Einrichtung und Konzept für upswing
 
+## Version 1.0.2 · Suche, vorhandene Farbfelder und kompakte Karten
+
+Die Suchformulare verwenden die native Shopify-Suche. Header und mobiles Menü zeigen jetzt Shopify-Suchvorschläge mit Bildern, Preisen und weiterführenden Ergebnissen. Ohne JavaScript oder bei einer fehlgeschlagenen Anfrage bleibt die normale Suche nutzbar.
+
+Für die Farbauswahl wird das vorhandene Feld `custom_fields.custom_rel_farbe` zusätzlich unterstützt. Native Farboptionen und `upswing.model_products` haben Vorrang. Das sprachweise JSON wird anhand geprüfter Produkt-Handles aufgelöst; alte Beziehungs-IDs sind keine Shopify-Produkt-IDs. Die gültigen deutschen Quell-Handles verhindern, dass leere französische/italienische oder veraltete englische Zuordnungen zu falschen Produkten führen. Die erzeugten Links bleiben in der aktuellen Sprachroute. Unterstützt sind typisiertes JSON, das direkt ausgegebene ältere JSON-Format und echte JSON-Textfelder. Karten nutzen bei Bedarf sichtbarkeitsgesteuertes Nachladen. Für die Farbauswahl vorhandener Aarau-Verknüpfungen müssen keine neuen Metafelder angelegt werden.
+
+Die Quelle für das konkrete Datenbeispiel ist die Nutzerangabe; der private Metafield-Inhalt wurde nicht aus der öffentlichen Produktseite ausgelesen. Die öffentlichen Aarau-Produktseiten bestätigen die Zielprodukte. Diese Farbauswahl ändert keine Katalogdaten und entfernt keine Produkte aus der bestehenden Shopify-Pagination.
+
+Produktkarten verwenden kompakte Inhaltsabstände bei weiterhin gleichen Höhen und bündigen Preisen/Links pro sichtbarer Reihe. Die PDP-Einleitung übernimmt den vollständigen ersten Absatz; alle weiteren Produktinformationen bleiben darunter verfügbar. Der Link unter der Galerie führt direkt zur Filialauswahl.
+
 Das Redesign führt durch Bedürfnisse, Modellvergleich und Beratung. Produktinformationen, transparente Kosten und eine übersichtliche Farbauswahl unterstützen die Entscheidung bei hochwertigen Produkten. Das Shopify Theme verwendet den bestehenden Produktkatalog; die lokale Vorschau zeigt ausgewählte reale Produkte und Preise als Entwurf.
 
 Die Überschriften verwenden die serifenlose Manrope: besonders kräftig im Einstieg, mit abgestuften Gewichten für Bereiche und Produktnamen. Die farbige letzte Zeile bleibt aufrecht gesetzt. Die variablen WOFF2-Schriftdateien sind lokal im Theme enthalten; die Original-SIL-Lizenz liegt unter `assets/manrope-license.txt`. Lange Überschriften können auf kleinen Bildschirmen sauber umbrechen. Das Original-Logo bleibt erhalten.

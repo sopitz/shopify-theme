@@ -1,0 +1,26 @@
+{%- if product.metafields.upswing.short_description != blank -%}
+  <div class="product-intro">{{ product.metafields.upswing.short_description | metafield_tag }}</div>
+{%- elsif product.description != blank -%}
+  {%- liquid
+    assign description = product.description | replace: '<P', '<p' | replace: '</P>', '</p>'
+    assign paragraphs = description | split: '<p'
+    assign intro_text = ''
+    for candidate in paragraphs offset: 1
+      assign opening_character = candidate | slice: 0, 1
+      assign trimmed_opening_character = opening_character | strip
+      if opening_character == '>' or trimmed_opening_character == blank
+        assign opening_attributes = candidate | split: '>' | first | append: '>'
+        assign paragraph = candidate | remove_first: opening_attributes | split: '</p>' | first
+        assign intro_text = paragraph | replace: '<br>', ' ' | replace: '<br/>', ' ' | replace: '<br />', ' ' | strip_html | strip
+        if intro_text != blank
+          break
+        endif
+      endif
+    endfor
+    if intro_text == blank
+      assign plain_paragraphs = description | newline_to_br | strip_newlines | split: '<br /><br />'
+      assign intro_text = plain_paragraphs | first | replace: '<br />', ' ' | strip_html | strip
+    endif
+  -%}
+  {%- if intro_text != blank -%}<p class="product-intro">{{ intro_text | escape_once }}</p>{%- endif -%}
+{%- endif -%}

@@ -12,12 +12,7 @@
     <a href="{{ routes.root_url }}" class="site-logo" style="--logo-width: {{ settings.logo_width }}px" aria-label="{{ shop.name | escape }} – Startseite">
       {% if settings.logo != blank %}{{ settings.logo | image_url: width: 420 | image_tag: width: settings.logo_width, loading: 'eager', alt: shop.name }}{% else %}<img src="{{ 'upswing-logo.png' | asset_url }}" alt="{{ shop.name | escape }}" width="{{ settings.logo_width }}" height="58" loading="eager">{% endif %}
     </a>
-    <form class="header-search" action="{{ routes.search_url }}" method="get" role="search">
-      <label class="sr-only" for="HeaderSearch">Produkte, Marken und Informationen suchen</label>
-      <input type="search" name="q" id="HeaderSearch" placeholder="Was tut Ihnen gut?" value="{{ search.terms | escape }}">
-      <input type="hidden" name="options[prefix]" value="last">{% if settings.group_model_search %}<input type="hidden" name="type" value="product"><input type="hidden" name="filter.p.m.upswing.model_primary" value="true">{% endif %}
-      <button type="submit" class="icon-button" aria-label="Suchen">{% render 'icon', name: 'search' %}</button>
-    </form>
+    {% render 'predictive-search-form', id: 'HeaderSearch', class: 'header-search', placeholder: 'Was tut Ihnen gut?', section: section %}
     <div class="header-actions">
       <a class="header-advice" href="{{ header_advice_url | escape }}">{% render 'icon', name: 'phone' %}<span>Wir beraten Sie gerne</span></a>
       <div class="header-account-cart">
@@ -70,7 +65,7 @@
     </div>
   </div>
   <nav id="MobileNavigation" class="mobile-nav container" aria-label="Mobile Hauptnavigation" data-navigation-mobile-panel hidden>
-    <form action="{{ routes.search_url }}" method="get" role="search" class="mobile-search"><label class="sr-only" for="MobileSearch">Suchen</label>{% if settings.group_model_search %}<input type="hidden" name="type" value="product"><input type="hidden" name="filter.p.m.upswing.model_primary" value="true">{% endif %}<input id="MobileSearch" type="search" name="q" placeholder="Produkte und Marken suchen"><button class="icon-button" type="submit" aria-label="Suchen">{% render 'icon', name: 'search' %}</button></form>
+    {% render 'predictive-search-form', id: 'MobileSearch', class: 'mobile-search', placeholder: 'Produkte und Marken suchen', section: section %}
     <ul class="mobile-nav-list">
       {% if use_curated_navigation %}{% render 'header-navigation-fallback', mode: 'mobile', header_section: section %}{% else %}{% render 'header-menu-items', mode: 'mobile', links: section.settings.menu.links, header_section: section %}{% endif %}
       {% if header_guide_url != blank and menu_has_guide == false %}<li><a class="mobile-nav-link" href="{{ header_guide_url }}">{{ section.settings.guide_label | escape }}</a></li>{% endif %}

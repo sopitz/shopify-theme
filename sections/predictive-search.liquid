@@ -1,0 +1,40 @@
+{%- if predictive_search.performed -%}
+  {%- assign predictive_count = predictive_search.resources.products.size | plus: predictive_search.resources.queries.size | plus: predictive_search.resources.collections.size | plus: predictive_search.resources.pages.size | plus: predictive_search.resources.articles.size -%}
+  <div data-predictive-results role="listbox" aria-label="Suchvorschläge" data-result-count="{{ predictive_count }}">
+    {%- if predictive_search.resources.products.size > 0 -%}
+      <p class="predictive-search-heading" role="presentation">Produkte</p>
+      <ul class="predictive-search-list" role="presentation">
+        {%- for product in predictive_search.resources.products -%}
+          <li role="option" aria-selected="false" data-predictive-option>
+            <a class="predictive-search-product" href="{{ product.url | escape }}" tabindex="-1">
+              <span class="predictive-search-image">{% if product.featured_image %}{{ product.featured_image | image_url: width: 160 | image_tag: loading: 'lazy', width: 80, height: 80, alt: '' }}{% else %}{% render 'icon', name: 'bag' %}{% endif %}</span>
+              <span class="predictive-search-copy"><strong>{{ product.title | escape }}</strong>{% if product.vendor != blank %}<small>{{ product.vendor | escape }}{% if product.type != blank %} · {{ product.type | escape }}{% endif %}</small>{% endif %}<span class="predictive-search-price">{% if product.price_varies %}Ab {% endif %}{{ product.price | money_with_currency }}</span></span>
+              {% render 'icon', name: 'arrow' %}
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+    {%- if predictive_search.resources.queries.size > 0 -%}
+      <p class="predictive-search-heading" role="presentation">Suchbegriffe</p>
+      <ul class="predictive-search-list" role="presentation">{%- for query in predictive_search.resources.queries -%}<li role="option" aria-selected="false" data-predictive-option><a class="predictive-search-link" href="{{ query.url | escape }}" tabindex="-1">{% render 'icon', name: 'search' %}<span>{{ query.text | escape }}</span>{% render 'icon', name: 'arrow' %}</a></li>{%- endfor -%}</ul>
+    {%- endif -%}
+    {%- if predictive_search.resources.collections.size > 0 -%}
+      <p class="predictive-search-heading" role="presentation">Sortiment</p>
+      <ul class="predictive-search-list" role="presentation">{%- for collection in predictive_search.resources.collections -%}<li role="option" aria-selected="false" data-predictive-option><a class="predictive-search-link" href="{{ collection.url | escape }}" tabindex="-1"><span>{{ collection.title | escape }}</span>{% render 'icon', name: 'arrow' %}</a></li>{%- endfor -%}</ul>
+    {%- endif -%}
+    {%- if predictive_search.resources.pages.size > 0 or predictive_search.resources.articles.size > 0 -%}
+      <p class="predictive-search-heading" role="presentation">Wissen & Informationen</p>
+      <ul class="predictive-search-list" role="presentation">
+        {%- for page in predictive_search.resources.pages -%}<li role="option" aria-selected="false" data-predictive-option><a class="predictive-search-link" href="{{ page.url | escape }}" tabindex="-1"><span>{{ page.title | escape }}</span>{% render 'icon', name: 'arrow' %}</a></li>{%- endfor -%}
+        {%- for article in predictive_search.resources.articles -%}<li role="option" aria-selected="false" data-predictive-option><a class="predictive-search-link" href="{{ article.url | escape }}" tabindex="-1"><span>{{ article.title | escape }}</span>{% render 'icon', name: 'arrow' %}</a></li>{%- endfor -%}
+      </ul>
+    {%- endif -%}
+    {%- if predictive_count == 0 -%}<p class="predictive-search-empty" role="presentation">Keine direkten Vorschläge. Suchen Sie im gesamten Shop.</p>{%- endif -%}
+    <div role="option" aria-selected="false" data-predictive-option><a class="predictive-search-all" href="{{ routes.search_url }}?q={{ predictive_search.terms | url_encode }}&options%5Bprefix%5D=last{% if settings.group_model_search %}&type=product&filter.p.m.upswing.model_primary=true{% endif %}" tabindex="-1"><span>Alle Ergebnisse für «{{ predictive_search.terms | escape }}»</span>{% render 'icon', name: 'arrow' %}</a></div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{"name":"Suchvorschläge","settings":[]}
+{% endschema %}

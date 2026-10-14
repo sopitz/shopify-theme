@@ -1,0 +1,56 @@
+{%- liquid
+  assign native_color = false
+  for option in product.options_with_values
+    assign option_name = option.name | downcase | strip
+    if option_name == 'farbe' or option_name == 'color' or option_name == 'colour'
+      assign native_color = true
+      break
+    endif
+  endfor
+  assign modern_siblings = product.metafields.upswing.model_products.value
+  assign legacy_field = product.metafields.custom_fields.custom_rel_farbe
+  assign legacy_payload = legacy_field.value | default: legacy_field
+  assign current_color_label = product.metafields.upswing.color_name.value | default: product.title
+  assign seen_ids = '|' | append: product.id | append: '|'
+-%}
+{%- unless native_color -%}
+  {%- capture sibling_links -%}
+    {%- if modern_siblings != blank -%}
+      {%- for sibling in modern_siblings -%}
+        {%- assign id_token = '|' | append: sibling.id | append: '|' -%}
+        {%- if sibling.id != blank -%}
+          {%- unless seen_ids contains id_token -%}
+            {% render 'product-color-swatch', color_product: sibling %}
+            {%- assign seen_ids = seen_ids | append: sibling.id | append: '|' -%}
+          {%- endunless -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- else -%}
+      {%- capture legacy_handles -%}{% render 'legacy-color-handles', product: product, resolve: true %}{%- endcapture -%}
+      {%- assign legacy_handles = legacy_handles | strip | split: '|' -%}
+      {%- for handle in legacy_handles limit: 20 -%}
+        {%- assign sibling = all_products[handle] -%}
+        {%- assign id_token = '|' | append: sibling.id | append: '|' -%}
+        {%- if sibling.id != blank and sibling.handle == handle -%}
+          {%- unless seen_ids contains id_token -%}
+            {% render 'product-color-swatch', color_product: sibling %}
+            {%- assign seen_ids = seen_ids | append: sibling.id | append: '|' -%}
+          {%- endunless -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+  {%- endcapture -%}
+  {%- assign sibling_links = sibling_links | strip -%}
+  {%- if sibling_links != blank or legacy_payload != blank and modern_siblings == blank -%}
+    <div class="model-colors"{% if sibling_links == blank %} hidden{% endif %}>
+      <p class="option-label">Farbe: <strong>{{ current_color_label | escape }}</strong></p>
+      <div class="swatches swatches-large" aria-label="Verfügbare Farben dieses Modells">
+        {% render 'product-color-swatch', color_product: product, selected: true %}
+        {{ sibling_links }}
+      </div>
+      {%- if modern_siblings == blank -%}{% render 'legacy-color-data', product: product, mode: 'pdp', server_resolved: sibling_links %}{%- endif -%}
+    </div>
+  {%- elsif product.metafields.upswing.color_name.value != blank -%}
+    <p class="option-label">Farbe: <strong>{{ product.metafields.upswing.color_name.value | escape }}</strong></p>
+  {%- endif -%}
+{%- endunless -%}
