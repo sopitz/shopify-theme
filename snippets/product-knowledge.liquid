@@ -1,0 +1,101 @@
+{%- capture consultation_url -%}{%- render 'filial-anchor-url', url: consultation_url, fallback_url: '/pages/filialubersicht#Filialen' -%}{%- endcapture -%}
+{%- assign consultation_url = consultation_url | strip -%}
+{%- comment -%}Structured product knowledge, curated design samples, then formatted native fallback.{%- endcomment -%}
+{%- liquid
+  assign information_features = product.metafields.upswing.features.value | compact
+  assign information_topics = product.metafields.upswing.everyday_topics.value | compact
+  assign information_facts = product.metafields.upswing.technical_specs.value | compact
+  assign information_faqs = product.metafields.upswing.faq_items.value | compact
+  assign has_structured_information = false
+  assign information_keys = 'features,everyday_topics,technical_specs,faq_items,benefits,suitability,introduction,specifications,size_guide,care,faq' | split: ','
+  for information_key in information_keys
+    if product.metafields.upswing[information_key].value != blank
+      assign has_structured_information = true
+      break
+    endif
+  endfor
+  assign has_everyday_information = information_topics | default: product.metafields.upswing.suitability.value
+  assign has_practical_information = information_facts | default: product.metafields.upswing.specifications.value | default: product.metafields.upswing.size_guide.value | default: product.metafields.upswing.care.value | default: product.metafields.upswing.introduction.value
+  assign has_faq_information = information_faqs | default: product.metafields.upswing.faq.value
+-%}
+    {%- if has_structured_information -%}
+      <section class="product-knowledge" id="ProductInformation" aria-labelledby="ProductInformationTitle">
+        <div class="product-knowledge-heading">
+          <p class="eyebrow">Gut informiert entscheiden</p>
+          <h2 id="ProductInformationTitle">Produkt verstehen.</h2>
+          {%- if product.metafields.upswing.short_description.value != blank -%}<p class="product-knowledge-lead">{{ product.metafields.upswing.short_description.value | escape | newline_to_br }}</p>{%- endif -%}
+        </div>
+        <nav class="product-knowledge-nav" aria-label="Produktinformationen">
+          <a href="#ProductOverview">Überblick</a>
+          {% if has_everyday_information %}<a href="#ProductEveryday">Alltag</a>{% endif %}
+          {% if has_practical_information %}<a href="#ProductDetails">Details</a>{% endif %}
+          {% if has_faq_information %}<a href="#ProductQuestions">Fragen</a>{% endif %}
+        </nav>
+        <div id="ProductOverview">
+          {%- if information_features != blank -%}
+            <div class="product-feature-grid">
+              {%- for feature in information_features limit: 3 -%}
+                {%- if feature.title.value != blank or feature.body.value != blank -%}
+                  <article class="product-feature"><span class="product-feature-number" aria-hidden="true">0{{ forloop.index }}</span>{% if feature.title.value != blank %}<h3>{{ feature.title.value | escape }}</h3>{% endif %}{% if feature.body.value != blank %}<p>{{ feature.body.value | escape | newline_to_br }}</p>{% endif %}</article>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          {%- elsif product.metafields.upswing.benefits.value != blank -%}
+            <div class="product-feature-grid">{%- for benefit in product.metafields.upswing.benefits.value limit: 3 -%}<article class="product-feature"><span class="product-feature-number" aria-hidden="true">0{{ forloop.index }}</span><h3>{{ benefit | escape }}</h3></article>{%- endfor -%}</div>
+          {%- endif -%}
+        </div>
+        {%- if has_everyday_information -%}
+          <section class="product-everyday" id="ProductEveryday">
+            <div class="product-section-heading"><p class="eyebrow">Anwendung & Eignung</p><h2>Im Alltag.</h2></div>
+            {%- if information_topics != blank -%}
+              <div class="product-story-grid">{%- for topic in information_topics -%}{%- if topic.title.value != blank or topic.body.value != blank -%}<article class="product-topic">{% if topic.title.value != blank %}<h3>{{ topic.title.value | escape }}</h3>{% endif %}{% if topic.body.value != blank %}<div class="rte product-knowledge-copy">{{ topic.body | metafield_tag }}</div>{% endif %}</article>{%- endif -%}{%- endfor -%}</div>
+            {%- endif -%}
+            {%- if product.metafields.upswing.suitability != blank -%}
+              <div class="product-suitability"><h3>Für wen passend?</h3><div class="rte product-knowledge-copy">{{ product.metafields.upswing.suitability | metafield_tag }}</div></div>
+            {%- endif -%}
+          </section>
+        {%- endif -%}
+        {%- if has_practical_information -%}
+          <section class="product-detail-section" id="ProductDetails">
+            <div class="product-section-heading"><p class="eyebrow">Vor dem Kauf gut informiert</p><h2>Die Details im Überblick.</h2></div>
+          <div class="product-detail-grid">
+            {%- if information_facts != blank or product.metafields.upswing.specifications != blank -%}
+              <article class="product-technical"><h3>Technische Details</h3>
+                {%- if information_facts != blank -%}<dl class="product-facts">{%- for fact in information_facts -%}{%- if fact.label.value != blank and fact.value.value != blank -%}<div><dt>{{ fact.label.value | escape }}</dt><dd>{{ fact.value.value | escape }}</dd></div>{%- endif -%}{%- endfor -%}</dl>{%- else -%}<div class="rte product-knowledge-copy">{{ product.metafields.upswing.specifications | metafield_tag }}</div>{%- endif -%}
+              </article>
+            {%- endif -%}
+            {%- if product.metafields.upswing.size_guide != blank or product.metafields.upswing.care != blank or product.metafields.upswing.introduction != blank -%}
+              <div class="product-practical">
+                {%- if product.metafields.upswing.introduction != blank -%}<article><h3>Schrittweise eingewöhnen</h3><div class="rte product-knowledge-copy">{{ product.metafields.upswing.introduction | metafield_tag }}</div></article>{%- endif -%}
+                {%- if product.metafields.upswing.size_guide != blank -%}<article><h3>Grösse & Passform</h3><div class="rte product-knowledge-copy">{{ product.metafields.upswing.size_guide | metafield_tag }}</div></article>{%- endif -%}
+                {%- if product.metafields.upswing.care != blank -%}<article><h3>Pflege</h3><div class="rte product-knowledge-copy">{{ product.metafields.upswing.care | metafield_tag }}</div></article>{%- endif -%}
+              </div>
+            {%- endif -%}
+          </div>
+          </section>
+        {%- endif -%}
+        {%- if has_faq_information -%}
+          <section class="product-faq" id="ProductQuestions" aria-labelledby="ProductQuestionsTitle"><div class="product-section-heading"><p class="eyebrow">Die Antworten auf einen Blick</p><h2 id="ProductQuestionsTitle">Fragen & Antworten.</h2></div><div class="product-faq-list">
+            {%- if information_faqs != blank -%}
+              {%- for faq in information_faqs -%}{%- if faq.question.value != blank and faq.answer.value != blank -%}<details class="product-faq-item"><summary>{{ faq.question.value | escape }}<span aria-hidden="true">+</span></summary><div class="rte product-knowledge-copy">{{ faq.answer | metafield_tag }}</div></details>{%- endif -%}{%- endfor -%}
+            {%- else -%}<details class="product-faq-item"><summary>Weitere Fragen & Antworten<span aria-hidden="true">+</span></summary><div class="rte product-knowledge-copy">{{ product.metafields.upswing.faq | metafield_tag }}</div></details>{%- endif -%}
+          </div>
+          </section>
+        {%- endif -%}
+        <footer class="product-help-band"><div><h3>Noch eine Frage offen?</h3><p>Besprechen Sie Ihre Auswahl persönlich mit unserem Beratungsteam.</p></div><a class="button light" href="{{ consultation_url }}">Beratung finden</a></footer>
+      </section>
+    {%- else -%}
+      {%- capture information_example -%}{% render 'product-information-example', product: product, advice_url: consultation_url %}{%- endcapture -%}
+      {%- assign information_example = information_example | strip -%}
+      {%- if information_example != blank -%}
+        {{ information_example }}
+      {%- elsif product.description != blank -%}
+        {%- liquid
+          assign native_description = product.description | replace: '<h1>', '<h3>' | replace: '</h1>', '</h3>' | remove: '✅' | remove: '📝' | remove: '👥' | remove: '🔗' | remove: '📏' | remove: '⚙️' | remove: '⭐' | remove: '🦶' | remove: '👟' | remove: '💡' | remove: '🏃'
+        -%}
+        <section class="product-knowledge" id="ProductInformation" aria-labelledby="ProductInformationTitle">
+          <div class="product-knowledge-heading"><p class="eyebrow">Gut informiert entscheiden</p><h2 id="ProductInformationTitle">Produkt verstehen.</h2></div>
+          <article class="rte product-native-description" data-native-product-description>{{ native_description }}</article>
+        </section>
+      {%- endif -%}
+    {%- endif -%}

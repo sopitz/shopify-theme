@@ -1,0 +1,17 @@
+<section class="section-space blog-section"><div class="container"><p class="eyebrow">WISSEN FÜR IHREN ALLTAG</p><h1>{{ blog.title | escape }}</h1>{% paginate blog.articles by section.settings.articles_per_page %}<div class="article-grid">{% for article in blog.articles %}<article class="article-card"><a href="{{ article.url }}">{% if article.image %}{{ article.image | image_url: width: 900 | image_tag: loading: 'lazy' }}{% endif %}<p class="eyebrow">{{ article.published_at | date: '%d.%m.%Y' }}</p><h2>{{ article.title | escape }}</h2><p>{{ article.excerpt_or_content | strip_html | truncate: 180 }}</p><span class="text-link">Weiterlesen {% render 'icon', name: 'arrow' %}</span></a></article>{% else %}<p>Neue Beiträge folgen bald.</p>{% endfor %}</div>{% if paginate.pages > 1 %}<nav class="pagination" aria-label="Beitragsseiten">{{ paginate | default_pagination }}</nav>{% endif %}{% endpaginate %}</div></section>
+{% schema %}
+{
+  "name": "Ratgeberübersicht",
+  "settings": [
+    {
+      "type": "range",
+      "id": "articles_per_page",
+      "label": "Beiträge pro Seite",
+      "default": 9,
+      "min": 3,
+      "max": 18,
+      "step": 3
+    }
+  ]
+}
+{% endschema %}

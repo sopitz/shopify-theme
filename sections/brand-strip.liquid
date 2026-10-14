@@ -1,0 +1,50 @@
+<section class="brand-section" aria-labelledby="BrandTitle-{{ section.id }}"><div class="container"><p class="eyebrow" id="BrandTitle-{{ section.id }}">{{ section.settings.heading | escape }}</p><div class="brand-strip">{% for block in section.blocks %}<a href="{{ block.settings.url | default: routes.all_products_collection_url }}" class="brand-logo brand-{{ block.settings.name | handle }}" aria-label="{{ block.settings.name | escape }} entdecken" {{ block.shopify_attributes }}>{% if block.settings.image != blank %}{{ block.settings.image | image_url: width: 320 | image_tag: loading: 'lazy', alt: block.settings.name }}{% elsif block.settings.fallback_image != blank %}<img src="{{ block.settings.fallback_image | asset_url }}" alt="{{ block.settings.name | escape }}" width="150" height="48" loading="lazy">{% else %}{{ block.settings.name | escape }}{% endif %}</a>{% endfor %}</div></div></section>
+{% schema %}
+{
+  "name": "Unsere Marken",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Dachzeile",
+      "default": "HOCHWERTIGE MARKEN. BEWUSST AUSGEWÄHLT."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "brand",
+      "name": "Marke",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Markenname",
+          "default": "kybun"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Original-Markenlogo"
+        },
+        {
+          "type": "text",
+          "id": "fallback_image",
+          "label": "Alternativer Theme-Bildname"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Markenziel",
+          "default": "/collections/all"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Unsere Marken"
+    }
+  ]
+}
+{% endschema %}

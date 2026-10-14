@@ -1,0 +1,31 @@
+{{ 'location-gallery.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'location-gallery.js' | asset_url }}" defer="defer"></script>
+{%- liquid
+  assign gallery_count = image_count | default: 1
+  assign thumbnail_columns = gallery_count | at_most: 4
+  assign first_asset = image_prefix | append: '1.jpg'
+  assign gallery_alt = main_alt | default: location_name
+-%}
+<div class="editorial-hero-media location-media-gallery" data-location-gallery role="group" aria-label="Bilder der Filiale {{ location_name | escape }}">
+  <div class="location-gallery-main">
+    <button class="location-gallery-image-button" type="button" data-location-open aria-label="Bild der Filiale {{ location_name | escape }} vergrössern">
+      <img src="{{ first_asset | asset_url }}" alt="{{ gallery_alt | escape }}" width="780" height="560" fetchpriority="high" data-location-main-image>
+      <span class="location-gallery-expand" aria-hidden="true">Vergrössern</span>
+    </button>
+    <button class="location-gallery-arrow location-gallery-prev" type="button" data-location-gallery-prev aria-label="Vorheriges Filialbild"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m14 6-6 6 6 6"/></svg></button>
+    <button class="location-gallery-arrow location-gallery-next" type="button" data-location-gallery-next aria-label="Nächstes Filialbild"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m10 6 6 6-6 6"/></svg></button>
+    <span class="location-gallery-position" aria-live="polite" aria-atomic="true"><span data-location-gallery-index>1</span> / {{ gallery_count }}</span>
+  </div>
+  <div class="location-gallery-thumbs" data-location-gallery-track style="--location-thumbnails:{{ thumbnail_columns }}" role="group" aria-label="Filialbilder auswählen">
+    {%- for image_number in (1..gallery_count) -%}
+      {%- liquid
+        assign gallery_asset = image_prefix | append: image_number | append: '.jpg'
+        assign gallery_image_alt = 'upswing ' | append: location_name | append: ' – Geschäft, Ansicht ' | append: image_number
+      -%}
+      <button class="location-gallery-thumb" type="button" data-location-thumb data-image-src="{{ gallery_asset | asset_url }}" data-image-alt="{{ gallery_image_alt | escape }}" data-image-caption="" aria-label="Filialbild {{ image_number }} ansehen" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}">
+        <img src="{{ gallery_asset | asset_url }}" alt="" width="160" height="160" loading="lazy">
+      </button>
+    {%- endfor -%}
+  </div>
+  <p class="location-gallery-caption" data-location-caption{% if main_caption == blank %} hidden{% endif %}>{{ main_caption | escape }}</p>
+</div>

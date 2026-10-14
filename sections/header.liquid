@@ -1,0 +1,177 @@
+{%- assign header_business_url = section.settings.b2b_url | default: '/pages/firmenkunden' -%}
+{%- assign header_guide_url = section.settings.guide_url | default: '/pages/produktberater' -%}
+{%- assign header_about_url = section.settings.about_url | default: '/pages/ueber-uns' -%}
+{%- capture header_advice_url -%}{%- render 'filial-anchor-url', url: section.settings.advice_url, fallback_url: '/pages/kontakt' -%}{%- endcapture -%}
+{%- assign header_advice_url = header_advice_url | strip -%}
+<header class="site-header" data-navigation-root>
+  {% if section.settings.announcement != blank %}
+    <div class="announcement-bar"><div class="container announcement-inner"><span>{{ section.settings.announcement | escape }}</span><a href="{{ header_advice_url | escape }}">Persönliche Beratung {% render 'icon', name: 'arrow' %}</a></div></div>
+  {% endif %}
+  <div class="container header-main">
+    <button class="icon-button menu-toggle" type="button" data-navigation-mobile-toggle aria-controls="MobileNavigation" aria-expanded="false" aria-label="Menü öffnen">{% render 'icon', name: 'menu' %}</button>
+    <a href="{{ routes.root_url }}" class="site-logo" style="--logo-width: {{ settings.logo_width }}px" aria-label="{{ shop.name | escape }} – Startseite">
+      {% if settings.logo != blank %}{{ settings.logo | image_url: width: 420 | image_tag: width: settings.logo_width, loading: 'eager', alt: shop.name }}{% else %}<img src="{{ 'upswing-logo.png' | asset_url }}" alt="{{ shop.name | escape }}" width="{{ settings.logo_width }}" height="58" loading="eager">{% endif %}
+    </a>
+    <form class="header-search" action="{{ routes.search_url }}" method="get" role="search">
+      <label class="sr-only" for="HeaderSearch">Produkte, Marken und Informationen suchen</label>
+      <input type="search" name="q" id="HeaderSearch" placeholder="Was tut Ihnen gut?" value="{{ search.terms | escape }}">
+      <input type="hidden" name="options[prefix]" value="last">{% if settings.group_model_search %}<input type="hidden" name="type" value="product"><input type="hidden" name="filter.p.m.upswing.model_primary" value="true">{% endif %}
+      <button type="submit" class="icon-button" aria-label="Suchen">{% render 'icon', name: 'search' %}</button>
+    </form>
+    <div class="header-actions">
+      <a class="header-advice" href="{{ header_advice_url | escape }}">{% render 'icon', name: 'phone' %}<span>Wir beraten Sie gerne</span></a>
+      <div class="header-account-cart">
+        {% if shop.customer_accounts_enabled %}<a class="icon-button" href="{{ routes.account_url }}" aria-label="Mein Kundenkonto">{% render 'icon', name: 'user' %}</a>{% endif %}
+        <a class="icon-button cart-link" href="{{ routes.cart_url }}" aria-label="Warenkorb mit {{ cart.item_count }} Artikeln">{% render 'icon', name: 'bag' %}<span class="cart-count" data-cart-count>{{ cart.item_count }}</span></a>
+      </div>
+    </div>
+  </div>
+  {% liquid
+    assign navigation_has_children = false
+    for navigation_link in section.settings.menu.links
+      if navigation_link.links.size > 0
+        assign navigation_has_children = true
+      endif
+    endfor
+    assign use_curated_navigation = false
+    if section.settings.menu.links.size == 0
+      assign use_curated_navigation = true
+    elsif section.settings.use_original_fallback and navigation_has_children == false
+      assign use_curated_navigation = true
+    endif
+    assign menu_has_guide = false
+    assign menu_has_about = false
+    assign menu_has_business = false
+    unless use_curated_navigation
+      for navigation_link in section.settings.menu.links
+        if navigation_link.url == header_guide_url
+          assign menu_has_guide = true
+        endif
+        assign navigation_label_key = navigation_link.title | handleize
+        if navigation_link.url == header_about_url or navigation_label_key == 'uber-uns' or navigation_label_key == 'ueber-uns'
+          assign menu_has_about = true
+        endif
+        if navigation_link.url == header_business_url
+          assign menu_has_business = true
+        endif
+      endfor
+    endunless
+  %}
+  <div class="nav-wrap">
+    <div class="container main-nav mega-nav">
+      <nav class="desktop-navigation" aria-label="Hauptnavigation">
+        <ul class="mega-menu-list">
+          {% if use_curated_navigation %}{% render 'header-navigation-fallback', mode: 'desktop', header_section: section %}{% else %}{% render 'header-menu-items', mode: 'desktop', links: section.settings.menu.links, header_section: section %}{% endif %}
+          {% if header_guide_url != blank and menu_has_guide == false %}<li class="mega-menu-item mega-menu-utility"><a class="mega-menu-link" href="{{ header_guide_url }}">{{ section.settings.guide_label | escape }}</a></li>{% endif %}
+          {% if menu_has_about == false %}{% render 'header-about-menu', mode: 'desktop', header_section: section %}{% endif %}
+        </ul>
+      </nav>
+      {% if header_business_url != blank and menu_has_business == false %}<a class="nav-business" href="{{ header_business_url }}">{% render 'icon', name: 'office' %} Für Unternehmen</a>{% endif %}
+    </div>
+  </div>
+  <nav id="MobileNavigation" class="mobile-nav container" aria-label="Mobile Hauptnavigation" data-navigation-mobile-panel hidden>
+    <form action="{{ routes.search_url }}" method="get" role="search" class="mobile-search"><label class="sr-only" for="MobileSearch">Suchen</label>{% if settings.group_model_search %}<input type="hidden" name="type" value="product"><input type="hidden" name="filter.p.m.upswing.model_primary" value="true">{% endif %}<input id="MobileSearch" type="search" name="q" placeholder="Produkte und Marken suchen"><button class="icon-button" type="submit" aria-label="Suchen">{% render 'icon', name: 'search' %}</button></form>
+    <ul class="mobile-nav-list">
+      {% if use_curated_navigation %}{% render 'header-navigation-fallback', mode: 'mobile', header_section: section %}{% else %}{% render 'header-menu-items', mode: 'mobile', links: section.settings.menu.links, header_section: section %}{% endif %}
+      {% if header_guide_url != blank and menu_has_guide == false %}<li><a class="mobile-nav-link" href="{{ header_guide_url }}">{{ section.settings.guide_label | escape }}</a></li>{% endif %}
+      {% if menu_has_about == false %}{% render 'header-about-menu', mode: 'mobile', header_section: section %}{% endif %}
+      {% if header_business_url != blank and menu_has_business == false %}<li><a class="mobile-nav-link" href="{{ header_business_url }}">Für Unternehmen</a></li>{% endif %}
+    </ul>
+  </nav>
+</header>
+<script src="{{ 'navigation.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "Kopfbereich",
+  "settings": [
+    {
+      "type": "text",
+      "id": "announcement",
+      "label": "Servicetext",
+      "default": "Versandkostenfrei ab CHF 99.–"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Hauptmenü",
+      "default": "main-menu"
+    },
+    {
+      "type": "url",
+      "id": "advice_url",
+      "label": "Beratungsseite"
+    },
+    {
+      "type": "url",
+      "id": "b2b_url",
+      "label": "Seite für Unternehmen"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_original_fallback",
+      "label": "Original-Untermenüs bei flachem Menü anzeigen",
+      "default": true,
+      "info": "Ein Hauptmenü mit Unterlinks wird bevorzugt. Bis dahin bleibt die vollständige Originalnavigation verfügbar."
+    },
+    {
+      "type": "text",
+      "id": "guide_label",
+      "label": "Wissenslink · Bezeichnung",
+      "default": "Wissen & Ratgeber"
+    },
+    {
+      "type": "url",
+      "id": "guide_url",
+      "label": "Wissenslink · Ziel"
+    },
+    {
+      "type": "text",
+      "id": "about_label",
+      "label": "Über uns · Bezeichnung",
+      "default": "Über uns"
+    },
+    {
+      "type": "url",
+      "id": "about_url",
+      "label": "Über uns · Übersichtsseite"
+    },
+    {
+      "type": "link_list",
+      "id": "about_menu",
+      "label": "Über uns · Untermenü",
+      "info": "Ein eigenes Menü hat Vorrang. Ohne Auswahl nutzen wir Über-uns-Unterlinks aus dem Hauptmenü oder die vollständigen Originalseiten."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "menu_image",
+      "name": "Navigation · Bild",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Bezeichnung",
+          "default": "Navigationsbild"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Ziel des Menülinks"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Bild"
+        },
+        {
+          "type": "text",
+          "id": "fallback_asset",
+          "label": "Alternativer Theme-Bildname"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 50
+}
+{% endschema %}

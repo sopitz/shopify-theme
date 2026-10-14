@@ -1,0 +1,116 @@
+{%- liquid
+  assign contact_form_id = 'ContactForm-' | append: section.id
+  assign contact_name_id = 'ContactName-' | append: section.id
+  assign contact_email_id = 'ContactEmail-' | append: section.id
+  assign contact_phone_id = 'ContactPhone-' | append: section.id
+  assign contact_body_id = 'ContactBody-' | append: section.id
+  assign contact_errors_id = 'ContactErrors-' | append: section.id
+  assign locations_track_id = 'ContactLocations-' | append: section.id
+-%}
+<section class="contact-section">
+  <div class="container">
+    <nav class="breadcrumbs" aria-label="Brotkrumennavigation">
+      <a href="{{ routes.root_url }}">Startseite</a>
+      <span aria-hidden="true">›</span>
+      <span>{{ page.title | default: 'Kontakt' | escape }}</span>
+    </nav>
+    <div class="page-header contact-page-header">
+      <p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      <h1>{{ section.settings.heading | default: page.title | escape }}</h1>
+      <div class="rte">{{ section.settings.description }}</div>
+      {% if page.content != blank %}<div class="rte">{{ page.content }}</div>{% endif %}
+      {% if settings.contact_phone != blank %}
+        <p><a class="contact-method" href="tel:{{ settings.contact_phone | replace: ' ', '' | escape }}">{% render 'icon', name: 'phone' %} {{ settings.contact_phone | escape }}</a></p>
+      {% endif %}
+      {% if settings.contact_email != blank %}
+        <p><a class="contact-method" href="mailto:{{ settings.contact_email | escape }}">{{ settings.contact_email | escape }}</a></p>
+      {% endif %}
+    </div>
+    <div class="contact-layout contact-location-layout">
+      <div class="contact-form-panel">
+        <h2>{{ section.settings.form_heading | escape }}</h2>
+        {% form 'contact', id: contact_form_id, class: 'contact-form' %}
+          {% if form.posted_successfully? %}
+            <div class="form-success" role="status" tabindex="-1">
+              {% render 'icon', name: 'check' %}
+              Vielen Dank. Ihre Nachricht ist bei uns eingegangen.
+            </div>
+          {% endif %}
+          {% if form.errors %}
+            <div id="{{ contact_errors_id }}" class="form-errors" role="alert">{{ form.errors | default_errors }}</div>
+          {% endif %}
+          <div class="form-row">
+            <div class="field">
+              <label for="{{ contact_name_id }}">Name <span aria-hidden="true">*</span></label>
+              <input id="{{ contact_name_id }}" type="text" name="contact[name]" autocomplete="name" value="{{ form.name | default: customer.name | escape }}" required>
+            </div>
+            <div class="field">
+              <label for="{{ contact_email_id }}">E-Mail <span aria-hidden="true">*</span></label>
+              <input id="{{ contact_email_id }}" type="email" name="contact[email]" autocomplete="email" value="{{ form.email | default: customer.email | escape }}" required {% if form.errors contains 'email' %}aria-invalid="true" aria-describedby="{{ contact_errors_id }}"{% endif %}>
+            </div>
+          </div>
+          <div class="field">
+            <label for="{{ contact_phone_id }}">Telefon (optional)</label>
+            <input id="{{ contact_phone_id }}" type="tel" name="contact[phone]" autocomplete="tel" value="{{ form.phone | escape }}">
+          </div>
+          <div class="field">
+            <label for="{{ contact_body_id }}">Wie können wir Ihnen helfen? <span aria-hidden="true">*</span></label>
+            <textarea id="{{ contact_body_id }}" name="contact[body]" rows="6" required>{{ form.body | escape }}</textarea>
+          </div>
+          <p class="form-note">Die mit * markierten Felder sind erforderlich.{% if shop.privacy_policy != blank %} Informationen zum Umgang mit Ihren Daten finden Sie in unserer <a href="{{ shop.privacy_policy.url }}">Datenschutzerklärung</a>.{% endif %}</p>
+          <button type="submit" class="button">Nachricht senden {% render 'icon', name: 'arrow' %}</button>
+        {% endform %}
+      </div>
+      <aside class="contact-sidebar" aria-label="Kontaktinformationen und Filialen">
+        <div class="contact-card contact-locations-card" data-location-carousel>
+          <h2>Persönlich in Ihrer Nähe.</h2>
+          <nav class="contact-location-names" aria-label="Filiale auswählen"><a href="#ContactLocation-{{ section.id }}-thun" data-location-jump="ContactLocation-{{ section.id }}-thun" aria-controls="ContactLocation-{{ section.id }}-thun">Thun</a> · <a href="#ContactLocation-{{ section.id }}-ruti" data-location-jump="ContactLocation-{{ section.id }}-ruti" aria-controls="ContactLocation-{{ section.id }}-ruti">Rüti ZH</a> · <a href="#ContactLocation-{{ section.id }}-zurich" data-location-jump="ContactLocation-{{ section.id }}-zurich" aria-controls="ContactLocation-{{ section.id }}-zurich">Zürich</a> · <a href="#ContactLocation-{{ section.id }}-winterthur" data-location-jump="ContactLocation-{{ section.id }}-winterthur" aria-controls="ContactLocation-{{ section.id }}-winterthur">Winterthur</a> · <a href="#ContactLocation-{{ section.id }}-basel" data-location-jump="ContactLocation-{{ section.id }}-basel" aria-controls="ContactLocation-{{ section.id }}-basel">Basel</a></nav>
+          <a class="text-link" href="/pages/filialubersicht#Filialen">Alle Filialen &amp; Kontaktdaten {% render 'icon', name: 'arrow' %}</a>
+          <div class="contact-location-carousel">
+            <div class="contact-locations-toolbar">
+              <span class="contact-locations-position" data-location-position aria-live="polite" aria-atomic="true">Filiale 1 von 5</span>
+              <div class="contact-locations-controls">
+                <button class="contact-locations-arrow" type="button" data-location-prev aria-label="Vorherige Filiale" aria-controls="{{ locations_track_id }}" disabled><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m14 5-7 7 7 7"/></svg></button>
+                <button class="contact-locations-arrow" type="button" data-location-next aria-label="Nächste Filiale" aria-controls="{{ locations_track_id }}"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m10 5 7 7-7 7"/></svg></button>
+              </div>
+            </div>
+            <div id="{{ locations_track_id }}" class="contact-location-track" data-location-track tabindex="0" role="region" aria-label="Unsere fünf Filialen">
+              {% render 'contact-location-cards', section_id: section.id %}
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Kontakt & Beratung",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Dachzeile",
+      "default": "WIR SIND FÜR SIE DA"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Überschrift",
+      "default": "Wie können wir helfen?"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Einführung",
+      "default": "<p>Sie haben eine Frage zu einem Produkt, zur passenden Grösse oder zu Ihrer Bestellung? Schreiben Sie uns. Wir beraten Sie gerne.</p>"
+    },
+    {
+      "type": "text",
+      "id": "form_heading",
+      "label": "Formularüberschrift",
+      "default": "Ihre Nachricht an uns"
+    }
+  ]
+}
+{% endschema %}

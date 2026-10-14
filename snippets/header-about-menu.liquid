@@ -1,0 +1,23 @@
+{% liquid
+  assign about_title = header_section.settings.about_label | default: 'Über uns'
+  assign about_url = header_section.settings.about_url | default: about_link.url | default: '/pages/ueber-uns'
+  assign about_advice_url = header_section.settings.advice_url | default: '/pages/kontakt'
+  assign about_links = header_section.settings.about_menu.links
+  if about_links == blank and about_link.links != blank
+    assign about_links = about_link.links
+  endif
+  assign about_suffix = unique_suffix | default: 'utility'
+%}
+{% if mode == 'desktop' %}
+  <li class="mega-menu-item mega-menu-utility" data-nav-item>
+    <div class="mega-menu-trigger"><a class="mega-menu-link" href="{{ about_url }}">{{ about_title | escape }}</a><button class="mega-menu-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="MegaMenu-{{ header_section.id }}-about-{{ about_suffix }}" aria-label="{{ about_title | escape }} – Untermenü öffnen">{% render 'icon', name: 'chevron' %}</button></div>
+    <div class="mega-menu-panel about-menu-panel" id="MegaMenu-{{ header_section.id }}-about-{{ about_suffix }}" data-nav-panel hidden>
+      <div class="container">
+        <div class="mega-panel-heading"><a class="mega-all-link" href="{{ about_url }}">upswing kennenlernen {% render 'icon', name: 'arrow' %}</a><button class="icon-button mega-close" type="button" data-nav-close aria-label="Untermenü schliessen">{% render 'icon', name: 'close' %}</button></div>
+        <div class="about-menu-grid">{% if about_links != blank %}{% render 'header-about-links', mode: 'desktop', about_links: about_links, advice_url: about_advice_url, header_blocks: header_section.blocks %}{% else %}{% render 'header-about-fallback', mode: 'desktop', advice_url: about_advice_url, header_blocks: header_section.blocks %}{% endif %}</div>
+      </div>
+    </div>
+  </li>
+{% else %}
+  <li><details class="mobile-nav-item about-mobile-menu"><summary class="mobile-nav-summary"><span>{{ about_title | escape }}</span>{% render 'icon', name: 'chevron' %}</summary><a class="mobile-nav-all" href="{{ about_url }}">upswing kennenlernen {% render 'icon', name: 'arrow' %}</a><ul class="mobile-nav-list">{% if about_links != blank %}{% render 'header-about-links', mode: 'mobile', about_links: about_links, advice_url: about_advice_url, header_blocks: header_section.blocks %}{% else %}{% render 'header-about-fallback', mode: 'mobile', advice_url: about_advice_url, header_blocks: header_section.blocks %}{% endif %}</ul></details></li>
+{% endif %}

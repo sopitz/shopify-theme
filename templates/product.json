@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "settings": {
+        "consultation_url": "/pages/filialubersicht",
+        "b2b_url": "/pages/firmenkunden",
+        "shipping_note": "Schweiz: CHF 8 Versand. Ab CHF 99 Warenwert versandkostenfrei."
+      }
+    }
+  },
+  "order": ["main"]
+}

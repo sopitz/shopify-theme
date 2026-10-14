@@ -1,0 +1,16 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-about-page",
+      "settings": {
+        "page_kind": "about",
+        "content_source": "design",
+        "advice_url": "/pages/filialubersicht",
+        "locations_url": "/pages/filialubersicht#Filialen"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

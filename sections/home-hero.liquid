@@ -1,0 +1,170 @@
+<section class="home-hero" aria-labelledby="HeroTitle-{{ section.id }}">
+  <div class="container">
+    <div class="hero">
+      <div class="hero-copy"><p class="eyebrow">{{ section.settings.eyebrow | escape }}</p><h1 id="HeroTitle-{{ section.id }}">{% assign hero_heading_lines = section.settings.heading | newline_to_br | split: '<br />' %}{% for line in hero_heading_lines %}{% unless forloop.first %}<br>{% endunless %}{% if forloop.last and forloop.index > 1 and section.settings.italic_last_line %}<em>{{ line | strip | escape }}</em>{% else %}{{ line | strip | escape }}{% endif %}{% endfor %}</h1><div class="hero-description">{{ section.settings.description }}</div><div class="hero-buttons"><a href="{{ section.settings.primary_url | default: '/pages/produktberater' | escape }}" class="button">{{ section.settings.primary_label | escape }} {% render 'icon', name: 'arrow' %}</a><a href="{{ section.settings.secondary_url }}" class="button secondary">{{ section.settings.secondary_label | escape }}</a></div><div class="hero-reassurance">{% render 'icon', name: 'check' %}<span>{{ section.settings.reassurance | escape }}</span></div></div>
+      <div class="hero-media">{% if section.settings.image != blank %}{{ section.settings.image | image_url: width: 1800 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '480, 720, 1000, 1400, 1800', sizes: '(min-width: 900px) 48vw, 100vw', alt: section.settings.image.alt }}{% else %}<img src="{{ 'hero-mobile.jpg' | asset_url }}" width="1000" height="1250" alt="Bewegung in der Natur – bewusst und mit Leichtigkeit" loading="eager" fetchpriority="high">{% endif %}{% if section.settings.show_badge %}<div class="hero-stamp">{% render 'icon', name: 'leaf' %}<span class="hero-stamp-label"><span>Für mehr</span><span>Wohlbefinden</span></span></div>{% endif %}<div class="hero-image-label"><span>{{ section.settings.image_label | escape }}</span>{% render 'icon', name: 'leaf' %}</div></div>
+    </div>
+    <div class="trust-strip" aria-label="Unser Service">{% for block in section.blocks %}<div class="trust-item" {{ block.shopify_attributes }}>{% render 'icon', name: block.settings.icon %}<span><strong>{{ block.settings.title | escape }}</strong><small>{{ block.settings.text | escape }}</small></span></div>{% endfor %}</div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Startseite · Einstieg",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_badge",
+      "label": "Kreis mit Wohlbefinden-Hinweis anzeigen",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Dachzeile",
+      "default": "GESUNDHEIT BEGINNT MIT BEWEGUNG"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Überschrift",
+      "default": "Mehr Leichtigkeit.\nJeden Tag."
+    },
+    {
+      "type": "checkbox",
+      "id": "italic_last_line",
+      "label": "Letzte Überschriftzeile farblich hervorheben",
+      "default": true
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Beschreibung",
+      "default": "<p>Entdecken Sie hochwertige Schuhe und Gesundheitsprodukte, die zu Ihrem Alltag passen. Mit Wissen, Erfahrung und persönlicher Beratung an Ihrer Seite.</p>"
+    },
+    {
+      "type": "text",
+      "id": "primary_label",
+      "label": "Erster Button",
+      "default": "Passendes Produkt finden"
+    },
+    {
+      "type": "url",
+      "id": "primary_url",
+      "label": "Erstes Ziel"
+    },
+    {
+      "type": "text",
+      "id": "secondary_label",
+      "label": "Zweiter Button",
+      "default": "Sortiment entdecken"
+    },
+    {
+      "type": "url",
+      "id": "secondary_url",
+      "label": "Zweites Ziel",
+      "default": "/collections/all"
+    },
+    {
+      "type": "text",
+      "id": "reassurance",
+      "label": "Hinweis",
+      "default": "Persönlich beraten. Bewusst entscheiden."
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Hauptbild"
+    },
+    {
+      "type": "text",
+      "id": "image_label",
+      "label": "Bildlegende",
+      "default": "Gut für Sie. Jeden Tag."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "trust",
+      "name": "Serviceversprechen",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Symbol",
+          "default": "check",
+          "options": [
+            {
+              "value": "truck",
+              "label": "Versand"
+            },
+            {
+              "value": "pin",
+              "label": "Filiale"
+            },
+            {
+              "value": "phone",
+              "label": "Beratung"
+            },
+            {
+              "value": "check",
+              "label": "Service"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Überschrift",
+          "default": "Persönliche Beratung"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Zusatz",
+          "default": "Wir nehmen uns Zeit für Sie"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Startseite · Einstieg",
+      "blocks": [
+        {
+          "type": "trust",
+          "settings": {
+            "icon": "truck",
+            "title": "Versandfrei ab CHF 99.–",
+            "text": "Innerhalb der Schweiz"
+          }
+        },
+        {
+          "type": "trust",
+          "settings": {
+            "icon": "pin",
+            "title": "5 Schweizer Filialen",
+            "text": "Erleben und ausprobieren"
+          }
+        },
+        {
+          "type": "trust",
+          "settings": {
+            "icon": "phone",
+            "title": "Persönliche Beratung",
+            "text": "Wir finden gemeinsam das Passende"
+          }
+        },
+        {
+          "type": "trust",
+          "settings": {
+            "icon": "check",
+            "title": "kybun & Joya Premiumservice",
+            "text": "Begleitung über den Kauf hinaus"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

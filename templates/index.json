@@ -1,0 +1,408 @@
+{
+  "sections": {
+    "hero": {
+      "type": "home-hero",
+      "settings": {
+        "heading": "Mehr Leichtigkeit.\nJeden Tag.",
+        "show_badge": true
+      },
+      "blocks": {
+        "trust0": {
+          "type": "trust",
+          "settings": {
+            "icon": "truck",
+            "title": "Versandfrei ab CHF 99.–",
+            "text": "Innerhalb der Schweiz"
+          }
+        },
+        "trust1": {
+          "type": "trust",
+          "settings": {
+            "icon": "pin",
+            "title": "5 Schweizer Filialen",
+            "text": "Erleben und ausprobieren"
+          }
+        },
+        "trust2": {
+          "type": "trust",
+          "settings": {
+            "icon": "phone",
+            "title": "Persönliche Beratung",
+            "text": "Wir nehmen uns Zeit für Sie"
+          }
+        },
+        "trust3": {
+          "type": "trust",
+          "settings": {
+            "icon": "check",
+            "title": "kybun & Joya Premiumservice",
+            "text": "Begleitung über den Kauf hinaus"
+          }
+        }
+      },
+      "block_order": [
+        "trust0",
+        "trust1",
+        "trust2",
+        "trust3"
+      ]
+    },
+    "needs": {
+      "type": "need-navigation",
+      "settings": {
+        "eyebrow": "IHR ANLIEGEN. IHR EINSTIEG.",
+        "heading": "Was möchten Sie verbessern?",
+        "intro": "Beginnen Sie bei Ihrem Anliegen. Wir erklären die Möglichkeiten und führen Sie zum passenden Sortiment."
+      },
+      "blocks": {
+        "foot": {
+          "type": "need",
+          "settings": {
+            "title": "Fersensporn & Fussschmerzen",
+            "description": "Sohlen, Dämpfung und Passform verstehen – und erfahren, worauf es bei der Anprobe ankommt.",
+            "topic_label": "Alltag & Beschwerden",
+            "product_hint": "Luftkissenschuhe · Komfortschuhe",
+            "fallback_image": "needs-foot.jpg",
+            "image_alt": "Thema Fersensporn und Fussschmerzen",
+            "link_label": "Möglichkeiten entdecken",
+            "url": "/pages/fersensporn-und-andere-fussschmerzen"
+          }
+        },
+        "back": {
+          "type": "need",
+          "settings": {
+            "title": "Rückenschmerzen",
+            "description": "Entdecken Sie Möglichkeiten für mehr Bewegung beim Sitzen, Stehen und Gehen.",
+            "topic_label": "Alltag & Beschwerden",
+            "product_hint": "Aktiv-Stehmatten · Gesundheitsschuhe",
+            "fallback_image": "needs-back.jpg",
+            "image_alt": "Thema Rücken und Bewegung im Alltag",
+            "link_label": "Möglichkeiten entdecken",
+            "url": "/pages/ruckenschmerzen"
+          }
+        },
+        "joints": {
+          "type": "need",
+          "settings": {
+            "title": "Arthrose & Gelenkschmerzen",
+            "description": "Unterschiedliche Gehgefühle kennenlernen und Produkte mit verständlichen Informationen vergleichen.",
+            "topic_label": "Alltag & Beschwerden",
+            "product_hint": "Weich-elastische Schuhe · Balancekissen",
+            "fallback_image": "needs-joints.jpg",
+            "image_alt": "Thema Arthrose und Gelenkschmerzen",
+            "link_label": "Möglichkeiten entdecken",
+            "url": "/pages/arthrose-und-gelenkschmerzen"
+          }
+        },
+        "legs": {
+          "type": "need",
+          "settings": {
+            "title": "Müde & schwere Beine",
+            "description": "Informieren Sie sich über Kompressionsmassage, Anwendung und die Unterschiede der Geräte.",
+            "topic_label": "Alltag & Beschwerden",
+            "product_hint": "Kompressionsgeräte · Massagegeräte",
+            "fallback_image": "needs-legs.jpg",
+            "image_alt": "Thema müde und schwere Beine",
+            "link_label": "Möglichkeiten entdecken",
+            "url": "/pages/venenengel"
+          }
+        },
+        "sport": {
+          "type": "need",
+          "settings": {
+            "title": "Mit Freude Sport treiben",
+            "description": "Laufschuhe für Ihren Einsatz kennenlernen – mit Informationen zu Passform und Laufgefühl.",
+            "topic_label": "Bewegung & Sport",
+            "product_hint": "Laufschuhe · Faszienrollen",
+            "fallback_image": "needs-sport.jpg",
+            "image_alt": "Thema Sport und Laufen",
+            "link_label": "Möglichkeiten entdecken",
+            "url": "/collections/vimazi"
+          }
+        },
+        "work": {
+          "type": "need",
+          "settings": {
+            "title": "Sicher & komfortabel arbeiten",
+            "description": "Für anspruchsvolle Arbeit: Schutz, Passform und Komfort kennenlernen und bewusst auswählen.",
+            "topic_label": "Gesundheit am Arbeitsplatz",
+            "product_hint": "Sicherheitsschuhe · Aktiv-Stehmatten",
+            "fallback_image": "needs-work.jpg",
+            "image_alt": "Thema sicheres und komfortables Arbeiten",
+            "link_label": "Möglichkeiten entdecken",
+            "url": "/pages/elten"
+          }
+        },
+        "mobility": {
+          "type": "need",
+          "settings": {
+            "title": "Beweglicher bleiben",
+            "description": "Faszienrollen, Massagebälle und verständliche Anwendungen für Ihre Bewegungsroutine entdecken.",
+            "topic_label": "Mobilität & Balance",
+            "product_hint": "Faszienrollen · Massagebälle",
+            "fallback_image": "needs-mobility.jpg",
+            "image_alt": "Thema Beweglichkeit im Alltag",
+            "link_label": "Möglichkeiten entdecken",
+            "url": "/pages/blackroll"
+          }
+        },
+        "sleep": {
+          "type": "need",
+          "settings": {
+            "title": "Erholt aufwachen",
+            "description": "Kissen und Schlafzubehör verstehen – für eine bewusst ausgewählte Schlafumgebung.",
+            "topic_label": "Schlaf & Erholung",
+            "product_hint": "Ergonomische Kissen · Schlafmasken",
+            "fallback_image": "needs-sleep.jpg",
+            "image_alt": "Thema Schlaf und Erholung",
+            "link_label": "Möglichkeiten entdecken",
+            "url": "/pages/regeneration-im-schlaf"
+          }
+        }
+      },
+      "block_order": [
+        "foot",
+        "back",
+        "joints",
+        "legs",
+        "sport",
+        "work",
+        "mobility",
+        "sleep"
+      ]
+    },
+    "categories": {
+      "type": "category-grid",
+      "blocks": {
+        "shoes": {
+          "type": "category",
+          "settings": {
+            "title": "Gesunde Schuhe",
+            "description": "Komfort für jeden Schritt.",
+            "collection": "kybun-schuhe",
+            "url": "/collections/kybun-schuhe",
+            "fallback_image": "category-shoes.jpg"
+          }
+        },
+        "movement": {
+          "type": "category",
+          "settings": {
+            "title": "Bewegung & Balance",
+            "description": "Bleiben Sie aktiv. In Ihrem Tempo.",
+            "url": "/collections/balance-und-sitzkissen",
+            "fallback_image": "category-movement.jpg"
+          }
+        },
+        "recovery": {
+          "type": "category",
+          "settings": {
+            "title": "Regeneration & Erholung",
+            "description": "Eine gute Pause für Ihren Körper.",
+            "collection": "blackroll-faszientraining",
+            "url": "/collections/blackroll-faszientraining",
+            "fallback_image": "category-recovery.jpg"
+          }
+        },
+        "workplace": {
+          "type": "category",
+          "settings": {
+            "title": "Gesunder Arbeitsplatz",
+            "description": "Mehr Bewegung beim Stehen und Sitzen.",
+            "collection": "kybun-matten",
+            "url": "/collections/kybun-matten",
+            "fallback_image": "category-workplace.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "shoes",
+        "movement",
+        "recovery",
+        "workplace"
+      ]
+    },
+    "featured": {
+      "type": "featured-products",
+      "blocks": {
+        "product0": {
+          "type": "product",
+          "settings": {
+            "product": "kybun-magglingen-light-grey-men"
+          }
+        },
+        "product1": {
+          "type": "product",
+          "settings": {
+            "product": "blackroll-recovery-pillow-kissen"
+          }
+        },
+        "product2": {
+          "type": "product",
+          "settings": {
+            "product": "kybun-matte-weicher-federboden-46x46x6-cm"
+          }
+        },
+        "product3": {
+          "type": "product",
+          "settings": {
+            "product": "upswing-mini-massagepistole-mit-warmeaufsatz"
+          }
+        }
+      },
+      "block_order": [
+        "product0",
+        "product1",
+        "product2",
+        "product3"
+      ]
+    },
+    "advice": {
+      "type": "advice-banner",
+      "blocks": {
+        "benefit0": {
+          "type": "benefit",
+          "settings": {
+            "text": "In Ruhe ausprobieren und anprobieren"
+          }
+        },
+        "benefit1": {
+          "type": "benefit",
+          "settings": {
+            "text": "Verständliche Antworten auf Ihre Fragen"
+          }
+        },
+        "benefit2": {
+          "type": "benefit",
+          "settings": {
+            "text": "Persönliche Beratung in 5 Schweizer Filialen"
+          }
+        }
+      },
+      "block_order": [
+        "benefit0",
+        "benefit1",
+        "benefit2"
+      ],
+      "settings": {
+        "primary_url": "/pages/filialubersicht#Filialen"
+      }
+    },
+    "business": {
+      "type": "b2b-banner",
+      "blocks": {
+        "benefit0": {
+          "type": "benefit",
+          "settings": {
+            "text": "Produktempfehlungen passend zu Ihrem Arbeitsalltag"
+          }
+        },
+        "benefit1": {
+          "type": "benefit",
+          "settings": {
+            "text": "Persönliche Beratung und individuelle Offerten"
+          }
+        }
+      },
+      "block_order": [
+        "benefit0",
+        "benefit1"
+      ]
+    },
+    "brands": {
+      "type": "brand-strip",
+      "blocks": {
+        "kybun": {
+          "type": "brand",
+          "settings": {
+            "name": "kybun",
+            "url": "/collections/kybun-schuhe",
+            "fallback_image": "brand-kybun.png"
+          }
+        },
+        "joya": {
+          "type": "brand",
+          "settings": {
+            "name": "Joya",
+            "url": "/collections/joya-schuhe",
+            "fallback_image": "brand-joya.png"
+          }
+        },
+        "bellicon": {
+          "type": "brand",
+          "settings": {
+            "name": "bellicon",
+            "url": "/collections/bellicon-trampoline",
+            "fallback_image": "brand-bellicon.png"
+          }
+        },
+        "blackroll": {
+          "type": "brand",
+          "settings": {
+            "name": "BLACKROLL",
+            "url": "/collections/blackroll-faszientraining",
+            "fallback_image": "brand-blackroll.png"
+          }
+        },
+        "leguano": {
+          "type": "brand",
+          "settings": {
+            "name": "leguano",
+            "url": "/collections/leguano-barfussschuhe",
+            "fallback_image": "brand-leguano.png"
+          }
+        }
+      },
+      "block_order": [
+        "kybun",
+        "joya",
+        "bellicon",
+        "blackroll",
+        "leguano"
+      ]
+    },
+    "knowledge": {
+      "type": "knowledge-links",
+      "blocks": {
+        "walk": {
+          "type": "guide",
+          "settings": {
+            "heading": "Luftkissen oder Barfuss?",
+            "description": "Unterschiedliche Gehgefühle verstehen und passende Schuhe bewusst auswählen.",
+            "url": "/pages/kybun"
+          }
+        },
+        "work": {
+          "type": "guide",
+          "settings": {
+            "heading": "Mehr Bewegung beim Stehen",
+            "description": "Aktive Stehmatten kennenlernen und die passende Ausführung für Ihren Alltag finden.",
+            "url": "/pages/kybun-matten"
+          }
+        },
+        "recover": {
+          "type": "guide",
+          "settings": {
+            "heading": "Erholung beginnt im Alltag",
+            "description": "Ein passendes Schlafumfeld entdecken und Zeit für Regeneration finden.",
+            "url": "/pages/regeneration-im-schlaf"
+          }
+        }
+      },
+      "block_order": [
+        "walk",
+        "work",
+        "recover"
+      ]
+    }
+  },
+  "order": [
+    "hero",
+    "needs",
+    "categories",
+    "featured",
+    "brands",
+    "advice",
+    "business",
+    "knowledge"
+  ]
+}

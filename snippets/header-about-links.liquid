@@ -1,0 +1,30 @@
+{%- capture about_advice_url -%}{% render 'filial-anchor-url', url: advice_url, fallback_url: '/pages/kontakt' %}{%- endcapture -%}
+{%- assign about_advice_url = about_advice_url | strip -%}
+{% if mode == 'desktop' %}
+  <div class="about-menu-group"><h3>Unsere Filialen</h3>{% render 'header-about-stores', mode: mode, about_links: about_links, header_blocks: header_blocks %}</div>
+  <div class="about-menu-group"><h3>upswing kennenlernen</h3><ul class="links">
+{% else %}
+  <li><details class="mobile-nav-item"><summary class="mobile-nav-summary"><span>Unsere Filialen</span>{% render 'icon', name: 'chevron' %}</summary>{% render 'header-about-stores', mode: mode, about_links: about_links, header_blocks: header_blocks %}</details></li>
+  <li><details class="mobile-nav-item"><summary class="mobile-nav-summary"><span>upswing kennenlernen</span>{% render 'icon', name: 'chevron' %}</summary><ul class="mobile-nav-list">
+{% endif %}
+{% for link in about_links %}
+  {% liquid
+    assign location_link = false
+    if link.url contains '/pages/standort-' or link.url contains '/pages/filialubersicht' or link.title contains 'Filial' or link.title contains 'Standort'
+      assign location_link = true
+    endif
+    for child in link.links
+      if child.url contains '/pages/standort-' or child.url contains '/pages/filialubersicht'
+        assign location_link = true
+      endif
+      for grandchild in child.links
+        if grandchild.url contains '/pages/standort-' or grandchild.url contains '/pages/filialubersicht'
+          assign location_link = true
+        endif
+      endfor
+    endfor
+  %}
+  {% unless location_link %}{% render 'header-about-link', link: link, mode: mode %}{% endunless %}
+{% endfor %}
+{% if advice_url != blank %}<li><a class="{% if mode == 'mobile' %}mobile-nav-link{% else %}about-menu-link{% endif %}" href="{{ about_advice_url | escape }}">Persönliche Beratung</a></li>{% endif %}
+{% if mode == 'desktop' %}</ul></div>{% else %}</ul></details></li>{% endif %}

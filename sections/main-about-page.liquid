@@ -1,0 +1,200 @@
+{% render 'about-page-content', page: page, page_kind: section.settings.page_kind, section: section %}
+{% schema %}
+{
+  "name": "Über uns & Filialen",
+  "settings": [
+    {
+      "type": "select",
+      "id": "page_kind",
+      "label": "Seitentyp",
+      "default": "auto",
+      "options": [
+        {
+          "value": "auto",
+          "label": "Automatisch nach Original-Handle"
+        },
+        {
+          "value": "about",
+          "label": "Über upswing"
+        },
+        {
+          "value": "values",
+          "label": "Werte"
+        },
+        {
+          "value": "history",
+          "label": "Geschichte"
+        },
+        {
+          "value": "careers",
+          "label": "Offene Stellen"
+        },
+        {
+          "value": "premium-service",
+          "label": "Premium Service"
+        },
+        {
+          "value": "location",
+          "label": "Einzelne Filiale"
+        },
+        {
+          "value": "locations",
+          "label": "Filialübersicht"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "content_source",
+      "label": "Inhaltsquelle",
+      "default": "design",
+      "options": [
+        {
+          "value": "design",
+          "label": "Kuratiertes Seitendesign"
+        },
+        {
+          "value": "page",
+          "label": "Shopify Seiteninhalt"
+        },
+        {
+          "value": "editor",
+          "label": "Template-Blöcke als Ersatz"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": "Die Designversion nutzt bestätigte Original-Seiten. Template-Blöcke können ergänzt werden; als Ersatz blenden sie den Design-/Seiteninhalt aus. Einstellungen und Blöcke gelten für alle Seiten mit diesem Shopify Template. Individuelle Filialinhalte benötigen eigene Templates oder dynamische Datenquellen."
+    },
+    {
+      "type": "url",
+      "id": "advice_url",
+      "label": "Beratung / Filialen"
+    },
+    {
+      "type": "url",
+      "id": "locations_url",
+      "label": "Filialübersicht"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Einleitender Kurztext",
+      "visible_if": "{{ section.settings.content_source != 'design' }}"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Seitentitel ersetzen",
+      "visible_if": "{{ section.settings.content_source != 'design' }}"
+    },
+    {
+      "type": "richtext",
+      "id": "intro",
+      "label": "Einleitung",
+      "visible_if": "{{ section.settings.content_source != 'design' }}"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Titelbild",
+      "visible_if": "{{ section.settings.content_source != 'design' }}"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "Textabschnitt",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Überschrift"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Text"
+        }
+      ]
+    },
+    {
+      "type": "card",
+      "name": "Karte",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Bild"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Überschrift"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Text"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Linktext"
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "name": "Bild",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Bild"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Bildunterschrift"
+        }
+      ]
+    },
+    {
+      "type": "next_step",
+      "name": "Nächster Schritt",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Überschrift"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Text"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Buttontext"
+        }
+      ]
+    },
+    {
+      "type": "@app"
+    }
+  ]
+}
+{% endschema %}

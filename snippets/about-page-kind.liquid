@@ -1,0 +1,10 @@
+{%- comment -%}Explicit original page handles. No matching by page title.{%- endcomment -%}
+{%- case page.handle -%}
+  {%- when 'ueber-uns' -%}about
+  {%- when 'upswing-werte' -%}values
+  {%- when 'geschichte' -%}history
+  {%- when 'offene-stellen' -%}careers
+  {%- when 'premium-service' -%}premium-service
+  {%- when 'filialubersicht' -%}locations
+  {%- when 'standort-thun', 'standort-ruti-zh', 'standort-zurich', 'standort-winterthur', 'standort-basel' -%}location
+{%- endcase -%}

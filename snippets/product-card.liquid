@@ -1,0 +1,97 @@
+{%- comment -%}
+  Every product supplied by the collection is rendered. Model grouping is a
+  catalogue operation: curated collections contain one model_primary product
+  per model, with siblings in upswing.model_products. Never dedupe a paginated
+  Liquid collection here, because that would hide products and break counts.
+{%- endcomment -%}
+{%- if product != blank -%}
+  {%- liquid
+    assign siblings = product.metafields.upswing.model_products.value
+    assign card_title = product.metafields.upswing.model_name.value | default: product.title
+    assign card_image = product.featured_media.preview_image | default: product.featured_image
+    assign card_alt = card_image.alt | default: card_title
+    assign model_min_price = product.price_min
+    assign model_max_price = product.price_max
+    assign card_available = product.available
+    assign model_color_count = 1
+    for sibling in siblings
+      if sibling.id != product.id
+        assign model_color_count = model_color_count | plus: 1
+        if sibling.price_min < model_min_price
+          assign model_min_price = sibling.price_min
+        endif
+        if sibling.price_max > model_max_price
+          assign model_max_price = sibling.price_max
+        endif
+        if sibling.available
+          assign card_available = true
+        endif
+      endif
+    endfor
+    assign show_from = false
+    if model_min_price != model_max_price
+      assign show_from = true
+    endif
+  -%}
+  <article class="product-card" data-product-card data-product-handle="{{ product.handle }}">
+    <a class="product-media" href="{{ product.url }}" aria-label="{{ card_title | escape }} ansehen">
+      {%- if card_image -%}
+        {{ card_image | image_url: width: 720 | image_tag: loading: 'lazy', widths: '240, 360, 540, 720', sizes: '(min-width: 1000px) 24vw, (min-width: 600px) 45vw, 90vw', alt: card_alt }}
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      {%- endif -%}
+      {%- unless card_available -%}<span class="product-badge">Zurzeit nicht verfügbar</span>{%- endunless -%}
+    </a>
+    <div class="product-card-content">
+      {%- if product.vendor != blank -%}<p class="product-brand">{{ product.vendor | escape }}</p>{%- endif -%}
+      <h3 class="product-title"><a href="{{ product.url }}">{{ card_title | escape }}</a></h3>
+      {%- if product.metafields.upswing.short_description != blank -%}
+        <p class="product-copy">{{ product.metafields.upswing.short_description.value | strip_html | truncate: 115 }}</p>
+      {%- elsif product.type != blank -%}
+        <p class="product-copy">{{ product.type | escape }}</p>
+      {%- endif -%}
+      <div class="product-price">{% render 'price', product: product, from_price: model_min_price, show_from: show_from %}</div>
+      {%- if siblings != blank -%}
+        <div class="swatches" aria-label="Farben für {{ card_title | escape }}">
+          <a class="swatch is-selected" href="{{ product.url }}" title="{{ product.metafields.upswing.color_name.value | default: product.title | escape }}" aria-label="{{ product.metafields.upswing.color_name.value | default: product.title | escape }}" {% if card_image %}data-card-swatch="{{ card_image | image_url: width: 720 }}"{% endif %} style="--swatch-color: {{ product.metafields.upswing.color_hex.value | default: '#d9ddd6' | escape }}">
+            {%- if product.metafields.upswing.color_hex == blank and card_image -%}{{ card_image | image_url: width: 64 | image_tag: loading: 'lazy', alt: '', width: 32, height: 32 }}{%- endif -%}
+          </a>
+          {%- for sibling in siblings limit: 5 -%}
+            {%- if sibling.id != product.id -%}
+              <a class="swatch" href="{{ sibling.url }}" title="{{ sibling.metafields.upswing.color_name.value | default: sibling.title | escape }}" aria-label="{{ sibling.metafields.upswing.color_name.value | default: sibling.title | escape }}" {% if sibling.featured_image %}data-card-swatch="{{ sibling.featured_image | image_url: width: 720 }}"{% endif %} style="--swatch-color: {{ sibling.metafields.upswing.color_hex.value | default: '#d9ddd6' | escape }}">
+                {%- if sibling.metafields.upswing.color_hex == blank and sibling.featured_image -%}{{ sibling.featured_image | image_url: width: 64 | image_tag: loading: 'lazy', alt: '', width: 32, height: 32 }}{%- endif -%}
+              </a>
+            {%- endif -%}
+          {%- endfor -%}
+          <span class="swatch-count">{{ model_color_count }} Farben</span>
+        </div>
+      {%- else -%}
+        {%- for option in product.options_with_values -%}
+          {%- assign option_name = option.name | downcase -%}
+          {%- if option_name contains 'farbe' or option_name contains 'color' or option_name contains 'colour' -%}
+            <div class="swatches" aria-label="{{ option.name | escape }}">
+              {%- for value in option.values limit: 5 -%}
+                {%- liquid
+                  assign swatch_image = value.swatch.image | default: value.variant.featured_image
+                  assign swatch_url = product.url
+                  if value.variant
+                    assign swatch_url = value.variant.url
+                  endif
+                -%}
+                <a class="swatch{% if value.selected %} is-selected{% endif %}" href="{{ swatch_url }}" title="{{ value | escape }}" aria-label="{{ value | escape }}"{% if swatch_image %} data-card-swatch="{{ swatch_image | image_url: width: 720 }}"{% endif %} style="--swatch-color: {{ value.swatch.color | default: '#d9ddd6' | escape }}">
+                  {%- if value.swatch.color == blank and swatch_image -%}{{ swatch_image | image_url: width: 64 | image_tag: loading: 'lazy', alt: '', width: 32, height: 32 }}{%- endif -%}
+                </a>
+              {%- endfor -%}
+              <span class="swatch-count">{{ option.values.size }} Farben</span>
+            </div>
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+      <div class="product-card-actions">
+        <a class="text-link model-link" href="{{ product.url }}">Modell entdecken {% render 'icon', name: 'arrow' %}</a>
+        <button class="compare-button" type="button" data-compare="{{ product.metafields.upswing.model_key.value | default: product.handle | escape }}" data-product-title="{{ card_title | escape }}" data-product-url="{{ product.url }}"{% if card_image %} data-product-image="{{ card_image | image_url: width: 360 }}"{% endif %} data-product-price="{% if show_from %}ab {% endif %}{{ model_min_price | money_with_currency | escape }}" data-product-description="{{ product.metafields.upswing.short_description.value | default: product.description | strip_html | truncate: 180 | escape }}" aria-pressed="false" aria-label="{{ card_title | escape }} zum Vergleich merken">{% render 'icon', name: 'plus' %}<span class="visually-hidden">Vergleichen</span></button>
+      </div>
+    </div>
+  </article>
+{%- endif -%}

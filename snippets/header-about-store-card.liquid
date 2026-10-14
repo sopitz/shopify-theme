@@ -1,0 +1,6 @@
+<li class="about-store-item">
+  <a class="about-store-card" href="{{ store_url | escape }}"{% if store_current %} aria-current="page"{% endif %}>
+    <span class="about-store-image">{% render 'header-navigation-image', nav_link: store_link, nav_url: image_url, fallback_asset: image_asset, header_blocks: header_blocks, image_sizes: '(min-width: 1101px) 280px, (min-width: 601px) 320px, calc((100vw - 48px) / 2)' %}</span>
+    <span class="about-store-name">{{ store_title | escape }} {% render 'icon', name: 'arrow' %}</span>
+  </a>
+</li>

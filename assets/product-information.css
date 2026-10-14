@@ -1,0 +1,36 @@
+.product-information{padding-top:45px;padding-bottom:55px;scroll-margin-top:25px}
+.product-information .section-heading{margin-bottom:33px}
+.product-information-layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:76px;align-items:start}
+.product-description-shell{min-width:0;max-width:830px}
+.product-description-nav{display:flex;flex-wrap:wrap;gap:8px 10px;padding:0 0 26px;margin-bottom:20px;border-bottom:1px solid var(--line)}
+.product-description-nav .description-nav-label{width:100%;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.product-description-nav a{display:inline-flex;align-items:center;min-height:40px;padding:8px 13px;border:1px solid var(--line);border-radius:22px;font-size:12px;line-height:1.4;transition:background .2s}
+.product-description-nav a:hover{background:var(--cream)}
+.product-description{font-size:16px;line-height:1.85;color:#526359}
+.product-description>p:first-child{font-size:17px;line-height:1.8;color:var(--ink)}
+.product-description p{margin:0 0 21px}
+.product-description h2{font-size:33px;line-height:1.2;margin:42px 0 19px;color:var(--forest);scroll-margin-top:25px}
+.product-description h3{font-size:27px;line-height:1.3;margin:30px 0 15px;color:var(--forest);scroll-margin-top:25px}
+.product-description h4{font-size:19px;margin:25px 0 12px}
+.product-description ul,.product-description ol{margin:15px 0 26px;padding-left:23px}
+.product-description li{padding-left:3px;margin-bottom:8px}
+.product-description strong{font-weight:600;color:#344b3e}
+.product-description a{text-decoration:underline;text-underline-offset:4px;color:var(--forest)}
+.product-description img{max-width:100%;height:auto;border-radius:8px;margin:25px 0}
+.product-description table{max-width:100%;border-collapse:collapse}
+.product-description th,.product-description td{padding:13px 9px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14px}
+.product-info-support{position:sticky;top:190px;display:grid;gap:22px}
+.product-description-help,.product-specs-support{padding:28px;background:var(--cream);border-radius:10px}
+.product-description-help h3,.product-specs-support h3{font-size:28px;margin-bottom:19px}
+.product-description-help p{font-size:14px;line-height:1.75;color:var(--muted);margin-bottom:23px}
+.product-description-help .button{font-size:12px;padding:12px 17px;min-height:46px;width:100%}
+.product-description-help .text-link{font-size:12px;margin-top:11px}
+.product-specs-support .spec-table{font-size:12px}
+.product-specs-support .spec-table td,.product-specs-support .spec-table th{padding:11px 0;line-height:1.65}
+.product-specs-support .spec-table th{width:44%;padding-right:10px}
+.product-sku{font-size:11px;color:var(--muted);margin:8px 0 22px}
+.description-jump{font-size:12px;min-height:38px;margin-top:13px}
+.product-information .product-accordions{margin-top:42px}
+@media(max-width:1100px){.product-information-layout{grid-template-columns:minmax(0,1fr) 285px;gap:38px}.product-description-help,.product-specs-support{padding:24px}.product-description h2{font-size:30px}}
+@media(max-width:820px){.product-information-layout{grid-template-columns:1fr;gap:35px}.product-description-shell{max-width:100%}.product-info-support{position:static;grid-template-columns:1fr 1fr;gap:20px}.product-description{font-size:15px}.product-description>p:first-child{font-size:16px}}
+@media(max-width:600px){.product-information{padding-top:25px;padding-bottom:40px;scroll-margin-top:15px}.product-information .section-heading h2{font-size:33px}.product-description-nav{gap:7px;padding-bottom:20px;margin-bottom:18px}.product-description-nav a{font-size:11px;min-height:42px;padding:8px 12px}.product-description h2{font-size:29px;margin-top:33px;scroll-margin-top:15px}.product-description h3{font-size:25px;scroll-margin-top:15px}.product-description{font-size:15px;line-height:1.85}.product-description>p:first-child{font-size:16px}.product-info-support{grid-template-columns:1fr;gap:20px}.product-description-help,.product-specs-support{padding:25px}.product-description-help .button{font-size:13px}.product-sku{font-size:11px}.description-jump{font-size:12px}}

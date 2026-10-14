@@ -1,0 +1,49 @@
+{
+  "current": {
+    "logo_width": 180,
+    "color_forest": "#203e35",
+    "color_cream": "#f7f7f2",
+    "color_sage": "#dfe9df",
+    "color_text": "#263c34",
+    "color_accent": "#bc7a49",
+    "sections": {
+      "header": {
+        "type": "header",
+        "settings": {
+          "menu": "main-menu",
+          "announcement": "Versandkostenfrei ab CHF 99.–",
+          "advice_url": "/pages/kontakt",
+          "b2b_url": "/pages/firmenkunden",
+          "guide_url": "/pages/produktberater",
+          "about_url": "/pages/ueber-uns"
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {
+          "advice_url": "/pages/kontakt"
+        },
+        "blocks": {
+          "shopping": {
+            "type": "shopping",
+            "settings": {}
+          },
+          "service": {
+            "type": "service",
+            "settings": {}
+          },
+          "contact": {
+            "type": "contact",
+            "settings": {}
+          }
+        },
+        "block_order": [
+          "shopping",
+          "service",
+          "contact"
+        ]
+      }
+    }
+  },
+  "presets": {}
+}

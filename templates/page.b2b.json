@@ -1,0 +1,38 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-b2b",
+      "blocks": {
+        "step0": {
+          "type": "step",
+          "settings": {
+            "title": "Bedarf verstehen",
+            "description": "Wir besprechen Arbeitsplätze, Einsatzbereiche und die Bedürfnisse Ihres Teams."
+          }
+        },
+        "step1": {
+          "type": "step",
+          "settings": {
+            "title": "Produkte kennenlernen",
+            "description": "Sie erhalten eine verständliche Auswahl mit den passenden Funktionen und Möglichkeiten."
+          }
+        },
+        "step2": {
+          "type": "step",
+          "settings": {
+            "title": "Individuelle Offerte",
+            "description": "Wir stimmen Produkte, Mengen und Lieferung persönlich mit Ihnen ab."
+          }
+        }
+      },
+      "block_order": [
+        "step0",
+        "step1",
+        "step2"
+      ]
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

@@ -1,0 +1,22 @@
+{%- capture about_advice_url -%}{%- render 'filial-anchor-url', url: advice_url, fallback_url: '/pages/kontakt' -%}{%- endcapture -%}
+{%- assign about_advice_url = about_advice_url | strip -%}
+{% comment %}The ten existing Upswing About pages retain their original verified URLs.{% endcomment %}
+{% if mode == 'desktop' %}
+  <div class="about-menu-group"><h3>Unsere Filialen</h3>{% render 'header-about-stores', mode: mode, header_blocks: header_blocks %}</div>
+  <div class="about-menu-group"><h3>upswing kennenlernen</h3><ul class="links">
+    <li><a class="about-menu-link" href="/pages/premium-service">Premium Service</a></li>
+    <li><a class="about-menu-link" href="/pages/upswing-werte">Unsere Werte</a></li>
+    <li><a class="about-menu-link" href="/pages/geschichte">Unsere Geschichte</a></li>
+    <li><a class="about-menu-link" href="/pages/offene-stellen">Offene Stellen</a></li>
+    {% if advice_url != blank %}<li><a class="about-menu-link" href="{{ about_advice_url | escape }}">Persönliche Beratung</a></li>{% endif %}
+  </ul></div>
+{% else %}
+  <li><details class="mobile-nav-item"><summary class="mobile-nav-summary"><span>Unsere Filialen</span>{% render 'icon', name: 'chevron' %}</summary>{% render 'header-about-stores', mode: mode, header_blocks: header_blocks %}</details></li>
+  <li><details class="mobile-nav-item"><summary class="mobile-nav-summary"><span>upswing kennenlernen</span>{% render 'icon', name: 'chevron' %}</summary><ul class="mobile-nav-list">
+    <li><a class="mobile-nav-link" href="/pages/premium-service">Premium Service</a></li>
+    <li><a class="mobile-nav-link" href="/pages/upswing-werte">Unsere Werte</a></li>
+    <li><a class="mobile-nav-link" href="/pages/geschichte">Unsere Geschichte</a></li>
+    <li><a class="mobile-nav-link" href="/pages/offene-stellen">Offene Stellen</a></li>
+    {% if advice_url != blank %}<li><a class="mobile-nav-link" href="{{ about_advice_url | escape }}">Persönliche Beratung</a></li>{% endif %}
+  </ul></details></li>
+{% endif %}

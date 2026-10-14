@@ -1,0 +1,4 @@
+{
+  "sections": {"main": {"type": "main-cart", "settings": {"consultation_url": "/pages/filialubersicht", "shipping_note": "Schweiz: CHF 8 Versand. Ab CHF 99 Warenwert versandkostenfrei."}}},
+  "order": ["main"]
+}

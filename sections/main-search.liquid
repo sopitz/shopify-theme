@@ -1,0 +1,100 @@
+{%- capture onsite_consultation_url -%}{%- render 'filial-anchor-url', url: section.settings.consultation_url, fallback_url: '/pages/filialubersicht#Filialen' -%}{%- endcapture -%}
+{%- assign onsite_consultation_url = onsite_consultation_url | strip -%}
+{%- liquid
+  assign current_sort = search.sort_by | default: search.default_sort_by
+  assign model_filters = settings.model_search_filter_parameters | split: ','
+  assign visible_filter_count = 0
+  assign primary_filter_active = false
+  if settings.group_model_search and search.types.size == 1 and search.types contains 'product'
+    for filter in search.filters
+      if filter.param_name == 'filter.p.m.upswing.model_primary'
+        for value in filter.active_values
+          if value.value == 'true' or value.value == true or value.value == '1'
+            assign primary_filter_active = true
+            break
+          endif
+        endfor
+        break
+      endif
+    endfor
+  endif
+-%}
+<section class="search-section section-space">
+  <div class="container">
+    <header class="search-header search-page-header"><p class="eyebrow">Finden, was zu Ihnen passt</p><h1>{% if search.performed %}Ihre Suche{% else %}Wonach suchen Sie?{% endif %}</h1>
+      <form action="{{ routes.search_url }}" method="get" role="search" class="search-page-form search-form-page"><label class="visually-hidden" for="PageSearch-{{ section.id }}">Produkte suchen</label><input id="PageSearch-{{ section.id }}" type="search" name="q" value="{{ search.terms | escape }}" placeholder="Produkt, Marke oder Anwendung" autocomplete="off"><input type="hidden" name="type" value="product"><input type="hidden" name="options[prefix]" value="last">{% if settings.group_model_search %}<input type="hidden" name="filter.p.m.upswing.model_primary" value="true">{% endif %}<button class="button" type="submit">Suchen {% render 'icon', name: 'search' %}</button></form>
+    </header>
+    {%- if search.performed -%}
+      {%- paginate search.results by section.settings.products_per_page -%}
+        <div class="collection-layout">
+          <form class="filters-sidebar" action="{{ routes.search_url }}" method="get" id="SearchFilters-{{ section.id }}"><input type="hidden" name="q" value="{{ search.terms | escape }}"><input type="hidden" name="type" value="product"><input type="hidden" name="options[prefix]" value="last">{% if settings.group_model_search %}<input type="hidden" name="filter.p.m.upswing.model_primary" value="true">{% endif %}
+            <div class="filter-heading"><h2>Ihre Auswahl</h2><a class="text-link" href="{{ routes.search_url }}?q={{ search.terms | url_encode }}&type=product{% if settings.group_model_search %}&filter.p.m.upswing.model_primary=true{% endif %}">Zurücksetzen</a></div>
+            {%- for filter in search.filters -%}
+              {%- liquid
+                assign show_filter = true
+                if filter.param_name == 'filter.p.m.upswing.model_primary'
+                  assign show_filter = false
+                elsif settings.group_model_search
+                  assign show_filter = false
+                  for allowed_filter in model_filters
+                    assign allowed_parameter = allowed_filter | strip
+                    if allowed_parameter == filter.param_name
+                      assign show_filter = true
+                      break
+                    endif
+                  endfor
+                endif
+                if show_filter
+                  assign visible_filter_count = visible_filter_count | plus: 1
+                endif
+              -%}
+              {%- if show_filter -%}
+                <details class="filter-group"{% if filter.active_values.size > 0 or visible_filter_count <= 3 or filter.min_value.value != blank or filter.max_value.value != blank %} open{% endif %}><summary>{{ filter.label | escape }} {% render 'icon', name: 'chevron' %}</summary><div class="filter-options">
+                  {%- case filter.type -%}
+                    {%- when 'boolean', 'list' -%}
+                      {%- for value in filter.values -%}<label class="filter-value{% if value.count == 0 and value.active == false %} is-disabled{% endif %}" for="SearchFilter-{{ section.id }}-{{ forloop.parentloop.index }}-{{ forloop.index }}"><input type="checkbox" id="SearchFilter-{{ section.id }}-{{ forloop.parentloop.index }}-{{ forloop.index }}" name="{{ value.param_name }}" value="{{ value.value | escape }}"{% if value.active %} checked{% endif %}{% if value.count == 0 and value.active == false %} disabled{% endif %}><span>{{ value.label | escape }}</span><span class="filter-count">{{ value.count }}</span></label>{%- endfor -%}
+                    {%- when 'price_range' -%}
+                      <div class="price-range"><label for="SearchPriceMin-{{ section.id }}">Von ({{ cart.currency.iso_code }})<input id="SearchPriceMin-{{ section.id }}" type="number" name="{{ filter.min_value.param_name }}" min="0" max="{{ filter.range_max | divided_by: 100.0 }}" step="0.01"{% if filter.min_value.value != blank %} value="{{ filter.min_value.value | divided_by: 100.0 }}"{% endif %} placeholder="0" inputmode="decimal"></label><label for="SearchPriceMax-{{ section.id }}">Bis ({{ cart.currency.iso_code }})<input id="SearchPriceMax-{{ section.id }}" type="number" name="{{ filter.max_value.param_name }}" min="0" max="{{ filter.range_max | divided_by: 100.0 }}" step="0.01"{% if filter.max_value.value != blank %} value="{{ filter.max_value.value | divided_by: 100.0 }}"{% endif %} placeholder="{{ filter.range_max | divided_by: 100.0 }}" inputmode="decimal"></label></div>
+                  {%- endcase -%}
+                </div></details>
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if visible_filter_count == 0 -%}<p class="filter-help">Entdecken Sie die Produkte oder lassen Sie sich persönlich beraten.</p>{%- endif -%}
+            <button class="button filter-apply" type="submit">Auswahl anwenden</button>
+            <div class="filter-consultation"><strong>Nicht das Richtige gefunden?</strong><p>Unser Team hilft Ihnen bei der Suche.</p><a class="text-link" href="{{ onsite_consultation_url | escape }}">Persönliche Beratung</a></div>
+          </form>
+          <div class="collection-results">
+            <div class="collection-toolbar"><p class="result-count" role="status">{{ search.results_count }} {% if primary_filter_active %}{% if search.results_count == 1 %}Modell{% else %}Modelle{% endif %}{% else %}{% if search.results_count == 1 %}Ergebnis{% else %}Ergebnisse{% endif %}{% endif %} für «{{ search.terms | escape }}»</p><div class="sort-control"><label for="SearchSort-{{ section.id }}">Sortieren</label><select id="SearchSort-{{ section.id }}" name="sort_by" form="SearchFilters-{{ section.id }}">{%- for option in search.sort_options -%}<option value="{{ option.value | escape }}"{% if option.value == current_sort %} selected{% endif %}>{{ option.name | escape }}</option>{%- endfor -%}</select><button class="text-link sort-apply" type="submit" form="SearchFilters-{{ section.id }}">Anwenden</button></div></div>
+            {%- if primary_filter_active -%}<p class="collection-model-note">Ein Modell, alle Farben. Wählen Sie Ihre Farbe direkt beim Produkt.</p>{%- endif -%}
+            <div class="active-filters" aria-label="Aktive Suchfilter">{%- for filter in search.filters -%}{%- unless filter.param_name == 'filter.p.m.upswing.model_primary' -%}{%- for value in filter.active_values -%}<a class="active-filter" href="{{ value.url_to_remove }}">{{ filter.label | escape }}: {{ value.label | escape }} {% render 'icon', name: 'close' %}<span class="visually-hidden">Filter entfernen</span></a>{%- endfor -%}{% if filter.type == 'price_range' %}{% if filter.min_value.value != blank or filter.max_value.value != blank %}<a class="active-filter" href="{{ filter.url_to_remove }}">{{ filter.min_value.value | default: 0 | money_with_currency }} – {{ filter.max_value.value | default: filter.range_max | money_with_currency }} {% render 'icon', name: 'close' %}<span class="visually-hidden">Preisfilter entfernen</span></a>{% endif %}{% endif %}{%- endunless -%}{%- endfor -%}</div>
+            {%- if search.results_count > 0 -%}
+              <div class="product-grid collection-product-grid">{%- for item in search.results -%}{% if item.object_type == 'product' %}{% render 'product-card', product: item %}{% else %}<article class="search-result-card"><p class="eyebrow">{% if item.object_type == 'article' %}Wissen & Beratung{% else %}Information{% endif %}</p><h2><a href="{{ item.url }}">{{ item.title | escape }}</a></h2><p>{{ item.content | strip_html | truncate: 150 }}</p><a class="text-link" href="{{ item.url }}">Weiterlesen {% render 'icon', name: 'arrow' %}</a></article>{% endif %}{%- endfor -%}</div>
+              {%- if paginate.pages > 1 -%}<nav class="pagination" aria-label="Weitere Suchergebnisse">{{ paginate | default_pagination: next: 'Weiter', previous: 'Zurück' }}</nav>{%- endif -%}
+            {%- else -%}<div class="empty-state"><h2>Wir haben dazu {% if primary_filter_active %}kein Modell{% else %}kein Produkt{% endif %} gefunden.</h2><p>Versuchen Sie eine Marke oder einen kürzeren Suchbegriff. Gerne helfen wir Ihnen persönlich weiter.</p><div class="button-row"><a class="button" href="{{ routes.all_products_collection_url }}">Alle Produkte ansehen</a><a class="button secondary" href="{{ onsite_consultation_url | escape }}">Beratung finden</a></div></div>{%- endif -%}
+          </div>
+        </div>
+      {%- endpaginate -%}
+    {%- else -%}<div class="empty-state"><h2>Oder beginnen Sie mit unserem Sortiment.</h2><p>Gesundheitsprodukte für Bewegung, Entlastung und den Arbeitsalltag.</p><a class="button secondary" href="{{ routes.all_products_collection_url }}">Produkte entdecken</a></div>{%- endif -%}
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Suche & Filter",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Ergebnisse pro Seite",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "default": 24
+    },
+    {
+      "type": "url",
+      "id": "consultation_url",
+      "label": "Beratung / Filialen"
+    }
+  ]
+}
+{% endschema %}

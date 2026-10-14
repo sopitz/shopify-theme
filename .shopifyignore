@@ -1,0 +1,9 @@
+.github/**
+docs/**
+tools/**
+dist/**
+work/**
+README.md
+CHANGELOG.md
+AGENTS.md
+.gitignore

@@ -1,0 +1,236 @@
+<section class="section-space needs-section" id="anliegen" aria-labelledby="NeedsTitle-{{ section.id }}">
+  <div class="container">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        <h2 id="NeedsTitle-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+      </div>
+      <p class="section-intro">{{ section.settings.intro | escape }}</p>
+    </div>
+    <div class="needs-grid topic-grid">
+      {% for block in section.blocks %}
+        {% assign topic_image_alt = block.settings.image_alt | default: block.settings.image.alt | default: block.settings.title %}
+        <a class="topic-card" href="{{ block.settings.url | default: '/pages/fersensporn-und-andere-fussschmerzen' | escape }}" {{ block.shopify_attributes }}>
+          <div class="topic-media">
+            {% if block.settings.image != blank %}
+              {{ block.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '360, 540, 720, 1000, 1200', sizes: '(min-width: 1000px) 25vw, (min-width: 600px) 50vw, 100vw', alt: topic_image_alt }}
+            {% elsif block.settings.fallback_image != blank %}
+              <img src="{{ block.settings.fallback_image | asset_url }}" alt="{{ topic_image_alt | escape }}" width="720" height="480" loading="lazy">
+            {% else %}
+              {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-image' }}
+            {% endif %}
+          </div>
+          <div class="topic-content">
+            {% if block.settings.topic_label != blank %}<p class="topic-label">{{ block.settings.topic_label | escape }}</p>{% endif %}
+            <h3 class="topic-title">{{ block.settings.title | escape }}</h3>
+            <p class="topic-description">{{ block.settings.description | escape }}</p>
+            {% if block.settings.product_hint != blank %}<p class="topic-products">{{ block.settings.product_hint | escape }}</p>{% endif %}
+            <span class="text-link">{{ block.settings.link_label | escape }} {% render 'icon', name: 'arrow' %}</span>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Einstieg nach Bedürfnis",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Dachzeile",
+      "default": "IHR ANLIEGEN. IHR EINSTIEG."
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Überschrift",
+      "default": "Was möchten Sie verbessern?"
+    },
+    {
+      "type": "text",
+      "id": "intro",
+      "label": "Einführung",
+      "default": "Beginnen Sie bei Ihrem Anliegen. Wir erklären die Möglichkeiten und führen Sie zum passenden Sortiment."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "need",
+      "name": "Themenkarte",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Themenbild"
+        },
+        {
+          "type": "text",
+          "id": "fallback_image",
+          "label": "Alternativer Theme-Bildname",
+          "default": "needs-foot.jpg"
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Bildbeschreibung",
+          "default": "Thema Fersensporn und Fussschmerzen"
+        },
+        {
+          "type": "text",
+          "id": "topic_label",
+          "label": "Optionale Dachzeile",
+          "default": "Alltag & Beschwerden"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Anliegen",
+          "default": "Fersensporn & Fussschmerzen"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Erklärung",
+          "default": "Sohlen, Dämpfung und Passform verstehen – und erfahren, worauf es bei der Anprobe ankommt."
+        },
+        {
+          "type": "text",
+          "id": "product_hint",
+          "label": "Passende Produkttypen",
+          "default": "Luftkissenschuhe · Komfortschuhe"
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Linktext",
+          "default": "Möglichkeiten entdecken"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Themen- oder Sortimentsseite"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Einstieg nach Bedürfnis",
+      "settings": {
+        "eyebrow": "IHR ANLIEGEN. IHR EINSTIEG.",
+        "heading": "Was möchten Sie verbessern?",
+        "intro": "Beginnen Sie bei Ihrem Anliegen. Wir erklären die Möglichkeiten und führen Sie zum passenden Sortiment."
+      },
+      "blocks": [
+        {
+          "type": "need",
+          "settings": {
+            "title": "Fersensporn & Fussschmerzen",
+            "description": "Sohlen, Dämpfung und Passform verstehen – und erfahren, worauf es bei der Anprobe ankommt.",
+            "topic_label": "Alltag & Beschwerden",
+            "product_hint": "Luftkissenschuhe · Komfortschuhe",
+            "fallback_image": "needs-foot.jpg",
+            "image_alt": "Thema Fersensporn und Fussschmerzen",
+            "link_label": "Möglichkeiten entdecken",
+            "url": "/pages/fersensporn-und-andere-fussschmerzen"
+          }
+        },
+        {
+          "type": "need",
+          "settings": {
+            "title": "Rückenschmerzen",
+            "description": "Entdecken Sie Möglichkeiten für mehr Bewegung beim Sitzen, Stehen und Gehen.",
+            "topic_label": "Alltag & Beschwerden",
+            "product_hint": "Aktiv-Stehmatten · Gesundheitsschuhe",
+            "fallback_image": "needs-back.jpg",
+            "image_alt": "Thema Rücken und Bewegung im Alltag",
+            "link_label": "Möglichkeiten entdecken",
+            "url": "/pages/ruckenschmerzen"
+          }
+        },
+        {
+          "type": "need",
+          "settings": {
+            "title": "Arthrose & Gelenkschmerzen",
+            "description": "Unterschiedliche Gehgefühle kennenlernen und Produkte mit verständlichen Informationen vergleichen.",
+            "topic_label": "Alltag & Beschwerden",
+            "product_hint": "Weich-elastische Schuhe · Balancekissen",
+            "fallback_image": "needs-joints.jpg",
+            "image_alt": "Thema Arthrose und Gelenkschmerzen",
+            "link_label": "Möglichkeiten entdecken",
+            "url": "/pages/arthrose-und-gelenkschmerzen"
+          }
+        },
+        {
+          "type": "need",
+          "settings": {
+            "title": "Müde & schwere Beine",
+            "description": "Informieren Sie sich über Kompressionsmassage, Anwendung und die Unterschiede der Geräte.",
+            "topic_label": "Alltag & Beschwerden",
+            "product_hint": "Kompressionsgeräte · Massagegeräte",
+            "fallback_image": "needs-legs.jpg",
+            "image_alt": "Thema müde und schwere Beine",
+            "link_label": "Möglichkeiten entdecken",
+            "url": "/pages/venenengel"
+          }
+        },
+        {
+          "type": "need",
+          "settings": {
+            "title": "Mit Freude Sport treiben",
+            "description": "Laufschuhe für Ihren Einsatz kennenlernen – mit Informationen zu Passform und Laufgefühl.",
+            "topic_label": "Bewegung & Sport",
+            "product_hint": "Laufschuhe · Faszienrollen",
+            "fallback_image": "needs-sport.jpg",
+            "image_alt": "Thema Sport und Laufen",
+            "link_label": "Möglichkeiten entdecken",
+            "url": "/collections/vimazi"
+          }
+        },
+        {
+          "type": "need",
+          "settings": {
+            "title": "Sicher & komfortabel arbeiten",
+            "description": "Für anspruchsvolle Arbeit: Schutz, Passform und Komfort kennenlernen und bewusst auswählen.",
+            "topic_label": "Gesundheit am Arbeitsplatz",
+            "product_hint": "Sicherheitsschuhe · Aktiv-Stehmatten",
+            "fallback_image": "needs-work.jpg",
+            "image_alt": "Thema sicheres und komfortables Arbeiten",
+            "link_label": "Möglichkeiten entdecken",
+            "url": "/pages/elten"
+          }
+        },
+        {
+          "type": "need",
+          "settings": {
+            "title": "Beweglicher bleiben",
+            "description": "Faszienrollen, Massagebälle und verständliche Anwendungen für Ihre Bewegungsroutine entdecken.",
+            "topic_label": "Mobilität & Balance",
+            "product_hint": "Faszienrollen · Massagebälle",
+            "fallback_image": "needs-mobility.jpg",
+            "image_alt": "Thema Beweglichkeit im Alltag",
+            "link_label": "Möglichkeiten entdecken",
+            "url": "/pages/blackroll"
+          }
+        },
+        {
+          "type": "need",
+          "settings": {
+            "title": "Erholt aufwachen",
+            "description": "Kissen und Schlafzubehör verstehen – für eine bewusst ausgewählte Schlafumgebung.",
+            "topic_label": "Schlaf & Erholung",
+            "product_hint": "Ergonomische Kissen · Schlafmasken",
+            "fallback_image": "needs-sleep.jpg",
+            "image_alt": "Thema Schlaf und Erholung",
+            "link_label": "Möglichkeiten entdecken",
+            "url": "/pages/regeneration-im-schlaf"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

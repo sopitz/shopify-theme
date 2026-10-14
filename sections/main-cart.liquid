@@ -1,0 +1,66 @@
+{%- capture onsite_consultation_url -%}{%- render 'filial-anchor-url', url: section.settings.consultation_url, fallback_url: '/pages/filialubersicht#Filialen' -%}{%- endcapture -%}
+{%- assign onsite_consultation_url = onsite_consultation_url | strip -%}
+<section class="cart-section section-space">
+  <div class="container">
+    <div class="section-heading"><div><p class="eyebrow">Ein Schritt zu mehr Wohlbefinden</p><h1>Ihr Warenkorb</h1></div><a class="text-link" href="{{ routes.all_products_collection_url }}">Weiter einkaufen {% render 'icon', name: 'arrow' %}</a></div>
+    {%- if cart.item_count > 0 -%}
+      <form action="{{ routes.cart_url }}" method="post" id="CartForm-{{ section.id }}" class="cart-layout">
+        <div class="cart-items">
+          <div class="cart-column-labels" aria-hidden="true"><span>Produkt</span><span>Anzahl</span><span>Gesamt</span></div>
+          {%- for item in cart.items -%}
+            <article class="cart-item">
+              {% assign item_image_alt = item.image.alt | default: item.product.title %}<a class="cart-item-image" href="{{ item.url }}">{% if item.image %}{{ item.image | image_url: width: 300 | image_tag: loading: 'lazy', alt: item_image_alt, width: 150, height: 150 }}{% else %}{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}{% endif %}</a>
+              <div class="cart-item-info">
+                <p class="product-brand">{{ item.product.vendor | escape }}</p><h2 class="product-title"><a href="{{ item.url }}">{{ item.product.title | escape }}</a></h2>
+                {%- unless item.product.has_only_default_variant -%}<dl class="cart-item-options">{%- for option in item.options_with_values -%}<div><dt>{{ option.name | escape }}:</dt><dd>{{ option.value | escape }}</dd></div>{%- endfor -%}</dl>{%- endunless -%}
+                {%- if item.product.metafields.upswing.color_name != blank -%}<p class="cart-color">Farbe: {{ item.product.metafields.upswing.color_name.value | escape }}</p>{%- endif -%}
+                {%- if item.selling_plan_allocation -%}<p>{{ item.selling_plan_allocation.selling_plan.name | escape }}</p>{%- endif -%}
+                {%- for property in item.properties -%}{%- assign property_first_char = property.first | slice: 0 -%}{%- if property.last != blank and property_first_char != '_' -%}<p class="cart-property">{{ property.first | escape }}: {% if property.last contains '/uploads/' %}<a href="{{ property.last }}">{{ property.last | split: '/' | last | escape }}</a>{% else %}{{ property.last | escape }}{% endif %}</p>{%- endif -%}{%- endfor -%}
+                <div class="cart-item-unit-price">{% if item.original_price != item.final_price %}<s>{{ item.original_price | money_with_currency }}</s> {% endif %}{{ item.final_price | money_with_currency }} pro Stück</div>
+                {%- if item.unit_price_measurement -%}<p class="unit-price">{{ item.unit_price | money_with_currency }} / {% if item.unit_price_measurement.reference_value != 1 %}{{ item.unit_price_measurement.reference_value }}{% endif %}{{ item.unit_price_measurement.reference_unit }}</p>{%- endif -%}
+                {%- for discount in item.line_level_discount_allocations -%}<p class="cart-discount">{{ discount.discount_application.title | escape }} (−{{ discount.amount | money_with_currency }})</p>{%- endfor -%}
+                <a class="cart-remove text-link" href="{{ item.url_to_remove }}" aria-label="{{ item.product.title | escape }} aus dem Warenkorb entfernen">Entfernen</a>
+              </div>
+              <div class="cart-item-quantity"><label class="visually-hidden" for="CartQuantity-{{ section.id }}-{{ forloop.index }}">Anzahl für {{ item.product.title | escape }}</label><input id="CartQuantity-{{ section.id }}-{{ forloop.index }}" name="updates[]" type="number" value="{{ item.quantity }}" min="0" step="any" data-quantity-min="{{ item.variant.quantity_rule.min | default: 1 }}" data-quantity-step="{{ item.variant.quantity_rule.increment | default: 1 }}"{% if item.variant.quantity_rule.max %} max="{{ item.variant.quantity_rule.max }}"{% endif %} inputmode="numeric"></div>
+              <div class="cart-item-total">{% if item.original_line_price != item.final_line_price %}<s>{{ item.original_line_price | money_with_currency }}</s>{% endif %}<strong>{{ item.final_line_price | money_with_currency }}</strong></div>
+            </article>
+          {%- endfor -%}
+          <div class="cart-update"><button class="button secondary" type="submit" name="update">Warenkorb aktualisieren</button></div>
+          <div class="cart-note"><label for="CartNote-{{ section.id }}">Anmerkung zur Bestellung (optional)</label><textarea id="CartNote-{{ section.id }}" name="note" rows="3" placeholder="Was möchten Sie uns mitteilen?">{{ cart.note | escape }}</textarea><p>Ihre Anmerkung wird beim Aktualisieren oder Weitergehen zur Kasse gespeichert.</p></div>
+        </div>
+        <aside class="cart-summary" aria-label="Bestellübersicht">
+          <h2>Ihre Bestellung</h2><div class="summary-row summary-line"><span>Zwischensumme</span><span>{{ cart.items_subtotal_price | money_with_currency }}</span></div>
+          {%- for discount in cart.cart_level_discount_applications -%}<div class="summary-row summary-line cart-discount"><span>{{ discount.title | escape }}</span><span>−{{ discount.total_allocated_amount | money_with_currency }}</span></div>{%- endfor -%}
+          <div class="summary-row summary-line summary-total"><strong>Warenwert</strong><strong>{{ cart.total_price | money_with_currency }}</strong></div>
+          <p class="cart-tax-note">{% if cart.taxes_included %}Inklusive Steuern.{% else %}Steuern werden an der Kasse berechnet.{% endif %} Versand und mögliche weitere Rabatte werden an der Kasse berechnet.</p>
+          <p class="cart-shipping-note">{% render 'icon', name: 'truck' %}<span>{{ section.settings.shipping_note | escape }}</span></p>
+          <button class="button checkout-button" type="submit" name="checkout">Zur sicheren Kasse {% render 'icon', name: 'arrow' %}</button>
+          {%- if shop.enabled_payment_types.size > 0 -%}<ul class="payment-icons" aria-label="Verfügbare Zahlungsarten">{%- for type in shop.enabled_payment_types -%}<li>{{ type | payment_type_svg_tag: class: 'payment-icon' }}</li>{%- endfor -%}</ul>{%- endif -%}
+          <div class="cart-help"><strong>Fragen vor dem Kauf?</strong><p>Wir helfen bei Grösse, Anwendung und Auswahl.</p><a class="text-link" href="{{ onsite_consultation_url | escape }}">Persönliche Beratung</a></div>
+          {%- if shop.refund_policy != blank -%}<a class="text-link" href="{{ shop.refund_policy.url }}">Rückgabe- und Erstattungsbedingungen</a>{%- endif -%}
+        </aside>
+      </form>
+    {%- else -%}
+      <div class="empty-state cart-empty">{% render 'icon', name: 'bag' %}<h2>Ihr Warenkorb ist noch leer.</h2><p>Entdecken Sie Produkte für mehr Bewegung, Entlastung und Wohlbefinden.</p><div class="button-row"><a class="button" href="{{ routes.all_products_collection_url }}">Produkte entdecken</a><a class="button secondary" href="{{ onsite_consultation_url | escape }}">Beraten lassen</a></div></div>
+    {%- endif -%}
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Warenkorb",
+  "settings": [
+    {
+      "type": "url",
+      "id": "consultation_url",
+      "label": "Beratung / Filialen"
+    },
+    {
+      "type": "text",
+      "id": "shipping_note",
+      "label": "Versandhinweis",
+      "default": "Schweiz: CHF 8 Versand. Ab CHF 99 Warenwert versandkostenfrei.",
+      "info": "Mit den tatsächlich im Shopify Checkout eingerichteten Versandbedingungen abgleichen."
+    }
+  ]
+}
+{% endschema %}

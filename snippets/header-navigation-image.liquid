@@ -1,0 +1,41 @@
+{%- liquid
+  assign navigation_image = false
+  assign navigation_asset = fallback_asset | default: ''
+  assign navigation_sizes = image_sizes | default: '(min-width: 1101px) 200px, 52px'
+  assign navigation_url = nav_url | default: nav_link.url | split: '?' | first
+  if nav_link.object != blank
+    assign navigation_image = nav_link.object.image | default: nav_link.object.featured_image
+    if navigation_image == blank and nav_link.type == 'collection_link'
+      assign navigation_image = nav_link.object.products.first.featured_image
+    endif
+  endif
+  if navigation_image == blank or navigation_image == false
+    if navigation_url contains '/collections/'
+      assign navigation_handle = navigation_url | split: '/collections/' | last | split: '/' | first
+      assign navigation_collection = collections[navigation_handle]
+      assign navigation_image = navigation_collection.image | default: navigation_collection.featured_image | default: navigation_collection.products.first.featured_image
+    elsif navigation_url contains '/products/'
+      assign navigation_handle = navigation_url | split: '/products/' | last | split: '/' | first
+      assign navigation_product = all_products[navigation_handle]
+      assign navigation_image = navigation_product.featured_image
+    endif
+  endif
+  for image_block in header_blocks
+    assign image_block_url = image_block.settings.url | split: '?' | first
+    if image_block.type == 'menu_image' and image_block_url == navigation_url
+      if image_block.settings.image != blank
+        assign navigation_image = image_block.settings.image
+      elsif image_block.settings.fallback_asset != blank
+        assign navigation_asset = image_block.settings.fallback_asset
+        assign navigation_image = false
+      endif
+      break
+    endif
+  endfor
+-%}
+{%- if navigation_image != blank and navigation_image != false -%}
+  {{- navigation_image | image_url: width: 720 | image_tag: loading: 'lazy', widths: '160, 240, 360, 540, 720', sizes: navigation_sizes, alt: '' -}}
+{%- else -%}
+  {%- if navigation_asset == blank -%}{%- capture navigation_asset -%}{% render 'navigation-image-map', nav_url: navigation_url %}{%- endcapture -%}{%- assign navigation_asset = navigation_asset | strip -%}{%- endif -%}
+  {%- if navigation_asset != blank -%}<img src="{{ navigation_asset | asset_url }}" width="720" height="720" loading="lazy" alt="">{%- else -%}<span class="nav-image-placeholder" aria-hidden="true">{% render 'icon', name: 'leaf' %}</span>{%- endif -%}
+{%- endif -%}

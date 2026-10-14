@@ -1,0 +1,143 @@
+{%- liquid
+  assign current_sort = collection.sort_by | default: collection.default_sort_by
+  assign consultation_url = section.settings.consultation_url | default: '/pages/filialubersicht'
+  assign model_filters = section.settings.model_filter_parameters | remove: ' ' | split: ','
+  assign visible_filter_count = 0
+-%}
+{%- capture consultation_url -%}{%- render 'filial-anchor-url', url: consultation_url, fallback_url: '/pages/filialubersicht' -%}{%- endcapture -%}
+{%- assign consultation_url = consultation_url | strip -%}
+<section class="collection-section section-space" id="Collection-{{ section.id }}">
+  <div class="container">
+    <nav class="breadcrumbs" aria-label="Brotkrumennavigation"><a href="{{ routes.root_url }}">Startseite</a><span aria-hidden="true">/</span><span>{{ collection.title | escape }}</span></nav>
+    <header class="collection-header">
+      <div><p class="eyebrow">Mit Beratung zur passenden Wahl</p><h1>{{ collection.title | escape }}</h1>{% if collection.description != blank %}<div class="rte collection-description">{{ collection.description }}</div>{% endif %}</div>
+      <a class="button secondary" href="{{ consultation_url }}">Bei der Auswahl helfen lassen {% render 'icon', name: 'arrow' %}</a>
+    </header>
+    {%- if section.blocks.size > 0 -%}
+      <nav class="collection-shortcuts" aria-label="Auswahl eingrenzen">{%- for block in section.blocks -%}{% if block.settings.url != blank %}<a class="category-chip" href="{{ block.settings.url }}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}{% render 'icon', name: 'arrow' %}</a>{% endif %}{%- endfor -%}</nav>
+    {%- endif -%}
+    {%- paginate collection.products by section.settings.products_per_page -%}
+      <div class="collection-layout">
+        <form class="filters-sidebar" action="{{ collection.url }}" method="get" id="CollectionFilters-{{ section.id }}">
+          <div class="filter-heading"><h2>Ihre Auswahl</h2><a class="text-link" href="{{ collection.url }}?sort_by={{ current_sort | url_encode }}">Zurücksetzen</a></div>
+          {%- for filter in collection.filters -%}
+            {%- liquid
+              assign show_filter = true
+              if filter.param_name == 'filter.p.m.upswing.model_primary'
+                assign show_filter = false
+              elsif section.settings.model_collection
+                unless model_filters contains filter.param_name
+                  assign show_filter = false
+                endunless
+              endif
+              if show_filter
+                assign visible_filter_count = visible_filter_count | plus: 1
+              endif
+            -%}
+            {%- if show_filter -%}
+              <details class="filter-group"{% if filter.active_values.size > 0 or visible_filter_count <= 3 or filter.min_value.value != blank or filter.max_value.value != blank %} open{% endif %}>
+                <summary>{{ filter.label | escape }} {% render 'icon', name: 'chevron' %}</summary>
+                <div class="filter-options">
+                  {%- case filter.type -%}
+                    {%- when 'boolean', 'list' -%}
+                      {%- for value in filter.values -%}
+                        <label class="filter-value{% if value.count == 0 and value.active == false %} is-disabled{% endif %}" for="Filter-{{ section.id }}-{{ forloop.parentloop.index }}-{{ forloop.index }}">
+                          <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value | escape }}" id="Filter-{{ section.id }}-{{ forloop.parentloop.index }}-{{ forloop.index }}"{% if value.active %} checked{% endif %}{% if value.count == 0 and value.active == false %} disabled{% endif %}>
+                          <span>{{ value.label | escape }}</span><span class="filter-count">{{ value.count }}</span>
+                        </label>
+                      {%- endfor -%}
+                    {%- when 'price_range' -%}
+                      <div class="price-range">
+                        <label for="PriceMin-{{ section.id }}">Von ({{ cart.currency.iso_code }})<input type="number" name="{{ filter.min_value.param_name }}" id="PriceMin-{{ section.id }}" min="0" max="{{ filter.range_max | divided_by: 100.0 }}" step="0.01"{% if filter.min_value.value != blank %} value="{{ filter.min_value.value | divided_by: 100.0 }}"{% endif %} placeholder="0" inputmode="decimal"></label>
+                        <label for="PriceMax-{{ section.id }}">Bis ({{ cart.currency.iso_code }})<input type="number" name="{{ filter.max_value.param_name }}" id="PriceMax-{{ section.id }}" min="0" max="{{ filter.range_max | divided_by: 100.0 }}" step="0.01"{% if filter.max_value.value != blank %} value="{{ filter.max_value.value | divided_by: 100.0 }}"{% endif %} placeholder="{{ filter.range_max | divided_by: 100.0 }}" inputmode="decimal"></label>
+                      </div>
+                  {%- endcase -%}
+                </div>
+              </details>
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if visible_filter_count == 0 -%}<p class="filter-help">Entdecken Sie die Produkte oder lassen Sie sich persönlich beraten.</p>{%- endif -%}
+          <button class="button filter-apply" type="submit">Auswahl anwenden</button>
+          <div class="filter-consultation"><p class="eyebrow">Noch unsicher?</p><strong>Wir nehmen uns Zeit.</strong><p>Finden Sie gemeinsam mit uns das Produkt, das zu Ihrem Alltag passt.</p><a class="text-link" href="{{ consultation_url }}">Persönliche Beratung</a></div>
+        </form>
+        <div class="collection-results">
+          <div class="collection-toolbar">
+            <p class="result-count" role="status">{{ collection.products_count }} {% if section.settings.model_collection %}{% if collection.products_count == 1 %}Modell{% else %}Modelle{% endif %}{% else %}{% if collection.products_count == 1 %}Produkt{% else %}Produkte{% endif %}{% endif %}</p>
+            <div class="sort-control"><label for="CollectionSort-{{ section.id }}">Sortieren</label><select id="CollectionSort-{{ section.id }}" name="sort_by" form="CollectionFilters-{{ section.id }}">{%- for option in collection.sort_options -%}<option value="{{ option.value | escape }}"{% if option.value == current_sort %} selected{% endif %}>{{ option.name | escape }}</option>{%- endfor -%}</select><button class="text-link sort-apply" type="submit" form="CollectionFilters-{{ section.id }}">Anwenden</button></div>
+          </div>
+          {%- if section.settings.model_collection -%}<p class="collection-model-note">Ein Modell, alle Farben. Wählen Sie Ihre Farbe direkt beim Produkt.</p>{%- endif -%}
+          <div class="active-filters" aria-label="Aktive Filter">
+            {%- for filter in collection.filters -%}
+              {%- for value in filter.active_values -%}<a class="active-filter" href="{{ value.url_to_remove }}">{{ filter.label | escape }}: {{ value.label | escape }} {% render 'icon', name: 'close' %}<span class="visually-hidden">Filter entfernen</span></a>{%- endfor -%}
+              {%- if filter.type == 'price_range' -%}{%- if filter.min_value.value != blank or filter.max_value.value != blank -%}<a class="active-filter" href="{{ filter.url_to_remove }}">{{ filter.min_value.value | default: 0 | money_with_currency }} – {{ filter.max_value.value | default: filter.range_max | money_with_currency }} {% render 'icon', name: 'close' %}<span class="visually-hidden">Preisfilter entfernen</span></a>{%- endif -%}{%- endif -%}
+            {%- endfor -%}
+          </div>
+          {%- if collection.products_count > 0 -%}
+            <div class="product-grid collection-product-grid">
+              {%- for product in collection.products -%}{% render 'product-card', product: product %}{%- endfor -%}
+            </div>
+            {%- if paginate.pages > 1 -%}<nav class="pagination" aria-label="Weitere Produkte">{{ paginate | default_pagination: next: 'Weiter', previous: 'Zurück' }}</nav>{%- endif -%}
+          {%- else -%}
+            <div class="empty-state"><h2>Keine Produkte für diese Auswahl.</h2><p>Entfernen Sie einen Filter oder sprechen Sie mit uns über Ihre Wünsche.</p><div class="button-row"><a class="button" href="{{ collection.url }}">Alle Produkte dieser Auswahl</a><a class="button secondary" href="{{ consultation_url }}">Beratung finden</a></div></div>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endpaginate -%}
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Kollektion & Filter",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Produkte pro Seite",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "default": 24
+    },
+    {
+      "type": "url",
+      "id": "consultation_url",
+      "label": "Beratung / Filialen"
+    },
+    {
+      "type": "checkbox",
+      "id": "model_collection",
+      "label": "Diese Kollektion enthält ein Primärprodukt je Modell",
+      "default": false
+    },
+    {
+      "type": "paragraph",
+      "content": "Modellgruppierung: Erst eine kuratierte Kollektion mit einem Primärprodukt pro Modell anlegen und upswing.model_products für übrige Farben pflegen. Kein Produkt wird nach Pagination ausgeblendet. In Modellkollektionen werden nur unten freigegebene Modellfilter angezeigt; normale Farb-, Grössen-, Preis- und Lagerfilter prüfen nur das Primärprodukt."
+    },
+    {
+      "type": "text",
+      "id": "model_filter_parameters",
+      "label": "Erlaubte Filter in Modellkollektionen",
+      "default": "filter.p.vendor,filter.p.product_type,filter.p.m.upswing.model_colors",
+      "info": "Kommagetrennte Shopify Filterparameter. Weitere Metafeldfilter erst ergänzen, wenn Primärprodukte geprüfte Attribute des gesamten Modells enthalten. Search & Discovery muss diese Filter bereitstellen."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "shortcut",
+      "name": "Schnelleinstieg",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Text"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Zielkollektion / Seite"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

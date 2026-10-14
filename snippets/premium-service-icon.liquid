@@ -1,0 +1,11 @@
+<span class="premium-service-icon" data-premium-icon="{{ name | escape }}">
+  <svg class="premium-service-svg" viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+    {%- case name -%}
+    {%- when 'welcome' -%}<path d="M4 10h13v7a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-7Z"/><path d="M17 11h2a3 3 0 0 1 0 6h-2M2 22h19"/><g class="premium-icon-steam"><path d="M7 7c-2-2 2-3 0-5M12 7c-2-2 2-3 0-5"/></g>
+    {%- when 'clean' -%}<path d="M4 9V5a3 3 0 0 1 6 0v2M7 9l1-2a3 3 0 0 1 5 0l1 2H7Z"/><g class="premium-icon-drop"><path d="m7 12-1 2m5-2v2m4-2 1 2m-10 3-1 2m6-2v2m5-2 1 2"/></g>
+    {%- when 'ozone' -%}<path d="m12 2 8 4v6c0 5-8 10-8 10S4 17 4 12V6l8-4Z"/><g class="premium-icon-bubble"><circle cx="9" cy="10" r="1.6"/><circle cx="14" cy="12" r="2.2"/><circle cx="10" cy="16" r="1"/></g>
+    {%- when 'laces' -%}<g class="premium-icon-step"><path d="M7 2C4 2 3 6 3 9l1 5h6l1-5c0-3-1-7-4-7ZM4 17h6v3a3 3 0 0 1-6 0v-3Z"/><path d="M18 6c-3 0-4 4-4 7l1 4h6l1-4c0-3-1-7-4-7Zm-3 14h6v1a3 3 0 0 1-6 0v-1Z"/></g>
+    {%- when 'care' -%}<path d="M9 3h6v4H9V3Zm-1 4h8v14H8V7Zm2-5h4M8 10h8"/><path class="premium-icon-drop" d="M12 12s-2 2.5-2 4a2 2 0 0 0 4 0c0-1.5-2-4-2-4Z"/>
+    {%- endcase -%}
+  </svg>
+</span>

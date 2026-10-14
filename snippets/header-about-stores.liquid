@@ -1,0 +1,58 @@
+{% comment %}Only the five confirmed location pages receive a default store photograph. Custom menu links and titles are kept; existing header image blocks may override these photographs.{% endcomment %}
+{%- if about_links == blank -%}
+  <a class="about-store-overview text-link" href="/pages/filialubersicht#Filialen">Alle Filialen &amp; Öffnungszeiten {% render 'icon', name: 'arrow' %}</a>
+  <ul class="about-store-grid">
+    {%- assign stores = 'standort-thun;Thun;about-thun-1.jpg|standort-ruti-zh;Rüti ZH;about-ruti-1.jpg|standort-zurich;Zürich;about-zurich-1.jpg|standort-winterthur;Winterthur;about-winterthur-1.jpg|standort-basel;Basel;about-basel-1.jpg' | split: '|' -%}
+    {%- for store in stores -%}
+      {%- liquid
+        assign store_parts = store | split: ';'
+        assign store_url = '/pages/' | append: store_parts[0]
+        assign store_current = false
+        if request.path == store_url
+          assign store_current = true
+        endif
+      -%}
+      {% render 'header-about-store-card', store_url: store_url, store_title: store_parts[1], store_current: store_current, image_url: store_url, image_asset: store_parts[2], header_blocks: header_blocks %}
+    {%- endfor -%}
+  </ul>
+{%- else -%}
+  {%- assign overview_markup = '' -%}
+  {%- assign card_markup = '' -%}
+  {%- assign extra_markup = '' -%}
+  {%- for link in about_links -%}
+    {%- liquid
+      assign location_link = false
+      if link.url contains '/pages/standort-' or link.url contains '/pages/filialubersicht' or link.title contains 'Filial' or link.title contains 'Standort'
+        assign location_link = true
+      endif
+      for child in link.links
+        if child.url contains '/pages/standort-' or child.url contains '/pages/filialubersicht'
+          assign location_link = true
+        endif
+        for grandchild in child.links
+          if grandchild.url contains '/pages/standort-' or grandchild.url contains '/pages/filialubersicht'
+            assign location_link = true
+          endif
+        endfor
+      endfor
+    -%}
+    {%- if location_link -%}
+      {%- capture node_overview -%}{% render 'header-about-store-node', link: link, mode: mode, display_kind: 'overview', header_blocks: header_blocks %}{%- endcapture -%}
+      {%- capture node_cards -%}{% render 'header-about-store-node', link: link, mode: mode, display_kind: 'cards', header_blocks: header_blocks %}{%- endcapture -%}
+      {%- capture node_extra -%}{% render 'header-about-store-node', link: link, mode: mode, display_kind: 'extra', header_blocks: header_blocks %}{%- endcapture -%}
+      {%- assign overview_markup = overview_markup | append: node_overview -%}
+      {%- assign card_markup = card_markup | append: node_cards -%}
+      {%- assign extra_markup = extra_markup | append: node_extra -%}
+    {%- endif -%}
+  {%- endfor -%}
+  {%- assign overview_markup = overview_markup | strip -%}
+  {%- assign card_markup = card_markup | strip -%}
+  {%- assign extra_markup = extra_markup | strip -%}
+  {%- if overview_markup != blank -%}
+    {{ overview_markup }}
+  {%- elsif card_markup != blank -%}
+    <a class="about-store-overview text-link" href="/pages/filialubersicht#Filialen">Alle Filialen &amp; Öffnungszeiten {% render 'icon', name: 'arrow' %}</a>
+  {%- endif -%}
+  {%- if card_markup != blank -%}<ul class="about-store-grid">{{ card_markup }}</ul>{%- endif -%}
+  {%- if extra_markup != blank -%}<ul class="links about-store-extra-links">{{ extra_markup }}</ul>{%- endif -%}
+{%- endif -%}

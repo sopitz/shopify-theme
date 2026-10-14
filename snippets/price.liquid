@@ -1,0 +1,24 @@
+{%- liquid
+  assign priced_item = variant | default: product.selected_or_first_available_variant | default: product
+  assign amount = priced_item.price
+  assign comparison = priced_item.compare_at_price
+  if from_price != blank
+    assign amount = from_price
+    assign comparison = nil
+  endif
+-%}
+<span class="price{% if comparison > amount %} price--sale{% endif %}">
+  {%- if show_from -%}<span class="price-prefix">ab </span>{%- endif -%}
+  <span{% if live %} data-product-price{% endif %}>{{ amount | money_with_currency }}</span>
+  {%- if comparison > amount -%}
+    <s{% if live %} data-product-compare-price{% endif %}>{{ comparison | money_with_currency }}</s>
+  {%- elsif live -%}
+    <s data-product-compare-price hidden></s>
+  {%- endif -%}
+</span>
+{%- if priced_item.unit_price_measurement -%}
+  <span class="unit-price">
+    {{ priced_item.unit_price | money_with_currency }} /
+    {% if priced_item.unit_price_measurement.reference_value != 1 %}{{ priced_item.unit_price_measurement.reference_value }}{% endif %}{{ priced_item.unit_price_measurement.reference_unit }}
+  </span>
+{%- endif -%}

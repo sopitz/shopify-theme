@@ -1,0 +1,14 @@
+{%- comment -%}
+  Add the location-list anchor only to the existing upswing location overview.
+  Configured contact, telephone, external and already anchored URLs stay intact.
+{%- endcomment -%}
+{%- liquid
+  assign target_url = url | default: fallback_url | default: '/pages/filialubersicht'
+  assign target_path = target_url | split: '?' | first
+  unless target_url contains '#'
+    if target_path == '/pages/filialubersicht' or target_path == '/pages/filialubersicht/' or target_path == 'https://upswing.ch/pages/filialubersicht' or target_path == 'https://upswing.ch/pages/filialubersicht/' or target_path == 'https://www.upswing.ch/pages/filialubersicht' or target_path == 'https://www.upswing.ch/pages/filialubersicht/' or target_path == 'http://upswing.ch/pages/filialubersicht' or target_path == 'http://upswing.ch/pages/filialubersicht/' or target_path == 'http://www.upswing.ch/pages/filialubersicht' or target_path == 'http://www.upswing.ch/pages/filialubersicht/'
+      assign target_url = target_url | append: '#Filialen'
+    endif
+  endunless
+-%}
+{{- target_url -}}

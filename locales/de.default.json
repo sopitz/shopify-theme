@@ -1,0 +1,26 @@
+{
+  "general": {
+    "accessibility": {
+      "skip_to_content": "Zum Inhalt springen",
+      "close": "Schliessen"
+    },
+    "search": {
+      "search": "Suchen",
+      "placeholder": "Produkte und Marken suchen"
+    },
+    "cart": {
+      "title": "Warenkorb",
+      "empty": "Ihr Warenkorb ist noch leer."
+    }
+  },
+  "contact": {
+    "form": {
+      "name": "Name",
+      "email": "E-Mail",
+      "phone": "Telefon",
+      "comment": "Nachricht",
+      "send": "Nachricht senden",
+      "post_success": "Vielen Dank. Ihre Nachricht ist bei uns eingegangen."
+    }
+  }
+}

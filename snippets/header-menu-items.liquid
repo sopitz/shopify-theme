@@ -1,0 +1,53 @@
+{% for link in links %}{%- capture main_link_url -%}{%- render 'filial-anchor-url', url: link.url, fallback_url: '/pages/filialubersicht' -%}{%- endcapture -%}
+{%- assign main_link_url = main_link_url | strip -%}
+
+  {% liquid
+    assign menu_label = link.title
+    assign menu_label_key = link.title | handleize
+    assign is_about_link = false
+    if link.url == header_section.settings.about_url or menu_label_key == 'uber-uns' or menu_label_key == 'ueber-uns'
+      assign is_about_link = true
+    endif
+    if link.title == 'Trainingsgeräte'
+      assign menu_label = 'Bewegung & Training'
+    elsif link.title == 'Vitalität'
+      assign menu_label = 'Regeneration'
+    endif
+  %}
+  {% if is_about_link %}{% render 'header-about-menu', mode: mode, header_section: header_section, about_link: link, unique_suffix: forloop.index %}
+  {% elsif mode == 'desktop' %}
+    <li class="mega-menu-item" data-nav-item>
+      {% if link.links.size > 0 %}
+        <div class="mega-menu-trigger"><a class="mega-menu-link" href="{{ main_link_url | escape }}" {% if link.current %}aria-current="page"{% endif %}>{{ menu_label | escape }}</a><button class="mega-menu-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="MegaMenu-{{ header_section.id }}-{{ forloop.index }}" aria-label="{{ menu_label | escape }} – Untermenü öffnen">{% render 'icon', name: 'chevron' %}</button></div>
+        <div class="mega-menu-panel" id="MegaMenu-{{ header_section.id }}-{{ forloop.index }}" data-nav-panel hidden>
+          <div class="container">
+            <div class="mega-panel-heading"><a class="mega-all-link" href="{{ main_link_url | escape }}">{{ menu_label | escape }} entdecken {% render 'icon', name: 'arrow' %}</a><button class="icon-button mega-close" type="button" data-nav-close aria-label="Untermenü schliessen">{% render 'icon', name: 'close' %}</button></div>
+            <ul class="mega-card-grid">
+              {% for child in link.links %}{%- capture main_child_url -%}{%- render 'filial-anchor-url', url: child.url, fallback_url: '/pages/filialubersicht' -%}{%- endcapture -%}
+{%- assign main_child_url = main_child_url | strip -%}
+
+                <li class="mega-child"><a class="mega-card" href="{{ main_child_url | escape }}" {% if child.current %}aria-current="page"{% endif %}><div class="mega-card-media">{% render 'header-navigation-image', nav_link: child, nav_url: child.url, header_blocks: header_section.blocks %}</div><div class="mega-card-copy"><span class="mega-card-title">{{ child.title | escape }}</span></div></a>
+                  {% if child.links.size > 0 %}<ul class="mega-submenu">{% for grandchild in child.links %}{%- capture main_grandchild_url -%}{%- render 'filial-anchor-url', url: grandchild.url, fallback_url: '/pages/filialubersicht' -%}{%- endcapture -%}
+{%- assign main_grandchild_url = main_grandchild_url | strip -%}
+<li><a class="mega-submenu-link" href="{{ main_grandchild_url | escape }}" {% if grandchild.current %}aria-current="page"{% endif %}><span class="mega-submenu-media">{% render 'header-navigation-image', nav_link: grandchild, nav_url: grandchild.url, header_blocks: header_section.blocks %}</span><span>{{ grandchild.title | escape }}</span></a></li>{% endfor %}</ul>{% endif %}
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      {% else %}<a class="mega-menu-link" href="{{ main_link_url | escape }}" {% if link.current %}aria-current="page"{% endif %}>{{ menu_label | escape }}</a>{% endif %}
+    </li>
+  {% else %}
+    <li>
+      {% if link.links.size > 0 %}
+        <details class="mobile-nav-item"><summary class="mobile-nav-summary"><span>{{ menu_label | escape }}</span>{% render 'icon', name: 'chevron' %}</summary><a class="mobile-nav-all" href="{{ main_link_url | escape }}">{{ menu_label | escape }} entdecken {% render 'icon', name: 'arrow' %}</a><ul class="mobile-nav-list">
+          {% for child in link.links %}{%- capture main_child_url -%}{%- render 'filial-anchor-url', url: child.url, fallback_url: '/pages/filialubersicht' -%}{%- endcapture -%}
+{%- assign main_child_url = main_child_url | strip -%}
+<li>{% if child.links.size > 0 %}<details class="mobile-nav-item"><summary class="mobile-nav-summary"><span>{{ child.title | escape }}</span>{% render 'icon', name: 'chevron' %}</summary><a class="mobile-nav-all" href="{{ main_child_url | escape }}">{{ child.title | escape }} entdecken</a><ul class="mobile-nav-list">{% for grandchild in child.links %}{%- capture main_grandchild_url -%}{%- render 'filial-anchor-url', url: grandchild.url, fallback_url: '/pages/filialubersicht' -%}{%- endcapture -%}
+{%- assign main_grandchild_url = main_grandchild_url | strip -%}
+<li><a class="mobile-nav-link" href="{{ main_grandchild_url | escape }}" {% if grandchild.current %}aria-current="page"{% endif %}><span class="mobile-link-media">{% render 'header-navigation-image', nav_link: grandchild, nav_url: grandchild.url, header_blocks: header_section.blocks %}</span><span>{{ grandchild.title | escape }}</span></a></li>{% endfor %}</ul></details>{% else %}<a class="mobile-nav-link" href="{{ main_child_url | escape }}" {% if child.current %}aria-current="page"{% endif %}><span class="mobile-link-media">{% render 'header-navigation-image', nav_link: child, nav_url: child.url, header_blocks: header_section.blocks %}</span><span>{{ child.title | escape }}</span></a>{% endif %}</li>{% endfor %}
+        </ul></details>
+      {% else %}<a class="mobile-nav-link" href="{{ main_link_url | escape }}" {% if link.current %}aria-current="page"{% endif %}>{{ menu_label | escape }}</a>{% endif %}
+    </li>
+  {% endif %}
+{% endfor %}

@@ -1,0 +1,46 @@
+{%- liquid
+  assign node_level = level | default: 1
+  assign node_url = link.url | split: '?' | first | split: '#' | first
+  if shop.url != blank
+    assign node_url = node_url | remove_first: shop.url
+  endif
+  assign known_origins = 'https://www.upswing.ch|https://upswing.ch|http://www.upswing.ch|http://upswing.ch|//www.upswing.ch|//upswing.ch' | split: '|'
+  for origin in known_origins
+    assign node_url = node_url | remove_first: origin
+  endfor
+  assign node_prefix = node_url | slice: 0, 1
+  assign node_host_prefix = node_url | slice: 0, 2
+  assign node_handle = ''
+  if node_prefix == '/' and node_host_prefix != '//' and node_url contains '/pages/'
+    assign node_handle = node_url | split: '/pages/' | last | split: '/' | first
+  endif
+  assign node_asset = ''
+  case node_handle
+    when 'standort-thun'
+      assign node_asset = 'about-thun-1.jpg'
+    when 'standort-ruti-zh'
+      assign node_asset = 'about-ruti-1.jpg'
+    when 'standort-zurich'
+      assign node_asset = 'about-zurich-1.jpg'
+    when 'standort-winterthur'
+      assign node_asset = 'about-winterthur-1.jpg'
+    when 'standort-basel'
+      assign node_asset = 'about-basel-1.jpg'
+  endcase
+-%}
+{%- if display_kind == 'overview' and node_handle == 'filialubersicht' -%}
+  {%- capture node_target -%}{% render 'filial-anchor-url', url: link.url, fallback_url: '/pages/filialubersicht#Filialen' %}{%- endcapture -%}
+  <a class="about-store-overview text-link" href="{{ node_target | strip | escape }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title | escape }} {% render 'icon', name: 'arrow' %}</a>
+{%- elsif display_kind == 'cards' and node_asset != blank -%}
+  {%- assign node_image_url = '/pages/' | append: node_handle -%}
+  {% render 'header-about-store-card', store_url: link.url, store_title: link.title, store_current: link.current, store_link: link, image_url: node_image_url, image_asset: node_asset, header_blocks: header_blocks %}
+{%- elsif display_kind == 'extra' and node_asset == blank and node_handle != 'filialubersicht' -%}
+  {%- capture node_target -%}{% render 'filial-anchor-url', url: link.url, fallback_url: '/pages/filialubersicht#Filialen' %}{%- endcapture -%}
+  <li><a class="{% if mode == 'mobile' %}mobile-nav-link{% else %}about-menu-link{% endif %}" href="{{ node_target | strip | escape }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title | escape }}</a></li>
+{%- endif -%}
+{%- if node_level < 3 -%}
+  {%- assign child_level = node_level | plus: 1 -%}
+  {%- for child in link.links -%}
+    {% render 'header-about-store-node', link: child, mode: mode, display_kind: display_kind, header_blocks: header_blocks, level: child_level %}
+  {%- endfor -%}
+{%- endif -%}

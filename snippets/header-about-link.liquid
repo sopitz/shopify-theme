@@ -1,0 +1,18 @@
+{%- capture about_link_url -%}{%- render 'filial-anchor-url', url: link.url, fallback_url: '/pages/filialubersicht' -%}{%- endcapture -%}
+{%- assign about_link_url = about_link_url | strip -%}
+<li>
+  <a class="{% if mode == 'mobile' %}mobile-nav-link{% else %}about-menu-link{% endif %}" href="{{ about_link_url | escape }}" {% if link.current %}aria-current="page"{% endif %}>{{ link.title | escape }}</a>
+  {% if link.links.size > 0 %}
+    <ul class="{% if mode == 'mobile' %}mobile-nav-list{% else %}links{% endif %}">
+      {% for child in link.links %}{%- capture about_child_url -%}{%- render 'filial-anchor-url', url: child.url, fallback_url: '/pages/filialubersicht' -%}{%- endcapture -%}
+{%- assign about_child_url = about_child_url | strip -%}
+
+        <li><a class="{% if mode == 'mobile' %}mobile-nav-link{% else %}about-menu-link{% endif %}" href="{{ about_child_url | escape }}" {% if child.current %}aria-current="page"{% endif %}>{{ child.title | escape }}</a>
+          {% if child.links.size > 0 %}<ul class="{% if mode == 'mobile' %}mobile-nav-list{% else %}links{% endif %}">{% for grandchild in child.links %}{%- capture about_grandchild_url -%}{%- render 'filial-anchor-url', url: grandchild.url, fallback_url: '/pages/filialubersicht' -%}{%- endcapture -%}
+{%- assign about_grandchild_url = about_grandchild_url | strip -%}
+<li><a class="{% if mode == 'mobile' %}mobile-nav-link{% else %}about-menu-link{% endif %}" href="{{ about_grandchild_url | escape }}" {% if grandchild.current %}aria-current="page"{% endif %}>{{ grandchild.title | escape }}</a></li>{% endfor %}</ul>{% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+</li>
