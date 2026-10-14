@@ -24,12 +24,12 @@ Zusätzlich zeigt **/theme-preview.html** die Startseite aus den tatsächlichen 
 
 ## Shopify Theme installieren
 
-**Aktuelles Installationspaket: Version 1.0.1, korrigiert am 14. Oktober 2026.**
-Der erste Upload enthielt 13 von Shopify nicht erlaubte Link-Voreinstellungen in acht Section-Schemas. Sie sind entfernt; dieselben Ziele bleiben als gespeicherte Einstellungen und Liquid-Fallbacks erhalten. Alle 24 Section-Schemas, 21 JSON-Vorlagen und gespeicherten Einstellungen wurden zusätzlich zur offiziellen Theme-Prüfung gegen die betreffenden Shopify-Regeln geprüft. Der tatsächliche Upload und Betrieb im Shop bleiben die abschliessende Kontrolle.
+**Aktuelles Installationspaket: Version 1.0.2 vom 14. Oktober 2026.**
+Die Korrekturen aus Version 1.0.1 bleiben enthalten: 13 von Shopify nicht erlaubte Link-Voreinstellungen in acht Section-Schemas sind entfernt; dieselben Ziele bleiben als gespeicherte Einstellungen und Liquid-Fallbacks erhalten. Version 1.0.2 ergänzt Suchvorschläge, vorhandene Farbbeziehungen und kompakte Produktkarten. Alle 25 Section-Schemas, 21 JSON-Vorlagen und gespeicherten Einstellungen wurden zusätzlich zur offiziellen Theme-Prüfung gegen die betreffenden Shopify-Regeln geprüft. Der tatsächliche Upload und Betrieb im Shop bleiben die abschliessende Kontrolle.
 
 Im bestehenden upswing-Shop sind Logo, Gestaltung, Originalbilder, bekannte Seiten- und Sortimentsziele sowie ausgewählte Produkt-Handles bereits vorbereitet. Produkte, Varianten, Kollektionen, Menüs und vorhandene Seiten müssen für die erste Vorschau nicht neu angelegt werden. Neue Seitenressourcen und die spätere Modellzuordnung sind separate Einrichtungsschritte. Ein leerer Testshop benötigt zunächst Shopdaten.
 
-Zum erneuten Testen **upswing-shopify-theme-1.0.1.zip** als neuen unveröffentlichten Theme-Entwurf hochladen und die Startseite `/` öffnen. Die auf dem Screenshot sichtbare Route `/en` lieferte zusätzlich eine 404-Seite; Sprach- und Market-Konfiguration werden durch dieses Paket nicht verändert.
+Zum erneuten Testen **upswing-shopify-theme-1.0.2.zip** aus dem [GitHub-Release 1.0.2](https://github.com/sopitz/shopify-theme/releases/tag/v1.0.2) als neuen unveröffentlichten Theme-Entwurf hochladen und die Startseite `/` öffnen. Die auf dem früheren Screenshot sichtbare Route `/en` lieferte zusätzlich eine 404-Seite; Sprach- und Market-Konfiguration werden durch dieses Paket nicht verändert.
 
 
 1. Im Shopify Admin **Onlineshop → Themes** öffnen. **upswing-shopify-theme.zip** im Bereich der Theme Entwürfe über **Theme importieren → ZIP Datei hochladen** hinzufügen.
