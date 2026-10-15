@@ -89,15 +89,16 @@
             <div class="swatches" aria-label="{{ option.name | escape }}">
               {%- for value in option.values limit: 5 -%}
                 {%- liquid
-                  assign swatch_image = value.swatch.image | default: value.variant.featured_image
+                  assign swatch_image = value.swatch.image
+                  assign preview_image = value.variant.featured_image | default: swatch_image
                   assign swatch_url = product.url
                   if value.variant
                     assign swatch_url = value.variant.url
                   endif
                 -%}
-                {%- capture named_color -%}{% render 'color-name-value', color_label: value %}{%- endcapture -%}
-                {%- assign swatch_color = value.swatch.color | default: named_color | strip -%}
-                <a class="swatch swatch--labeled{% if swatch_color == blank %} swatch--text{% endif %}{% if value.selected %} is-selected{% endif %}" href="{{ swatch_url }}" title="{{ value | escape }}" aria-label="{{ value | escape }}"{% if swatch_image %} data-card-swatch="{{ swatch_image | image_url: width: 720 }}"{% endif %}{% if swatch_color != blank %} style="--swatch-color: {{ swatch_color | escape }}"{% endif %}>
+                {%- assign swatch_color = value.swatch.color -%}
+                <a class="swatch swatch--labeled{% if swatch_color == blank and swatch_image == blank %} swatch--text{% endif %}{% if value.selected %} is-selected{% endif %}" href="{{ swatch_url }}" title="{{ value | escape }}" aria-label="{{ value | escape }}"{% if preview_image %} data-card-swatch="{{ preview_image | image_url: width: 720 }}"{% endif %}{% if swatch_color != blank %} style="--swatch-color: {{ swatch_color | escape }}"{% endif %}>
+                  {%- if swatch_image -%}{{ swatch_image | image_url: width: 88 | image_tag: loading: 'lazy', width: 44, height: 44, alt: '' }}{%- endif -%}
                   <span class="swatch-label">{{ value | escape }}</span>
                 </a>
               {%- endfor -%}

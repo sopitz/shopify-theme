@@ -1,7 +1,17 @@
-{%- assign explicit_color = color_product.metafields.upswing.color_hex.value -%}
+{%- assign explicit_color = color_product.metafields.upswing.color_hex.value | strip -%}
 {%- if explicit_color != blank -%}
   {{- explicit_color -}}
 {%- else -%}
-  {%- capture color_label -%}{% render 'product-color-label', color_product: color_product %}{%- endcapture -%}
-  {% render 'color-name-value', color_label: color_label %}
+  {%- for option in color_product.options_with_values -%}
+    {%- assign option_name = option.name | downcase | strip -%}
+    {%- if option_name == 'farbe' or option_name == 'color' or option_name == 'colour' -%}
+      {%- for value in option.values -%}
+        {%- if value.selected and value.swatch.color != blank -%}
+          {{- value.swatch.color -}}
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
 {%- endif -%}

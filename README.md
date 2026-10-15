@@ -1,29 +1,27 @@
 # Upswing Shopify Theme
 
-Shopify-Theme für upswing.ch. Die sieben Theme-Ordner liegen direkt im Repository; das installierbare ZIP steht in den [GitHub Releases](https://github.com/sopitz/shopify-theme/releases).
+Native Shopify-Theme-Quellen für upswing.ch, Stand **1.0.8**. Die sieben Theme-Ordner liegen direkt im Repository. Installationspakete freigegebener Versionen stehen in den [GitHub Releases](https://github.com/sopitz/shopify-theme/releases).
 
-## Installation
+Der Produktkatalog wird im Shopify-Shop gepflegt: Produkte, Varianten, Kollektionen, Menüs, Preise, Bilder und Produktinformationen kommen aus den tatsächlichen Shop-Ressourcen. Die ausgelieferten Produkt- und Kollektionsauswahlen enthalten keine vorbereiteten Handles. Wählen Sie die gewünschten Ressourcen im Theme-Editor und ordnen Sie die Shop-Menüs zu. Nicht verknüpfte Katalogkarten bleiben im Shop verborgen; im Editor helfen Einrichtungshinweise.
 
-1. Im gewünschten Release **upswing-shopify-theme-VERSION.zip** herunterladen.
-2. In Shopify **Onlineshop → Themes → Theme importieren → ZIP hochladen** wählen.
-3. Das Theme zunächst als unveröffentlichten Entwurf öffnen und die Startseite `/` prüfen.
+Die Gestaltung, das Original-Logo, Manrope mit Lizenz sowie die vorhandenen redaktionellen Über-uns- und Filialinhalte bleiben erhalten. Die separate Designvorschau verwendet gekennzeichnete Momentaufnahmen und ist kein Nachweis für aktuelle Shopdaten oder einen funktionierenden Checkout.
 
-Bitte das benannte **Release-Asset** verwenden. GitHubs automatisch erzeugtes „Source code“-ZIP enthält zusätzlich Repository-Dateien und ist kein vorbereitetes Shopify-Installationspaket.
+## Installation und Einrichtung
 
-Im bestehenden upswing-Shop nutzt das Theme vorhandene Produkte, Varianten, Kollektionen und Menüs. Logo, Bilder, Gestaltung und bekannte Über-uns-/Filialseiten sind vorbereitet. Produkttexte und Artikelmerkmale stammen ausschliesslich aus den Shopdaten. Zusätzliche strukturierte Produktfelder sind optional und werden in der Datenspezifikation beschrieben. Bestehende Farbverknüpfungen in `custom_fields.custom_rel_farbe` werden ohne neue Metafelder für die Farbauswahl verwendet. Für eine vollständig nach Modellen geführte, korrekt paginierte Kollektionsliste ist weiterhin eine geprüfte Katalogzuordnung nötig; neue Seiten müssen als Shop-Ressourcen vorhanden sein. Ein leerer Testshop benötigt zunächst Shopdaten.
+1. Das benannte Release-Asset **upswing-shopify-theme-VERSION.zip** herunterladen. GitHubs automatisch erzeugtes „Source code“-ZIP ist kein vorbereitetes Shopify-Installationspaket.
+2. In Shopify **Onlineshop → Themes → Theme importieren → ZIP hochladen** wählen und das Theme als **unveröffentlichten Entwurf** öffnen.
+3. Die [Katalog-Checkliste](docs/Katalog-Einrichtung.html) abarbeiten: Menüs zuordnen, echte Seiten und Kollektionen auswählen, Produkte verknüpfen sowie Shop-Richtlinien und benötigte Zusatzfelder pflegen.
+4. Mit dem echten Katalog im Entwurf Navigation, Produkt- und Kollektionsseiten, Varianten, Warenkorb, Formularzustellung und Checkout prüfen. Die Veröffentlichung erfolgt anschliessend bewusst im Shopify-Admin.
 
-[Produktfelder und Seitentypen](docs/Metafelder-und-Seitentypen.txt) · [Datenvertrag als JSON](docs/Produktdaten-Vertrag.json) · [Ausführliche Einrichtung und Konzept](docs/Einrichtung-und-Konzept.md) · [Änderungen je Version](CHANGELOG.md)
+Ein Theme-Upload legt keine Produkte, Kollektionen, Seiten, Metafelddefinitionen oder Metaobjects an und verändert keine Katalogdaten. Ein leerer Testshop braucht zuerst passende Shop-Ressourcen.
 
-## Releases
+[Einrichtung und Konzept](docs/Einrichtung-und-Konzept.md) · [Katalog-Checkliste als Text](docs/Katalog-Einrichtung.txt) · [Datenübersicht](docs/Shopdaten.txt) · [AICO-Zusatzfelder für vier Hauptkategorien](docs/AICO-Zusatzfelder-Hauptkategorien.html) · [Änderungen je Version](CHANGELOG.md)
 
-Version in `config/settings_schema.json`, Changelog und Git-Tag stimmen überein. Ein Tag wie `v1.0.1` löst den Release-Ablauf aus. Nach erfolgreichen Prüfungen veröffentlicht GitHub automatisch:
+## Datenpflege
 
-- ein direkt installierbares ZIP mit ausschliesslich den sieben Theme-Ordnern;
-- eine SHA-256-Prüfsumme;
-- ein Manifest mit Version, Commit, Dateien und deren Prüfsummen;
-- die zur Version gehörenden Änderungsnotizen.
+Sortimentskarten übernehmen Titel, Ziel, Beschreibung und Bild der ausgewählten Kollektion. Marken verweisen ebenfalls auf echte Kollektionen; ein Bild kann über das optionale Kollektionsmetafeld `upswing.brand_logo` gepflegt werden. Themenkarten verknüpfen eine echte Seite oder Kollektion. Der Produktberater verwendet ausgewählte Kollektionen.
 
-Die ZIP-Erstellung ist reproduzierbar: dieselben Theme-Dateien ergeben dieselben ZIP-Bytes. Bereits veröffentlichte Versionen werden nicht überschrieben. Der Ablauf benötigt keine Shopify-Zugangsdaten und veröffentlicht kein Theme im Shop.
+Produktinformationen stammen aus der nativen Beschreibung, vorhandenen AICO-Feldern und optionalen `upswing`-Metafeldern. Versand- und Rückgabebedingungen kommen aus den Shopify-Richtlinien. Lieferfristen stammen ausschliesslich aus `upswing.delivery_time` der Variante oder des Produkts; ohne Frist bleibt die Lieferzeit auf Anfrage. Farbnamen erhalten nur mit einem gepflegten Farbwert oder nativen Shopify-Swatch eine Farbfläche; sonst bleiben sie als Text wählbar.
 
 ## Prüfung und lokaler Paketbau
 
@@ -32,9 +30,11 @@ npm ci --ignore-scripts --no-audit --no-fund
 npm test
 python3 tools/validate_schema.py --self-test .
 shopify theme check --path . --fail-level warning
-python3 tools/build_release.py --tag v1.0.7
+python3 tools/build_release.py --tag v1.0.8
 ```
 
-Die GitHub-Prüfungen verwenden die offizielle Shopify-Prüfung, zusätzliche Schema-Regeln und portable Funktionstests für Suche, bestehende Farbzuordnungen, Kaufsteuerungen und das Vorladen der Vollbildgalerien. Die Schema-Regeln erfassen insbesondere die URL-Voreinstellungen, die bei Version 1.0.0 trotz unauffälligem Theme Check den Shopify-Upload beschädigten.
+Die lokalen Prüfungen kontrollieren unter anderem Ressourcenbindung, leere und gelöschte Referenzen, Produktinformationen, Farbauswahl, Lieferzeit und Kaufsteuerungen. Die tatsächliche Shopify-Laufzeit mit Shop-Apps, Beständen, Formularzustellung, Versandberechnung, Zahlungsarten und Checkout muss im unveröffentlichten Theme geprüft werden.
 
-Version 1.0.1 wurde zusätzlich lokal auf erhaltene Links geprüft: 24 Section-Schemas, 21 JSON-Vorlagen, 290 gespeicherte Werte, 18 gezielte Prüffälle sowie 224 unveränderte Startseitenlinks. Diese Prüfung ersetzt keine bestätigte Shopify-Laufzeit. Der erneute Upload, Apps, Formularzustellung und echter Checkout sind im unveröffentlichten Shop-Theme zu prüfen. Der Produktberater ist im nativen Theme bislang eine statische Auswahl; die separate Designvorschau enthält einen interaktiven Ablauf.
+## Releases
+
+Version in `config/settings_schema.json`, `package.json`, Changelog und Git-Tag gemeinsam pflegen. Ein freigegebener SemVer-Tag startet den GitHub-Release-Ablauf. Dieser prüft das Theme und erstellt ein installierbares ZIP mit den sieben Theme-Ordnern, eine SHA-256-Prüfsumme, ein Dateimanifest und die Änderungsnotizen. Gleiche Theme-Dateien ergeben dieselben ZIP-Bytes. Veröffentlichte Versionen werden nicht überschrieben. Der Ablauf veröffentlicht kein Theme im Shopify-Shop.

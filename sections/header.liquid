@@ -22,41 +22,28 @@
     </div>
   </div>
   {% liquid
-    assign navigation_has_children = false
-    for navigation_link in section.settings.menu.links
-      if navigation_link.links.size > 0
-        assign navigation_has_children = true
-      endif
-    endfor
-    assign use_curated_navigation = false
-    if section.settings.menu.links.size == 0
-      assign use_curated_navigation = true
-    elsif section.settings.use_original_fallback and navigation_has_children == false
-      assign use_curated_navigation = true
-    endif
     assign menu_has_guide = false
     assign menu_has_about = false
     assign menu_has_business = false
-    unless use_curated_navigation
-      for navigation_link in section.settings.menu.links
-        if navigation_link.url == header_guide_url
-          assign menu_has_guide = true
-        endif
-        assign navigation_label_key = navigation_link.title | handleize
-        if navigation_link.url == header_about_url or navigation_label_key == 'uber-uns' or navigation_label_key == 'ueber-uns'
-          assign menu_has_about = true
-        endif
-        if navigation_link.url == header_business_url
-          assign menu_has_business = true
-        endif
-      endfor
-    endunless
+    for navigation_link in section.settings.menu.links
+      if navigation_link.url == header_guide_url
+        assign menu_has_guide = true
+      endif
+      assign navigation_label_key = navigation_link.title | handleize
+      if navigation_link.url == header_about_url or navigation_label_key == 'uber-uns' or navigation_label_key == 'ueber-uns'
+        assign menu_has_about = true
+      endif
+      if navigation_link.url == header_business_url
+        assign menu_has_business = true
+      endif
+    endfor
   %}
   <div class="nav-wrap">
     <div class="container main-nav mega-nav">
       <nav class="desktop-navigation" aria-label="Hauptnavigation">
         <ul class="mega-menu-list">
-          {% if use_curated_navigation %}{% render 'header-navigation-fallback', mode: 'desktop', header_section: section %}{% else %}{% render 'header-menu-items', mode: 'desktop', links: section.settings.menu.links, header_section: section %}{% endif %}
+          {% render 'header-menu-items', mode: 'desktop', links: section.settings.menu.links, header_section: section %}
+          {% if section.settings.menu.links == blank and request.design_mode %}<li class="mega-menu-item"><span class="mega-menu-link">Wählen Sie im Theme-Editor ein Hauptmenü aus.</span></li>{% endif %}
           {% if header_guide_url != blank and menu_has_guide == false %}<li class="mega-menu-item mega-menu-utility"><a class="mega-menu-link" href="{{ header_guide_url }}">{{ section.settings.guide_label | escape }}</a></li>{% endif %}
           {% if menu_has_about == false %}{% render 'header-about-menu', mode: 'desktop', header_section: section %}{% endif %}
         </ul>
@@ -67,7 +54,8 @@
   <nav id="MobileNavigation" class="mobile-nav container" aria-label="Mobile Hauptnavigation" data-navigation-mobile-panel hidden>
     {% render 'predictive-search-form', id: 'MobileSearch', class: 'mobile-search', placeholder: 'Produkte und Marken suchen', section: section %}
     <ul class="mobile-nav-list">
-      {% if use_curated_navigation %}{% render 'header-navigation-fallback', mode: 'mobile', header_section: section %}{% else %}{% render 'header-menu-items', mode: 'mobile', links: section.settings.menu.links, header_section: section %}{% endif %}
+      {% render 'header-menu-items', mode: 'mobile', links: section.settings.menu.links, header_section: section %}
+      {% if section.settings.menu.links == blank and request.design_mode %}<li><span class="mobile-nav-link">Wählen Sie im Theme-Editor ein Hauptmenü aus.</span></li>{% endif %}
       {% if header_guide_url != blank and menu_has_guide == false %}<li><a class="mobile-nav-link" href="{{ header_guide_url }}">{{ section.settings.guide_label | escape }}</a></li>{% endif %}
       {% if menu_has_about == false %}{% render 'header-about-menu', mode: 'mobile', header_section: section %}{% endif %}
       {% if header_business_url != blank and menu_has_business == false %}<li><a class="mobile-nav-link" href="{{ header_business_url }}">Für Unternehmen</a></li>{% endif %}
@@ -83,8 +71,7 @@
     {
       "type": "text",
       "id": "announcement",
-      "label": "Servicetext",
-      "default": "Versandkostenfrei ab CHF 99.–"
+      "label": "Servicetext"
     },
     {
       "type": "link_list",
@@ -101,13 +88,6 @@
       "type": "url",
       "id": "b2b_url",
       "label": "Seite für Unternehmen"
-    },
-    {
-      "type": "checkbox",
-      "id": "use_original_fallback",
-      "label": "Original-Untermenüs bei flachem Menü anzeigen",
-      "default": true,
-      "info": "Ein Hauptmenü mit Unterlinks wird bevorzugt. Bis dahin bleibt die vollständige Originalnavigation verfügbar."
     },
     {
       "type": "text",
@@ -158,11 +138,6 @@
           "type": "image_picker",
           "id": "image",
           "label": "Bild"
-        },
-        {
-          "type": "text",
-          "id": "fallback_asset",
-          "label": "Alternativer Theme-Bildname"
         }
       ]
     }

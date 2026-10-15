@@ -72,20 +72,24 @@ async function flush(test, predicate=()=>test.dom.window.document.querySelector(
 }
 
 (async()=>{
-  await check('V2 primary colour names drive identical named swatches in cards and PDP',async()=>{
+  await check('V2 primary colour names remain readable text in cards and PDP without exact swatch data',async()=>{
     const p=product({type:'json',value:legacy});
     p.vendor='kybun';p.type='Damenschuhe';p.price_min=p.price_max=33000;
     p.metafields.aico={pd_color_v2:{value:'Schwarz'},pd_colors_v2:{value:['Schwarz','Weiss']}};
     const sibling=clone(blue);sibling.metafields.aico={pd_color_v2:{value:'Blau'}};
     p.metafields.upswing.model_products={value:[sibling]};
     const swatch=new JSDOM(await render('product-color-swatch',p,{color_product:p,selected:true})).window.document.querySelector('.swatch');
-    assert.equal(swatch.title,'Schwarz');assert.equal(swatch.style.getPropertyValue('--swatch-color'),'#343835');assert.equal(swatch.querySelector('img'),null);
+    assert.equal(swatch.title,'Schwarz');assert.equal(swatch.style.getPropertyValue('--swatch-color'),'');assert.equal(swatch.querySelector('img'),null);
+    assert(swatch.classList.contains('swatch--text'));
     const card=new JSDOM(await render('product-card',p)).window.document;
     assert.equal(card.querySelector('.product-card-meta .product-type').textContent,'Damenschuhe');
     assert.equal(card.querySelector('.product-copy'),null,'Product type must not appear twice');
     assert.deepEqual([...card.querySelectorAll('.swatch-label')].map(x=>x.textContent),['Schwarz','Blau']);
     assert.equal(card.querySelectorAll('.swatches img').length,0);
-    assert.equal(card.querySelector('.swatches a').style.getPropertyValue('--swatch-color'),'#343835');
+    assert.equal(card.querySelector('.swatches a').style.getPropertyValue('--swatch-color'),'');
+    assert([...card.querySelectorAll('.swatch')].every(link=>link.classList.contains('swatch--text')));
+    const payload=JSON.parse(await render('product-color-json',p));
+    assert.equal(payload.title,'Schwarz');assert.equal(payload.color,null);
   });
   await check('V2 colour fallback priority, translated names and exact explicit colour remain consistent',async()=>{
     const p=clone(black);p.metafields.aico={pd_colors_v2:{value:['Beige','Schwarz']}};
@@ -95,10 +99,14 @@ async function flush(test, predicate=()=>test.dom.window.document.querySelector(
     assert.equal((await render('product-color-label',p,{color_product:p})).trim(),'Beige');
     for(const name of ['Schwarz','black','NOIR','Nero']){
       p.metafields.aico.pd_color_v2={value:name};
-      assert.equal((await render('product-color-value',p,{color_product:p})).trim(),'#343835');
+      assert.equal((await render('product-color-value',p,{color_product:p})).trim(),'');
     }
     p.metafields.upswing.color_hex={value:'#123456'};
     assert.equal((await render('product-color-value',p,{color_product:p})).trim(),'#123456');
+    assert.equal(JSON.parse(await render('product-color-json',p)).color,'#123456');
+    delete p.metafields.upswing.color_hex;
+    p.options_with_values=[{name:'Farbe',values:[{selected:true,swatch:{color:'#aabbcc'}}]}];
+    assert.equal((await render('product-color-value',p,{color_product:p})).trim(),'#aabbcc');
   });
   await check('Unknown colour labels remain readable without a thumbnail or invented dot',async()=>{
     const p=clone(black);p.metafields.aico={pd_color_v2:{value:'Sonderfarbe <Muster>'}};
@@ -159,7 +167,23 @@ async function flush(test, predicate=()=>test.dom.window.document.querySelector(
     assert.equal(dom.window.document.querySelectorAll('.swatch').length,2);
     assert([...dom.window.document.querySelectorAll('.swatch')].every(link=>link.getAttribute('href')===p.url));
     assert.equal(dom.window.document.querySelector('.product-price').textContent.trim(),'CHF 330.00');
+    assert([...dom.window.document.querySelectorAll('.swatch')].every(link=>link.classList.contains('swatch--text')),'Known colour names alone cannot fabricate palette values');
+    assert([...dom.window.document.querySelectorAll('.swatch')].every(link=>!link.hasAttribute('style')));
     assert(!dom.window.document.querySelector('[data-legacy-color-data]'));
+  });
+  await check('native card swatches keep explicit Shopify colours and swatch images',async()=>{
+    const p=clone(black);
+    const value=(name,swatch)=>({swatch,selected:true,variant:{url:p.url+'?variant=22',featured_image:{src:'/variant-preview.jpg'}},toString:()=>name});
+    p.options_with_values=[{name:'Farbe',values:[value('Spezialton',{color:'#aabbcc'}),value('Gewebe',{image:{src:'/native-fabric.jpg'}}),value('Unbekannt',{})]}];
+    const doc=new JSDOM(await render('product-card',p)).window.document;
+    const links=[...doc.querySelectorAll('.swatch')];
+    assert.equal(links[0].style.getPropertyValue('--swatch-color'),'#aabbcc');
+    assert.equal(links[1].querySelector('img').getAttribute('src'),'/native-fabric.jpg');
+    assert.equal(links[1].dataset.cardSwatch,'/variant-preview.jpg');
+    assert.equal(links[1].classList.contains('swatch--text'),false);
+    assert(links[2].classList.contains('swatch--text'));
+    assert.equal(links[2].querySelector('img'),null);
+    assert.equal(links[2].style.getPropertyValue('--swatch-color'),'');
   });
   await check('missing/injected handles are hidden and never become hrefs',async()=>{
     const bad={de_CH:[{type:'product',id:1,handle:'missing'},{type:'product',id:2,handle:'../../evil'},{type:'product',id:3,handle:'https://evil.test/products/x'}]};

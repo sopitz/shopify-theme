@@ -1,5 +1,5 @@
 {%- comment -%}
-  Delivery estimates use editable merchant policies and current Shopify data.
+  Delivery estimates use explicit catalog fields and current Shopify data.
   Shopify only supplies store_availabilities for the selected / first available
   variant. Unselected sizes must be rendered through product-delivery with a
   variant URL before their delivery estimate is known.
@@ -21,9 +21,6 @@
           break
         endif
       endfor
-      assign stock_delivery = settings.delivery_stock_days | strip
-      assign standard_delivery = settings.delivery_standard_days | strip
-      assign extended_delivery = settings.delivery_extended_days | strip
       assign variant_delivery = delivery_variant.metafields.upswing.delivery_time.value | strip
       assign product_delivery = product.metafields.upswing.delivery_time.value | strip
       assign individual_delivery = variant_delivery | default: product_delivery
@@ -32,37 +29,15 @@
         assign delivery_text = 'Aktuell nicht lieferbar'
         assign delivery_status = 'unavailable'
       elsif in_own_stock
-        if stock_delivery != blank
-          assign delivery_text = stock_delivery | prepend: 'Sofort verfügbar · Lieferzeit: '
+        if individual_delivery != blank
+          assign delivery_text = individual_delivery | prepend: 'Sofort verfügbar · Lieferzeit: '
         else
           assign delivery_text = 'Sofort verfügbar · Lieferzeit auf Anfrage'
         endif
         assign delivery_status = 'fast'
       elsif delivery_variant.available
-        assign lead_time = individual_delivery
-        if lead_time == blank
-          assign brand = product.vendor | downcase | strip
-          assign standard_vendors = settings.delivery_standard_vendors | split: ','
-          assign extended_vendors = settings.delivery_extended_vendors | split: ','
-          for vendor in standard_vendors
-            assign normalized_vendor = vendor | downcase | strip
-            if normalized_vendor != blank and normalized_vendor == brand
-              assign lead_time = standard_delivery
-              break
-            endif
-          endfor
-          if lead_time == blank
-            for vendor in extended_vendors
-              assign normalized_vendor = vendor | downcase | strip
-              if normalized_vendor != blank and normalized_vendor == brand
-                assign lead_time = extended_delivery
-                break
-              endif
-            endfor
-          endif
-        endif
-        if lead_time != blank
-          assign delivery_text = lead_time | prepend: 'Online verfügbar · Lieferzeit: '
+        if individual_delivery != blank
+          assign delivery_text = individual_delivery | prepend: 'Online verfügbar · Lieferzeit: '
         else
           assign delivery_text = 'Online verfügbar · Lieferzeit auf Anfrage'
         endif

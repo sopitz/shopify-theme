@@ -90,15 +90,10 @@
                   <div class="variant-buttons option-values">
                     {%- for value in option.values -%}
                       {%- assign option_swatch = value.swatch.color -%}
-                      {%- if option_swatch == blank -%}
-                        {%- if option_name == 'farbe' or option_name == 'color' or option_name == 'colour' -%}
-                          {%- capture option_swatch -%}{%- render 'color-name-value', color_label: value -%}{%- endcapture -%}
-                          {%- assign option_swatch = option_swatch | strip -%}
-                        {%- endif -%}
-                      {%- endif -%}
+                      {%- assign option_swatch_image = value.swatch.image -%}
                       <div class="variant-button{% unless value.available %} is-unavailable{% endunless %}">
                         <input type="radio" id="Option-{{ section.id }}-{{ option.position }}-{{ forloop.index }}" name="options[{{ option.name | escape }}]" value="{{ value | escape }}" data-option-select data-option-position="{{ option.position }}" data-option-value-id="{{ value.id }}"{% if value.product_url %} data-option-product-url="{{ value.product_url }}"{% endif %}{% if value.selected %} checked{% endif %}>
-                        <label class="variant-label" for="Option-{{ section.id }}-{{ option.position }}-{{ forloop.index }}">{% if option_swatch != blank %}<span class="variant-color-dot" style="--swatch-color: {{ option_swatch | escape }}"></span>{% endif %}{{ value | escape }}</label>
+                        <label class="variant-label" for="Option-{{ section.id }}-{{ option.position }}-{{ forloop.index }}">{% if option_swatch_image %}{{ option_swatch_image | image_url: width: 34 | image_tag: loading: 'lazy', width: 17, height: 17, class: 'variant-color-dot', alt: '' }}{% elsif option_swatch != blank %}<span class="variant-color-dot" style="--swatch-color: {{ option_swatch | escape }}"></span>{% endif %}{{ value | escape }}</label>
                       </div>
                     {%- endfor -%}
                   </div>
@@ -147,7 +142,7 @@
           <div class="product-form-error" data-product-error role="alert" hidden></div>
         {%- endform -%}
         <div class="product-purchase-notes">
-          <p>{% render 'icon', name: 'truck' %}<span>{{ section.settings.shipping_note | escape }}</span></p>
+          {%- if shop.shipping_policy != blank -%}<p>{% render 'icon', name: 'truck' %}<a href="{{ shop.shipping_policy.url }}">Versandbedingungen</a></p>{%- endif -%}
           {%- if product.metafields.upswing.delivery_note != blank -%}<div class="delivery-note">{{ product.metafields.upswing.delivery_note | metafield_tag }}</div>{%- endif -%}
           {%- if shop.refund_policy != blank -%}<p>{% render 'icon', name: 'return' %}<a href="{{ shop.refund_policy.url }}">Rückgabe- und Erstattungsbedingungen</a></p>{%- endif -%}
         </div>
@@ -180,7 +175,7 @@
     {%- endif -%}
     {{ product_knowledge }}
     <div class="product-accordions product-policies">
-        <details class="product-accordion"><summary>Versand & Rückgabe {% render 'icon', name: 'plus' %}</summary><div class="rte"><p>{{ section.settings.shipping_note | escape }}</p>{% if shop.shipping_policy != blank %}<p><a href="{{ shop.shipping_policy.url }}">Vollständige Versandbedingungen</a></p>{% endif %}{% if shop.refund_policy != blank %}{{ shop.refund_policy.body }}{% else %}<p>Für Fragen zur Rückgabe wenden Sie sich bitte an <a href="{{ consultation_url }}">unser Beratungsteam</a>.</p>{% endif %}</div></details>
+        {%- if shop.shipping_policy != blank or shop.refund_policy != blank -%}<details class="product-accordion"><summary>Versand & Rückgabe {% render 'icon', name: 'plus' %}</summary><div class="rte">{% if shop.shipping_policy != blank %}{{ shop.shipping_policy.body }}<p><a href="{{ shop.shipping_policy.url }}">Vollständige Versandbedingungen</a></p>{% endif %}{% if shop.refund_policy != blank %}{{ shop.refund_policy.body }}<p><a href="{{ shop.refund_policy.url }}">Rückgabe- und Erstattungsbedingungen</a></p>{% endif %}</div></details>{%- endif -%}
         {%- for block in section.blocks -%}{%- case block.type -%}{%- when '@app' -%}{% render block %}{%- when 'information' -%}<details class="product-accordion" {{ block.shopify_attributes }}><summary>{{ block.settings.heading | escape }} {% render 'icon', name: 'plus' %}</summary><div class="rte">{{ block.settings.content }}</div></details>{%- endcase -%}{%- endfor -%}
     </div>
     {%- if product.metafields.upswing.related_products.value != blank -%}
@@ -202,13 +197,6 @@
       "type": "url",
       "id": "b2b_url",
       "label": "Firmenberatung"
-    },
-    {
-      "type": "text",
-      "id": "shipping_note",
-      "label": "Versandhinweis",
-      "default": "Schweiz: CHF 8 Versand. Ab CHF 99 Warenwert versandkostenfrei.",
-      "info": "Mit den tatsächlich im Shopify Checkout eingerichteten Versandbedingungen abgleichen."
     }
   ],
   "blocks": [

@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.0.8] - 2026-10-15
+
+- Feste Produkt- und Collection-Auswahlen, kopierte Kategorietexte, Markenlogos, Katalogfotos und Menü-Fallbacks aus dem ausgelieferten Theme entfernt. Echte Shopify-Menüs werden auch ohne Untermenüs verwendet.
+- Sortiments-, Marken-, Themen- und Produktberaterkarten verwenden ausgewählte Shopify-Ressourcen und deren aktuelle Titel, Ziele, Beschreibungen und Bilder. Gelöschte oder fehlende Verknüpfungen bleiben im Shop verborgen und erhalten nur im Editor Einrichtungshinweise.
+- Keine geschätzten Farbtöne aus Farbnamen. Farbflächen verwenden explizite Produkt-Farbwerte oder native Shopify-Swatches; sonst bleibt die Auswahl als Text nutzbar.
+- Lieferfristen stammen ausschliesslich aus dem Varianten- oder Produktmetafeld. Ohne bestätigte Frist bleibt die Lieferzeit auf Anfrage. Verfügbarkeit und Abholung verwenden die tatsächliche Variante.
+- Feste Versandgebühren, Freigrenzen und Rückgabeangaben entfernt; Produkt und Warenkorb verwenden die Shopify-Richtlinien. Keine globalen Marken- oder Tagesregeln mehr.
+- Konkrete Katalog-Einrichtungsliste und AICO-Tabelle für vier Hauptkategorien ergänzt. Den überholten 35-Typen-Datenvertrag durch diese Arbeitsgrundlage ersetzt. Redaktionelle Filial- und Unternehmensseiten bleiben erhalten.
+
 ## [1.0.7] - 2026-10-15
 
 - Fest hinterlegte PDP-Produkttexte und Produkt-Handle-Sonderfälle entfernt. Informationsbereiche verwenden echte Metafields, Metaobject-Referenzen und die vollständige native Produktbeschreibung; leere Inhalte bleiben verborgen.

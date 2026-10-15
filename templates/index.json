@@ -7,14 +7,6 @@
         "show_badge": true
       },
       "blocks": {
-        "trust0": {
-          "type": "trust",
-          "settings": {
-            "icon": "truck",
-            "title": "Versandfrei ab CHF 99.–",
-            "text": "Innerhalb der Schweiz"
-          }
-        },
         "trust1": {
           "type": "trust",
           "settings": {
@@ -30,21 +22,11 @@
             "title": "Persönliche Beratung",
             "text": "Wir nehmen uns Zeit für Sie"
           }
-        },
-        "trust3": {
-          "type": "trust",
-          "settings": {
-            "icon": "check",
-            "title": "kybun & Joya Premiumservice",
-            "text": "Begleitung über den Kauf hinaus"
-          }
         }
       },
       "block_order": [
-        "trust0",
         "trust1",
-        "trust2",
-        "trust3"
+        "trust2"
       ]
     },
     "needs": {
@@ -58,105 +40,49 @@
         "foot": {
           "type": "need",
           "settings": {
-            "title": "Fersensporn & Fussschmerzen",
-            "description": "Sohlen, Dämpfung und Passform verstehen – und erfahren, worauf es bei der Anprobe ankommt.",
-            "topic_label": "Alltag & Beschwerden",
-            "product_hint": "Luftkissenschuhe · Komfortschuhe",
-            "fallback_image": "needs-foot.jpg",
-            "image_alt": "Thema Fersensporn und Fussschmerzen",
-            "link_label": "Möglichkeiten entdecken",
-            "url": "/pages/fersensporn-und-andere-fussschmerzen"
+            "target_type": "page"
           }
         },
         "back": {
           "type": "need",
           "settings": {
-            "title": "Rückenschmerzen",
-            "description": "Entdecken Sie Möglichkeiten für mehr Bewegung beim Sitzen, Stehen und Gehen.",
-            "topic_label": "Alltag & Beschwerden",
-            "product_hint": "Aktiv-Stehmatten · Gesundheitsschuhe",
-            "fallback_image": "needs-back.jpg",
-            "image_alt": "Thema Rücken und Bewegung im Alltag",
-            "link_label": "Möglichkeiten entdecken",
-            "url": "/pages/ruckenschmerzen"
+            "target_type": "page"
           }
         },
         "joints": {
           "type": "need",
           "settings": {
-            "title": "Arthrose & Gelenkschmerzen",
-            "description": "Unterschiedliche Gehgefühle kennenlernen und Produkte mit verständlichen Informationen vergleichen.",
-            "topic_label": "Alltag & Beschwerden",
-            "product_hint": "Weich-elastische Schuhe · Balancekissen",
-            "fallback_image": "needs-joints.jpg",
-            "image_alt": "Thema Arthrose und Gelenkschmerzen",
-            "link_label": "Möglichkeiten entdecken",
-            "url": "/pages/arthrose-und-gelenkschmerzen"
+            "target_type": "page"
           }
         },
         "legs": {
           "type": "need",
           "settings": {
-            "title": "Müde & schwere Beine",
-            "description": "Informieren Sie sich über Kompressionsmassage, Anwendung und die Unterschiede der Geräte.",
-            "topic_label": "Alltag & Beschwerden",
-            "product_hint": "Kompressionsgeräte · Massagegeräte",
-            "fallback_image": "needs-legs.jpg",
-            "image_alt": "Thema müde und schwere Beine",
-            "link_label": "Möglichkeiten entdecken",
-            "url": "/pages/venenengel"
+            "target_type": "page"
           }
         },
         "sport": {
           "type": "need",
           "settings": {
-            "title": "Mit Freude Sport treiben",
-            "description": "Laufschuhe für Ihren Einsatz kennenlernen – mit Informationen zu Passform und Laufgefühl.",
-            "topic_label": "Bewegung & Sport",
-            "product_hint": "Laufschuhe · Faszienrollen",
-            "fallback_image": "needs-sport.jpg",
-            "image_alt": "Thema Sport und Laufen",
-            "link_label": "Möglichkeiten entdecken",
-            "url": "/collections/vimazi"
+            "target_type": "page"
           }
         },
         "work": {
           "type": "need",
           "settings": {
-            "title": "Sicher & komfortabel arbeiten",
-            "description": "Für anspruchsvolle Arbeit: Schutz, Passform und Komfort kennenlernen und bewusst auswählen.",
-            "topic_label": "Gesundheit am Arbeitsplatz",
-            "product_hint": "Sicherheitsschuhe · Aktiv-Stehmatten",
-            "fallback_image": "needs-work.jpg",
-            "image_alt": "Thema sicheres und komfortables Arbeiten",
-            "link_label": "Möglichkeiten entdecken",
-            "url": "/pages/elten"
+            "target_type": "page"
           }
         },
         "mobility": {
           "type": "need",
           "settings": {
-            "title": "Beweglicher bleiben",
-            "description": "Faszienrollen, Massagebälle und verständliche Anwendungen für Ihre Bewegungsroutine entdecken.",
-            "topic_label": "Mobilität & Balance",
-            "product_hint": "Faszienrollen · Massagebälle",
-            "fallback_image": "needs-mobility.jpg",
-            "image_alt": "Thema Beweglichkeit im Alltag",
-            "link_label": "Möglichkeiten entdecken",
-            "url": "/pages/blackroll"
+            "target_type": "page"
           }
         },
         "sleep": {
           "type": "need",
           "settings": {
-            "title": "Erholt aufwachen",
-            "description": "Kissen und Schlafzubehör verstehen – für eine bewusst ausgewählte Schlafumgebung.",
-            "topic_label": "Schlaf & Erholung",
-            "product_hint": "Ergonomische Kissen · Schlafmasken",
-            "fallback_image": "needs-sleep.jpg",
-            "image_alt": "Thema Schlaf und Erholung",
-            "link_label": "Möglichkeiten entdecken",
-            "url": "/pages/regeneration-im-schlaf"
+            "target_type": "page"
           }
         }
       },
@@ -176,42 +102,19 @@
       "blocks": {
         "shoes": {
           "type": "category",
-          "settings": {
-            "title": "Gesunde Schuhe",
-            "description": "Komfort für jeden Schritt.",
-            "collection": "kybun-schuhe",
-            "url": "/collections/kybun-schuhe",
-            "fallback_image": "category-shoes.jpg"
-          }
+          "settings": {}
         },
         "movement": {
           "type": "category",
-          "settings": {
-            "title": "Bewegung & Balance",
-            "description": "Bleiben Sie aktiv. In Ihrem Tempo.",
-            "url": "/collections/balance-und-sitzkissen",
-            "fallback_image": "category-movement.jpg"
-          }
+          "settings": {}
         },
         "recovery": {
           "type": "category",
-          "settings": {
-            "title": "Regeneration & Erholung",
-            "description": "Eine gute Pause für Ihren Körper.",
-            "collection": "blackroll-faszientraining",
-            "url": "/collections/blackroll-faszientraining",
-            "fallback_image": "category-recovery.jpg"
-          }
+          "settings": {}
         },
         "workplace": {
           "type": "category",
-          "settings": {
-            "title": "Gesunder Arbeitsplatz",
-            "description": "Mehr Bewegung beim Stehen und Sitzen.",
-            "collection": "kybun-matten",
-            "url": "/collections/kybun-matten",
-            "fallback_image": "category-workplace.jpg"
-          }
+          "settings": {}
         }
       },
       "block_order": [
@@ -219,34 +122,27 @@
         "movement",
         "recovery",
         "workplace"
-      ]
+      ],
+      "settings": {}
     },
     "featured": {
       "type": "featured-products",
       "blocks": {
         "product0": {
           "type": "product",
-          "settings": {
-            "product": "kybun-magglingen-light-grey-men"
-          }
+          "settings": {}
         },
         "product1": {
           "type": "product",
-          "settings": {
-            "product": "blackroll-recovery-pillow-kissen"
-          }
+          "settings": {}
         },
         "product2": {
           "type": "product",
-          "settings": {
-            "product": "kybun-matte-weicher-federboden-46x46x6-cm"
-          }
+          "settings": {}
         },
         "product3": {
           "type": "product",
-          "settings": {
-            "product": "upswing-mini-massagepistole-mit-warmeaufsatz"
-          }
+          "settings": {}
         }
       },
       "block_order": [
@@ -254,7 +150,8 @@
         "product1",
         "product2",
         "product3"
-      ]
+      ],
+      "settings": {}
     },
     "advice": {
       "type": "advice-banner",
@@ -313,43 +210,23 @@
       "blocks": {
         "kybun": {
           "type": "brand",
-          "settings": {
-            "name": "kybun",
-            "url": "/collections/kybun-schuhe",
-            "fallback_image": "brand-kybun.png"
-          }
+          "settings": {}
         },
         "joya": {
           "type": "brand",
-          "settings": {
-            "name": "Joya",
-            "url": "/collections/joya-schuhe",
-            "fallback_image": "brand-joya.png"
-          }
+          "settings": {}
         },
         "bellicon": {
           "type": "brand",
-          "settings": {
-            "name": "bellicon",
-            "url": "/collections/bellicon-trampoline",
-            "fallback_image": "brand-bellicon.png"
-          }
+          "settings": {}
         },
         "blackroll": {
           "type": "brand",
-          "settings": {
-            "name": "BLACKROLL",
-            "url": "/collections/blackroll-faszientraining",
-            "fallback_image": "brand-blackroll.png"
-          }
+          "settings": {}
         },
         "leguano": {
           "type": "brand",
-          "settings": {
-            "name": "leguano",
-            "url": "/collections/leguano-barfussschuhe",
-            "fallback_image": "brand-leguano.png"
-          }
+          "settings": {}
         }
       },
       "block_order": [
@@ -358,7 +235,8 @@
         "bellicon",
         "blackroll",
         "leguano"
-      ]
+      ],
+      "settings": {}
     },
     "knowledge": {
       "type": "knowledge-links",

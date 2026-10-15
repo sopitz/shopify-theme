@@ -1,40 +1,80 @@
 upswing – Datenübersicht
-Stand: Theme 1.0.7 · 15. Oktober 2026
+Stand: Theme 1.0.8 · 15. Oktober 2026
 
-Vollständige Feld-, Inhalts- und Beispielaufstellung:
-  Metafelder-und-Seitentypen.txt
-  Produktdaten-Vertrag.json
-35 vorgeschlagene fachliche Typen decken alle 49 Menülinks ab.
+EINRICHTUNG
+Die vollständige Arbeitsliste steht in Katalog-Einrichtung.html und
+Katalog-Einrichtung.txt. Einrichtung-und-Konzept.md erklärt die Verwendung.
+AICO-Zusatzfelder-Hauptkategorien.html ergänzt die vier Hauptkategorien:
+Gesundheitsschuhe, Bewegung & Training, Regeneration und Arbeitsplatz.
 
-Bereits angeschlossene Quellen:
-- Native Produkte, Beschreibung, Varianten, Preise, SKU, Bilder und Bestände.
-- aico.pd_color_v2, mm-google-shopping.color, aico.pd_colors_v2.
-- custom_fields.custom_rel_farbe für Farbgeschwister.
-- custom_fields.small_description als optionaler Legacy-Einleitungstext.
-- aico_metafields: bestehende Artikelmerkmale als technische Tabellenquelle,
-  wenn keine gültigen upswing.technical_specs vorhanden sind.
-- Strukturierte upswing-Felder und referenzierte Metaobjects laut Spezifikation.
+KATALOGQUELLEN
+- Native Shopify-Produkte, Beschreibungen, Varianten, Preise, SKU, Bilder,
+  Verfügbarkeit und Abholbestände.
+- Tatsächliche Shopify-Kollektionen und Shop-Menüs.
+- Themen-Seiten oder Kollektionen über die Ressourcen-Auswahl im Theme-Editor.
+- Vorhandene AICO- und upswing-Metafelder sowie referenzierte Metaobjects,
+  soweit sie befüllt, passend typisiert und für den Storefront-Zugriff verfügbar sind.
 
-Noch zu klären beziehungsweise zu pflegen:
-1. Je vorgeschlagenem Typ einen echten Artikel mit den gemeinsamen Inhalts-
-   feldern und den passenden technischen Werten in AICO vollständig befüllen.
-2. Neue Definitionen und vier Metaobject-Typen samt Storefront-Zugriff einrichten.
-   Ein Theme-Upload legt diese Shopdaten nicht an. Leere Inhalte bleiben leer;
-   die native Produktbeschreibung wird dennoch vollständig dargestellt.
-3. Gewünschte exakte Farbwerte: V2 liefert Namen, keine Hexcodes. Optional
-   upswing.color_hex pflegen; unbekannte Namen bleiben als Text wählbar.
-4. Reale Abholbestände/Standorte in Shopify prüfen. Fristen und Markenregeln
-   sind unter Theme-Einstellungen → Lieferzeiten editierbar. Optionale
-   upswing.delivery_time am Produkt oder an der Variante mit Einheit pflegen.
-5. Für die lokale Designvorschau fehlen echte Abhol-/Filialbestände. Ohne
-   bestätigten Export zeigt sie Lieferzeit auf Anfrage statt erfundener Tage.
-6. Google Reviews: Profil pro Filiale/Unternehmen und ReviewsPlugin-Widget-ID
-   zuordnen. Im Originalexport ist nur das globale App-Embed erkennbar; Werte,
-   Zitate und Profildaten liegen beim Anbieter. Keine Screenshotzahlen einbauen.
-   Inline-Appblock: https://reviewsplugin.com/add-google-reviews-to-shopify
-7. Filialen, Team, Galerie, Chronik, Stellen und Servicebedingungen sind ein
-   separates späteres Inhaltsmodell. Aktuelle Über-uns-Vorlagen bieten auch
-   Shopify-Seiteninhalt und Editor-Blöcke; die Produktmetafields ersetzen sie nicht.
+Die ausgelieferten Produkt- und Kollektionsauswahlen enthalten keine
+vorbereiteten Handles. Gewünschte Ressourcen im Theme-Editor auswählen.
+Nicht verknüpfte oder gelöschte Katalogkarten bleiben im Shop verborgen;
+im Editor erscheinen Einrichtungshinweise. Leere Produktbereiche bleiben leer.
+Ein Theme-Upload legt keine Shop-Ressourcen oder Felddefinitionen an.
 
-Keine native PDP verwendet fest hinterlegte Produkttexte oder Handle-Beispiele.
-Die separate Designvorschau enthält ausdrücklich Entwurfs-/Snapshotdaten.
+STARTSEITE UND NAVIGATION
+1. Haupt- und Fussmenüs aus dem tatsächlichen Shop zuordnen. Produkt- und
+   Kollektionsziele im Shopify-Menü als Ressourcen auswählen und prüfen.
+2. Sortimentswelten: je Block eine Kollektion wählen. Titel, URL, Beschreibung
+   und Bild werden direkt von dieser Kollektion übernommen.
+3. Marken-Kollektionen: echte Kollektion wählen. Optional upswing.brand_logo
+   als Kollektionsmetafeld vom Typ file_reference, auf Bilder beschränkt,
+   pflegen. Danach werden Kollektionsbild oder aktueller Titel verwendet.
+4. Ausgewählte Modelle: einzelne Produkt-Blöcke befüllen oder ohne solche
+   Blöcke eine Kollektion wählen. Vorhandene Produkt-Blöcke bleiben die Quelle,
+   auch wenn eine Auswahl später fehlt; keine automatische Ersatzkollektion.
+5. Themenkarten: target_type, page oder collection wählen. image gilt nur für
+   Seitenziele. topic_label und link_label sind redaktionelle Beschriftungen.
+   Titel und Inhalt stammen vom gewählten Ziel; Kollektionsbilder bleiben live.
+6. Produktberater: die gewünschten Kollektionen über den Collection-Picker
+   zuordnen. Die Seite mit page.guide anlegen/zuweisen und im Menü verlinken.
+
+PRODUKTINHALTE
+- Die native Produktbeschreibung bleibt vollständig erhalten.
+- upswing.short_description und custom_fields.small_description können die
+  kurze Einleitung liefern; sonst wird die echte Beschreibung verwendet.
+- Optionale upswing-Inhaltsfelder und Metaobject-Referenzen gestalten weitere
+  Informationsbereiche. Fehlende oder unpassend typisierte Inhalte liefern
+  keine Beispieltexte. Definitionen und Zugriff laut Katalog-Checkliste prüfen.
+- Bestehende aico_metafields liefern technische Artikelmerkmale, solange keine
+  gültigen strukturierten upswing.technical_specs vorhanden sind.
+
+FARBEN UND MODELLE
+- aico.pd_color_v2, mm-google-shopping.color und aico.pd_colors_v2 liefern Namen.
+- Eine Farbfläche braucht upswing.color_hex vom Typ color oder einen nativen
+  Shopify-Swatch. Ohne bestätigten Farbwert bleibt die Auswahl als Text lesbar.
+- Native Farbvarianten haben Vorrang vor einem zusätzlichen Modellfarben-Picker.
+- upswing.model_products und bestehende custom_fields.custom_rel_farbe verbinden
+  tatsächliche Farbprodukte. Beziehungen und Zielprodukte im Shop prüfen.
+- Modellkollektionen und gruppierte Suche erst mit vollständig gepflegten
+  Primärprodukten und passenden Search-&-Discovery-Filtern verwenden.
+
+LIEFERUNG UND RICHTLINIEN
+- upswing.delivery_time als single_line_text_field mit bestätigter Frist samt
+  Einheit an Variante oder Produkt pflegen. Die Variante hat Vorrang.
+- Ohne Frist bleibt die Lieferzeit auf Anfrage. Es gibt keine Marken-Tagesregeln.
+- Verfügbarkeit und Abholung verwenden die gewählte Variante und echte Bestände.
+- Versand und Rückgabe aus den tatsächlichen Shopify-Richtlinien pflegen;
+  Versandtarife und Checkout-Einstellungen separat prüfen.
+- Optionales upswing.delivery_note enthält eine produktspezifische Ergänzung.
+
+REDAKTION UND FREIGABE
+Filial-, Über-uns-, Team-, Galerie-, Chronik- und Serviceinhalte bleiben als
+statische redaktionelle Inhalte erhalten. Original-Logo, Gestaltung und die
+Manrope-Schrift samt Lizenz bleiben erhalten. Die Katalogpflege ersetzt diese
+Inhalte nicht.
+
+Die separate lokale Designvorschau enthält gekennzeichnete Momentaufnahmen.
+Sie bestätigt keine aktuellen Shopdaten, Formularzustellung oder Zahlungen.
+Vor Freigabe das unveröffentlichte Shopify-Theme mit echten Ressourcen,
+Varianten, Beständen, Richtlinien, Apps, Formularen, Warenkorb und Checkout
+prüfen. Eine Veröffentlichung im Shop wird nicht automatisch vorgenommen.

@@ -1,0 +1,123 @@
+upswing – Katalog-Einrichtung
+Theme 1.0.8 · 15. Oktober 2026
+
+Produkte und Collections ausschliesslich aus den echten Shopdaten.
+Keine kopierten Produkte, Collections, Menüs, Farben, Fristen oder Versandbeträge.
+Nicht zugeordnete Katalogbereiche bleiben im Shop verborgen; Hinweise im Editor.
+Ein Theme-Upload legt keine Shop-Ressourcen oder Felddefinitionen an.
+
+1. VORHANDENE SHOPIFY-RESSOURCEN VERKNÜPFEN
+Diese Angaben gehören in Shopify. Bestehende Produkte, Collections und Menüs weiterverwenden; nur fehlende Ressourcen neu anlegen.
+
+Hauptmenü
+Ort / Typ: Shopify → Inhalt → Menüs; danach Header im Theme-Editor
+Einrichtung: Das echte Shop-Menü auswählen. Produkt- und Collection-Ziele als Shopify-Ressourcen verknüpfen. Verschachtelung und Bilder kommen aus diesen Zielen.
+Fehlende Angabe: Ohne Menü keine kopierte Navigation; Einrichtungshinweis nur im Editor.
+
+Sortimentswelten
+Ort / Typ: Startseite → Sortimentswelten → Collection je Karte
+Einrichtung: Die gewünschten Hauptkategorien auswählen. Titel, Beschreibung und Bild an der jeweiligen Collection pflegen, nicht als zweite Kopie im Theme.
+Fehlende Angabe: Nicht zugeordnete oder gelöschte Ziele bleiben verborgen. Ohne Collection-Bild bleibt die Bildfläche neutral.
+
+Ausgewählte Produkte
+Ort / Typ: Startseite → Ausgewählte Modelle
+Einrichtung: Entweder vorhandene Produkte in den Produkt-Blöcken auswählen oder die Produkt-Blöcke löschen und eine Collection als Quelle wählen.
+Fehlende Angabe: Leere Produkt-Blöcke wechseln nicht automatisch zu einer anderen Quelle. Ohne reale Produkte kein Bereich.
+
+Marken
+Ort / Typ: Startseite → Marken-Kollektionen
+Einrichtung: Die tatsächlichen Marken-Collections auswählen. Titel und Ziel bleiben live. Ein separates Logo kann optional am Collection-Metafeld gepflegt werden; siehe unten.
+Fehlende Angabe: Ohne Logo wird das Collection-Bild verwendet; ohne Bild der aktuelle Collection-Titel. Keine mitgelieferten Markenlogos.
+
+Themen-Einstiege
+Ort / Typ: Startseite → Einstieg nach Bedürfnis
+Einrichtung: Je Karte Zieltyp Seite oder Collection wählen und die passende Ressource zuordnen. Titel, Beschreibung und Ziel stammen von der gewählten Ressource. Seitenbild optional hochladen oder per Metafeld pflegen.
+Fehlende Angabe: Ohne gültiges Ziel keine Karte. Eine fehlende Collection wird nicht durch eine andere Seite ersetzt.
+
+Produktberater
+Ort / Typ: Seite mit Vorlage page.guide → Anliegen
+Einrichtung: Pro Einstieg die passende echte Collection auswählen. Die Shopify-Seite anlegen beziehungsweise die Vorlage einer vorhandenen Seite zuweisen und verlinken.
+Fehlende Angabe: Nicht zugeordnete Collection-Karten bleiben verborgen.
+
+Fussmenü und Filter
+Ort / Typ: Footer im Theme-Editor; Shopify Search & Discovery
+Einrichtung: Das echte Fussmenü auswählen. Gewünschte Filter für vorhandene Optionen und Metafelder in Search & Discovery aktivieren. Die Collection-Zugehörigkeit in Shopify pflegen.
+Fehlende Angabe: Ohne Fussmenü nur generischer Link zu allen Produkten. Produkte, Trefferzahl, Filterwerte, Preise und Sortierung werden von Shopify geliefert.
+
+Produktempfehlungen
+Ort / Typ: Shopify Search & Discovery; optional Produktreferenzen
+Einrichtung: Shopifys Produktempfehlungen nutzen. Redaktionell ergänzende Produkte nur bei Bedarf über upswing.related_products als list.product_reference auswählen.
+Fehlende Angabe: Keine festen Empfehlungslisten oder Ersatzprodukte im Theme. Ohne Ergebnis kein Empfehlungsbereich.
+
+Unternehmensmotiv
+Ort / Typ: Startseite → Für Unternehmen; Firmenkunden-Seite → Bild
+Einrichtung: Bei Bedarf ein passendes redaktionelles Bild im Theme-Editor auswählen. Verwendete Produkte und Aussagen müssen zur tatsächlichen Auswahl passen.
+Fehlende Angabe: Ohne ausgewähltes Bild eine neutrale Platzhalterfläche; kein mitgeliefertes Marken- oder Produktfoto.
+
+2. NUR FEHLENDE STRUKTURIERTE DATEN ERGÄNZEN
+Vor dem Anlegen prüfen, ob AICO den Inhalt bereits strukturiert liefert. Dann genügt eine Zuordnung im Sync. Die Beispiele beschreiben ein Format, keine Liefer- oder Produkteigenschaft.
+
+Exakter Farbwert
+Ort / Typ: Produkt · upswing.color_hex · color
+Einrichtung: Nur nötig, wenn kein nativer Shopify-Swatch verfügbar ist. Bestätigten Farbwert je Farbprodukt schicken, zum Beispiel #31536B. Farbnamen bleiben in den bereits vorhandenen AICO-Feldern.
+Fehlende Angabe: Ohne bestätigten Farbwert bleibt die Farbe als lesbarer Text auswählbar. Keine aus Namen geschätzten Farbtöne.
+
+Lieferfrist mit Einheit
+Ort / Typ: Produkt oder Variante · upswing.delivery_time · single_line_text_field
+Einrichtung: Bestätigte Lieferfrist einschliesslich Einheit senden, beispielsweise «4–6 Werktage». Eine Variantenangabe hat Vorrang vor der Produktangabe. Bestände und Abholverfügbarkeit separat korrekt pflegen.
+Fehlende Angabe: Ohne Frist «Lieferzeit: auf Anfrage». Verfügbarkeit kommt aus der realen Variante; keine Fristen aus Marken oder globalen Tagesregeln.
+
+Ergänzende Produktinhalte
+Ort / Typ: Produkt · acht Inhaltsfelder je Hauptkategorie
+Einrichtung: Highlights, erklärte Eigenschaften, Anwendungsthemen, Eignung, Einstieg, Auswahlhilfe, Pflege und Produktfragen strukturiert bereitstellen. Feldtypen und Beispiele für vier Hauptkategorien stehen in der verlinkten AICO-Tabelle.
+Fehlende Angabe: Ungefüllte Zusatzbereiche bleiben verborgen. Die vollständige echte Produktbeschreibung und vorhandene technische Artikelmerkmale bleiben erhalten.
+
+Präzisere Produktart
+Ort / Typ: Vorhandenes product.type; optional upswing.product_kind · single_line_text_field
+Einrichtung: Die vorhandene Shopify-Produktart pflegen. Nur wenn für die sichtbare Bezeichnung ein anderer Text gebraucht wird, optional product_kind senden.
+Fehlende Angabe: Ohne Zusatzfeld wird die echte Produktart verwendet. Keine Ableitung aus Marke oder Produkt-Handle.
+
+Separates Markenlogo
+Ort / Typ: Collection · upswing.brand_logo · file_reference, nur Bilder
+Einrichtung: Optional ein Logo an der jeweiligen Marken-Collection als Bildreferenz bereitstellen. Die Collection bleibt Quelle für Titel und Link.
+Fehlende Angabe: Collection-Bild, danach aktueller Collection-Titel. Das Zusatzfeld ist keine Pflicht.
+
+Themen-Seitenbild
+Ort / Typ: Page · upswing.teaser_image · file_reference, nur Bilder
+Einrichtung: Optional ein redaktionelles Vorschaubild an der gewählten Shopify-Seite pflegen. Alternativ das Seitenbild direkt im Themenkarten-Block auswählen. Collection-Ziele nutzen stets ihr eigenes Bild.
+Fehlende Angabe: Ohne Seitenbild neutrale Platzhalterfläche. Keine fest hinterlegten Themenfotos aus dem Theme.
+
+Versand und Rückgabe
+Ort / Typ: Shopify → Einstellungen → Richtlinien; Versand und Zustellung
+Einrichtung: Aktuelle Versand- und Rückgaberichtlinien im Shop pflegen. Tatsächliche Versandtarife und Checkout-Einstellungen separat konfigurieren.
+Fehlende Angabe: Das Theme verlinkt und zeigt die aktuellen Richtlinien, soweit vorhanden. Keine vorbefüllten Gebühren, Freigrenzen oder Rückgabefristen.
+
+3. NUR FÜR EINE KARTE JE MODELL
+Optional. Der normale Katalog funktioniert mit den vorhandenen Produkten und Collections, ohne zusätzliche Modellgruppierung.
+
+Modellbeziehungen
+Ort / Typ: Produkt · upswing.model_key, model_primary, model_products; optional model_name
+Einrichtung: Nur für den gruppierten Modellkatalog: stabiler Modellschlüssel (Text), genau ein Primärprodukt je Modell (boolean) und reale Farbprodukte (list.product_reference). model_name ist eine optionale gemeinsame Modellbezeichnung. Bestehende custom_fields.custom_rel_farbe-Beziehungen können die Farbwahl weiterhin beliefern.
+Fehlende Angabe: Modellgruppierung ist standardmässig aus. Keine feste Zuordnung oder nachträgliche Filterung einer unvollständigen Produktseite.
+
+Modell-Collections und Suche
+Ort / Typ: Shopify-Collections; Search & Discovery; optional upswing.model_colors
+Einrichtung: Für die Modellansicht Collections mit den tatsächlichen Primärprodukten verwenden. Suchgruppierung erst bei vollständiger Kennzeichnung und aktivem model_primary-Filter einschalten. Bei Bedarf alle Modellfarbnamen als list.single_line_text_field in model_colors am Primärprodukt bereitstellen.
+Fehlende Angabe: Preis, Verfügbarkeit, Filter und Pagination verwenden die echten Daten der ausgewählten Quellen. Farbprodukt-Verknüpfungen vereinigen deren Filterdaten nicht automatisch.
+
+AICO-ZUSATZFELDER
+Siehe AICO-Zusatzfelder-Hauptkategorien.html: vier Hauptkategorien, je acht Inhaltsfelder.
+Bereits vorhandene AICO-Farbnamen, Beziehungen, Kurzbeschreibung und technische
+aico_metafields.* weiterverwenden, keine Parallelfelder anlegen.
+
+PRÜFUNG IM UNVERÖFFENTLICHTEN SHOPIFY-THEME
+1. Eine ausgewählte Collection umbenennen, Beschreibung und Bild ändern: Karten und verknüpfte Einstiege müssen die Änderungen übernehmen.
+2. Ein ausgewähltes Produkt beziehungsweise eine Collection entfernen: keine alte Karte, kein anderer Produkt-Fallback und kein zurückbleibender Ziel-Link.
+3. Menütitel und Reihenfolge ändern: Header und Footer müssen dem tatsächlich zugewiesenen Menü folgen.
+4. Farbe, Grösse, Preis, SKU, Bestand und explizite Lieferfrist am Produkt prüfen: Hauptformular, Kaufleiste und Vollbild müssen denselben Stand zeigen.
+5. Ein Produkt ohne Zusatzfelder öffnen: reale Beschreibung und vorhandene Merkmale bleiben sichtbar; erfundene Inhalte, Farbtöne oder Lieferfristen dürfen nicht erscheinen.
+6. Filter, Sortierung, Suche, Empfehlungen und Warenkorb mit echten Shopdaten im unveröffentlichten Shopify-Theme prüfen.
+
+Redaktionelle Filial-, Über-uns-, Team-, Chronik- und Serviceinhalte bleiben erhalten.
+Die separate Designvorschau verwendet gekennzeichnete Momentaufnahmen.
+Der GitHub-Release veröffentlicht kein Theme im Shop.

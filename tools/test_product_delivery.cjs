@@ -6,23 +6,20 @@ const {Liquid} = require('liquidjs');
 const {JSDOM} = require('jsdom');
 const root = path.resolve(__dirname, '..');
 const script = fs.readFileSync(path.join(root, 'assets/upswing.js'), 'utf8');
-const themeSchema = JSON.parse(fs.readFileSync(path.join(root, 'config/settings_schema.json'), 'utf8'));
-const themeSettings = JSON.parse(fs.readFileSync(path.join(root, 'config/settings_data.json'), 'utf8')).current;
 const engine = new Liquid({root:path.join(root, 'snippets'), extname:'.liquid', strictFilters:true});
 const tick = () => new Promise(resolve => setImmediate(resolve));
 const variant = (id, options, delivery = null) => ({id,options,delivery,available:true,price:33000,price_formatted:'CHF 330.00',sku:'SKU-'+id,quantity_rule:{min:1,increment:1}});
 
-test('merchant delivery rules preserve pickup-enabled stock and vendor lead times', async () => {
+test('availability and pickup stock never invent vendor delivery times', async () => {
   const selected = {id:1,selected:true,available:true,store_availabilities:[{pick_up_enabled:true,available:true}]};
   const product = {vendor:'kybun',selected_or_first_available_variant:selected,first_available_variant:selected};
-  const render = async (v=selected) => JSON.parse(await engine.renderFile('product-delivery',{product,variant:v,settings:themeSettings,output:'json'}));
-  assert.deepEqual(await render(),{text:'Sofort verfügbar · Lieferzeit: 2–3 Werktage',status:'fast'});
+  const render = async (v=selected) => JSON.parse(await engine.renderFile('product-delivery',{product,variant:v,output:'json'}));
+  assert.deepEqual(await render(),{text:'Sofort verfügbar · Lieferzeit auf Anfrage',status:'fast'});
   selected.store_availabilities = [{pick_up_enabled:false,available:true},{pick_up_enabled:true,available:false}];
-  assert.deepEqual(await render(),{text:'Online verfügbar · Lieferzeit: 3–5 Werktage',status:'normal'});
-  product.vendor=' Joya ';
-  assert.match((await render()).text,/3–5 Werktage$/);
-  for (const vendor of ['leguano','ELTEN','Venen Engel','venenengel','BellaBambi','bella bambi']) {
-    product.vendor=vendor; assert.match((await render()).text,/ca\. 14 Werktage$/);
+  assert.deepEqual(await render(),{text:'Online verfügbar · Lieferzeit auf Anfrage',status:'normal'});
+  for (const vendor of [' Joya ','leguano','ELTEN','Venen Engel','BellaBambi','Unbekannter Hersteller']) {
+    product.vendor=vendor;
+    assert.deepEqual(await render(),{text:'Online verfügbar · Lieferzeit auf Anfrage',status:'normal'});
   }
   product.vendor='Other'; assert.match((await render()).text,/Lieferzeit auf Anfrage$/);
   selected.available=false; assert.deepEqual(await render(),{text:'Aktuell nicht lieferbar',status:'unavailable'});
@@ -31,54 +28,47 @@ test('merchant delivery rules preserve pickup-enabled stock and vendor lead time
 test('unselected available sizes do not fabricate pickup stock from undefined store_availabilities', async () => {
   const first={id:1,available:true}, current={id:2,selected:true,available:true};
   const product={vendor:'kybun',selected_or_first_available_variant:current,first_available_variant:first};
-  const render = async v => JSON.parse(await engine.renderFile('product-delivery',{product,variant:v,settings:themeSettings,output:'json'}));
+  const render = async v => JSON.parse(await engine.renderFile('product-delivery',{product,variant:v,output:'json'}));
   assert.equal(await render({id:3,available:true}),null);
-  assert.match((await render(first)).text,/3–5/);
-  assert.match((await render(current)).text,/3–5/);
+  assert.match((await render(first)).text,/Lieferzeit auf Anfrage$/);
+  assert.match((await render(current)).text,/Lieferzeit auf Anfrage$/);
   assert.equal((await render({id:4,available:false})).status,'unavailable');
 });
 
-test('editable delivery policy defaults are declared and saved consistently',()=>{
-  const group=themeSchema.find(group=>group.name==='Lieferzeiten');
-  assert.ok(group,'The merchant can change delivery policy in the theme editor');
-  for(const key of ['delivery_stock_days','delivery_standard_days','delivery_standard_vendors','delivery_extended_days','delivery_extended_vendors']){
-    const setting=group.settings.find(setting=>setting.id===key);
-    assert.ok(setting);assert.equal(setting.type,'text');assert.equal(themeSettings[key],setting.default);
-  }
-});
-
-test('changed policy values and exact vendor lists replace the original delivery estimates',async()=>{
+test('stale saved theme policies cannot supply delivery facts',async()=>{
   const selected={id:1,selected:true,available:true,store_availabilities:[]};
   const product={vendor:' Custom Supplier ',selected_or_first_available_variant:selected,first_available_variant:selected};
   const settings={delivery_stock_days:'1 Werktag',delivery_standard_days:'10–12 Werktage',delivery_standard_vendors:'Other Supplier, custom supplier',delivery_extended_days:'6 Wochen',delivery_extended_vendors:'Long Supplier'};
   const render=async()=>JSON.parse(await engine.renderFile('product-delivery',{product,variant:selected,settings,output:'json'}));
-  assert.deepEqual(await render(),{text:'Online verfügbar · Lieferzeit: 10–12 Werktage',status:'normal'});
-  product.vendor='LONG SUPPLIER';assert.match((await render()).text,/6 Wochen$/);
-  product.vendor='Supplier';assert.match((await render()).text,/Lieferzeit auf Anfrage$/,'Vendor lists must use complete names rather than substring matches');
-  product.vendor='kybun';assert.match((await render()).text,/Lieferzeit auf Anfrage$/,'Removed default vendors must not retain a code-level delivery policy');
+  assert.deepEqual(await render(),{text:'Online verfügbar · Lieferzeit auf Anfrage',status:'normal'});
+  product.vendor='LONG SUPPLIER';assert.match((await render()).text,/Lieferzeit auf Anfrage$/);
   selected.store_availabilities=[{pick_up_enabled:true,available:true}];
-  assert.deepEqual(await render(),{text:'Sofort verfügbar · Lieferzeit: 1 Werktag',status:'fast'});
+  assert.deepEqual(await render(),{text:'Sofort verfügbar · Lieferzeit auf Anfrage',status:'fast'});
 });
 
-test('variant delivery data takes priority over product data and vendor policy without overriding actual stock',async()=>{
+test('explicit variant then product delivery time accompanies actual stock status',async()=>{
   const selected={id:1,selected:true,available:true,store_availabilities:[],metafields:{upswing:{delivery_time:{value:' 7–9 Werktage '}}}};
   const product={vendor:'kybun',selected_or_first_available_variant:selected,first_available_variant:selected,metafields:{upswing:{delivery_time:{value:'2 Wochen'}}}};
-  const render=async()=>JSON.parse(await engine.renderFile('product-delivery',{product,variant:selected,settings:themeSettings,output:'json'}));
+  const render=async()=>JSON.parse(await engine.renderFile('product-delivery',{product,variant:selected,output:'json'}));
   assert.match((await render()).text,/7–9 Werktage$/);
   selected.metafields.upswing.delivery_time.value='   ';assert.match((await render()).text,/2 Wochen$/,'Blank variant data falls back to the actual product field');
-  product.metafields.upswing.delivery_time.value='';assert.match((await render()).text,/3–5 Werktage$/,'No individual data falls back to the editable merchant policy');
+  product.metafields.upswing.delivery_time.value='';assert.match((await render()).text,/Lieferzeit auf Anfrage$/);
   selected.metafields.upswing.delivery_time.value='7–9 Werktage';
   selected.store_availabilities=[{pick_up_enabled:true,available:true}];
-  assert.deepEqual(await render(),{text:'Sofort verfügbar · Lieferzeit: 2–3 Werktage',status:'fast'},'Actual own stock uses its configured policy before supplier estimates');
+  assert.deepEqual(await render(),{text:'Sofort verfügbar · Lieferzeit: 7–9 Werktage',status:'fast'});
+  selected.metafields.upswing.delivery_time.value='';
+  product.metafields.upswing.delivery_time.value='2 Wochen';
+  assert.deepEqual(await render(),{text:'Sofort verfügbar · Lieferzeit: 2 Wochen',status:'fast'});
+  product.metafields.upswing.delivery_time.value='';
+  assert.deepEqual(await render(),{text:'Sofort verfügbar · Lieferzeit auf Anfrage',status:'fast'});
   selected.available=false;
   assert.deepEqual(await render(),{text:'Aktuell nicht lieferbar',status:'unavailable'},'Unavailable always wins over contradictory pickup stock or individual estimates');
 });
 
-test('empty policies never invent a duration and plain delivery fields stay escaped in HTML and JSON',async()=>{
+test('missing catalog times stay on request and plain delivery fields stay escaped in HTML and JSON',async()=>{
   const selected={id:1,selected:true,available:true,store_availabilities:[]};
   const product={vendor:'kybun',selected_or_first_available_variant:selected,first_available_variant:selected};
-  const settings={delivery_stock_days:'',delivery_standard_days:'',delivery_standard_vendors:'kybun',delivery_extended_days:'',delivery_extended_vendors:''};
-  const render=async(output='json')=>engine.renderFile('product-delivery',{product,variant:selected,settings,output});
+  const render=async(output='json')=>engine.renderFile('product-delivery',{product,variant:selected,output});
   assert.deepEqual(JSON.parse(await render()),{text:'Online verfügbar · Lieferzeit auf Anfrage',status:'normal'});
   selected.store_availabilities=[{pick_up_enabled:true,available:true}];
   assert.deepEqual(JSON.parse(await render()),{text:'Sofort verfügbar · Lieferzeit auf Anfrage',status:'fast'});
@@ -87,6 +77,64 @@ test('empty policies never invent a duration and plain delivery fields stay esca
   const json=await render();assert.equal(json.includes('</script>'),false,'Plain catalog fields cannot close an inline JSON script');
   assert.equal(JSON.parse(json).text,'Online verfügbar · Lieferzeit: 3–5 Werktage </script><b>auf Anfrage</b>');
   const html=await render('html');assert.ok(html.includes('&lt;/script&gt;'));assert.equal(html.includes('<b>'),false,'Catalog text is presented as text rather than HTML');
+});
+
+async function commerceDocument(sectionName,{shop={},cart={},product={}}={}) {
+  const sectionEngine=new Liquid({root:path.join(root,'snippets'),extname:'.liquid',strictFilters:true});
+  sectionEngine.registerFilter('image_url',image=>image?.src);
+  sectionEngine.registerFilter('image_tag',(src,...args)=>`<img src="${src}" ${args.filter(Array.isArray).map(([key,value])=>`${key}="${value}"`).join(' ')}>`);
+  sectionEngine.registerFilter('money_with_currency',value=>`CHF ${(Number(value||0)/100).toFixed(2)}`);
+  sectionEngine.registerFilter('money',value=>(Number(value||0)/100).toFixed(2));
+  sectionEngine.registerFilter('default_errors',()=> '');
+  sectionEngine.registerFilter('structured_data',()=> '{}');
+  sectionEngine.registerFilter('placeholder_svg_tag',()=> '<svg></svg>');
+  sectionEngine.registerFilter('metafield_tag',field=>field?.value||'');
+  sectionEngine.registerFilter('handleize',value=>String(value||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''));
+  for(const name of ['video_tag','external_video_tag','model_viewer_tag','payment_type_svg_tag'])sectionEngine.registerFilter(name,()=> '');
+  const selected={id:7,selected:true,available:true,options:['Sonderfarbe'],price:41234,quantity_rule:{min:1,increment:1},store_availabilities:[]};
+  const currentProduct={id:70,title:'Aktuelles Produkt',url:'/products/aktuelles-produkt',vendor:'Aktueller Lieferant',metafields:{upswing:{}},images:[],media:[],variants:[selected],variants_count:1,selected_or_first_available_variant:selected,first_available_variant:selected,has_only_default_variant:true,options_with_values:[],selling_plan_groups:[],...product};
+  let source=fs.readFileSync(path.join(root,'sections',sectionName+'.liquid'),'utf8').replace(/\{% schema %\}[\s\S]*?\{% endschema %\}/,'');
+  source=source.replace(/{%-?\s*form\s[^%]+%}/g,'<form data-product-form>').replace(/{%-?\s*endform\s*-?%}/g,'</form>');
+  return new JSDOM(await sectionEngine.parseAndRender(source,{product:currentProduct,section:{id:'main',settings:{shipping_note:'Veraltete Versandangabe'},blocks:[]},cart:{item_count:1,items:[],items_subtotal_price:41234,total_price:41234,cart_level_discount_applications:[],taxes_included:true,...cart},shop:{enabled_payment_types:[],...shop},routes:{root_url:'/',cart_url:'/cart',all_products_collection_url:'/collections/all'},form:{},all_products:{}}));
+}
+
+test('product and cart use the current Shopify shipping policy instead of saved shipping copy',async()=>{
+  const policy={url:'/policies/shipping-policy',body:'<p>Aktuelle Versandbedingungen aus Shopify.</p>'};
+  for(const sectionName of ['main-product','main-cart']) {
+    const dom=await commerceDocument(sectionName,{shop:{shipping_policy:policy}});try{
+      const links=[...dom.window.document.querySelectorAll('a[href="/policies/shipping-policy"]')];
+      assert(links.length>0);
+      assert(!dom.window.document.body.textContent.includes('Veraltete Versandangabe'));
+      if(sectionName==='main-product')assert(dom.window.document.body.textContent.includes('Aktuelle Versandbedingungen aus Shopify.'));
+    }finally{dom.window.close();}
+    const missing=await commerceDocument(sectionName);try{
+      assert.equal(missing.window.document.querySelector('a[href="/policies/shipping-policy"]'),null);
+      assert(!missing.window.document.body.textContent.includes('Veraltete Versandangabe'));
+      assert.equal(missing.window.document.querySelector('.cart-shipping-note'),null);
+    }finally{missing.window.close();}
+  }
+});
+
+test('cart tax note follows Shopify tax inclusion on the current cart',async()=>{
+  for(const taxesIncluded of [true,false]){
+    const dom=await commerceDocument('main-cart',{cart:{taxes_included:taxesIncluded}});try{
+      const text=dom.window.document.querySelector('.cart-tax-note').textContent;
+      assert(text.includes(taxesIncluded?'Inklusive Steuern.':'Steuern werden an der Kasse berechnet.'));
+      assert(!text.includes(taxesIncluded?'Steuern werden an der Kasse berechnet.':'Inklusive Steuern.'));
+    }finally{dom.window.close();}
+  }
+});
+
+test('product option labels use exact native swatches and leave names without swatch data as text',async()=>{
+  const value=(name,swatch)=>({swatch,available:true,toString:()=>name});
+  const options=[{name:'Farbe',position:1,selected_value:'Gewebe',values:[value('Gewebe',{image:{src:'/shopify-swatch.jpg'}}),value('Exakter Ton',{color:'#abcdef'}),value('Schwarz',{})]}];
+  const dom=await commerceDocument('main-product',{product:{has_only_default_variant:false,options_with_values:options}});try{
+    const labels=[...dom.window.document.querySelectorAll('.variant-label')];
+    assert.equal(labels[0].querySelector('img').getAttribute('src'),'/shopify-swatch.jpg');
+    assert.equal(labels[1].querySelector('.variant-color-dot').style.getPropertyValue('--swatch-color'),'#abcdef');
+    assert.equal(labels[2].textContent,'Schwarz');
+    assert.equal(labels[2].querySelector('img,.variant-color-dot'),null);
+  }finally{dom.window.close();}
 });
 
 function fixture({initialDelivery={text:'Sofort verfügbar · Lieferzeit: 2–3 Werktage',status:'fast'},serverVariant='',serverStatus='fast',serverText='Sofort verfügbar · Lieferzeit: 2–3 Werktage'}={}) {

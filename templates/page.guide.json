@@ -7,40 +7,28 @@
           "type": "path",
           "settings": {
             "icon": "shoe",
-            "title": "Angenehmer gehen",
-            "description": "Entdecken Sie hochwertige Schuhe. Vergleichen Sie Passform, Materialien und Sohlengefühl.",
-            "label": "Schuhe entdecken",
-            "url": "/collections/kybun-schuhe"
+            "label": "Sortiment entdecken"
           }
         },
         "move": {
           "type": "path",
           "settings": {
             "icon": "leaf",
-            "title": "In Bewegung bleiben",
-            "description": "Produkte für bewusste Bewegung, Gleichgewicht und einen aktiven Alltag.",
-            "label": "Bewegung entdecken",
-            "url": "/collections/balance-und-sitzkissen"
+            "label": "Sortiment entdecken"
           }
         },
         "recover": {
           "type": "path",
           "settings": {
             "icon": "check",
-            "title": "Bewusst regenerieren",
-            "description": "Erfahren Sie mehr über Produkte für Massage, Faszientraining und Erholung.",
-            "label": "Regeneration entdecken",
-            "url": "/collections/blackroll-faszientraining"
+            "label": "Sortiment entdecken"
           }
         },
         "work": {
           "type": "path",
           "settings": {
             "icon": "office",
-            "title": "Gesünder arbeiten",
-            "description": "Stehmatten und Sitzkissen für mehr Bewegung an Ihrem Arbeitsplatz.",
-            "label": "Arbeitsplatz entdecken",
-            "url": "/collections/kybun-matten"
+            "label": "Sortiment entdecken"
           }
         }
       },

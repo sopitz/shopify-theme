@@ -1,8 +1,67 @@
-<section class="section-space category-section" aria-labelledby="CategoryTitle-{{ section.id }}"><div class="container"><div class="section-heading"><div><p class="eyebrow">{{ section.settings.eyebrow | escape }}</p><h2 id="CategoryTitle-{{ section.id }}">{{ section.settings.heading | escape }}</h2></div><a href="{{ routes.all_products_collection_url }}" class="text-link">Alle Produkte {% render 'icon', name: 'arrow' %}</a></div><div class="category-grid">{% for block in section.blocks %}{% assign category_collection = block.settings.collection %}{% assign category_url = block.settings.url | default: category_collection.url | default: routes.all_products_collection_url %}<a href="{{ category_url }}" class="category-card" {{ block.shopify_attributes }}><div class="category-media">{% if block.settings.image != blank %}{{ block.settings.image | image_url: width: 800 | image_tag: loading: 'lazy', widths: '300, 500, 800', sizes: '(min-width: 900px) 25vw, 50vw' }}{% elsif category_collection.image != blank %}{{ category_collection.image | image_url: width: 800 | image_tag: loading: 'lazy' }}{% elsif block.settings.fallback_image != blank %}<img src="{{ block.settings.fallback_image | asset_url }}" alt="{{ block.settings.title | escape }}" width="600" height="650" loading="lazy">{% elsif category_collection.products.first.featured_image != blank %}{{ category_collection.products.first.featured_image | image_url: width: 800 | image_tag: loading: 'lazy' }}{% else %}{{ 'collection-1' | placeholder_svg_tag: 'placeholder-image' }}{% endif %}</div><div class="category-content"><h3>{{ block.settings.title | escape }}</h3><p>{{ block.settings.description | escape }}</p><span class="text-link category-arrow">Jetzt entdecken {% render 'icon', name: 'arrow' %}</span></div></a>{% endfor %}</div></div></section>
+{%- liquid
+  assign category_count = 0
+  for block in section.blocks
+    assign category_collection = block.settings.collection
+    if category_collection != blank and category_collection.id != blank and category_collection.url != blank
+      assign category_count = category_count | plus: 1
+    endif
+  endfor
+-%}
+{%- if category_count > 0 or request.design_mode -%}
+  <section class="section-space category-section" aria-labelledby="CategoryTitle-{{ section.id }}">
+    <div class="container">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>
+          <h2 id="CategoryTitle-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+        </div>
+        {%- if category_count > 0 -%}
+          <a href="{{ routes.all_products_collection_url }}" class="text-link">Alle Produkte {% render 'icon', name: 'arrow' %}</a>
+        {%- endif -%}
+      </div>
+      <div class="category-grid">
+        {%- for block in section.blocks -%}
+          {%- assign category_collection = block.settings.collection -%}
+          {%- if category_collection != blank and category_collection.id != blank and category_collection.url != blank -%}
+            <a href="{{ category_collection.url }}" class="category-card" {{ block.shopify_attributes }}>
+              <div class="category-media"{% if category_collection.image == blank %} aria-hidden="true"{% endif %}>
+                {%- if category_collection.image != blank -%}
+                  {{ category_collection.image | image_url: width: 800 | image_tag: loading: 'lazy', widths: '300, 500, 800', sizes: '(min-width: 900px) 25vw, 50vw', alt: category_collection.title }}
+                {%- endif -%}
+              </div>
+              <div class="category-content">
+                <h3>{{ category_collection.title | escape }}</h3>
+                {%- if category_collection.description != blank -%}
+                  <p>{{ category_collection.description | strip_html | truncate: 160 | escape_once }}</p>
+                {%- endif -%}
+                <span class="text-link category-arrow">Jetzt entdecken {% render 'icon', name: 'arrow' %}</span>
+              </div>
+            </a>
+          {%- elsif request.design_mode -%}
+            <div class="category-card" {{ block.shopify_attributes }}>
+              <div class="category-content">
+                <h3>Kollektion verknüpfen</h3>
+                <p>Wählen Sie eine vorhandene Kollektion. Titel, Beschreibung, Bild und Ziel kommen direkt aus Shopify.</p>
+              </div>
+            </div>
+          {%- endif -%}
+        {%- else -%}
+          {%- if request.design_mode -%}
+            <p>Fügen Sie einen Kategorie-Block hinzu und wählen Sie eine Kollektion.</p>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
 {% schema %}
 {
   "name": "Sortimentswelten",
   "settings": [
+    {
+      "type": "paragraph",
+      "content": "Verknüpfen Sie jede Kategorie mit einer Shopify-Kollektion. Pflegen Sie Titel, Beschreibung und Bild bei dieser Kollektion. Nicht verknüpfte Blöcke erscheinen nur im Theme-Editor."
+    },
     {
       "type": "text",
       "id": "eyebrow",
@@ -22,37 +81,9 @@
       "name": "Kategorie",
       "settings": [
         {
-          "type": "text",
-          "id": "title",
-          "label": "Überschrift",
-          "default": "Gesunde Schuhe"
-        },
-        {
-          "type": "text",
-          "id": "description",
-          "label": "Beschreibung",
-          "default": "Komfort für jeden Schritt."
-        },
-        {
           "type": "collection",
           "id": "collection",
           "label": "Kollektion"
-        },
-        {
-          "type": "url",
-          "id": "url",
-          "label": "Optionales anderes Ziel"
-        },
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Bild"
-        },
-        {
-          "type": "text",
-          "id": "fallback_image",
-          "label": "Alternativer Theme-Bildname",
-          "default": "category-shoes.jpg"
         }
       ]
     }

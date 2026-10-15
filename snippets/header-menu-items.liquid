@@ -8,11 +8,6 @@
     if link.url == header_section.settings.about_url or menu_label_key == 'uber-uns' or menu_label_key == 'ueber-uns'
       assign is_about_link = true
     endif
-    if link.title == 'Trainingsgeräte'
-      assign menu_label = 'Bewegung & Training'
-    elsif link.title == 'Vitalität'
-      assign menu_label = 'Regeneration'
-    endif
   %}
   {% if is_about_link %}{% render 'header-about-menu', mode: mode, header_section: header_section, about_link: link, unique_suffix: forloop.index %}
   {% elsif mode == 'desktop' %}
