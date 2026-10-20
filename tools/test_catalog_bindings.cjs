@@ -4,6 +4,7 @@ const path = require('node:path');
 const {test} = require('node:test');
 const {JSDOM} = require('jsdom');
 const {Liquid} = require('liquidjs');
+const {readThemeJson} = require('./read_theme_json.cjs');
 
 const root = path.resolve(__dirname, '..');
 const escape = value => String(value ?? '').replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
@@ -220,7 +221,7 @@ test('distributed configuration and section presets have no catalog handles or r
     const match = source.match(/\{% schema %\}([\s\S]*?)\{% endschema %\}/);
     if (match) schemas.set(filename.replace(/\.liquid$/, ''), JSON.parse(match[1]));
   }
-  const globalDefinitions = JSON.parse(readFileSync(path.join(root, 'config/settings_schema.json'), 'utf8')).flatMap(group => group.settings || []);
+  const globalDefinitions = readThemeJson(path.join(root, 'config/settings_schema.json')).flatMap(group => group.settings || []);
   function checkInstance(instance, location) {
     const schema = schemas.get(instance.type);
     assert.ok(schema, `${location}: section schema exists`);
@@ -231,13 +232,13 @@ test('distributed configuration and section presets have no catalog handles or r
       checkSettings(child.settings, definition?.settings, `${location}/blocks/${id}/settings`, editorial);
     }
   }
-  const settingsData = JSON.parse(readFileSync(path.join(root, 'config/settings_data.json'), 'utf8'));
+  const settingsData = readThemeJson(path.join(root, 'config/settings_data.json'));
   for (const [name, profile] of Object.entries({current:settingsData.current, ...settingsData.presets})) {
     checkSettings(Object.fromEntries(Object.entries(profile || {}).filter(([id]) => id !== 'sections')), globalDefinitions, `settings_data/${name}`);
     for (const [id, instance] of Object.entries(profile?.sections || {})) checkInstance(instance, `settings_data/${name}/sections/${id}`);
   }
   for (const filename of readdirSync(path.join(root, 'templates')).filter(name => name.endsWith('.json'))) {
-    const template = JSON.parse(readFileSync(path.join(root, 'templates', filename), 'utf8'));
+    const template = readThemeJson(path.join(root, 'templates', filename));
     for (const [id, instance] of Object.entries(template.sections || {})) checkInstance(instance, `templates/${filename}/sections/${id}`);
   }
   function checkDefaults(definitions=[], location, editorial=false) {

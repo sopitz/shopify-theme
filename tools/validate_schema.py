@@ -22,6 +22,7 @@ import math
 from pathlib import Path
 import re
 import sys
+from tempfile import TemporaryDirectory
 
 URL_DEFAULTS = {"/collections", "/collections/all"}
 MENU_DEFAULTS = {"main-menu", "footer"}
@@ -33,6 +34,12 @@ SECTION_KEYS = {"name", "tag", "class", "limit", "settings", "blocks", "max_bloc
 SECTION_TAGS = {"article", "aside", "div", "footer", "header", "section"}
 SUPPORTED_TYPES = TEXT_TYPES | RESOURCE_TYPES | {"checkbox", "number", "range", "select", "radio", "collection_list", "product_list", "video_url", "metaobject", "metaobject_list", "color_scheme", "color_scheme_group", "color_palette", "header", "paragraph"}
 SCHEMA = re.compile(r"{%-?\s*schema\s*-?%}([\s\S]*?){%-?\s*endschema\s*-?%}")
+LEADING_JSON_COMMENTS = re.compile(r"^(?:[ \t\r\n]*/\*[\s\S]*?\*/)+")
+
+
+def strip_leading_json_comments(source):
+    """Remove only Shopify's leading block notices; retain strict JSON after them."""
+    return LEADING_JSON_COMMENTS.sub("", source, count=1)
 
 
 def numeric(value):
@@ -91,7 +98,7 @@ class Validator:
 
     def read_json(self, path):
         try:
-            return json.loads(path.read_text(), object_pairs_hook=duplicate_keys)
+            return json.loads(strip_leading_json_comments(path.read_text(encoding="utf-8")), object_pairs_hook=duplicate_keys)
         except (OSError, ValueError) as error:
             self.add(path.relative_to(self.root), "json", str(error))
             return None
@@ -373,7 +380,30 @@ def self_test():
         v = Validator(".")
         v.settings([definition], "fixture")
         assert any(item["rule"] == rule for item in v.findings)
-    return len(invalid) + len(valid) + 2
+    payload = {"url": "https://example.test/path/*literal*/", "text": "/* Inhalt */ und // Text", "closing": "*/"}
+    encoded = json.dumps(payload, ensure_ascii=False)
+    prefixes = ["", "/* Shopify generated */", " \t\r\n/*\nShopify generated\n*/\n", "/* First */ \n/* Second */\t"]
+    invalid_json = [
+        '{"first": 1, /* Inner comment */ "second": 2}',
+        '{} /* Trailing comment */',
+        '// Leading line comment\n{}',
+        '/* Unterminated notice\n{}',
+        '/* Valid notice */ /* Unterminated notice\n{}',
+        '/* Valid notice */ {"duplicate": 1, "duplicate": 2}',
+    ]
+    with TemporaryDirectory() as directory:
+        path = Path(directory).resolve() / "settings_data.json"
+        for prefix in prefixes:
+            path.write_text(prefix + encoded, encoding="utf-8")
+            v = Validator(directory)
+            assert v.read_json(path) == payload
+            assert not v.findings, v.findings
+        for source in invalid_json:
+            path.write_text(source, encoding="utf-8")
+            v = Validator(directory)
+            assert v.read_json(path) is None
+            assert any(item["rule"] == "json" for item in v.findings), source
+    return len(invalid) + len(valid) + 2 + len(prefixes) + len(invalid_json)
 
 
 def main():

@@ -20,6 +20,9 @@
 {%- assign onsite_consultation_url = onsite_consultation_url | strip -%}
 {%- capture product_knowledge -%}{% render 'product-knowledge', product: product, consultation_url: onsite_consultation_url %}{%- endcapture -%}
 {%- assign product_knowledge = product_knowledge | strip -%}
+{%- capture product_selection_guide -%}{%- render 'product-metafield-content', field: product.metafields.upswing.size_guide -%}{%- endcapture -%}
+{%- capture product_main_category -%}{%- render 'product-main-category', product: product -%}{%- endcapture -%}
+{%- assign product_main_category = product_main_category | strip -%}
 <section class="product-section section-space" id="Product-{{ section.id }}" data-product-section data-product-media-context data-product-context-kind="{{ context_kind | escape }}" data-product-context-brand="{{ product.vendor | escape }}" data-section-id="{{ section.id }}" data-product-url="{{ product.url }}">
   <div class="container">
     <nav class="breadcrumbs" aria-label="Brotkrumennavigation">
@@ -65,7 +68,18 @@
         {% render 'product-intro', product: product %}
         <div class="product-price product-price-large">{% render 'price', product: product, variant: current_variant, live: true %}</div>
         <p class="price-tax">{% if cart.taxes_included %}Inklusive Steuern.{% else %}Steuern werden an der Kasse berechnet.{% endif %} {% if shop.shipping_policy != blank %}<a href="{{ shop.shipping_policy.url }}">Versandbedingungen</a>{% else %}Versand wird an der Kasse berechnet.{% endif %}</p>
-        {%- capture product_benefit_items -%}{%- for benefit in product.metafields.upswing.benefits.value -%}{%- assign benefit_text = benefit | strip -%}{%- if benefit_text != blank -%}<li>{% render 'icon', name: 'check' %}<span>{{ benefit_text | escape }}</span></li>{%- endif -%}{%- endfor -%}{%- endcapture -%}
+        {%- capture product_benefit_items -%}
+          {%- if product.metafields.upswing.benefits.type == 'list.single_line_text_field' -%}
+            {%- for benefit in product.metafields.upswing.benefits.value -%}
+              {%- assign benefit_json = benefit | json -%}
+              {%- assign benefit_opening = benefit_json | slice: 0, 1 -%}
+              {%- if benefit_opening == '"' -%}
+                {%- assign benefit_text = benefit | replace: ' ', ' ' | strip -%}
+                {%- if benefit_text != blank -%}<li>{% render 'icon', name: 'check' %}<span>{{ benefit_text | escape }}</span></li>{%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
+        {%- endcapture -%}
         {%- assign product_benefit_items = product_benefit_items | strip -%}
         {%- if product_benefit_items != blank -%}<ul class="product-benefits">{{ product_benefit_items }}</ul>{%- endif -%}
         {% render 'product-model-colors', product: product %}
@@ -82,6 +96,7 @@
             ]
           </script>
           {%- unless product.has_only_default_variant -%}
+            {%- if product_selection_guide != blank -%}<a class="product-selection-help" href="#ProductSizeGuide">{% if product_main_category == 'footwear' %}Hilfe bei der Grösse{% else %}Hilfe bei der Auswahl{% endif %}</a>{%- endif -%}
             <div class="enhanced-variant-picker enhanced-options">
               {%- for option in product.options_with_values -%}
                 {%- assign option_name = option.name | downcase | strip -%}

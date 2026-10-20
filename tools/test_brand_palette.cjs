@@ -4,10 +4,11 @@ const {readFileSync} = require('node:fs');
 const path = require('node:path');
 const {Liquid} = require('liquidjs');
 const {JSDOM} = require('jsdom');
+const {readThemeJson} = require('./read_theme_json.cjs');
 const root = path.resolve(__dirname, '..');
-const schema = JSON.parse(readFileSync(path.join(root, 'config/settings_schema.json')));
+const schema = readThemeJson(path.join(root, 'config/settings_schema.json'));
 const defaults = Object.fromEntries(schema.flatMap(group => group.settings || []).filter(field => field.type === 'color').map(field => [field.id, field.default]));
-const current = JSON.parse(readFileSync(path.join(root, 'config/settings_data.json'))).current;
+const current = readThemeJson(path.join(root, 'config/settings_data.json')).current;
 const base = readFileSync(path.join(root, 'assets/upswing.css'), 'utf8');
 
 function luminance(hex) {

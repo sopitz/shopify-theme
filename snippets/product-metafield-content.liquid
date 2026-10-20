@@ -1,9 +1,12 @@
-{%- comment -%}Only supported live text fields are displayed; JSON and other unknown field types have no prose fallback.{%- endcomment -%}
-{%- if field.value != blank -%}
-  {%- capture field_markup -%}
-    {%- if field.type == 'rich_text_field' -%}{{- field | metafield_tag -}}
-    {%- elsif field.type == 'single_line_text_field' or field.type == 'multi_line_text_field' or field.type == blank -%}<p>{{ field.value | escape | newline_to_br }}</p>{%- endif -%}
-  {%- endcapture -%}
-  {%- assign field_text = field_markup | strip_html | replace: '&nbsp;', ' ' | replace: '&#160;', ' ' | replace: '&#xA0;', ' ' | replace: '&#xa0;', ' ' | replace: ' ', ' ' | strip -%}
-  {%- if field_text != blank -%}{{- field_markup -}}{%- endif -%}
-{%- endif -%}
+{%- comment -%}Rich text uses Shopify's renderer; plain text accepts scalar values only. Unknown field types and object/list values have no prose fallback.{%- endcomment -%}
+{%- capture field_markup -%}
+  {%- if field.type == 'rich_text_field' and field.value != blank -%}{{- field | metafield_tag -}}
+  {%- elsif field.type == 'single_line_text_field' or field.type == 'multi_line_text_field' or field.type == blank -%}
+    {%- assign value_json = field.value | json -%}
+    {%- assign value_opening = value_json | slice: 0, 1 -%}
+    {%- assign scalar_text = field.value | strip -%}
+    {%- if value_json != 'null' and value_opening != '{' and value_opening != '[' and scalar_text != blank -%}<p>{{ field.value | escape | newline_to_br }}</p>{%- endif -%}
+  {%- endif -%}
+{%- endcapture -%}
+{%- assign field_text = field_markup | strip_html | replace: '&nbsp;', ' ' | replace: '&#160;', ' ' | replace: '&#xA0;', ' ' | replace: '&#xa0;', ' ' | replace: ' ', ' ' | strip -%}
+{%- if field_text != blank -%}{{- field_markup -}}{%- endif -%}

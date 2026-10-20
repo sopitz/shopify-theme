@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.12] - 2026-10-20
+
+- AICO-Produktinhalte für die vier Hauptkategorien in einer gemeinsamen Produktvorlage vervollständigt. Die Navigation folgt der Kategorie; die gepflegte Grössen-/Auswahlhilfe ist direkt bei den Varianten erreichbar. Keine manuelle Zuweisung separater Produkttemplates nötig.
+- Feature- und Themenkarten benötigen Titel und sichtbaren Erklärungstext; FAQ-Einträge Frage und Antwort. Falsche JSON-Strukturen, Objekte statt Text und leere Inhalte erzeugen keine Karten. Richtext bleibt formatiert; exportierte Seiten- und Kaufbereiche werden in den JSON-Texten nicht eingebettet.
+- Kaufargumente erscheinen nur beim Preis und werden nicht erneut als Featurekarten ausgegeben. Zusätzliche Featurekarten umbrechen mit gleichmässigen Abständen; lange Produktcodes und Texte bleiben auch mobil innerhalb der Seite; die vollständige Shopify-Produktbeschreibung bleibt bei strukturierten Inhalten aufklappbar erhalten und ohne Zusatzinhalte direkt sichtbar.
+- Führende, von Shopify erzeugte JSON-Kommentare in gespeicherten Einstellungen werden von den lokalen Prüfungen korrekt gelesen; aktuelle Editor-Einstellungen bleiben erhalten.
+- Feldvertrag und Sync-Hinweise in der AICO-Übersicht und Einrichtung dokumentiert. Lokale Prüfdaten für alle vier Kategorien mit vollständigen, teilweisen und leeren Zusatzfeldern liegen ausschliesslich ausserhalb des Theme-Pakets.
+
 ## [1.0.11] - 2026-10-20
 
 - Farbpalette aus dem Original-Logo übernommen: Cyan als Akzent, Anthrazit für Texte und dunkle Bereiche sowie kühle weisse und hellblaue Flächen. Logo-Datei und Gestaltung bleiben erhalten.

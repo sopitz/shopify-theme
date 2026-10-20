@@ -2,6 +2,27 @@
 document.documentElement.classList.replace('no-js', 'js');
 (() => {
   const bind = (scope = document) => {
+    scope.querySelectorAll('.product-selection-help').forEach(link => {
+      if (link.dataset.selectionHelpBound) return;
+      link.dataset.selectionHelpBound = 'true';
+      link.addEventListener('click', event => {
+        if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        const guide = link.closest('[data-product-section]')?.querySelector('#ProductSizeGuide');
+        if (!guide) return;
+        event.preventDefault();
+        if (!guide.hasAttribute('tabindex')) {
+          guide.setAttribute('tabindex', '-1');
+          guide.addEventListener('blur', () => {
+            if (guide.getAttribute('tabindex') === '-1') guide.removeAttribute('tabindex');
+          }, {once:true});
+        }
+        guide.focus({preventScroll:true});
+        guide.scrollIntoView({behavior:'instant', block:'start'});
+        const url = new URL(window.location.href);
+        url.hash = guide.id;
+        if (window.location.hash !== url.hash) window.history.pushState(window.history.state, '', url);
+      });
+    });
     scope.querySelectorAll('select[data-sort-select][name="sort_by"]').forEach(select => {
       if (select.dataset.sortBound || !select.form || select.form.method.toLowerCase() !== 'get') return;
       select.dataset.sortBound = 'true';

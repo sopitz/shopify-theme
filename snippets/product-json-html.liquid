@@ -1,7 +1,46 @@
-{%- comment -%}Prints an HTML string from a JSON metafield entry (AICO custom field), but only a string that holds visible text.{%- endcomment -%}
+{%- comment -%}
+  JSON bodies accept merchant-authored text HTML, not exported pages or purchase
+  controls. Reject the entire body when it includes known page, form or code
+  elements. This export-content guard is not a general HTML sanitizer: permitted
+  markup and its attributes must still come from a trusted, reviewed source.
+{%- endcomment -%}
 {%- assign html_json = html | json -%}
 {%- assign html_opening = html_json | slice: 0, 1 -%}
 {%- if html_opening == '"' -%}
-  {%- assign html_text = html | strip_html | replace: '&nbsp;', ' ' | replace: '&#160;', ' ' | replace: '&#xA0;', ' ' | replace: '&#xa0;', ' ' | replace: ' ', ' ' | strip -%}
-  {%- if html_text != blank -%}{{- html -}}{%- endif -%}
+  {%- liquid
+    assign normalized_html = html | downcase
+    assign blocked_content = false
+    assign blocked_tags = 'form,script,style,input,select,button,iframe,textarea,option,object,embed,link,meta,base,html,head,body,main,header,footer,nav,section,article' | split: ','
+    for tag_name in blocked_tags
+      assign opening_tag = tag_name | prepend: '<'
+      assign closing_tag = tag_name | prepend: '</'
+      if normalized_html contains opening_tag or normalized_html contains closing_tag
+        assign blocked_content = true
+        break
+      endif
+    endfor
+    if normalized_html contains '<!doctype'
+      assign blocked_content = true
+    endif
+    unless blocked_content
+      assign wrapper_markers = 'shopify-section,data-product-,product-form,product-section,product-detail,product-overview,maincontent,page-width,template-product' | split: ','
+      assign html_parts = normalized_html | split: '<'
+      for part in html_parts offset: 1
+        assign tag_markup = part | split: '>' | first
+        for marker in wrapper_markers
+          if tag_markup contains marker
+            assign blocked_content = true
+            break
+          endif
+        endfor
+        if blocked_content
+          break
+        endif
+      endfor
+    endunless
+  -%}
+  {%- unless blocked_content -%}
+    {%- assign html_text = html | strip_html | replace: '&nbsp;', ' ' | replace: '&#160;', ' ' | replace: '&#xA0;', ' ' | replace: '&#xa0;', ' ' | replace: ' ', ' ' | strip -%}
+    {%- if html_text != blank -%}{{- html -}}{%- endif -%}
+  {%- endunless -%}
 {%- endif -%}

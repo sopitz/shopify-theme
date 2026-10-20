@@ -50,7 +50,7 @@ Nicht verknüpfte oder gelöschte Katalogreferenzen erzeugen im Shop keine verli
 
 ## Produktinhalte pflegen
 
-Die native Shopify-Beschreibung bleibt vollständig erhalten. Die kurze Einleitung nutzt einen gültigen vorhandenen Kurztext oder den ersten Absatz dieser Beschreibung. Zusätzliche Informationsbereiche erscheinen nur mit befüllten und passend typisierten Shopdaten. Eine Artikelmarke oder ein Produkthandle erzeugt keine zusätzlichen Aussagen zu Eigenschaften, Eignung oder Serviceleistungen.
+Die native Shopify-Beschreibung bleibt vollständig erhalten. Sind strukturierte Produktinformationen vorhanden, steht sie als aufklappbare «Vollständige Produktbeschreibung» darunter, damit die übernommenen Abschnitte nicht doppelt die Seite verlängern. Ohne strukturierte Inhalte bleibt sie direkt geöffnet sichtbar. Die kurze Einleitung nutzt einen gültigen vorhandenen Kurztext oder den ersten Absatz dieser Beschreibung. Zusätzliche Informationsbereiche erscheinen nur mit befüllten und passend typisierten Shopdaten. Eine Artikelmarke oder ein Produkthandle erzeugt keine zusätzlichen Aussagen zu Eigenschaften, Eignung oder Serviceleistungen.
 
 Die gemeinsame Produktvorlage unterstützt unter anderem:
 
@@ -62,6 +62,25 @@ Die gemeinsame Produktvorlage unterstützt unter anderem:
 - `upswing.related_products` als explizite Produktempfehlungen sowie Shopifys native Produktempfehlungen.
 
 Die Überschriften dieser Bereiche richten sich nach der Hauptkategorie des Produkts, zum Beispiel «Eingewöhnung» und «Schuhpflege» bei Gesundheitsschuhen oder «Aufbau und erster Einsatz» bei Bewegung & Training. Welche Produkt-Tags zu welcher Hauptkategorie gehören, steht unter **Theme-Einstellungen → Produktinhalte nach Hauptkategorie** (Standard: die AICO-Kategorie-Tags `category_<ID>`). Ohne passenden Tag bleiben die neutralen Überschriften.
+
+Die acht Zusatzfelder aus der AICO-Vorlage werden in dieser gemeinsamen Vorlage direkt ausgegeben:
+
+| Shopify-Metafeld | Feldtyp | Stelle auf der Produktseite |
+|---|---|---|
+| `upswing.benefits` | `list.single_line_text_field` | Kaufargumente beim Preis |
+| `upswing.features` | `json`-Array mit `label` (optional), `title`, `body` | Erklärte Eigenschaften als Karten |
+| `upswing.everyday_topics` | `json`-Array mit `title`, `body` | Kategoriebezogene Anwendungsthemen |
+| `upswing.suitability` | `rich_text_field` | Eignung unter den Anwendungsthemen |
+| `upswing.introduction` | `rich_text_field` | Einstieg, Eingewöhnung oder Einrichtung |
+| `upswing.size_guide` | `rich_text_field` | Auswahlhilfe bei den Details; Direktlink bei der Variantenwahl |
+| `upswing.care` | `rich_text_field` | Pflege, Reinigung oder Wartung |
+| `upswing.faq_items` | `json`-Array mit `question`, `answer` | Aufklappbare Produktfragen |
+
+Für die drei JSON-Listen muss der Sync echte Arrays an Shopify übergeben, keine JSON-Zeichenfolge innerhalb eines JSON-Felds und keinen Sprach-Wrapper. Titel, Label und Frage sind einfache Zeichenfolgen. `body` und `answer` dürfen einfache Textformatierung, Listen und Links enthalten; komplette Seiten, Formulare und eingebettete Kaufbereiche gehören nicht in diese Felder. Eine Feature- oder Themenkarte benötigt Titel und sichtbaren Text, eine FAQ Frage und Antwort. Unvollständige oder falsch typisierte Einträge erzeugen keine leeren Karten. Alle gültigen Einträge bleiben in der gepflegten Reihenfolge erhalten, auch oberhalb von drei Karten.
+
+Die vier Richtext-Felder werden im Shopify-Richtext-Format übertragen und durch Shopifys `metafield_tag` ausgegeben. AICO-HTML muss dafür im Sync in die Shopify-Richtext-Struktur umgewandelt werden. Ein HTML-String in einem Textfeld ersetzt kein `rich_text_field`; einfache Textfelder bleiben als escaped Text kompatibel. Leere Felder erhalten keine Beispieltexte.
+
+Die Hauptkategorie wird automatisch anhand der konfigurierten Produkt-Tags erkannt. Die Priorität lautet Gesundheitsschuhe → Arbeitsplatz → Regeneration → Bewegung & Training; so überschreibt ein genauer Arbeitsplatz-Tag einen ebenfalls vorhandenen allgemeinen Bewegung-Tag. Ohne Treffer bleiben die neutralen Überschriften. Es müssen keine vier Produktvorlagen von Hand zugewiesen werden.
 
 Die [Katalog-Checkliste](Katalog-Einrichtung.html) beschreibt die benötigten Definitionen und Quellen. Neue Metafelder und Metaobjects im Shopify-Admin mit dem erforderlichen Storefront-Zugriff anlegen; ein Theme-Upload übernimmt diesen Schritt nicht. Die AICO-Datei beschreibt die fachliche Ergänzung je Hauptkategorie. Zusätzliche Datenfelder erst nach Prüfung mit echten Artikeln im Sync befüllen.
 
