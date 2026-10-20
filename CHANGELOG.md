@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.27] - 2026-10-20
+
+- Pagination verwendet kompakte pillenförmige Buttons im vorhandenen Theme-Stil. Doppelte Rahmen durch verschachtelte Shopify-Elemente entfallen.
+- «Weiter» und «Zurück» erhalten ausreichenden Innenabstand. Aktuelle Seite, Hover- und Tastaturfokus bleiben klar erkennbar; bei wenig Platz umbrechen die Buttons.
+
 ## [1.0.26] - 2026-10-20
 
 - Warenkorb bis 960 px Breite einspaltig, ohne seitliches Scrollen. Bisher hielt die Zahlungslogo-Reihe die Spalte auf mindestens 460 px; dadurch war die Seite bei 375 px 480 px breit und bei 900 px 925 px breit.
