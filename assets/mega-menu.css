@@ -28,7 +28,8 @@
 .nav-image-placeholder{display:grid;place-items:center;color:var(--muted)}
 .nav-image-placeholder .icon{height:32px;width:32px}
 .mega-submenu{display:contents}
-.mega-submenu>li{min-width:0}
+.mega-submenu>li{min-width:0;align-self:end}
+.mega-submenu-link .mega-card-media{height:88px}
 .mobile-nav-summary{display:flex;justify-content:space-between;align-items:center;gap:15px;list-style:none;cursor:pointer;font-size:16px;font-weight:600;min-height:58px;padding:13px 0;border-bottom:1px solid var(--line)}
 .mobile-nav-summary::-webkit-details-marker{display:none}
 .mobile-nav-summary>.icon{width:15px;height:15px;transform:rotate(90deg)}
