@@ -1,11 +1,17 @@
 # Changelog
 
-## [1.0.10] - 2026-10-20
+## [1.0.11] - 2026-10-20
 
 - Farbpalette aus dem Original-Logo übernommen: Cyan als Akzent, Anthrazit für Texte und dunkle Bereiche sowie kühle weisse und hellblaue Flächen. Logo-Datei und Gestaltung bleiben erhalten.
 - Buttons und Links verwenden dunklere Cyan-Abstufungen für gut lesbare Beschriftungen. Fokus, Navigation, Formulare, Galerien, Kaufleisten und redaktionelle Seiten verwenden gemeinsame Farbwerte; alte dekorative Grün- und Beigetöne entfernt.
 - Farbfelder im Theme-Editor verständlich benannt und eine eigene Farbe für Links und Fokus ergänzt. Produktfarben aus AICO beziehungsweise Shopify sowie Liefer-, Erfolgs- und Fehlerstatus behalten ihre jeweiligen Farben.
 - Kontrastprüfung für die ausgelieferte Palette und Editor-Vorgaben ergänzt.
+
+## [1.0.10] - 2026-10-20
+
+- Produktseite liest die AICO-Listen `upswing.features`, `upswing.everyday_topics` und `upswing.faq_items` auch als `json`-Metafeld (Titel, Label, HTML-Text beziehungsweise Frage und Antwort). Metaobject-Listen funktionieren weiterhin; leere, unvollständige oder falsch typisierte Einträge bleiben verborgen.
+- Überschriften der Informationsbereiche folgen der Hauptkategorie des Produkts (Gesundheitsschuhe, Bewegung & Training, Regeneration, Arbeitsplatz) gemäss AICO-Zusatzfeld-Übersicht. Die Zuordnung erfolgt über Produkt-Tags, einstellbar unter «Produktinhalte nach Hauptkategorie»; ohne Treffer bleiben die neutralen Überschriften.
+- AICO-Übersicht und Einrichtungskonzept auf das JSON-Format der drei Listen und die Kategorie-Überschriften aktualisiert.
 
 ## [1.0.9] - 2026-10-20
 

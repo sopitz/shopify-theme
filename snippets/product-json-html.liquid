@@ -1,0 +1,7 @@
+{%- comment -%}Prints an HTML string from a JSON metafield entry (AICO custom field), but only a string that holds visible text.{%- endcomment -%}
+{%- assign html_json = html | json -%}
+{%- assign html_opening = html_json | slice: 0, 1 -%}
+{%- if html_opening == '"' -%}
+  {%- assign html_text = html | strip_html | replace: '&nbsp;', ' ' | replace: '&#160;', ' ' | replace: '&#xA0;', ' ' | replace: '&#xa0;', ' ' | replace: ' ', ' ' | strip -%}
+  {%- if html_text != blank -%}{{- html -}}{%- endif -%}
+{%- endif -%}

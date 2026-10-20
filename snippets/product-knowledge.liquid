@@ -1,11 +1,57 @@
 {%- comment -%}Every product statement comes from the current Shopify product or its published metafields.{%- endcomment -%}
 {%- capture consultation_url -%}{%- render 'filial-anchor-url', url: consultation_url, fallback_url: '/pages/filialubersicht#Filialen' -%}{%- endcapture -%}
 {%- assign consultation_url = consultation_url | strip -%}
+{%- capture main_category -%}{% render 'product-main-category', product: product %}{%- endcapture -%}
 {%- liquid
-  assign information_features = product.metafields.upswing.features.value | compact
-  assign information_topics = product.metafields.upswing.everyday_topics.value | compact
+  assign main_category = main_category | strip
+  assign everyday_eyebrow = 'Anwendung & Eignung'
+  assign everyday_heading = 'Im Alltag.'
+  assign suitability_heading = 'Für wen passend?'
+  assign introduction_heading = 'Anwendung & Eingewöhnung'
+  assign size_guide_heading = 'Grösse & Passform'
+  assign care_heading = 'Pflege'
+  assign faq_heading = 'Fragen & Antworten.'
+  case main_category
+    when 'footwear'
+      assign everyday_eyebrow = 'Gehgefühl & Eignung'
+      assign suitability_heading = 'Für wen und wofür?'
+      assign introduction_heading = 'Eingewöhnung'
+      assign size_guide_heading = 'Passform und Grössenwahl'
+      assign care_heading = 'Schuhpflege'
+      assign faq_heading = 'Fragen zu diesem Modell.'
+    when 'training'
+      assign everyday_eyebrow = 'Training & Eignung'
+      assign everyday_heading = 'Trainingsmöglichkeiten.'
+      assign suitability_heading = 'Trainingsziel und Voraussetzungen'
+      assign introduction_heading = 'Aufbau und erster Einsatz'
+      assign size_guide_heading = 'Passende Ausführung auswählen'
+      assign care_heading = 'Reinigung, Wartung und Aufbewahrung'
+      assign faq_heading = 'Fragen zur Nutzung.'
+    when 'regeneration'
+      assign everyday_heading = 'Nutzung im Alltag.'
+      assign suitability_heading = 'Eignung und wichtige Einschränkungen'
+      assign introduction_heading = 'Erste Anwendung'
+      assign size_guide_heading = 'Passform und Kompatibilität'
+      assign care_heading = 'Reinigung und Lagerung'
+      assign faq_heading = 'Fragen zum Artikel.'
+    when 'workplace'
+      assign everyday_eyebrow = 'Einsatz & Eignung'
+      assign everyday_heading = 'Einbindung in den Arbeitstag.'
+      assign suitability_heading = 'Passender Arbeitsplatz'
+      assign introduction_heading = 'Aufstellung und Einrichtung'
+      assign size_guide_heading = 'Passende Grösse und Ausführung'
+      assign care_heading = 'Reinigung und Wartung'
+      assign faq_heading = 'Fragen zum Arbeitsalltag.'
+  endcase
+-%}
+{%- liquid
+  assign features_field = product.metafields.upswing.features
+  assign topics_field = product.metafields.upswing.everyday_topics
+  assign faqs_field = product.metafields.upswing.faq_items
+  assign information_features = features_field.value | compact
+  assign information_topics = topics_field.value | compact
   assign information_facts = product.metafields.upswing.technical_specs.value | compact
-  assign information_faqs = product.metafields.upswing.faq_items.value | compact
+  assign information_faqs = faqs_field.value | compact
   assign knowledge_heading = 'Produkt verstehen.'
   assign heading_field = product.metafields.upswing.knowledge_heading
   if heading_field.type == 'single_line_text_field' or heading_field.type == blank
@@ -31,12 +77,20 @@
 {%- assign faq_content = faq_content | strip -%}
 {%- capture feature_cards -%}
   {%- for feature in information_features -%}
-    {%- capture feature_body -%}{% render 'product-metafield-content', field: feature.body %}{%- endcapture -%}
+    {%- if features_field.type == 'json' -%}
+      {%- assign feature_label = feature.label | strip -%}
+      {%- assign feature_title = feature.title | strip -%}
+      {%- capture feature_body -%}{% render 'product-json-html', html: feature.body %}{%- endcapture -%}
+    {%- else -%}
+      {%- assign feature_label = feature.label.value | strip -%}
+      {%- assign feature_title = feature.title.value | strip -%}
+      {%- capture feature_body -%}{% render 'product-metafield-content', field: feature.body %}{%- endcapture -%}
+    {%- endif -%}
     {%- assign feature_body = feature_body | strip -%}
-    {%- if feature.title.value != blank or feature_body != blank -%}
+    {%- if feature_title != blank or feature_body != blank -%}
       <article class="product-feature">
-        <span class="product-feature-number"{% if feature.label.value == blank %} aria-hidden="true"{% endif %}>{% if feature.label.value != blank %}{{ feature.label.value | escape }}{% else %}{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}{% endif %}</span>
-        {% if feature.title.value != blank %}<h3>{{ feature.title.value | escape }}</h3>{% endif %}
+        <span class="product-feature-number"{% if feature_label == blank %} aria-hidden="true"{% endif %}>{% if feature_label != blank %}{{ feature_label | escape }}{% else %}{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}{% endif %}</span>
+        {% if feature_title != blank %}<h3>{{ feature_title | escape }}</h3>{% endif %}
         {% if feature_body != blank %}<div class="product-knowledge-copy">{{ feature_body }}</div>{% endif %}
       </article>
     {%- endif -%}
@@ -54,10 +108,16 @@
 {%- endif -%}
 {%- capture everyday_cards -%}
   {%- for topic in information_topics -%}
-    {%- capture topic_body -%}{% render 'product-metafield-content', field: topic.body %}{%- endcapture -%}
+    {%- if topics_field.type == 'json' -%}
+      {%- assign topic_title = topic.title | strip -%}
+      {%- capture topic_body -%}{% render 'product-json-html', html: topic.body %}{%- endcapture -%}
+    {%- else -%}
+      {%- assign topic_title = topic.title.value | strip -%}
+      {%- capture topic_body -%}{% render 'product-metafield-content', field: topic.body %}{%- endcapture -%}
+    {%- endif -%}
     {%- assign topic_body = topic_body | strip -%}
-    {%- if topic.title.value != blank or topic_body != blank -%}
-      <article class="product-topic">{% if topic.title.value != blank %}<h3>{{ topic.title.value | escape }}</h3>{% endif %}{% if topic_body != blank %}<div class="rte product-knowledge-copy">{{ topic_body }}</div>{% endif %}</article>
+    {%- if topic_title != blank or topic_body != blank -%}
+      <article class="product-topic">{% if topic_title != blank %}<h3>{{ topic_title | escape }}</h3>{% endif %}{% if topic_body != blank %}<div class="rte product-knowledge-copy">{{ topic_body }}</div>{% endif %}</article>
     {%- endif -%}
   {%- endfor -%}
 {%- endcapture -%}
@@ -77,15 +137,21 @@
   {%- for practical_key in practical_keys -%}
     {%- capture practical_body -%}{% render 'product-metafield-content', field: product.metafields.upswing[practical_key] %}{%- endcapture -%}
     {%- assign practical_body = practical_body | strip -%}
-    {%- if practical_body != blank -%}<article><h3>{% case practical_key %}{% when 'introduction' %}Anwendung & Eingewöhnung{% when 'size_guide' %}Grösse & Passform{% when 'care' %}Pflege{% endcase %}</h3><div class="rte product-knowledge-copy">{{ practical_body }}</div></article>{%- endif -%}
+    {%- if practical_body != blank -%}<article><h3>{% case practical_key %}{% when 'introduction' %}{{ introduction_heading }}{% when 'size_guide' %}{{ size_guide_heading }}{% when 'care' %}{{ care_heading }}{% endcase %}</h3><div class="rte product-knowledge-copy">{{ practical_body }}</div></article>{%- endif -%}
   {%- endfor -%}
 {%- endcapture -%}
 {%- assign practical_cards = practical_cards | strip -%}
 {%- capture faq_cards -%}
   {%- for faq in information_faqs -%}
-    {%- capture faq_answer -%}{% render 'product-metafield-content', field: faq.answer %}{%- endcapture -%}
+    {%- if faqs_field.type == 'json' -%}
+      {%- assign faq_question = faq.question | strip -%}
+      {%- capture faq_answer -%}{% render 'product-json-html', html: faq.answer %}{%- endcapture -%}
+    {%- else -%}
+      {%- assign faq_question = faq.question.value | strip -%}
+      {%- capture faq_answer -%}{% render 'product-metafield-content', field: faq.answer %}{%- endcapture -%}
+    {%- endif -%}
     {%- assign faq_answer = faq_answer | strip -%}
-    {%- if faq.question.value != blank and faq_answer != blank -%}<details class="product-faq-item"><summary>{{ faq.question.value | escape }}<span aria-hidden="true">+</span></summary><div class="rte product-knowledge-copy">{{ faq_answer }}</div></details>{%- endif -%}
+    {%- if faq_question != blank and faq_answer != blank -%}<details class="product-faq-item"><summary>{{ faq_question | escape }}<span aria-hidden="true">+</span></summary><div class="rte product-knowledge-copy">{{ faq_answer }}</div></details>{%- endif -%}
   {%- endfor -%}
 {%- endcapture -%}
 {%- assign faq_cards = faq_cards | strip -%}
@@ -126,9 +192,9 @@
     {%- if feature_cards != blank -%}<div class="product-feature-grid" id="ProductOverview">{{ feature_cards }}</div>{%- endif -%}
     {%- if has_everyday_information -%}
       <section class="product-everyday" id="ProductEveryday">
-        <div class="product-section-heading"><p class="eyebrow">Anwendung & Eignung</p><h2>Im Alltag.</h2></div>
+        <div class="product-section-heading"><p class="eyebrow">{{ everyday_eyebrow }}</p><h2>{{ everyday_heading }}</h2></div>
         {% if everyday_cards != blank %}<div class="product-story-grid">{{ everyday_cards }}</div>{% endif %}
-        {% if suitability_content != blank %}<div class="product-suitability"><h3>Für wen passend?</h3><div class="rte product-knowledge-copy">{{ suitability_content }}</div></div>{% endif %}
+        {% if suitability_content != blank %}<div class="product-suitability"><h3>{{ suitability_heading }}</h3><div class="rte product-knowledge-copy">{{ suitability_content }}</div></div>{% endif %}
       </section>
     {%- endif -%}
     {%- if has_practical_information -%}
@@ -147,7 +213,7 @@
     {%- endif -%}
     {%- if has_faq_information -%}
       <section class="product-faq" id="ProductQuestions" aria-labelledby="ProductQuestionsTitle">
-        <div class="product-section-heading"><p class="eyebrow">Die Antworten auf einen Blick</p><h2 id="ProductQuestionsTitle">Fragen & Antworten.</h2></div>
+        <div class="product-section-heading"><p class="eyebrow">Die Antworten auf einen Blick</p><h2 id="ProductQuestionsTitle">{{ faq_heading }}</h2></div>
         <div class="product-faq-list">
           {{ faq_cards }}
           {% if faq_content != blank %}<details class="product-faq-item"><summary>Weitere Fragen & Antworten<span aria-hidden="true">+</span></summary><div class="rte product-knowledge-copy">{{ faq_content }}</div></details>{% endif %}
