@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.20] - 2026-10-20
+
+- Zahlungslogos im Warenkorb stehen einzeilig direkt unter dem Kassenbutton, mit einheitlichen kompakten Flächen und 6 px Abstand.
+- Bei geringer Breite verkleinern sich die Logos proportional innerhalb der verfügbaren Zeile, ohne Umbruch.
+
 ## [1.0.19] - 2026-10-20
 
 - Rechnung erhält dasselbe Schweizer Einzahlungsschein-Symbol wie im gezeigten Checkout, ohne unbestätigte Zuordnung zu einem Rechnungsanbieter.
