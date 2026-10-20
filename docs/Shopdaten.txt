@@ -64,10 +64,13 @@ FARBEN UND MODELLE
   Primärprodukten und passenden Search-&-Discovery-Filtern verwenden.
 
 LIEFERUNG UND RICHTLINIEN
-- upswing.delivery_time als single_line_text_field mit bestätigter Frist samt
-  Einheit an Variante oder Produkt pflegen. Die Variante hat Vorrang.
-- Ohne Frist bleibt die Lieferzeit auf Anfrage. Es gibt keine Marken-Tagesregeln.
-- Verfügbarkeit und Abholung verwenden die gewählte Variante und echte Bestände.
+- upswing.delivery_time als single_line_text_field mit Frist samt Einheit an
+  Variante oder Produkt. Die Variante hat Vorrang. Bei upswing setzt der
+  Shopify-Flow «[Simon] Lieferzeit je Variante» den Variantenwert.
+- Ohne Frist bleibt die Lieferzeit auf Anfrage. Das Theme rechnet keine
+  Marken-Tagesregeln.
+- Die Abholverfügbarkeit bestimmt die Lieferzeit nicht; Shopify meldet bei
+  Weiterverkauf ohne Bestand jeden Abholstandort als verfügbar.
 - Versand und Rückgabe aus den tatsächlichen Shopify-Richtlinien pflegen;
   Versandtarife und Checkout-Einstellungen separat prüfen.
 - Optionales upswing.delivery_note enthält eine produktspezifische Ergänzung.

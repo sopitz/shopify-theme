@@ -9,7 +9,7 @@ const until=async predicate=>{for(let i=0;i<40;i++){if(predicate())return;await 
 
 function sectionMarkup(color='black',id=101,{product=color,section='main',executable=false,noscript=false}={}) {
   const size=String(id).endsWith('2')?'37':String(id).endsWith('3')?'38':'36';
-  const delivery=id%2===0?'Sofort verfügbar · Lieferzeit: 2–3 Werktage':'Online verfügbar · Lieferzeit: 3–5 Werktage';
+  const delivery=id%2===0?'Lieferzeit: 2–3 Werktage':'Lieferzeit: 3–5 Werktage';
   return `<section data-product-section data-product-url="/fr/products/${product}" data-section-id="${section}">
     <h1>Aarau ${color}</h1><p class="product-intro">Le ${color}.</p><p data-product-sku-row><span data-product-sku>SKU-${id}</span></p>
     <img data-product-image src="/images/${color}-${id}.jpg">

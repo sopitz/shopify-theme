@@ -102,10 +102,9 @@ document.documentElement.classList.replace('no-js', 'js');
           applyDelivery(cached.text, cached.status, variant.id); return;
         }
         // Old preview/test forms remain usable; live theme forms always have a
-        // product URL and ID. Pickup availability cannot be inferred from total
-        // inventory or from an unselected variant's empty store_availabilities.
+        // product URL and ID to load the variant's delivery field.
         if (!form.dataset.productUrl || !form.dataset.productId) {
-          applyDelivery('Online verfügbar', 'normal', variant.id); return;
+          applyDelivery('Lieferzeit auf Anfrage', 'normal', variant.id); return;
         }
         applyDelivery('Lieferzeit wird geprüft …', 'pending', variant.id);
         const controller = new AbortController(); deliveryRequest = controller;
@@ -128,7 +127,7 @@ document.documentElement.classList.replace('no-js', 'js');
           deliveryCache.set(String(variant.id), {text,status,time:Date.now()});
           applyDelivery(text, status, variant.id);
         } catch (error) {
-          if (isCurrent() && error.name !== 'AbortError') applyDelivery('Online verfügbar · Lieferzeit konnte nicht ermittelt werden.', 'unknown', variant.id);
+          if (isCurrent() && error.name !== 'AbortError') applyDelivery('Lieferzeit konnte nicht ermittelt werden.', 'unknown', variant.id);
         } finally {
           if (deliveryRequest === controller) deliveryRequest = null;
         }

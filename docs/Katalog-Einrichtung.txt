@@ -67,8 +67,8 @@ Vor dem Anlegen prüfen, ob AICO den Inhalt bereits strukturiert liefert. Dann g
 
 Lieferfrist mit Einheit
 Ort / Typ: Produkt oder Variante · upswing.delivery_time · single_line_text_field
-Einrichtung: Bestätigte Lieferfrist einschliesslich Einheit senden, beispielsweise «4–6 Werktage». Eine Variantenangabe hat Vorrang vor der Produktangabe. Bestände und Abholverfügbarkeit separat korrekt pflegen.
-Fehlende Angabe: Ohne Frist «Lieferzeit: auf Anfrage». Verfügbarkeit kommt aus der realen Variante; keine Fristen aus Marken oder globalen Tagesregeln.
+Einrichtung: Lieferfrist einschliesslich Einheit, beispielsweise «4–6 Werktage». Eine Variantenangabe hat Vorrang vor der Produktangabe. Bei upswing setzt der Shopify-Flow «[Simon] Lieferzeit je Variante» die Variantenwerte aus Filialbestand, Lieferantenlager und Marke.
+Fehlende Angabe: Ohne Frist «Lieferzeit auf Anfrage». Das Theme leitet keine Fristen aus Marken, globalen Tagesregeln oder der Abholverfügbarkeit ab.
 
 Ergänzende Produktinhalte
 Ort / Typ: Produkt · acht Inhaltsfelder je Hauptkategorie

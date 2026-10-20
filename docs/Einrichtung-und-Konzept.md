@@ -96,9 +96,9 @@ Die Suchgruppierung unter **Theme-Einstellungen → Modellkatalog** erst aktivie
 
 ## Lieferzeit, Versand und Rückgabe
 
-Eine bestätigte Lieferfrist in `upswing.delivery_time` als `single_line_text_field` am Produkt oder an der Variante pflegen, einschliesslich Einheit. Eine Variantenangabe hat Vorrang vor der Produktangabe. Fehlt beides, lautet die Frist **auf Anfrage**. Aus einer Marke werden keine Versandtage oder Lieferzusagen abgeleitet.
+Die Lieferfrist steht in `upswing.delivery_time` als `single_line_text_field` an der Variante, ersatzweise am Produkt, jeweils mit Einheit. Bei upswing setzt der Shopify-Flow «[Simon] Lieferzeit je Variante» den Variantenwert aus Filialbestand, Lieferantenlager und Marke: «2–3 Werktage», «3–5 Werktage», «ca. 14 Werktage» oder «Liefertermin auf Anfrage». Das Theme selbst leitet aus einer Marke keine Versandtage ab.
 
-Verfügbarkeit und Abholhinweise stammen von der gewählten Shopify-Variante und ihren tatsächlichen Abholbeständen. Beim Wechsel von Grösse oder Farbe muss die passende Variante geprüft werden. Abholstandorte und Bestandsführung im Shopify-Admin korrekt einrichten.
+Das Theme zeigt den Wert als «Lieferzeit: …»; Werte, die bereits «Liefer…» enthalten, erscheinen ohne Zusatz. Fehlt beides, lautet die Anzeige **Lieferzeit auf Anfrage**, nicht lieferbare Varianten zeigen «Aktuell nicht lieferbar». «2–3 Werktage» wird als schnelle Lieferung markiert. Die Abholverfügbarkeit bestimmt die Lieferzeit nicht: Shopify meldet bei Varianten, die ohne Bestand weiterverkauft werden, jeden Abholstandort als verfügbar. Beim Wechsel von Grösse oder Farbe zeigt das Theme den Wert der gewählten Variante.
 
 Versand- und Rückgabetexte werden aus den tatsächlichen Shopify-Richtlinien übernommen. Diese unter **Einstellungen → Richtlinien** pflegen. Versandtarife, Schwellenwerte und Zuschläge in den Versand- beziehungsweise Checkout-Einstellungen verwalten und im Entwurf testen. Ein optionales produktspezifisches `upswing.delivery_note` ergänzt die gepflegten Angaben. Das Theme liefert keine festen Versandkosten oder Rückgabefristen als Produktfakten aus.
 

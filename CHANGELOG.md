@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.25] - 2026-10-20
+
+- Die Lieferzeit auf der Produktseite stammt nur noch aus `upswing.delivery_time` der gewählten Variante, ersatzweise des Produkts. Die Zusätze «Sofort verfügbar» und «Online verfügbar» entfallen. Die Abholverfügbarkeit bestimmt die Anzeige nicht mehr, weil Shopify bei Varianten, die ohne Bestand weiterverkauft werden, jeden Abholstandort als verfügbar meldet. Bisher stand deshalb etwa bei ELTEN ohne Bestand «Sofort verfügbar · Lieferzeit: Liefertermin auf Anfrage».
+- Anzeige als «Lieferzeit: 2–3 Werktage» und so weiter; Werte, die bereits «Liefer…» enthalten, etwa «Liefertermin auf Anfrage», erscheinen ohne Zusatz. Ohne Wert «Lieferzeit auf Anfrage», nicht lieferbare Varianten «Aktuell nicht lieferbar». «2–3 Werktage» (Bestand in einer Filiale) erhält die Farbe für schnelle Lieferung, alle anderen Fristen die normale.
+- Jede Grösse bringt ihre Lieferzeit im Varianten-JSON mit, auch nicht ausgewählte. Die Rückfalltexte im Skript nennen keine Verfügbarkeit mehr.
+- Lieferzeit-Tests auf die neue Regel umgestellt; Doku zu `upswing.delivery_time` und zum Shopify-Flow, der die Variantenwerte setzt, ergänzt.
+
 ## [1.0.24] - 2026-10-20
 
 - Desktop-Unterkategorien grenzen den wiederholten Elternnamen typografisch ab: «Venen Engel» erscheint leichter und grau, während «Massagegeräte», «Zubehör» beziehungsweise «Mietgeräte» kräftig bleiben. Vollständige Namen und vorhandene Leerzeichen bleiben erhalten; zusätzliche Zeichen oder Abstände entfallen.

@@ -1,50 +1,34 @@
 {%- comment -%}
-  Delivery estimates use explicit catalog fields and current Shopify data.
-  Shopify only supplies store_availabilities for the selected / first available
-  variant. Unselected sizes must be rendered through product-delivery with a
-  variant URL before their delivery estimate is known.
+  Delivery estimates come from the variant field upswing.delivery_time, which
+  Shopify Flow sets from branch stock, supplier stock and brand, and fall back
+  to the product field. Pickup availability is not used: Shopify reports every
+  pickup location as available for variants that continue selling without
+  stock, so it cannot tell branch stock from supplier stock. «2–3 Werktage» is
+  the branch-stock estimate and is shown as fast.
 {%- endcomment -%}
 {%- liquid
   assign delivery_variant = variant | default: product.selected_or_first_available_variant
   assign delivery_known = false
   assign delivery_status = 'neutral'
   assign delivery_text = 'Lieferzeit abhängig von der gewählten Variante'
-  assign in_own_stock = false
   if delivery_variant != blank
-    if delivery_variant.selected or delivery_variant.id == product.selected_or_first_available_variant.id or delivery_variant.id == product.first_available_variant.id or delivery_variant.available == false
-      assign delivery_known = true
+    assign delivery_known = true
+    assign variant_delivery = delivery_variant.metafields.upswing.delivery_time.value | strip
+    assign product_delivery = product.metafields.upswing.delivery_time.value | strip
+    assign individual_delivery = variant_delivery | default: product_delivery
+    assign delivery_status = 'normal'
+    if delivery_variant.available == false
+      assign delivery_text = 'Aktuell nicht lieferbar'
+      assign delivery_status = 'unavailable'
+    elsif individual_delivery == blank
+      assign delivery_text = 'Lieferzeit auf Anfrage'
+    elsif individual_delivery contains 'Liefer'
+      assign delivery_text = individual_delivery
+    else
+      assign delivery_text = individual_delivery | prepend: 'Lieferzeit: '
     endif
-    if delivery_known
-      for store in delivery_variant.store_availabilities
-        if store.pick_up_enabled and store.available
-          assign in_own_stock = true
-          break
-        endif
-      endfor
-      assign variant_delivery = delivery_variant.metafields.upswing.delivery_time.value | strip
-      assign product_delivery = product.metafields.upswing.delivery_time.value | strip
-      assign individual_delivery = variant_delivery | default: product_delivery
-      assign delivery_status = 'normal'
-      if delivery_variant.available == false
-        assign delivery_text = 'Aktuell nicht lieferbar'
-        assign delivery_status = 'unavailable'
-      elsif in_own_stock
-        if individual_delivery != blank
-          assign delivery_text = individual_delivery | prepend: 'Sofort verfügbar · Lieferzeit: '
-        else
-          assign delivery_text = 'Sofort verfügbar · Lieferzeit auf Anfrage'
-        endif
-        assign delivery_status = 'fast'
-      elsif delivery_variant.available
-        if individual_delivery != blank
-          assign delivery_text = individual_delivery | prepend: 'Online verfügbar · Lieferzeit: '
-        else
-          assign delivery_text = 'Online verfügbar · Lieferzeit auf Anfrage'
-        endif
-      else
-        assign delivery_text = 'Aktuell nicht lieferbar'
-        assign delivery_status = 'unavailable'
-      endif
+    if delivery_variant.available and individual_delivery == '2–3 Werktage'
+      assign delivery_status = 'fast'
     endif
   endif
 -%}
