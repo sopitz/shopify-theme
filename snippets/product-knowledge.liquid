@@ -94,6 +94,39 @@
 {%- capture suitability_content -%}{% render 'product-metafield-content', field: product.metafields.upswing.suitability %}{%- endcapture -%}
 {%- capture specifications_content -%}{% render 'product-metafield-content', field: product.metafields.upswing.specifications %}{%- endcapture -%}
 {%- capture faq_content -%}{% render 'product-metafield-content', field: product.metafields.upswing.faq %}{%- endcapture -%}
+{%- capture testimonials_content -%}{% render 'product-metafield-content', field: product.metafields.upswing.testimonials %}{%- endcapture -%}
+{%- liquid
+  assign testimonials_content = testimonials_content | strip
+  assign video_embed_url = ''
+  assign video_field = product.metafields.upswing.video_url
+  if video_field.type == 'single_line_text_field' or video_field.type == 'url' or video_field.type == blank
+    assign video_opening = video_field.value | json | slice: 0, 1
+    if video_opening == '"'
+      assign video_url = video_field.value | strip
+      assign video_id = ''
+      if video_url contains 'youtube.com/embed/'
+        assign video_id = video_url | split: 'youtube.com/embed/' | last
+      elsif video_url contains 'youtube-nocookie.com/embed/'
+        assign video_id = video_url | split: 'youtube-nocookie.com/embed/' | last
+      elsif video_url contains 'youtu.be/'
+        assign video_id = video_url | split: 'youtu.be/' | last
+      elsif video_url contains 'youtube.com/watch'
+        assign video_id = video_url | split: 'v=' | last
+      elsif video_url contains 'vimeo.com/'
+        assign vimeo_id = video_url | split: 'vimeo.com/' | last | split: '?' | first | split: '/' | last | strip
+        assign vimeo_number = vimeo_id | plus: 0 | append: ''
+        if vimeo_id != blank and vimeo_number == vimeo_id
+          assign video_embed_url = 'https://player.vimeo.com/video/' | append: vimeo_id
+        endif
+      endif
+      assign video_id = video_id | split: '?' | first | split: '&' | first | split: '/' | first | strip
+      assign video_id_encoded = video_id | url_encode
+      if video_id.size == 11 and video_id_encoded == video_id
+        assign video_embed_url = 'https://www.youtube-nocookie.com/embed/' | append: video_id
+      endif
+    endif
+  endif
+-%}
 {%- assign short_description_content = short_description_content | strip -%}
 {%- assign suitability_content = suitability_content | strip -%}
 {%- assign specifications_content = specifications_content | strip -%}
@@ -215,11 +248,11 @@
     assign has_faq_information = true
   endif
   assign has_structured_information = false
-  if feature_cards != blank or has_everyday_information or has_practical_information or has_faq_information
+  if feature_cards != blank or has_everyday_information or has_practical_information or has_faq_information or testimonials_content != blank or video_embed_url != blank
     assign has_structured_information = true
   endif
   assign has_product_information = false
-  if feature_cards != blank or has_everyday_information or has_practical_information or has_faq_information or has_native_description or knowledge_intro != blank or short_description_content != blank
+  if has_structured_information or has_native_description or knowledge_intro != blank or short_description_content != blank
     assign has_product_information = true
   endif
 -%}
@@ -230,16 +263,24 @@
       <h2 id="ProductInformationTitle">{{ knowledge_heading | escape }}</h2>
       {%- if knowledge_intro != blank -%}<p class="product-knowledge-lead">{{ knowledge_intro | escape | newline_to_br }}</p>{%- elsif short_description_content != blank -%}<div class="rte product-knowledge-lead">{{ short_description_content }}</div>{%- endif -%}
     </div>
-    {%- if feature_cards != blank or has_everyday_information or has_practical_information or has_faq_information -%}
+    {%- if has_structured_information -%}
       <nav class="product-knowledge-nav" aria-label="Produktinformationen">
         {% if feature_cards != blank %}<a href="#ProductOverview">Überblick</a>{% endif %}
+        {% if video_embed_url != blank %}<a href="#ProductVideo">Video</a>{% endif %}
         {% if has_everyday_information %}<a href="#ProductEveryday">{{ everyday_nav }}</a>{% endif %}
         {% if has_practical_information %}<a href="#ProductDetails">Details</a>{% endif %}
         {% if has_faq_information %}<a href="#ProductQuestions">Fragen</a>{% endif %}
+        {% if testimonials_content != blank %}<a href="#ProductTestimonials">Stimmen</a>{% endif %}
         {% if has_native_description %}<a href="#ProductDescription">Produktbeschreibung</a>{% endif %}
       </nav>
     {%- endif -%}
     {%- if feature_cards != blank -%}<div class="product-feature-grid" id="ProductOverview">{{ feature_cards }}</div>{%- endif -%}
+    {%- if video_embed_url != blank -%}
+      <section class="product-video" id="ProductVideo">
+        <div class="product-section-heading"><p class="eyebrow">Gezeigt und erklärt</p><h2>Das Produkt im Video.</h2></div>
+        <div class="product-video-frame"><iframe src="{{ video_embed_url }}" title="Produktvideo: {{ product.title | escape }}" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+      </section>
+    {%- endif -%}
     {%- if has_everyday_information -%}
       <section class="product-everyday" id="ProductEveryday">
         <div class="product-section-heading"><p class="eyebrow">{{ everyday_eyebrow }}</p><h2>{{ everyday_heading }}</h2></div>
@@ -268,6 +309,12 @@
           {{ faq_cards }}
           {% if faq_content != blank %}<details class="product-faq-item"><summary>Weitere Fragen & Antworten<span aria-hidden="true">+</span></summary><div class="rte product-knowledge-copy">{{ faq_content }}</div></details>{% endif %}
         </div>
+      </section>
+    {%- endif -%}
+    {%- if testimonials_content != blank -%}
+      <section class="product-testimonials" id="ProductTestimonials" aria-labelledby="ProductTestimonialsTitle">
+        <div class="product-section-heading"><p class="eyebrow">Erfahrungen aus der Praxis</p><h2 id="ProductTestimonialsTitle">Kundenstimmen.</h2></div>
+        <div class="rte product-knowledge-copy product-testimonials-copy">{{ testimonials_content }}</div>
       </section>
     {%- endif -%}
     {%- if has_native_description -%}

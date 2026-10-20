@@ -349,3 +349,23 @@ test('section headings follow the main category from the configured product tags
   const p=product({tags:['category_126']});p.metafields.upswing=fields();
   const dom=await knowledgeWithSettings(p,{});try{assert.equal(dom.window.document.querySelector('.product-suitability h3').textContent,'Für wen passend?','Without configured tags the neutral headings remain');}finally{dom.window.close();}
 });
+
+test('testimonials and a video url add their own sections and navigation entries',async()=>{
+  const p=product();p.metafields.upswing={testimonials:richField('Echte Kundenstimme'),video_url:plain('https://www.youtube.com/embed/LbvkzfzVs2U?si=abc')};
+  const dom=await knowledge(p);try{
+    const document=dom.window.document;
+    assert.match(document.querySelector('#ProductTestimonials').textContent,/Echte Kundenstimme/);
+    assert.equal(document.querySelector('#ProductVideo iframe').getAttribute('src'),'https://www.youtube-nocookie.com/embed/LbvkzfzVs2U');
+    assert.ok(document.querySelector('a[href="#ProductTestimonials"]'));assert.ok(document.querySelector('a[href="#ProductVideo"]'));
+    assert.ok(document.querySelector('details.product-native-description-details'));
+  }finally{dom.window.close();}
+  for(const [url,expected] of [['https://youtu.be/LbvkzfzVs2U','https://www.youtube-nocookie.com/embed/LbvkzfzVs2U'],['https://www.youtube.com/watch?v=LbvkzfzVs2U&t=3','https://www.youtube-nocookie.com/embed/LbvkzfzVs2U'],['https://vimeo.com/123456','https://player.vimeo.com/video/123456']]){
+    const q=product();q.metafields.upswing.video_url=plain(url);const dom2=await knowledge(q);try{assert.equal(dom2.window.document.querySelector('#ProductVideo iframe').getAttribute('src'),expected,url);}finally{dom2.window.close();}
+  }
+});
+
+test('a video url that is not a known youtube or vimeo link renders no frame',async()=>{
+  for(const url of ['https://example.com/video.mp4','javascript:alert(1)','https://www.youtube.com/embed/<script>','https://vimeo.com/abc','']){
+    const p=product();p.metafields.upswing.video_url=plain(url);const dom=await knowledge(p);try{assert.equal(dom.window.document.querySelector('#ProductVideo'),null,url);assert.equal(dom.window.document.querySelector('a[href="#ProductVideo"]'),null,url);}finally{dom.window.close();}
+  }
+});

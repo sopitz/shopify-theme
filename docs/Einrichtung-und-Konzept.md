@@ -58,12 +58,13 @@ Die gemeinsame Produktvorlage unterstützt unter anderem:
 - `upswing.features`, `upswing.everyday_topics`, `upswing.technical_specs` und `upswing.faq_items` als Listen referenzierter Metaobjects. `upswing.features`, `upswing.everyday_topics` und `upswing.faq_items` können stattdessen ein `json`-Array aus AICO enthalten (`label`/`title`/`body`, `title`/`body` beziehungsweise `question`/`answer`; `body` und `answer` als HTML).
 - `upswing.benefits`, `upswing.suitability`, `upswing.specifications`, `upswing.introduction`, `upswing.size_guide`, `upswing.care` und `upswing.faq` als ergänzende Inhalte entsprechend ihrer vorgesehenen Feldtypen.
 - `upswing.knowledge_heading` und `upswing.knowledge_intro` als redaktionelle Einleitung zum Informationsbereich.
+- `upswing.testimonials` (Rich text) als eigener Bereich «Kundenstimmen» und `upswing.video_url` (YouTube- oder Vimeo-Link) als Produktvideo nach den Eigenschaften.
 - Bestehende Artikelmerkmale in `aico_metafields` als technische Tabelle, wenn keine gültigen strukturierten technischen Angaben vorhanden sind.
 - `upswing.related_products` als explizite Produktempfehlungen sowie Shopifys native Produktempfehlungen.
 
 Die Überschriften dieser Bereiche richten sich nach der Hauptkategorie des Produkts, zum Beispiel «Eingewöhnung» und «Schuhpflege» bei Gesundheitsschuhen oder «Aufbau und erster Einsatz» bei Bewegung & Training. Welche Produkt-Tags zu welcher Hauptkategorie gehören, steht unter **Theme-Einstellungen → Produktinhalte nach Hauptkategorie** (Standard: die AICO-Kategorie-Tags `category_<ID>`). Ohne passenden Tag bleiben die neutralen Überschriften.
 
-Die acht Zusatzfelder aus der AICO-Vorlage werden in dieser gemeinsamen Vorlage direkt ausgegeben:
+Die Zusatzfelder aus der AICO-Vorlage werden in dieser gemeinsamen Vorlage direkt ausgegeben:
 
 | Shopify-Metafeld | Feldtyp | Stelle auf der Produktseite |
 |---|---|---|
@@ -75,6 +76,10 @@ Die acht Zusatzfelder aus der AICO-Vorlage werden in dieser gemeinsamen Vorlage 
 | `upswing.size_guide` | `rich_text_field` | Auswahlhilfe bei den Details; Direktlink bei der Variantenwahl |
 | `upswing.care` | `rich_text_field` | Pflege, Reinigung oder Wartung |
 | `upswing.faq_items` | `json`-Array mit `question`, `answer` | Aufklappbare Produktfragen |
+| `upswing.specifications` | `rich_text_field` | Technische Details (Technische Daten, Lieferumfang, Inhaltsstoffe, Kombinationsempfehlungen) |
+| `upswing.testimonials` | `rich_text_field` | Kundenstimmen nach den Fragen |
+| `upswing.knowledge_intro` | `multi_line_text_field` | Einleitung unter «Produkt verstehen» |
+| `upswing.video_url` | `single_line_text_field` | Produktvideo (nur YouTube/Vimeo, sonst keine Ausgabe) |
 
 Für die drei JSON-Listen muss der Sync echte Arrays an Shopify übergeben, keine JSON-Zeichenfolge innerhalb eines JSON-Felds und keinen Sprach-Wrapper. Titel, Label und Frage sind einfache Zeichenfolgen. `body` und `answer` dürfen einfache Textformatierung, Listen und Links enthalten; komplette Seiten, Formulare und eingebettete Kaufbereiche gehören nicht in diese Felder. Eine Feature- oder Themenkarte benötigt Titel und sichtbaren Text, eine FAQ Frage und Antwort. Unvollständige oder falsch typisierte Einträge erzeugen keine leeren Karten. Alle gültigen Einträge bleiben in der gepflegten Reihenfolge erhalten, auch oberhalb von drei Karten.
 

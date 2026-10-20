@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.28] - 2026-10-20
+
+- Neuer Bereich «Kundenstimmen» aus `upswing.testimonials` (Rich text) nach den Fragen, mit eigenem Eintrag «Stimmen» in der Informationsnavigation.
+- Produktvideo aus `upswing.video_url`: YouTube-Links (embed, youtu.be, watch) laufen über youtube-nocookie, Vimeo-Links über den Vimeo-Player; andere Werte erzeugen keine Ausgabe. Eintrag «Video» in der Navigation.
+- Bilder in Eigenschaften-Karten und Richtext-Bereichen passen sich der Breite an.
+- Doku um `upswing.specifications`, `upswing.testimonials`, `upswing.knowledge_intro` und `upswing.video_url` ergänzt; Tests für Kundenstimmen und Video.
+
 ## [1.0.27] - 2026-10-20
 
 - Pagination verwendet kompakte pillenförmige Buttons im vorhandenen Theme-Stil. Doppelte Rahmen durch verschachtelte Shopify-Elemente entfallen.
