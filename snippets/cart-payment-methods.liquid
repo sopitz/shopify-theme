@@ -5,7 +5,7 @@
     {%- assign payment_key = type | downcase | remove: '_' | remove: '-' | remove: ' ' -%}
     {%- assign payment_token = payment_key | prepend: '|' | append: '|' -%}
     {%- assign seen_payment_methods = seen_payment_methods | append: payment_token -%}
-    <li>{{ type | payment_type_svg_tag: class: 'payment-icon' }}</li>
+    <li>{% render 'cart-payment-mark', payment_key: payment_key, payment_type: type, payment_label: type %}</li>
   {%- endfor -%}
   {%- for method in additional_payment_methods -%}
     {%- assign payment_label = method | strip -%}
@@ -13,7 +13,7 @@
     {%- assign payment_token = payment_key | prepend: '|' | append: '|' -%}
     {%- if payment_label != blank -%}
       {%- unless seen_payment_methods contains payment_token -%}
-        <li><span class="cart-payment-label">{{ payment_label | escape }}</span></li>
+        <li>{% render 'cart-payment-mark', payment_key: payment_key, payment_label: payment_label %}</li>
         {%- assign seen_payment_methods = seen_payment_methods | append: payment_token -%}
       {%- endunless -%}
     {%- endif -%}

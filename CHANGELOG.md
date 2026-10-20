@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.18] - 2026-10-20
+
+- Warenkorb zeigt TWINT und PostFinance Pay mit ihren Original-Logos statt Textlabels. Logos sind lokal als Theme-Assets enthalten, mit Alternativtext und unverzerrten Proportionen.
+- Einheitliche Logoausgabe für automatisch erkannte und ergänzte Zahlungsarten; Rechnung und weitere benannte Methoden bleiben als lesbare Labels erhalten.
+
 ## [1.0.17] - 2026-10-20
 
 - Warenkorb ergänzt automatisch gelieferte Zahlungslogos um Rechnung, TWINT und PostFinance Pay als lesbare, einheitlich angeordnete Zahlungslabels.
