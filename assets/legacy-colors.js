@@ -8,7 +8,6 @@
   let active = 0;
   const handlePattern = /^[a-z0-9][a-z0-9_-]*$/;
   const hexPattern = /^#(?:[\da-f]{3}|[\da-f]{4}|[\da-f]{6}|[\da-f]{8})$/i;
-  const cardLimit = 6;
 
   function colorsOf(product) {
     const listed = Array.isArray(product.colors) ? product.colors : [];
@@ -162,13 +161,10 @@
       list.setAttribute('aria-label', `Farben für ${data.current.productTitle || data.current.title}`);
       content.insertBefore(list, actions);
     }
-    const shown = card ? resolved.slice(0, cardLimit) : resolved;
+    const shown = resolved;
     const texts = shortLabels(shown);
     list.replaceChildren(...shown.map((product, index) => swatch(product, index === 0, card, texts[index])));
-    if (card) {
-      const count = document.createElement('span'); count.className = 'swatch-count';
-      count.textContent = `${resolved.length} Farben`; list.append(count);
-    } else {
+    if (!card) {
       const wrapper = script.closest('.model-colors');
       if (wrapper) wrapper.hidden = false;
     }

@@ -31,10 +31,8 @@
     if card_has_native_color
       assign siblings = nil
     endif
-    assign model_color_count = 1
     for sibling in siblings
       if sibling.id != product.id
-        assign model_color_count = model_color_count | plus: 1
         if sibling.price_min < model_min_price
           assign model_min_price = sibling.price_min
         endif
@@ -75,19 +73,18 @@
       {%- if siblings != blank and card_has_native_color == false -%}
         <div class="swatches" aria-label="Farben für {{ card_title | escape }}">
           {% render 'product-color-swatch', color_product: product, selected: true %}
-          {%- for sibling in siblings limit: 5 -%}
+          {%- for sibling in siblings -%}
             {%- if sibling.id != product.id -%}
               {% render 'product-color-swatch', color_product: sibling %}
             {%- endif -%}
           {%- endfor -%}
-          <span class="swatch-count">{{ model_color_count }} Farben</span>
         </div>
       {%- else -%}
         {%- for option in product.options_with_values -%}
           {%- assign option_name = option.name | downcase -%}
           {%- if option_name contains 'farbe' or option_name contains 'color' or option_name contains 'colour' -%}
             <div class="swatches" aria-label="{{ option.name | escape }}">
-              {%- for value in option.values limit: 5 -%}
+              {%- for value in option.values -%}
                 {%- liquid
                   assign swatch_image = value.swatch.image
                   assign preview_image = value.variant.featured_image | default: swatch_image
@@ -102,7 +99,6 @@
                   <span class="swatch-label">{{ value | escape }}</span>
                 </a>
               {%- endfor -%}
-              <span class="swatch-count">{{ option.values.size }} Farben</span>
             </div>
             {%- break -%}
           {%- endif -%}

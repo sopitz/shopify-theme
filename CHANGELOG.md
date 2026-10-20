@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.23] - 2026-10-20
+
+- Produktkarten zeigen alle vorhandenen Farben statt einer auf fünf beziehungsweise sechs Einträge begrenzten Auswahl. Das gilt für native Varianten, verknüpfte Modellprodukte und ältere Farbreferenzen.
+- Die zusätzliche Angabe «N Farben» entfällt. Farben umbrechen innerhalb der Karte bei Bedarf in weitere Zeilen.
+
 ## [1.0.22] - 2026-10-20
 
 - Warenkorb zeigt unter dem Warenwert, wie viel bis zum kostenlosen Versand fehlt («Noch CHF 12.00 bis zum kostenlosen Versand mit Post Economy.»), und ab der Grenze «Kostenloser Versand mit Post Economy».

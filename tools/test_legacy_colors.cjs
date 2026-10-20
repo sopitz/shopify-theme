@@ -108,7 +108,7 @@ async function flush(test, predicate=()=>test.dom.window.document.querySelector(
     const doc=new JSDOM(await render('product-color-swatch',p,{color_product:p})).window.document;
     assert.equal(doc.querySelector('.swatch').style.getPropertyValue('--swatch-color'),'conic-gradient(#22356B 0 33%, #F28C28 0 66%, #FFFFFF 0 100%)');
   });
-  await check('cards show at most six dots, divided colours from fetched products and short text names',async()=>{
+  await check('cards show every available colour without a count, including divided colours and short text names',async()=>{
     const titles=['Magglingen grey','Magglingen fire','Magglingen black','Magglingen white','Magglingen blue','Magglingen red','Magglingen green','Magglingen pink'];
     const products={},entries=[];
     titles.forEach((title,index)=>{
@@ -119,8 +119,8 @@ async function flush(test, predicate=()=>test.dom.window.document.querySelector(
     const t=createDocument('card',{de_CH:entries},{current:{title:'Magglingen light grey',color:'#C9C9C9',colors:['#C9C9C9']},products});
     await new Promise(resolve=>setTimeout(resolve,15));t.IO.instance.fire();await flush(t);
     const links=[...t.dom.window.document.querySelectorAll('.swatches a')];
-    assert.equal(links.length,6);
-    assert.equal(t.dom.window.document.querySelector('.swatch-count').textContent,'9 Farben');
+    assert.equal(links.length,9);
+    assert.equal(t.dom.window.document.querySelector('.swatch-count'),null);
     assert.equal(links[0].style.getPropertyValue('--swatch-color'),'#C9C9C9');
     assert.equal(links[2].style.getPropertyValue('--swatch-color'),'conic-gradient(#22356B 0 50%, #F28C28 0 100%)');
     assert.equal(links[1].querySelector('.swatch-label').textContent,'grey');
@@ -339,7 +339,7 @@ async function flush(test, predicate=()=>test.dom.window.document.querySelector(
     for(const card of t.dom.window.document.querySelectorAll('.product-card')){
       assert.equal(card.querySelectorAll('.swatch').length,2);
       assert.equal(card.querySelector('.swatches').nextElementSibling.className,'product-card-actions');
-      assert.equal(card.querySelector('.swatch-count').textContent,'2 Farben');
+      assert.equal(card.querySelector('.swatch-count'),null);
     }
     t.dom.window.close();
   });
