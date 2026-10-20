@@ -62,8 +62,8 @@ test('renamed nested collections use the current Shopify target, label and image
   assert.equal(document.querySelector('[src*="nav-schuhe-"]'), null);
 });
 
-test('third-level links join the regular card grid with full native titles while preserving menu nesting and targets', async () => {
-  const titles = ['Venen Engel Massagegeräte', 'Venen Engel Zubehör', 'Venen Engel Mietgeräte', 'Venen Engels Beratung', 'Tipps für Venen Engel', 'Venen Engel', 'Venen Engel Zubehör & <Pflege>'];
+test('third-level cards distinguish an exact parent prefix without changing full titles, nesting or targets', async () => {
+  const titles = ['Venen Engel Massagegeräte', 'Venen Engel Zubehör', 'Venen Engel Mietgeräte', 'Venen Engels Beratung', 'Tipps für Venen Engel', 'Venen Engel', 'Venen Engel Zubehör & <Pflege>', 'Venen Engel ', 'Venen Engel  Zubehör', ' Venen Engel Zubehör'];
   const grandchildren = titles.map((title, index) => link(title, `/de/collections/engel-${index}?view=nav&sort_by=title`, {
     current:index === 1, type:'collection_link', object:{image:{src:`/shopify/grandchild-${index}.jpg`}},
   }));
@@ -73,13 +73,25 @@ test('third-level links join the regular card grid with full native titles while
   const document = await headerDocument(links);
   for (const selector of ['.desktop-navigation .mega-submenu-link', '#MobileNavigation .mobile-nav-sublink']) {
     const anchors = [...document.querySelectorAll(selector)];
-    assert.deepEqual(anchors.map(anchor => anchor.textContent.trim()), titles);
+    assert.deepEqual(anchors.map(anchor => anchor.textContent), titles);
     assert.deepEqual(anchors.map(anchor => anchor.getAttribute('aria-label')), titles);
     assert.deepEqual(anchors.map(anchor => anchor.getAttribute('href')), grandchildren.map(item => item.url));
     assert.deepEqual(anchors.map(anchor => anchor.getAttribute('aria-current')), titles.map((_, index) => index === 1 ? 'page' : null));
     if (selector.startsWith('.desktop-navigation')) {
       assert.deepEqual(anchors.map(anchor => anchor.querySelector('img').getAttribute('src')), grandchildren.map((_, index) => `/shopify/grandchild-${index}.jpg`));
-      assert.ok(anchors.every(anchor => anchor.querySelector('.mega-card-title').childElementCount === 0), 'Card titles remain escaped text');
+      for (const [index, anchor] of anchors.entries()) {
+        const label = anchor.querySelector('.mega-card-title');
+        const prefix = `${child.title} `;
+        const category = titles[index].startsWith(prefix) ? titles[index].slice(prefix.length) : '';
+        if (category.trim()) {
+          assert.equal(label.childElementCount, 2);
+          assert.equal(label.querySelector('.mega-card-parent-title').textContent, prefix);
+          assert.equal(label.querySelector('.mega-card-category-title').textContent, category);
+          assert.ok([...label.children].every(span => span.childElementCount === 0), 'Prefix and category stay escaped text');
+        } else {
+          assert.equal(label.childElementCount, 0, 'Non-prefix and empty-category titles stay unchanged');
+        }
+      }
       assert.ok(anchors.every(anchor => anchor.parentElement.parentElement.matches('ul.mega-submenu')));
     } else {
       assert.ok(anchors.every(anchor => anchor.childElementCount === 0), 'Mobile third-level links remain escaped text without thumbnails');
@@ -99,6 +111,20 @@ test('third-level links join the regular card grid with full native titles while
   for (const card of document.querySelectorAll('.mega-card-grid .mega-card')) {
     assert.equal(computedStyle(card).padding, '9px 10px');
     assert.equal(computedStyle(card.querySelector('.mega-card-media')).height, '96px');
+  }
+  assert.equal(computedStyle(document.querySelector('.mega-card-parent-title')).fontWeight, '400');
+  assert.equal(computedStyle(document.querySelector('.mega-card-category-title')).fontWeight, '600');
+  for (const [parentTitle, title, expectedSplit] of [
+    ['', ' Zubehör', false],
+    ['Venen & <Engel>', 'Venen & <Engel> Zubehör & <Pflege>', true],
+    [' Venen Engel ', ' Venen Engel  Zubehör ', true],
+  ]) {
+    const edgeCase = await headerDocument([link('Regeneration', '/collections/regeneration', {links:[link(parentTitle, '/collections/parent', {links:[link(title, '/collections/child')]})]})]);
+    const label = edgeCase.querySelector('.mega-submenu-link .mega-card-title');
+    assert.equal(label.textContent, title);
+    assert.equal(label.childElementCount, expectedSplit ? 2 : 0);
+    assert.ok([...label.children].every(span => span.childElementCount === 0));
+    assert.equal(edgeCase.querySelector('.mobile-nav-sublink').textContent, title);
   }
 });
 

@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.24] - 2026-10-20
+
+- Desktop-Unterkategorien grenzen den wiederholten Elternnamen typografisch ab: «Venen Engel» erscheint leichter und grau, während «Massagegeräte», «Zubehör» beziehungsweise «Mietgeräte» kräftig bleiben. Vollständige Namen und vorhandene Leerzeichen bleiben erhalten; zusätzliche Zeichen oder Abstände entfallen.
+- Die Abstufung greift nur bei einem exakten Namenspräfix. Andere Titel bleiben unverändert; Sonderzeichen werden weiterhin sicher als Text ausgegeben. Menüverschachtelung, Links, aktive Seiten und mobile Darstellung bleiben erhalten.
+- Bestehende Navigationstests um Präfix- und Fallback-Fälle ergänzt. Die Darstellung bleibt in der Shopify-Vorschau bei 1101 und 1244 px einzeilig.
+
 ## [1.0.23] - 2026-10-20
 
 - Produktkarten zeigen alle vorhandenen Farben statt einer auf fünf beziehungsweise sechs Einträge begrenzten Auswahl. Das gilt für native Varianten, verknüpfte Modellprodukte und ältere Farbreferenzen.
