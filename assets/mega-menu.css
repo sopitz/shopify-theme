@@ -24,6 +24,7 @@
 .mega-card-media img{height:100%;width:100%;object-fit:contain;mix-blend-mode:multiply}
 .mega-card-copy{min-height:38px}
 .mega-card-title{font-size:13px;line-height:1.45;font-weight:600;display:block;overflow-wrap:break-word;hyphens:auto}
+.mega-card-parent-title{font-weight:400;color:var(--muted)}
 .nav-image-placeholder{display:grid;place-items:center;color:var(--muted)}
 .nav-image-placeholder .icon{height:32px;width:32px}
 .mega-child--has-submenu,.mega-submenu{display:contents}
