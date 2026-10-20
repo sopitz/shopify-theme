@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "current": {
     "logo_width": 180,
@@ -6,44 +15,60 @@
     "color_sage": "#eaf5fa",
     "color_text": "#1d1d1b",
     "color_accent": "#0088c0",
+    "color_link": "#006f9e",
     "sections": {
       "header": {
         "type": "header",
         "settings": {
-          "menu": "main-menu",
+          "announcement": "",
+          "menu": "simon-hauptmen",
           "advice_url": "/pages/kontakt",
           "b2b_url": "/pages/firmenkunden",
+          "guide_label": "Wissen & Ratgeber",
           "guide_url": "/pages/produktberater",
-          "about_url": "/pages/ueber-uns"
+          "about_label": "Über uns",
+          "about_url": "/pages/ueber-uns",
+          "about_menu": ""
         }
       },
       "footer": {
         "type": "footer",
-        "settings": {
-          "advice_url": "/pages/kontakt"
-        },
         "blocks": {
           "shopping": {
             "type": "shopping",
-            "settings": {}
+            "settings": {
+              "heading": "Entdecken",
+              "menu": ""
+            }
           },
           "service": {
             "type": "service",
-            "settings": {}
+            "settings": {
+              "heading": "Wir helfen weiter",
+              "menu": ""
+            }
           },
           "contact": {
             "type": "contact",
-            "settings": {}
+            "settings": {
+              "heading": "Persönlich für Sie",
+              "menu": ""
+            }
           }
         },
         "block_order": [
           "shopping",
           "service",
           "contact"
-        ]
+        ],
+        "settings": {
+          "description": "Hochwertige Produkte. Persönliche Beratung. Für mehr Leichtigkeit in Ihrem Alltag.",
+          "advice_url": "/pages/kontakt",
+          "show_payment_icons": true
+        }
       }
     },
-    "color_link": "#006f9e"
+    "content_for_index": []
   },
   "presets": {}
 }
