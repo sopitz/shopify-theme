@@ -1,8 +1,10 @@
 {%- case payment_key -%}
   {%- when 'twint' -%}
-    <img class="payment-icon payment-icon--twint" src="{{ 'payment-twint.png' | asset_url }}" alt="TWINT" width="76" height="28" loading="lazy">
+    <img class="payment-icon payment-icon--twint" src="{{ 'payment-twint.svg' | asset_url }}" alt="TWINT" width="38" height="24" loading="lazy">
   {%- when 'postfinancepay' -%}
-    <img class="payment-icon payment-icon--postfinance-pay" src="{{ 'payment-postfinance-pay.svg' | asset_url }}" alt="PostFinance Pay" width="32" height="32" loading="lazy">
+    <img class="payment-icon payment-icon--postfinance-pay" src="{{ 'payment-postfinance-pay.svg' | asset_url }}" alt="PostFinance Pay" width="38" height="24" loading="lazy">
+  {%- when 'rechnung' -%}
+    <img class="payment-icon" src="{{ 'payment-invoice.svg' | asset_url }}" alt="Rechnung" width="38" height="24" loading="lazy">
   {%- else -%}
     {%- if payment_type != blank -%}{{ payment_type | payment_type_svg_tag: class: 'payment-icon' }}{%- else -%}<span class="cart-payment-label">{{ payment_label | escape }}</span>{%- endif -%}
 {%- endcase -%}

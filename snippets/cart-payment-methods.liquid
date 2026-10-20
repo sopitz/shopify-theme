@@ -3,6 +3,10 @@
   {%- assign seen_payment_methods = '|' -%}
   {%- for type in shop.enabled_payment_types -%}
     {%- assign payment_key = type | downcase | remove: '_' | remove: '-' | remove: ' ' -%}
+    {%- case payment_key -%}
+      {%- when 'pfpay' -%}{%- assign payment_key = 'postfinancepay' -%}
+      {%- when 'esrpaymentslipswitzerland', 'invoice' -%}{%- assign payment_key = 'rechnung' -%}
+    {%- endcase -%}
     {%- assign payment_token = payment_key | prepend: '|' | append: '|' -%}
     {%- assign seen_payment_methods = seen_payment_methods | append: payment_token -%}
     <li>{% render 'cart-payment-mark', payment_key: payment_key, payment_type: type, payment_label: type %}</li>
@@ -10,6 +14,10 @@
   {%- for method in additional_payment_methods -%}
     {%- assign payment_label = method | strip -%}
     {%- assign payment_key = payment_label | downcase | remove: '_' | remove: '-' | remove: ' ' -%}
+    {%- case payment_key -%}
+      {%- when 'pfpay' -%}{%- assign payment_key = 'postfinancepay' -%}
+      {%- when 'esrpaymentslipswitzerland', 'invoice' -%}{%- assign payment_key = 'rechnung' -%}
+    {%- endcase -%}
     {%- assign payment_token = payment_key | prepend: '|' | append: '|' -%}
     {%- if payment_label != blank -%}
       {%- unless seen_payment_methods contains payment_token -%}

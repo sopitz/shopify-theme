@@ -1,8 +1,11 @@
 # Zahlungslogos im Warenkorb
 
-Originaldateien, unverändert übernommen am 2026-10-20:
+Shopify-Zahlungssymbole aus der Sammlung ActiveMerchant/payment_icons, unverändert übernommen am 2026-10-20:
 
-- TWINT: https://raw.githubusercontent.com/Twint-AG/twint-woocommerce-extension/latest/assets/images/twint_logo.png (offizielles TWINT-Repository).
-- PostFinance Pay: https://www.postfinance.ch/content/dam/pfch/doc/j_n/ico_pf_original_postfinancePay_96px.svg (verlinkt von der offiziellen PostFinance-Pay-Produktseite).
+- Rechnung: app/assets/images/payment_icons/esr_paymentslip_switzerland.svg
+- TWINT: app/assets/images/payment_icons/twint.svg
+- PostFinance Pay: app/assets/images/payment_icons/pfpay.svg
 
-Markenrechte verbleiben bei den jeweiligen Anbietern. Keine externen Logoabfragen im Shop nötig.
+Quelle: https://github.com/activemerchant/payment_icons
+
+Die Dateien entsprechen dem kompakten Checkout-Format 38×24. Markenrechte verbleiben bei den jeweiligen Anbietern. Die Rechnungsgrafik bezeichnet einen Schweizer Einzahlungsschein und identifiziert keinen Rechnungsanbieter.

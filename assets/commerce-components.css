@@ -13,5 +13,8 @@
 .cart-summary .cart-payment-label{display:inline-flex;align-items:center;justify-content:center;min-height:28px;padding:3px 9px;border:1px solid var(--line);border-radius:4px;background:#fff;color:var(--ink);font-size:11px;font-weight:600;line-height:1.4;overflow-wrap:anywhere;max-width:100%}
 .cart-summary .payment-icons>li{max-width:100%}
 
-.cart-summary .payment-icon--twint{width:76px;height:28px;object-fit:contain}
-.cart-summary .payment-icon--postfinance-pay{width:32px;height:32px;object-fit:contain}
+
+.cart-summary .payment-icons>li{flex:0 0 54px;width:54px;height:38px;padding:6px 8px;border:1px solid var(--line);border-radius:5px;background:#fff;box-sizing:border-box}
+.cart-summary .payment-icons .payment-icon{width:38px;height:24px;object-fit:contain;flex-shrink:0}
+.cart-summary .payment-icons>li:has(.cart-payment-label){flex-basis:auto;width:auto}
+.cart-summary .payment-icons .cart-payment-label{border:0;padding:0;min-height:24px}

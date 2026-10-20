@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.19] - 2026-10-20
+
+- Rechnung erhält dasselbe Schweizer Einzahlungsschein-Symbol wie im gezeigten Checkout, ohne unbestätigte Zuordnung zu einem Rechnungsanbieter.
+- TWINT und PostFinance Pay verwenden die kompakten Shopify-Zahlungssymbole im gleichen 38×24-Format. Alle Zahlungsmittel stehen in einheitlichen 54×38-Flächen mit zentriertem Inhalt und gleichmässigen Abständen.
+- Alternative Shopify-Bezeichnungen für Rechnung und PostFinance Pay werden zur Vermeidung doppelter Logos zusammengeführt.
+
 ## [1.0.18] - 2026-10-20
 
 - Warenkorb zeigt TWINT und PostFinance Pay mit ihren Original-Logos statt Textlabels. Logos sind lokal als Theme-Assets enthalten, mit Alternativtext und unverzerrten Proportionen.
