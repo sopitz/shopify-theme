@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.14] - 2026-10-20
+
+- Warenkorb: Bildspalten passen zur tatsächlichen Bildbreite; Produkttexte erhalten abgestufte Abstände für Desktop, Tablet und Mobilgeräte.
+- Zahlungslogos unter dem Kassenbutton einheitlich gross und zentriert in einer Reihe angeordnet; bei Platzmangel umbrechend, ohne Aufzählungspunkte.
+- Feste Projektregel: Shopify-Themes niemals eigenständig live schalten; die Aktivierung übernimmt der Nutzer.
+
 ## [1.0.13] - 2026-10-20
 
 - Mehrfarbige Produkte zeigen einen geteilten Farbpunkt: Liefert AICO alle Farbwerte als `aico.pd_colors_hex` (Liste, Hauptfarbe zuerst), wird der Kreis in bis zu vier gleiche Segmente aufgeteilt. Gilt für Produktkarten, Produktseite, nachgeladene Farbprodukte sowie Kaufleiste und Vollbild. Ohne Liste bleibt `aico.pd_color_hex` die Quelle.
