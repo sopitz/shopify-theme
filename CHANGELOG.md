@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.17] - 2026-10-20
+
+- Warenkorb ergänzt automatisch gelieferte Zahlungslogos um Rechnung, TWINT und PostFinance Pay als lesbare, einheitlich angeordnete Zahlungslabels.
+- Zusätzliche Zahlungsarten sind im Warenkorb-Abschnitt des Theme-Editors pflegbar. Leere Einträge und doppelte Namen werden unterdrückt; Shopify-Zahlungsarten bleiben dynamisch.
+- Enthält die vertikale Zentrierung der Mengensteuerung und Preise aus 1.0.16.
+
 ## [1.0.16] - 2026-10-20
 
 - Warenkorb: Mengensteuerung und Gesamtpreis stehen auf Desktop und Tablet vertikal mittig zur jeweiligen Produktzeile. Die gemeinsame Spaltenausrichtung mit den Überschriften bleibt erhalten; mobil bleiben die Bedienelemente unter den Produktinformationen.
