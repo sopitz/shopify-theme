@@ -62,6 +62,46 @@ test('renamed nested collections use the current Shopify target, label and image
   assert.equal(document.querySelector('[src*="nav-schuhe-"]'), null);
 });
 
+test('third-level links join the regular card grid with full native titles while preserving menu nesting and targets', async () => {
+  const titles = ['Venen Engel Massagegeräte', 'Venen Engel Zubehör', 'Venen Engel Mietgeräte', 'Venen Engels Beratung', 'Tipps für Venen Engel', 'Venen Engel', 'Venen Engel Zubehör & <Pflege>'];
+  const grandchildren = titles.map((title, index) => link(title, `/de/collections/engel-${index}?view=nav&sort_by=title`, {
+    current:index === 1, type:'collection_link', object:{image:{src:`/shopify/grandchild-${index}.jpg`}},
+  }));
+  const child = link('Venen Engel', '/de/collections/venen-engel', {links:grandchildren, type:'collection_link', object:{image:{src:'/shopify/venen-engel.jpg'}}});
+  const links = [link('Regeneration', '/de/collections/regeneration', {links:[child, link('Schlafen', '/de/collections/schlafen')]})];
+  const originalMenu = JSON.stringify(links);
+  const document = await headerDocument(links);
+  for (const selector of ['.desktop-navigation .mega-submenu-link', '#MobileNavigation .mobile-nav-sublink']) {
+    const anchors = [...document.querySelectorAll(selector)];
+    assert.deepEqual(anchors.map(anchor => anchor.textContent.trim()), titles);
+    assert.deepEqual(anchors.map(anchor => anchor.getAttribute('aria-label')), titles);
+    assert.deepEqual(anchors.map(anchor => anchor.getAttribute('href')), grandchildren.map(item => item.url));
+    assert.deepEqual(anchors.map(anchor => anchor.getAttribute('aria-current')), titles.map((_, index) => index === 1 ? 'page' : null));
+    if (selector.startsWith('.desktop-navigation')) {
+      assert.deepEqual(anchors.map(anchor => anchor.querySelector('img').getAttribute('src')), grandchildren.map((_, index) => `/shopify/grandchild-${index}.jpg`));
+      assert.ok(anchors.every(anchor => anchor.querySelector('.mega-card-title').childElementCount === 0), 'Card titles remain escaped text');
+      assert.ok(anchors.every(anchor => anchor.parentElement.parentElement.matches('ul.mega-submenu')));
+    } else {
+      assert.ok(anchors.every(anchor => anchor.childElementCount === 0), 'Mobile third-level links remain escaped text without thumbnails');
+    }
+  }
+  assert.equal(document.querySelector('.mega-card-title').textContent, 'Venen Engel');
+  assert.equal(document.querySelector('.mega-card img').getAttribute('src'), '/shopify/venen-engel.jpg');
+  assert.equal(document.querySelectorAll('.mega-card-grid > li').length, 2);
+  assert.deepEqual([...document.querySelectorAll('.mega-card-grid .mega-card-title')].map(title => title.textContent), ['Venen Engel', ...titles, 'Schlafen']);
+  assert.equal(JSON.stringify(links), originalMenu);
+  const style = document.createElement('style');
+  style.textContent = readFileSync(path.join(repo, 'assets/mega-menu.css'), 'utf8');
+  document.head.append(style);
+  const computedStyle = element => document.defaultView.getComputedStyle(element);
+  assert.equal(computedStyle(document.querySelector('.mega-child--has-submenu')).display, 'contents');
+  assert.equal(computedStyle(document.querySelector('.mega-submenu')).display, 'contents');
+  for (const card of document.querySelectorAll('.mega-card-grid .mega-card')) {
+    assert.equal(computedStyle(card).padding, '9px 10px');
+    assert.equal(computedStyle(card.querySelector('.mega-card-media')).height, '96px');
+  }
+});
+
 test('a blank main menu has only an editor onboarding prompt and keeps about, search, account and cart', async () => {
   for (const links of [[], undefined]) {
     for (const designMode of [false, true]) {

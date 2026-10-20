@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.21] - 2026-10-20
+
+- Unterkategorien der dritten Menüebene erscheinen auf Desktop als gleichwertige Bildkacheln direkt nach ihrer übergeordneten Kategorie. Vollständige Shopify-Titel bleiben sichtbar; zusätzliche Bänder, verkleinerte Karten und Sonderabstände entfallen.
+- Mega-Menüs mit einer dritten Ebene verwenden fünf Spalten. Die zehn Regeneration-Einträge stehen dadurch in zwei vollständigen Reihen; «Venen Engel Massagegeräte» bleibt auch an der schmalsten Desktop-Breite einzeilig. Andere Mega-Menüs behalten sechs Spalten.
+- Native Menüverschachtelung, Reihenfolge und Linkziele bleiben erhalten. Mobil bleiben die Unterkategorien aufklappbar; vollständige Titel, aktive Seiten und zugängliche Linkbeschriftungen werden übernommen.
+- Regression für vollständige Titel, Bilder, Escaping und unveränderte Menüstruktur ergänzt. Die Menüansicht wurde im Shopify-Entwurf bei 1101 und 1244 px geprüft.
+
 ## [1.0.20] - 2026-10-20
 
 - Zahlungslogos im Warenkorb stehen einzeilig direkt unter dem Kassenbutton, mit einheitlichen kompakten Flächen und 6 px Abstand.
