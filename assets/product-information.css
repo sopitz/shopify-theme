@@ -4,18 +4,18 @@
 .product-description-shell{min-width:0;max-width:830px}
 .product-description-nav{display:flex;flex-wrap:wrap;gap:8px 10px;padding:0 0 26px;margin-bottom:20px;border-bottom:1px solid var(--line)}
 .product-description-nav .description-nav-label{width:100%;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
-.product-description-nav a{display:inline-flex;align-items:center;min-height:40px;padding:8px 13px;border:1px solid var(--line);border-radius:22px;font-size:12px;line-height:1.4;transition:background .2s}
+.product-description-nav a{color:var(--link);display:inline-flex;align-items:center;min-height:40px;padding:8px 13px;border:1px solid var(--line);border-radius:22px;font-size:12px;line-height:1.4;transition:background .2s}
 .product-description-nav a:hover{background:var(--cream)}
-.product-description{font-size:16px;line-height:1.85;color:#526359}
+.product-description{font-size:16px;line-height:1.85;color:var(--muted)}
 .product-description>p:first-child{font-size:17px;line-height:1.8;color:var(--ink)}
 .product-description p{margin:0 0 21px}
-.product-description h2{font-size:33px;line-height:1.2;margin:42px 0 19px;color:var(--forest);scroll-margin-top:25px}
-.product-description h3{font-size:27px;line-height:1.3;margin:30px 0 15px;color:var(--forest);scroll-margin-top:25px}
+.product-description h2{font-size:33px;line-height:1.2;margin:42px 0 19px;color:var(--ink);scroll-margin-top:25px}
+.product-description h3{font-size:27px;line-height:1.3;margin:30px 0 15px;color:var(--ink);scroll-margin-top:25px}
 .product-description h4{font-size:19px;margin:25px 0 12px}
 .product-description ul,.product-description ol{margin:15px 0 26px;padding-left:23px}
 .product-description li{padding-left:3px;margin-bottom:8px}
-.product-description strong{font-weight:600;color:#344b3e}
-.product-description a{text-decoration:underline;text-underline-offset:4px;color:var(--forest)}
+.product-description strong{font-weight:600;color:var(--ink)}
+.product-description a{text-decoration:underline;text-underline-offset:4px;color:var(--link)}
 .product-description img{max-width:100%;height:auto;border-radius:8px;margin:25px 0}
 .product-description table{max-width:100%;border-collapse:collapse}
 .product-description th,.product-description td{padding:13px 9px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14px}

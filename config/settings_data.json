@@ -1,11 +1,11 @@
 {
   "current": {
     "logo_width": 180,
-    "color_forest": "#203e35",
-    "color_cream": "#f7f7f2",
-    "color_sage": "#dfe9df",
-    "color_text": "#263c34",
-    "color_accent": "#bc7a49",
+    "color_forest": "#0078a8",
+    "color_cream": "#f4f7f9",
+    "color_sage": "#eaf5fa",
+    "color_text": "#1d1d1b",
+    "color_accent": "#0088c0",
     "sections": {
       "header": {
         "type": "header",
@@ -42,7 +42,8 @@
           "contact"
         ]
       }
-    }
+    },
+    "color_link": "#006f9e"
   },
   "presets": {}
 }

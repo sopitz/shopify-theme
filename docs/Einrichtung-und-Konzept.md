@@ -1,6 +1,6 @@
 # Einrichtung und Konzept für upswing
 
-Stand: **Theme 1.0.9 · 20. Oktober 2026**
+Stand: **Theme 1.0.10 · 20. Oktober 2026**
 
 Das Theme stellt den vorhandenen Shopify-Katalog dar. Titel, Beschreibungen, Produktbilder, Preise, Varianten und Bestände werden bei der Ausgabe aus den Shop-Ressourcen gelesen. Katalogkarten und Navigation werden über die vorgesehenen Ressourcen-Auswahlen und Shop-Menüs eingerichtet. Produkt- und Kollektions-Handles werden ohne Vorauswahl ausgeliefert.
 
@@ -106,3 +106,9 @@ Im unveröffentlichten Shopify-Theme mindestens Folgendes prüfen:
 - Mobile Ansicht, Tastaturbedienung, Bildgalerien, Dialoge, lesbare Farbnamen und erreichbare Kaufaktionen kontrollieren.
 
 Lokale Funktionsprüfungen, Schema-Prüfung und offizieller Theme Check sind Teil der technischen Freigabe. Sie ersetzen keine bestätigte Shopify-Laufzeit. Prüfzahlen und Ergebnisse gehören zu den Änderungsnotizen beziehungsweise dem jeweiligen Freigabebericht und werden hier nicht als dauerhafte Laufzeitbestätigung festgeschrieben.
+
+## Farben aus dem Logo
+
+Die Palette verwendet das originale Logo-Cyan `#0088C0` und Anthrazit `#1D1D1B`. Buttons nutzen das etwas dunklere Cyan `#0078A8` mit weisser Schrift; Links und Fokus `#006F9E`. Helle Flächen sind kühlweiss `#F4F7F9` und hellblau `#EAF5FA`. Unter **Theme-Einstellungen → Farben** lassen sich Primärfarbe, Hintergrund, getönte Flächen, Text/dunkle Flächen, Logo-Akzent und Links/Fokus anpassen.
+
+Produktfarben werden weiterhin ausschliesslich aus den Produktdaten übernommen. Verfügbarkeitsanzeigen und Formularrückmeldungen behalten ihre eigene Bedeutung. Die ausgelieferten Text-/Flächenkombinationen werden auf Kontrast geprüft; bei eigenen Farben die Lesbarkeit erneut kontrollieren.

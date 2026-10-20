@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex, nofollow">
+    {% render 'theme-colors' %}
     <title>Ihr Geschenkgutschein · {{ shop.name | escape }}</title>
     {{ content_for_header }}
     {{ 'upswing.css' | asset_url | stylesheet_tag }}

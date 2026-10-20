@@ -2,7 +2,7 @@
   {
     "name": "theme_info",
     "theme_name": "Upswing Wellbeing",
-    "theme_version": "1.0.9",
+    "theme_version": "1.0.10",
     "theme_author": "Upswing",
     "theme_documentation_url": "https://upswing.ch",
     "theme_support_url": "https://upswing.ch/pages/kontakt"
@@ -48,32 +48,38 @@
       {
         "type": "color",
         "id": "color_forest",
-        "label": "Waldgrün",
-        "default": "#203e35"
+        "label": "Primärfarbe · Buttons und Auswahl",
+        "default": "#0078a8"
       },
       {
         "type": "color",
         "id": "color_cream",
-        "label": "Hintergrund",
-        "default": "#f7f7f2"
+        "label": "Heller Hintergrund",
+        "default": "#f4f7f9"
       },
       {
         "type": "color",
         "id": "color_sage",
-        "label": "Salbei",
-        "default": "#dfe9df"
+        "label": "Hellblaue Flächen",
+        "default": "#eaf5fa"
       },
       {
         "type": "color",
         "id": "color_text",
-        "label": "Text",
-        "default": "#263c34"
+        "label": "Text und dunkle Flächen",
+        "default": "#1d1d1b"
       },
       {
         "type": "color",
         "id": "color_accent",
-        "label": "Warmer Akzent",
-        "default": "#bc7a49"
+        "label": "Logo-Akzent",
+        "default": "#0088c0"
+      },
+      {
+        "type": "color",
+        "id": "color_link",
+        "label": "Links und Fokus",
+        "default": "#006f9e"
       }
     ]
   },

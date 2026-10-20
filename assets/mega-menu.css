@@ -10,7 +10,7 @@
 .mega-menu-item.is-open .mega-menu-toggle .icon{transform:rotate(-90deg)}
 .mega-menu-item.is-open .mega-menu-link{box-shadow:inset 0 -2px var(--forest)}
 .mega-nav .nav-business{font-size:13px;white-space:nowrap;padding-left:18px;min-height:54px;border-left:1px solid var(--line);display:flex;align-items:center;gap:8px}
-.mega-menu-panel{position:absolute;top:100%;left:0;right:0;max-height:calc(100dvh - 165px);overflow:auto;overscroll-behavior:contain;background:white;border-top:1px solid var(--line);border-bottom:1px solid var(--line);box-shadow:0 14px 30px #183b2920;padding:18px 0 28px;z-index:30}
+.mega-menu-panel{position:absolute;top:100%;left:0;right:0;max-height:calc(100dvh - 165px);overflow:auto;overscroll-behavior:contain;background:white;border-top:1px solid var(--line);border-bottom:1px solid var(--line);box-shadow:0 14px 30px rgba(var(--shadow-rgb),.125);padding:18px 0 28px;z-index:30}
 .mega-panel-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 .mega-all-link{display:inline-flex;align-items:center;gap:12px;min-height:44px;font-family:var(--heading);font-size:23px;font-weight:750;letter-spacing:-.03em}
 .mega-all-link .icon{width:19px}
@@ -18,12 +18,12 @@
 .mega-card-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:18px 20px}
 .mega-child{min-width:0}
 .mega-card{display:block;padding:9px 10px;border-radius:9px;transition:background .15s}
-.mega-card:hover{background:#f1f5ee}
-.mega-card-media{height:96px;display:flex;align-items:center;justify-content:center;background:#f8f9f5;border-radius:7px;margin-bottom:12px;padding:7px}
+.mega-card:hover{background:var(--sage)}
+.mega-card-media{height:96px;display:flex;align-items:center;justify-content:center;background:var(--cream);border-radius:7px;margin-bottom:12px;padding:7px}
 .mega-card-media img{height:100%;width:100%;object-fit:contain;mix-blend-mode:multiply}
 .mega-card-copy{min-height:38px}
 .mega-card-title{font-size:13px;line-height:1.45;font-weight:600;display:block;overflow-wrap:break-word;hyphens:auto}
-.nav-image-placeholder{display:grid;place-items:center;color:#789079}
+.nav-image-placeholder{display:grid;place-items:center;color:var(--muted)}
 .nav-image-placeholder .icon{height:32px;width:32px}
 .mega-submenu{padding:4px 10px 0}
 .mega-submenu-link{display:flex;align-items:center;gap:7px;font-size:12px;line-height:1.5;min-height:38px;padding:6px 0;text-decoration:underline;text-underline-offset:3px}
@@ -37,7 +37,7 @@
 .mobile-nav-all{display:flex!important;justify-content:space-between;align-items:center;gap:12px;font-size:13px;font-weight:600;padding:15px 0!important}
 .mobile-nav-all .icon{width:17px}
 .mobile-nav-link{display:flex!important;align-items:center;gap:14px;padding:10px 0!important;min-height:52px;font-size:14px;line-height:1.5}
-.mobile-link-media{width:56px;height:47px;flex-shrink:0;background:#f7f8f4;border-radius:5px;padding:4px;display:flex;justify-content:center;align-items:center}
+.mobile-link-media{width:56px;height:47px;flex-shrink:0;background:var(--cream);border-radius:5px;padding:4px;display:flex;justify-content:center;align-items:center}
 .mobile-link-media img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply}
 .mobile-nav-list .mobile-nav-list{padding-left:12px;margin-bottom:15px}
 .navigation-collection-intro{display:grid;grid-template-columns:1fr 240px;gap:55px;align-items:center;margin-bottom:40px;padding:25px 0}

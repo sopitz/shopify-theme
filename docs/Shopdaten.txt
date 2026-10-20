@@ -1,5 +1,5 @@
 upswing – Datenübersicht
-Stand: Theme 1.0.9 · 20. Oktober 2026
+Stand: Theme 1.0.10 · 20. Oktober 2026
 
 EINRICHTUNG
 Die vollständige Arbeitsliste steht in Katalog-Einrichtung.html und

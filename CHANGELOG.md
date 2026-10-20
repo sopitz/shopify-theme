@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.10] - 2026-10-20
+
+- Farbpalette aus dem Original-Logo übernommen: Cyan als Akzent, Anthrazit für Texte und dunkle Bereiche sowie kühle weisse und hellblaue Flächen. Logo-Datei und Gestaltung bleiben erhalten.
+- Buttons und Links verwenden dunklere Cyan-Abstufungen für gut lesbare Beschriftungen. Fokus, Navigation, Formulare, Galerien, Kaufleisten und redaktionelle Seiten verwenden gemeinsame Farbwerte; alte dekorative Grün- und Beigetöne entfernt.
+- Farbfelder im Theme-Editor verständlich benannt und eine eigene Farbe für Links und Fokus ergänzt. Produktfarben aus AICO beziehungsweise Shopify sowie Liefer-, Erfolgs- und Fehlerstatus behalten ihre jeweiligen Farben.
+- Kontrastprüfung für die ausgelieferte Palette und Editor-Vorgaben ergänzt.
+
 ## [1.0.9] - 2026-10-20
 
 - Das vorhandene Produktmetafeld `aico.pd_color_hex` liefert die Farbpunkte für Produktseite, Produktkarten, nachgeladene Farbprodukte sowie die Farbauswahl in Kaufleiste und Vollbild. Es hat Vorrang vor dem bisherigen `upswing.color_hex`; ein zusätzliches Farbfeld ist nicht erforderlich.
