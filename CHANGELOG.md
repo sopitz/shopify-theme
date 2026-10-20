@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.15] - 2026-10-20
+
+- Warenkorb: Spaltenüberschriften und Produktzeilen verwenden dieselben Spaltenbreiten. «Anzahl» steht mittig über der Mengensteuerung; Preise sind rechts bündig. Die Mengensteuerung richtet sich am oberen Zeilenrand aus.
+- Spätere Regeln der Mengensteuerung berücksichtigen die korrigierten Bildbreiten und Abstände auch auf Tablets.
+
 ## [1.0.14] - 2026-10-20
 
 - Warenkorb: Bildspalten passen zur tatsächlichen Bildbreite; Produkttexte erhalten abgestufte Abstände für Desktop, Tablet und Mobilgeräte.
