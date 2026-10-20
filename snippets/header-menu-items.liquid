@@ -21,22 +21,10 @@
               {% for child in link.links %}{%- capture main_child_url -%}{%- render 'filial-anchor-url', url: child.url, fallback_url: '/pages/filialubersicht' -%}{%- endcapture -%}
 {%- assign main_child_url = main_child_url | strip -%}
 
-                <li class="mega-child{% if child.links.size > 0 %} mega-child--has-submenu{% endif %}"{% if child.links.size > 0 %} style="--mega-submenu-columns:{{ child.links.size | plus: 1 | at_most: 6 }}"{% endif %}><a class="mega-card" href="{{ main_child_url | escape }}" {% if child.current %}aria-current="page"{% endif %}><div class="mega-card-media">{% render 'header-navigation-image', nav_link: child, nav_url: child.url, header_blocks: header_section.blocks %}</div><div class="mega-card-copy"><span class="mega-card-title">{{ child.title | escape }}</span></div></a>
+                <li class="mega-child{% if child.links.size > 0 %} mega-child--has-submenu{% endif %}"><a class="mega-card" href="{{ main_child_url | escape }}" {% if child.current %}aria-current="page"{% endif %}><div class="mega-card-media">{% render 'header-navigation-image', nav_link: child, nav_url: child.url, header_blocks: header_section.blocks %}</div><div class="mega-card-copy"><span class="mega-card-title">{{ child.title | escape }}</span></div></a>
                   {% if child.links.size > 0 %}<ul class="mega-submenu" role="list">{% for grandchild in child.links %}{%- capture main_grandchild_url -%}{%- render 'filial-anchor-url', url: grandchild.url, fallback_url: '/pages/filialubersicht' -%}{%- endcapture -%}
 {%- assign main_grandchild_url = main_grandchild_url | strip -%}
-{%- liquid
-  assign grandchild_label = grandchild.title | strip
-  assign parent_label = child.title | strip
-  assign parent_prefix = parent_label | append: ' '
-  assign label_prefix = grandchild_label | slice: 0, parent_prefix.size
-  if parent_label != blank and label_prefix == parent_prefix
-    assign short_label = grandchild_label | remove_first: parent_prefix | strip
-    if short_label != blank
-      assign grandchild_label = short_label
-    endif
-  endif
--%}
-<li><a class="mega-card mega-submenu-link" href="{{ main_grandchild_url | escape }}" aria-label="{{ grandchild.title | escape }}" {% if grandchild.current %}aria-current="page"{% endif %}><div class="mega-card-media">{% render 'header-navigation-image', nav_link: grandchild, nav_url: grandchild.url, header_blocks: header_section.blocks %}</div><div class="mega-card-copy"><span class="mega-card-title">{{ grandchild_label | escape }}</span></div></a></li>{% endfor %}</ul>{% endif %}
+<li><a class="mega-card mega-submenu-link" href="{{ main_grandchild_url | escape }}" aria-label="{{ grandchild.title | escape }}" {% if grandchild.current %}aria-current="page"{% endif %}><div class="mega-card-media">{% render 'header-navigation-image', nav_link: grandchild, nav_url: grandchild.url, header_blocks: header_section.blocks %}</div><div class="mega-card-copy"><span class="mega-card-title">{{ grandchild.title | escape }}</span></div></a></li>{% endfor %}</ul>{% endif %}
                 </li>
               {% endfor %}
             </ul>
@@ -52,19 +40,7 @@
 {%- assign main_child_url = main_child_url | strip -%}
 <li>{% if child.links.size > 0 %}<details class="mobile-nav-item"><summary class="mobile-nav-summary"><span>{{ child.title | escape }}</span>{% render 'icon', name: 'chevron' %}</summary><a class="mobile-nav-all" href="{{ main_child_url | escape }}">{{ child.title | escape }} entdecken</a><ul class="mobile-nav-list">{% for grandchild in child.links %}{%- capture main_grandchild_url -%}{%- render 'filial-anchor-url', url: grandchild.url, fallback_url: '/pages/filialubersicht' -%}{%- endcapture -%}
 {%- assign main_grandchild_url = main_grandchild_url | strip -%}
-{%- liquid
-  assign grandchild_label = grandchild.title | strip
-  assign parent_label = child.title | strip
-  assign parent_prefix = parent_label | append: ' '
-  assign label_prefix = grandchild_label | slice: 0, parent_prefix.size
-  if parent_label != blank and label_prefix == parent_prefix
-    assign short_label = grandchild_label | remove_first: parent_prefix | strip
-    if short_label != blank
-      assign grandchild_label = short_label
-    endif
-  endif
--%}
-<li><a class="mobile-nav-link mobile-nav-sublink" href="{{ main_grandchild_url | escape }}" aria-label="{{ grandchild.title | escape }}" {% if grandchild.current %}aria-current="page"{% endif %}>{{ grandchild_label | escape }}</a></li>{% endfor %}</ul></details>{% else %}<a class="mobile-nav-link" href="{{ main_child_url | escape }}" {% if child.current %}aria-current="page"{% endif %}><span class="mobile-link-media">{% render 'header-navigation-image', nav_link: child, nav_url: child.url, header_blocks: header_section.blocks %}</span><span>{{ child.title | escape }}</span></a>{% endif %}</li>{% endfor %}
+<li><a class="mobile-nav-link mobile-nav-sublink" href="{{ main_grandchild_url | escape }}" aria-label="{{ grandchild.title | escape }}" {% if grandchild.current %}aria-current="page"{% endif %}>{{ grandchild.title | escape }}</a></li>{% endfor %}</ul></details>{% else %}<a class="mobile-nav-link" href="{{ main_child_url | escape }}" {% if child.current %}aria-current="page"{% endif %}><span class="mobile-link-media">{% render 'header-navigation-image', nav_link: child, nav_url: child.url, header_blocks: header_section.blocks %}</span><span>{{ child.title | escape }}</span></a>{% endif %}</li>{% endfor %}
         </ul></details>
       {% else %}<a class="mobile-nav-link" href="{{ main_link_url | escape }}" {% if link.current %}aria-current="page"{% endif %}>{{ menu_label | escape }}</a>{% endif %}
     </li>
