@@ -16,6 +16,7 @@
 .mega-all-link .icon{width:19px}
 .mega-close{min-width:44px;min-height:44px}
 .mega-card-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:18px 20px}
+.mega-card-grid:has(.mega-submenu){grid-template-columns:repeat(5,minmax(0,1fr))}
 .mega-child{min-width:0}
 .mega-card{display:block;padding:9px 10px;border-radius:9px;transition:background .15s}
 .mega-card:hover{background:var(--sage)}
