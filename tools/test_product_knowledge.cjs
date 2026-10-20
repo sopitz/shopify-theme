@@ -152,3 +152,47 @@ test('empty rich-text and NBSP-only sources do not block lower-priority live int
   p.metafields.upswing.short_description={type:'rich_text_field',value:{type:'root',children:[{type:'paragraph',children:[{type:'text',value:' '}]}]}};
   dom=new JSDOM(await engine.renderFile('product-intro',{product:p}));try{assert.equal(dom.window.document.body.textContent.trim(),'Gepflegte Legacy-Kurzinfo.');}finally{dom.window.close();}
 });
+
+const categorySettings={main_category_footwear_tags:'category_126, category_231',main_category_workplace_tags:'category_152',main_category_regeneration_tags:'category_131',main_category_training_tags:'category_130'};
+async function knowledgeWithSettings(p,settings=categorySettings){return new JSDOM(await engine.renderFile('product-knowledge',{product:p,consultation_url:'/pages/filialubersicht'},{globals:{settings}}));}
+
+test('AICO JSON lists render features, topics and questions with their HTML bodies and skip incomplete entries',async()=>{
+  const p=product();
+  p.metafields.upswing={
+    features:plain([{label:'Material',title:'Material <und> Verarbeitung',body:'<p>Leder mit <strong>Membran</strong>.</p>'},{title:'Ohne Text',body:'<p>&nbsp;</p>'},{title:'',body:''},'kein Objekt',{title:'Objektbody',body:{nicht:'ausgeben'}}],'json'),
+    everyday_topics:plain([{title:'Wirkung und Gehgefühl',body:'<p>Weich <a href="/pages/joya">federnd</a>.</p>'},{title:'',body:'<p></p>'}],'json'),
+    faq_items:plain([{question:'Was bedeutet STX?',answer:'<p>Sympatex-Membran.</p>'},{question:'Ohne Antwort?',answer:''},{question:'',answer:'<p>Ohne Frage.</p>'}],'json')
+  };
+  const dom=await knowledge(p);try{
+    const document=dom.window.document;
+    const features=[...document.querySelectorAll('.product-feature')];
+    assert.deepEqual(features.map(feature=>feature.querySelector('h3')?.textContent),['Material <und> Verarbeitung','Ohne Text','Objektbody']);
+    assert.equal(features[0].querySelector('.product-feature-number').textContent,'Material');
+    assert.equal(features[0].querySelector('strong').textContent,'Membran');
+    assert.equal(features[1].querySelector('.product-knowledge-copy'),null,'NBSP-only bodies are not shown');
+    assert.equal(document.querySelector('.product-topic h3').textContent,'Wirkung und Gehgefühl');
+    assert.equal(document.querySelector('.product-topic a').getAttribute('href'),'/pages/joya');
+    assert.equal(document.querySelectorAll('.product-topic').length,1);
+    assert.deepEqual([...document.querySelectorAll('.product-faq-item summary')].map(summary=>summary.firstChild.textContent),['Was bedeutet STX?']);
+    assert(!document.body.textContent.includes('[object Object]'));assert(!document.body.textContent.includes('ausgeben'));assert(!document.body.textContent.includes('kein Objekt'));
+    assert.equal(document.querySelector('[data-native-product-description]').innerHTML,p.description);
+  }finally{dom.window.close();}
+});
+
+test('section headings follow the main category from the configured product tags',async()=>{
+  const fields=()=>({suitability:richField('Eignung'),introduction:richField('Start'),size_guide:richField('Grösse'),care:richField('Pflege'),everyday_topics:plain([{title:'Thema',body:'<p>Text</p>'}],'json'),faq_items:plain([{question:'Frage?',answer:'<p>Antwort</p>'}],'json')});
+  const headings=document=>({everyday:document.querySelector('#ProductEveryday h2').textContent,suitability:document.querySelector('.product-suitability h3').textContent,practical:[...document.querySelectorAll('.product-practical h3')].map(h=>h.textContent),faq:document.querySelector('#ProductQuestionsTitle').textContent});
+  const cases=[
+    [['category_231'],{everyday:'Im Alltag.',suitability:'Für wen und wofür?',practical:['Eingewöhnung','Passform und Grössenwahl','Schuhpflege'],faq:'Fragen zu diesem Modell.'}],
+    [['category_130'],{everyday:'Trainingsmöglichkeiten.',suitability:'Trainingsziel und Voraussetzungen',practical:['Aufbau und erster Einsatz','Passende Ausführung auswählen','Reinigung, Wartung und Aufbewahrung'],faq:'Fragen zur Nutzung.'}],
+    [['category_130','category_131'],{everyday:'Nutzung im Alltag.',suitability:'Eignung und wichtige Einschränkungen',practical:['Erste Anwendung','Passform und Kompatibilität','Reinigung und Lagerung'],faq:'Fragen zum Artikel.'}],
+    [['category_130','category_152'],{everyday:'Einbindung in den Arbeitstag.',suitability:'Passender Arbeitsplatz',practical:['Aufstellung und Einrichtung','Passende Grösse und Ausführung','Reinigung und Wartung'],faq:'Fragen zum Arbeitsalltag.'}],
+    [['category_1260','sonstiges'],{everyday:'Im Alltag.',suitability:'Für wen passend?',practical:['Anwendung & Eingewöhnung','Grösse & Passform','Pflege'],faq:'Fragen & Antworten.'}]
+  ];
+  for(const [tags,expected] of cases){
+    const p=product({tags});p.metafields.upswing=fields();
+    const dom=await knowledgeWithSettings(p);try{assert.deepEqual(headings(dom.window.document),expected,tags.join(','));}finally{dom.window.close();}
+  }
+  const p=product({tags:['category_126']});p.metafields.upswing=fields();
+  const dom=await knowledgeWithSettings(p,{});try{assert.equal(dom.window.document.querySelector('.product-suitability h3').textContent,'Für wen passend?','Without configured tags the neutral headings remain');}finally{dom.window.close();}
+});

@@ -1,0 +1,29 @@
+{%- comment -%}Returns footwear, workplace, regeneration, training or nothing, from the product tags configured per main category. The first matching category in this order wins.{%- endcomment -%}
+{%- liquid
+  assign main_category = ''
+  assign category_keys = 'footwear,workplace,regeneration,training' | split: ','
+  for category_key in category_keys
+    case category_key
+      when 'footwear'
+        assign category_tags = settings.main_category_footwear_tags
+      when 'workplace'
+        assign category_tags = settings.main_category_workplace_tags
+      when 'regeneration'
+        assign category_tags = settings.main_category_regeneration_tags
+      when 'training'
+        assign category_tags = settings.main_category_training_tags
+    endcase
+    assign category_tags = category_tags | split: ','
+    for category_tag in category_tags
+      assign trimmed_tag = category_tag | strip
+      if trimmed_tag != blank and product.tags contains trimmed_tag
+        assign main_category = category_key
+        break
+      endif
+    endfor
+    if main_category != blank
+      break
+    endif
+  endfor
+-%}
+{{- main_category -}}

@@ -55,11 +55,13 @@ Die native Shopify-Beschreibung bleibt vollständig erhalten. Die kurze Einleitu
 Die gemeinsame Produktvorlage unterstützt unter anderem:
 
 - `upswing.short_description` und `custom_fields.small_description` als vorhandene Kurztexte.
-- `upswing.features`, `upswing.everyday_topics`, `upswing.technical_specs` und `upswing.faq_items` als Listen referenzierter Metaobjects.
+- `upswing.features`, `upswing.everyday_topics`, `upswing.technical_specs` und `upswing.faq_items` als Listen referenzierter Metaobjects. `upswing.features`, `upswing.everyday_topics` und `upswing.faq_items` können stattdessen ein `json`-Array aus AICO enthalten (`label`/`title`/`body`, `title`/`body` beziehungsweise `question`/`answer`; `body` und `answer` als HTML).
 - `upswing.benefits`, `upswing.suitability`, `upswing.specifications`, `upswing.introduction`, `upswing.size_guide`, `upswing.care` und `upswing.faq` als ergänzende Inhalte entsprechend ihrer vorgesehenen Feldtypen.
 - `upswing.knowledge_heading` und `upswing.knowledge_intro` als redaktionelle Einleitung zum Informationsbereich.
 - Bestehende Artikelmerkmale in `aico_metafields` als technische Tabelle, wenn keine gültigen strukturierten technischen Angaben vorhanden sind.
 - `upswing.related_products` als explizite Produktempfehlungen sowie Shopifys native Produktempfehlungen.
+
+Die Überschriften dieser Bereiche richten sich nach der Hauptkategorie des Produkts, zum Beispiel «Eingewöhnung» und «Schuhpflege» bei Gesundheitsschuhen oder «Aufbau und erster Einsatz» bei Bewegung & Training. Welche Produkt-Tags zu welcher Hauptkategorie gehören, steht unter **Theme-Einstellungen → Produktinhalte nach Hauptkategorie** (Standard: die AICO-Kategorie-Tags `category_<ID>`). Ohne passenden Tag bleiben die neutralen Überschriften.
 
 Die [Katalog-Checkliste](Katalog-Einrichtung.html) beschreibt die benötigten Definitionen und Quellen. Neue Metafelder und Metaobjects im Shopify-Admin mit dem erforderlichen Storefront-Zugriff anlegen; ein Theme-Upload übernimmt diesen Schritt nicht. Die AICO-Datei beschreibt die fachliche Ergänzung je Hauptkategorie. Zusätzliche Datenfelder erst nach Prüfung mit echten Artikeln im Sync befüllen.
 
