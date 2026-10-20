@@ -24,7 +24,15 @@
                 <li class="mega-child{% if child.links.size > 0 %} mega-child--has-submenu{% endif %}"><a class="mega-card" href="{{ main_child_url | escape }}" {% if child.current %}aria-current="page"{% endif %}><div class="mega-card-media">{% render 'header-navigation-image', nav_link: child, nav_url: child.url, header_blocks: header_section.blocks %}</div><div class="mega-card-copy"><span class="mega-card-title">{{ child.title | escape }}</span></div></a>
                   {% if child.links.size > 0 %}<ul class="mega-submenu" role="list">{% for grandchild in child.links %}{%- capture main_grandchild_url -%}{%- render 'filial-anchor-url', url: grandchild.url, fallback_url: '/pages/filialubersicht' -%}{%- endcapture -%}
 {%- assign main_grandchild_url = main_grandchild_url | strip -%}
-<li><a class="mega-card mega-submenu-link" href="{{ main_grandchild_url | escape }}" aria-label="{{ grandchild.title | escape }}" {% if grandchild.current %}aria-current="page"{% endif %}><div class="mega-card-media">{% render 'header-navigation-image', nav_link: grandchild, nav_url: grandchild.url, header_blocks: header_section.blocks %}</div><div class="mega-card-copy"><span class="mega-card-title">{{ grandchild.title | escape }}</span></div></a></li>{% endfor %}</ul>{% endif %}
+{%- liquid
+  assign grandchild_parent_prefix = child.title | append: ' '
+  assign grandchild_title_prefix = grandchild.title | slice: 0, grandchild_parent_prefix.size
+  assign grandchild_category_title = ''
+  if child.title != blank and grandchild_title_prefix == grandchild_parent_prefix
+    assign grandchild_category_title = grandchild.title | remove_first: grandchild_parent_prefix
+  endif
+-%}
+<li><a class="mega-card mega-submenu-link" href="{{ main_grandchild_url | escape }}" aria-label="{{ grandchild.title | escape }}" {% if grandchild.current %}aria-current="page"{% endif %}><div class="mega-card-media">{% render 'header-navigation-image', nav_link: grandchild, nav_url: grandchild.url, header_blocks: header_section.blocks %}</div><div class="mega-card-copy"><span class="mega-card-title">{% if grandchild_category_title != blank %}<span class="mega-card-parent-title">{{ grandchild_parent_prefix | escape }}</span><span class="mega-card-category-title">{{ grandchild_category_title | escape }}</span>{% else %}{{ grandchild.title | escape }}{% endif %}</span></div></a></li>{% endfor %}</ul>{% endif %}
                 </li>
               {% endfor %}
             </ul>
