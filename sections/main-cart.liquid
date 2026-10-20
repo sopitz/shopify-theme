@@ -32,6 +32,7 @@
           <h2>Ihre Bestellung</h2><div class="summary-row summary-line"><span>Zwischensumme</span><span>{{ cart.items_subtotal_price | money_with_currency }}</span></div>
           {%- for discount in cart.cart_level_discount_applications -%}<div class="summary-row summary-line cart-discount"><span>{{ discount.title | escape }}</span><span>−{{ discount.total_allocated_amount | money_with_currency }}</span></div>{%- endfor -%}
           <div class="summary-row summary-line summary-total"><strong>Warenwert</strong><strong>{{ cart.total_price | money_with_currency }}</strong></div>
+          {% render 'cart-free-shipping', threshold: section.settings.free_shipping_threshold, method: section.settings.free_shipping_method %}
           <p class="cart-tax-note">{% if cart.taxes_included %}Inklusive Steuern.{% else %}Steuern werden an der Kasse berechnet.{% endif %} Versand und mögliche weitere Rabatte werden an der Kasse berechnet.</p>
           {%- if shop.shipping_policy != blank -%}<p class="cart-shipping-note">{% render 'icon', name: 'truck' %}<a href="{{ shop.shipping_policy.url }}">Versandbedingungen</a></p>{%- endif -%}
           <button class="button checkout-button" type="submit" name="checkout">Zur sicheren Kasse {% render 'icon', name: 'arrow' %}</button>
@@ -55,6 +56,20 @@
       "label": "Zusätzliche Zahlungsarten",
       "default": "Rechnung, TWINT, PostFinance Pay",
       "info": "Kommagetrennt. Ergänzt Zahlungsarten, die Shopify nicht automatisch als Logo liefert. Bei Änderungen im Checkout hier nachführen."
+    },
+    {
+      "type": "number",
+      "id": "free_shipping_threshold",
+      "label": "Kostenloser Versand ab Warenwert (CHF)",
+      "default": 99,
+      "info": "Muss mit dem Versandtarif in Shopify übereinstimmen (Einstellungen › Versand und Zustellung). Das Theme kann die Tarife nicht auslesen. Leer oder 0 blendet die Zeile aus."
+    },
+    {
+      "type": "text",
+      "id": "free_shipping_method",
+      "label": "Kostenlose Versandart",
+      "default": "Post Economy",
+      "info": "Versandart, die ab dem Warenwert kostenlos ist. Andere Versandarten bleiben kostenpflichtig."
     },
     {
       "type": "url",

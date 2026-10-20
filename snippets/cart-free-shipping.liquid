@@ -1,0 +1,11 @@
+{%- assign free_shipping_threshold = threshold | default: 0 | times: 100 | round -%}
+{%- if free_shipping_threshold > 0 -%}
+  {%- assign free_shipping_method = method | default: '' | strip -%}
+  {%- capture free_shipping_suffix -%}{%- if free_shipping_method != blank %} mit {{ free_shipping_method | escape }}{%- endif -%}{%- endcapture -%}
+  {%- if cart.total_price >= free_shipping_threshold -%}
+    <p class="cart-free-shipping is-reached">{% render 'icon', name: 'truck' %}<span><strong>Kostenloser Versand</strong>{{ free_shipping_suffix }}</span></p>
+  {%- else -%}
+    {%- assign free_shipping_missing = free_shipping_threshold | minus: cart.total_price -%}
+    <p class="cart-free-shipping">{% render 'icon', name: 'truck' %}<span>Noch <strong>{{ free_shipping_missing | money_with_currency }}</strong> bis zum kostenlosen Versand{{ free_shipping_suffix }}.</span></p>
+  {%- endif -%}
+{%- endif -%}

@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.22] - 2026-10-20
+
+- Warenkorb zeigt unter dem Warenwert, wie viel bis zum kostenlosen Versand fehlt («Noch CHF 12.00 bis zum kostenlosen Versand mit Post Economy.»), und ab der Grenze «Kostenloser Versand mit Post Economy».
+- Grenze und Versandart sind im Warenkorb-Abschnitt des Theme-Editors pflegbar (Vorgabe 99 und Post Economy, passend zum aktuellen Shopify-Tarif). Shopify gibt die Versandtarife nicht an das Theme heraus; bei Tarifänderungen beide Werte nachführen. Leer oder 0 blendet den Hinweis aus.
+- Die in 1.0.8 gesperrte Einstellung `free_shipping_threshold` ist nur im Warenkorb-Abschnitt wieder zugelassen; feste Versandgebühren und andere Versandschwellen bleiben gesperrt.
+
 ## [1.0.21] - 2026-10-20
 
 - Unterkategorien der dritten Menüebene erscheinen auf Desktop als gleichwertige Bildkacheln direkt nach ihrer übergeordneten Kategorie. Vollständige Shopify-Titel bleiben sichtbar; zusätzliche Bänder, verkleinerte Karten und Sonderabstände entfallen.

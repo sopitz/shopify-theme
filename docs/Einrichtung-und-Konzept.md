@@ -102,6 +102,8 @@ Verfügbarkeit und Abholhinweise stammen von der gewählten Shopify-Variante und
 
 Versand- und Rückgabetexte werden aus den tatsächlichen Shopify-Richtlinien übernommen. Diese unter **Einstellungen → Richtlinien** pflegen. Versandtarife, Schwellenwerte und Zuschläge in den Versand- beziehungsweise Checkout-Einstellungen verwalten und im Entwurf testen. Ein optionales produktspezifisches `upswing.delivery_note` ergänzt die gepflegten Angaben. Das Theme liefert keine festen Versandkosten oder Rückgabefristen als Produktfakten aus.
 
+Einzige Ausnahme ist der Hinweis zum kostenlosen Versand im Warenkorb. Er folgt den Einstellungen **Kostenloser Versand ab Warenwert (CHF)** und **Kostenlose Versandart** im Warenkorb-Abschnitt (Vorgabe 99 und Post Economy, passend zum Tarif vom 20.10.2026). Shopify gibt die Versandtarife nicht an das Theme heraus: Ändert sich die Freigrenze oder die Versandart unter **Einstellungen → Versand und Zustellung**, beide Werte im Theme-Editor nachführen. Leer oder 0 blendet den Hinweis aus. Rabattcodes an der Kasse können den Warenwert wieder unter die Grenze senken; dann berechnet Shopify den Versand regulär.
+
 ## Kaufbereich und Bilder prüfen
 
 Produktformular, Kaufleiste und Vollbildgalerie verwenden die tatsächlichen Varianten, Preise, Mengenregeln und Bestände. Die Mengenwahl erhält die vorhandenen Formularfelder. Die mobile Kaufleiste erscheint beim Weiterlesen nach dem ursprünglichen Kaufbutton. Die Vollbildgalerie enthält die Produktauswahl und lässt sich mit Tastatur oder Schliessen-Schaltfläche beenden.

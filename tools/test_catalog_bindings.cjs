@@ -196,7 +196,7 @@ for (const [name, mediaSelector] of [['b2b-banner', '.b2b-media'], ['main-b2b', 
 const retired = new Set([
   'use_original_fallback', 'fallback_asset', 'fallback_image', 'shipping_note',
   'delivery_stock_days', 'delivery_standard_days', 'delivery_standard_vendors', 'delivery_extended_days', 'delivery_extended_vendors',
-  'shipping_threshold', 'free_shipping_threshold',
+  'shipping_threshold',
 ]);
 const catalogTypes = new Set(['product', 'collection', 'product_list', 'collection_list']);
 const editorialTypes = new Set(['main-page', 'main-about-page', 'main-article', 'main-blog', 'main-b2b']);
