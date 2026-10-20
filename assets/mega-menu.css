@@ -15,19 +15,20 @@
 .mega-all-link{display:inline-flex;align-items:center;gap:12px;min-height:44px;font-family:var(--heading);font-size:23px;font-weight:750;letter-spacing:-.03em}
 .mega-all-link .icon{width:19px}
 .mega-close{min-width:44px;min-height:44px}
-.mega-card-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:18px 20px}
+.mega-card-grid{--mega-card-column-gap:20px;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:18px var(--mega-card-column-gap)}
 .mega-child{min-width:0}
+.mega-child--has-submenu{position:relative;display:grid;grid-column:span var(--mega-submenu-columns);grid-template-columns:repeat(var(--mega-submenu-columns),minmax(0,1fr));gap:18px var(--mega-card-column-gap);align-items:start}
+.mega-child--has-submenu:before{content:'';position:absolute;top:-4px;left:10px;right:10px;height:3px;border-radius:2px;background:var(--forest);opacity:.6;pointer-events:none}
 .mega-card{display:block;padding:9px 10px;border-radius:9px;transition:background .15s}
 .mega-card:hover{background:var(--sage)}
 .mega-card-media{height:96px;display:flex;align-items:center;justify-content:center;background:var(--cream);border-radius:7px;margin-bottom:12px;padding:7px}
 .mega-card-media img{height:100%;width:100%;object-fit:contain;mix-blend-mode:multiply}
 .mega-card-copy{min-height:38px}
-.mega-child--has-submenu .mega-card-copy{min-height:0}
 .mega-card-title{font-size:13px;line-height:1.45;font-weight:600;display:block;overflow-wrap:break-word;hyphens:auto}
 .nav-image-placeholder{display:grid;place-items:center;color:var(--muted)}
 .nav-image-placeholder .icon{height:32px;width:32px}
-.mega-submenu{padding:0 10px 2px}
-.mega-submenu-link{display:flex;align-items:center;font-size:12px;line-height:1.5;min-height:28px;padding:4px 0;text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere}
+.mega-submenu{display:contents}
+.mega-submenu>li{min-width:0}
 .mobile-nav-summary{display:flex;justify-content:space-between;align-items:center;gap:15px;list-style:none;cursor:pointer;font-size:16px;font-weight:600;min-height:58px;padding:13px 0;border-bottom:1px solid var(--line)}
 .mobile-nav-summary::-webkit-details-marker{display:none}
 .mobile-nav-summary>.icon{width:15px;height:15px;transform:rotate(90deg)}
@@ -43,7 +44,7 @@
 .navigation-collection-intro>img{width:240px;height:220px;object-fit:contain;mix-blend-mode:multiply}
 .navigation-collection-intro p{max-width:650px;color:var(--muted);margin-top:20px}
 .navigation-collection-intro .button{margin-top:24px}
-@media(max-width:1250px) and (min-width:1101px){.mega-nav{gap:10px}.mega-menu-list{gap:7px}.mega-menu-link{font-size:12px}.mega-menu-toggle{width:19px}.mega-nav .nav-business{font-size:12px;padding-left:12px}.mega-card-grid{gap:16px 12px}.mega-card{padding-inline:7px}}
+@media(max-width:1250px) and (min-width:1101px){.mega-nav{gap:10px}.mega-menu-list{gap:7px}.mega-menu-link{font-size:12px}.mega-menu-toggle{width:19px}.mega-nav .nav-business{font-size:12px;padding-left:12px}.mega-card-grid{--mega-card-column-gap:12px;row-gap:16px}.mega-card{padding-inline:7px}.mega-child--has-submenu:before{left:7px;right:7px}}
 @media(min-width:1101px){.site-header [data-navigation-mobile-toggle]{display:none!important}.site-header [data-navigation-mobile-panel]{display:none!important}.mega-nav{display:flex!important}.main-nav.mega-nav nav.desktop-navigation{display:block;padding:0;gap:0}.mega-nav .nav-business .icon{width:16px}}
 @media(max-width:1100px){.mega-nav,.nav-wrap:has(.mega-nav){display:none!important}.site-header [data-navigation-mobile-toggle]{display:inline-flex!important}.site-header .header-consult,.site-header .header-advice{display:none}.site-header [data-navigation-mobile-panel]{max-height:calc(100dvh - 142px);overflow:auto;overscroll-behavior:contain;padding-top:10px;padding-bottom:25px;border-top:1px solid var(--line)}.header-main{gap:22px}.header-actions{gap:12px}.site-header .menu-toggle{order:4}.mega-menu-panel{display:none!important}}
 @media(max-width:600px){.mobile-nav-summary{font-size:15px}.header-main{gap:12px}.header-actions{gap:2px}.navigation-collection-intro{grid-template-columns:1fr;gap:20px}.navigation-collection-intro>img{order:-1;width:100%;height:190px}.navigation-collection-intro .button{font-size:13px}}
