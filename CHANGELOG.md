@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.0.16] - 2026-10-20
+
+- Warenkorb: Mengensteuerung und Gesamtpreis stehen auf Desktop und Tablet vertikal mittig zur jeweiligen Produktzeile. Die gemeinsame Spaltenausrichtung mit den Überschriften bleibt erhalten; mobil bleiben die Bedienelemente unter den Produktinformationen.
+
 ## [1.0.15] - 2026-10-20
 
 - Warenkorb: Spaltenüberschriften und Produktzeilen verwenden dieselben Spaltenbreiten. «Anzahl» steht mittig über der Mengensteuerung; Preise sind rechts bündig. Die Mengensteuerung richtet sich am oberen Zeilenrand aus.
