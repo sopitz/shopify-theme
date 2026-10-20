@@ -93,6 +93,41 @@ async function flush(test, predicate=()=>test.dom.window.document.querySelector(
     assert.deepEqual([...t.dom.window.document.querySelectorAll('.swatches a')].map(a=>a.style.getPropertyValue('--swatch-color')),['#343835','#486782']);
     t.dom.window.close();
   });
+  await check('AICO colour lists divide the dot into up to four segments, main colour first',async()=>{
+    const p=clone(black);
+    p.metafields.aico={pd_color_hex:{value:'#22356B'},pd_colors_hex:{value:['#22356b','#F28C28']}};
+    assert.equal((await render('product-color-paint',p,{color_product:p})).trim(),'conic-gradient(#22356B 0 50%, #F28C28 0 100%)');
+    p.metafields.aico.pd_colors_hex={value:['#000000','#000000','nope',{hex:'#555555'},'#111111','#222222','#333333','#444444']};
+    assert.equal((await render('product-color-values',p,{color_product:p})).trim(),'#000000|#111111|#222222|#333333');
+    assert.equal((await render('product-color-paint',p,{color_product:p})).trim(),'conic-gradient(#000000 0 25%, #111111 0 50%, #222222 0 75%, #333333 0 100%)');
+    p.metafields.aico.pd_colors_hex={value:['#123456']};
+    assert.equal((await render('product-color-paint',p,{color_product:p})).trim(),'#22356B','A one-entry list keeps the main colour field');
+    p.metafields.aico.pd_colors_hex={value:['#22356B','#F28C28','#FFFFFF']};
+    const json=JSON.parse(await render('product-color-json',p));
+    assert.equal(json.color,'#22356B');assert.deepEqual(json.colors,['#22356B','#F28C28','#FFFFFF']);
+    const doc=new JSDOM(await render('product-color-swatch',p,{color_product:p})).window.document;
+    assert.equal(doc.querySelector('.swatch').style.getPropertyValue('--swatch-color'),'conic-gradient(#22356B 0 33%, #F28C28 0 66%, #FFFFFF 0 100%)');
+  });
+  await check('cards show at most six dots, divided colours from fetched products and short text names',async()=>{
+    const titles=['Magglingen grey','Magglingen fire','Magglingen black','Magglingen white','Magglingen blue','Magglingen red','Magglingen green','Magglingen pink'];
+    const products={},entries=[];
+    titles.forEach((title,index)=>{
+      const handle='kybun-magglingen-'+index;
+      products[handle]={id:2000+index,handle,title,url:'/products/'+handle,featured_image:'/m.jpg',color:index===1?'#22356B':null,colors:index===1?['#22356B','#F28C28']:[]};
+      entries.push({type:'product',id:index+1,name:title,handle});
+    });
+    const t=createDocument('card',{de_CH:entries},{current:{title:'Magglingen light grey',color:'#C9C9C9',colors:['#C9C9C9']},products});
+    await new Promise(resolve=>setTimeout(resolve,15));t.IO.instance.fire();await flush(t);
+    const links=[...t.dom.window.document.querySelectorAll('.swatches a')];
+    assert.equal(links.length,6);
+    assert.equal(t.dom.window.document.querySelector('.swatch-count').textContent,'9 Farben');
+    assert.equal(links[0].style.getPropertyValue('--swatch-color'),'#C9C9C9');
+    assert.equal(links[2].style.getPropertyValue('--swatch-color'),'conic-gradient(#22356B 0 50%, #F28C28 0 100%)');
+    assert.equal(links[1].querySelector('.swatch-label').textContent,'grey');
+    assert.equal(links[1].title,'Magglingen grey');
+    assert.equal(links[2].querySelector('.swatch-label').textContent,'Magglingen fire','Dots keep the full name for screen readers');
+    t.dom.window.close();
+  });
   await check('AICO accepts scalar hex colours and rejects malformed or structured values without guessing',async()=>{
     const p=clone(black);p.metafields.aico={pd_color_v2:{value:'Blau'}};
     for(const hex of ['#AbC','#AbCd','#A1B2C3','#A1B2C3D4']){

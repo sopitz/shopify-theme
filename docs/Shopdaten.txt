@@ -1,5 +1,5 @@
 upswing – Datenübersicht
-Stand: Theme 1.0.11 · 20. Oktober 2026
+Stand: Theme 1.0.13 · 20. Oktober 2026
 
 EINRICHTUNG
 Die vollständige Arbeitsliste steht in Katalog-Einrichtung.html und
@@ -50,6 +50,8 @@ PRODUKTINHALTE
 
 FARBEN UND MODELLE
 - aico.pd_color_v2, mm-google-shopping.color und aico.pd_colors_v2 liefern Namen.
+- Mehrfarbige Produkte: aico.pd_colors_hex (Liste, Hauptfarbe zuerst) teilt den
+  Farbpunkt in bis zu vier gleiche Segmente.
 - Der exakte Farbwert kommt zuerst aus dem bereits vorhandenen aico.pd_color_hex.
   Ein bestehendes upswing.color_hex bleibt optional kompatibel; danach wird der
   native ausgewählte Shopify-Swatch verwendet. Kein neues paralleles Farbfeld

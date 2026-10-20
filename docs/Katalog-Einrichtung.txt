@@ -1,5 +1,5 @@
 upswing – Katalog-Einrichtung
-Theme 1.0.11 · 20. Oktober 2026
+Theme 1.0.13 · 20. Oktober 2026
 
 Produkte und Collections ausschliesslich aus den echten Shopdaten.
 Keine kopierten Produkte, Collections, Menüs, Farben, Fristen oder Versandbeträge.
@@ -7,7 +7,9 @@ Nicht zugeordnete Katalogbereiche bleiben im Shop verborgen; Hinweise im Editor.
 Ein Theme-Upload legt keine Shop-Ressourcen oder Felddefinitionen an.
 
 BEREITS VORHANDENER EXAKTER FARBWERT – NICHT NOCH EINMAL ANLEGEN
-Der exakte Farbwert kommt zuerst aus aico.pd_color_hex. Ein bestehendes
+Mehrfarbige Produkte: aico.pd_colors_hex (Liste, Hauptfarbe zuerst) teilt den
+Farbpunkt in bis zu vier Segmente. Der exakte Farbwert kommt zuerst aus
+aico.pd_color_hex. Ein bestehendes
 upswing.color_hex bleibt optional kompatibel; danach wird der native ausgewählte
 Shopify-Swatch verwendet. Kein neues paralleles Farbfeld anlegen. Ohne bestätigten
 Farbwert bleibt die Auswahl als Text lesbar; aus Namen werden keine Farbtöne geschätzt.

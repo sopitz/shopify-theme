@@ -1,7 +1,7 @@
 {%- capture color_label -%}{% render 'product-color-label', color_product: color_product %}{%- endcapture -%}
-{%- capture color_hex -%}{% render 'product-color-value', color_product: color_product %}{%- endcapture -%}
+{%- capture color_paint -%}{% render 'product-color-paint', color_product: color_product %}{%- endcapture -%}
 {%- assign color_label = color_label | strip -%}
-{%- assign color_hex = color_hex | strip -%}
-<a class="swatch swatch--labeled{% if color_hex == blank %} swatch--text{% endif %}{% if selected %} is-selected{% endif %}" href="{{ color_product.url }}"{% if selected %} aria-current="page"{% endif %} aria-label="{{ color_label | escape }}" title="{{ color_label | escape }}"{% if color_product.featured_image %} data-card-swatch="{{ color_product.featured_image | image_url: width: 720 }}"{% endif %}{% if color_hex != blank %} style="--swatch-color: {{ color_hex | escape }}"{% endif %}>
+{%- assign color_paint = color_paint | strip -%}
+<a class="swatch swatch--labeled{% if color_paint == blank %} swatch--text{% endif %}{% if selected %} is-selected{% endif %}" href="{{ color_product.url }}"{% if selected %} aria-current="page"{% endif %} aria-label="{{ color_label | escape }}" title="{{ color_label | escape }}"{% if color_product.featured_image %} data-card-swatch="{{ color_product.featured_image | image_url: width: 720 }}"{% endif %}{% if color_paint != blank %} style="--swatch-color: {{ color_paint | escape }}"{% endif %}>
   <span class="swatch-label">{{ color_label | escape }}</span>
 </a>

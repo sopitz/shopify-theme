@@ -1,0 +1,34 @@
+{%- comment -%}
+  Up to four colour values of a product, main colour first, joined by "|".
+  aico.pd_colors_hex lists every AICO product colour that has a hex code;
+  without two valid entries there the single product-color-value is used.
+{%- endcomment -%}
+{%- liquid
+  assign listed_colors = ''
+  assign listed_count = 0
+  for candidate in color_product.metafields.aico.pd_colors_hex.value
+    capture listed_color
+      render 'product-color-hex', candidate: candidate
+    endcapture
+    assign listed_color = listed_color | strip | upcase
+    assign listed_token = '|' | append: listed_color | append: '|'
+    assign listed_check = '|' | append: listed_colors | append: '|'
+    if listed_color != blank
+      unless listed_check contains listed_token
+        if listed_count > 0
+          assign listed_colors = listed_colors | append: '|'
+        endif
+        assign listed_colors = listed_colors | append: listed_color
+        assign listed_count = listed_count | plus: 1
+      endunless
+    endif
+    if listed_count == 4
+      break
+    endif
+  endfor
+-%}
+{%- if listed_count > 1 -%}
+  {{- listed_colors -}}
+{%- else -%}
+  {%- render 'product-color-value', color_product: color_product -%}
+{%- endif -%}

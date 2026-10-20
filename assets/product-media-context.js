@@ -72,7 +72,9 @@
     const copySwatch = original => {
       const dot = original?.querySelector('.color-dot, .variant-color-dot');
       const originalImage = original?.querySelector('img');
-      const fill = dot ? getComputedStyle(dot).backgroundColor : original?.style.getPropertyValue('--swatch-color');
+      const dotStyle = dot && getComputedStyle(dot);
+      const dotImage = dotStyle?.backgroundImage;
+      const fill = dotStyle ? (dotImage && dotImage !== 'none' ? dotImage : dotStyle.backgroundColor) : original?.style.getPropertyValue('--swatch-color');
       if (!dot && !originalImage && !fill) return null;
       const swatch = document.createElement('span');
       swatch.className = 'product-context-swatch'; swatch.setAttribute('aria-hidden', 'true');
@@ -81,7 +83,7 @@
         image.src = originalImage.currentSrc || originalImage.src; image.alt = '';
         swatch.classList.add('has-image'); swatch.append(image);
       } else {
-        swatch.style.backgroundColor = fill;
+        swatch.style.background = fill;
         if (dot) {
           const size = getComputedStyle(dot);
           swatch.style.width = size.width; swatch.style.height = size.height; swatch.style.flexBasis = size.width;

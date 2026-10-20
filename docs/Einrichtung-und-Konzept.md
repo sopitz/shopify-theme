@@ -1,6 +1,6 @@
 # Einrichtung und Konzept für upswing
 
-Stand: **Theme 1.0.11 · 20. Oktober 2026**
+Stand: **Theme 1.0.13 · 20. Oktober 2026**
 
 Das Theme stellt den vorhandenen Shopify-Katalog dar. Titel, Beschreibungen, Produktbilder, Preise, Varianten und Bestände werden bei der Ausgabe aus den Shop-Ressourcen gelesen. Katalogkarten und Navigation werden über die vorgesehenen Ressourcen-Auswahlen und Shop-Menüs eingerichtet. Produkt- und Kollektions-Handles werden ohne Vorauswahl ausgeliefert.
 
@@ -88,7 +88,7 @@ Die [Katalog-Checkliste](Katalog-Einrichtung.html) beschreibt die benötigten De
 
 Native Shopify-Farboptionen verwenden die vorhandenen Varianten und Swatches. Bei einer nativen Option **Farbe**, **Color** oder **Colour** wird kein paralleler Modellfarben-Picker eingeblendet. Für separate Farbprodukte kann `upswing.model_products` als `list.product_reference` die zugehörigen Produkte verknüpfen. Bestehende Beziehungen in `custom_fields.custom_rel_farbe` werden zusätzlich unterstützt; deren Ziele müssen auf vorhandene, zugängliche Produkte verweisen.
 
-Die Felder `aico.pd_color_v2`, `mm-google-shopping.color` und `aico.pd_colors_v2` liefern lesbare Farbnamen. Der exakte Farbwert kommt zuerst aus dem bereits vorhandenen `aico.pd_color_hex`. Ein bestehendes `upswing.color_hex` bleibt als optionale bisherige Quelle kompatibel; danach wird der native ausgewählte Shopify-Swatch verwendet. Ein neues paralleles Farbfeld ist nicht erforderlich. Ein Name allein legt keinen Farbton fest. Ohne bestätigten Farbwert bleibt die Farbe als Text auswählbar; aus Namen werden keine Farbtöne geschätzt. Produktbilder werden als Produktansicht verwendet.
+Die Felder `aico.pd_color_v2`, `mm-google-shopping.color` und `aico.pd_colors_v2` liefern lesbare Farbnamen. Liefert AICO mit `aico.pd_colors_hex` mindestens zwei Farbwerte (Hauptfarbe zuerst), wird der Farbpunkt in bis zu vier gleiche Segmente geteilt. Sonst kommt der exakte Farbwert zuerst aus dem bereits vorhandenen `aico.pd_color_hex`. Ein bestehendes `upswing.color_hex` bleibt als optionale bisherige Quelle kompatibel; danach wird der native ausgewählte Shopify-Swatch verwendet. Ein neues paralleles Farbfeld ist nicht erforderlich. Ein Name allein legt keinen Farbton fest. Ohne bestätigten Farbwert bleibt die Farbe als Text auswählbar; aus Namen werden keine Farbtöne geschätzt. Produktbilder werden als Produktansicht verwendet.
 
 Für einen Katalog mit einer Karte je Modell die Modellzuordnung vollständig pflegen: stabiler `upswing.model_key`, genau ein `upswing.model_primary` je Modell, die Referenzen in `upswing.model_products` und bei Bedarf ein gemeinsamer `upswing.model_name`. Kollektionen mit ausschliesslich den Primärprodukten erhalten passende Zählung und Pagination. Eine normale Kollektion zeigt weiterhin ihre tatsächlich enthaltenen Produkte.
 

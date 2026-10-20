@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.13] - 2026-10-20
+
+- Mehrfarbige Produkte zeigen einen geteilten Farbpunkt: Liefert AICO alle Farbwerte als `aico.pd_colors_hex` (Liste, Hauptfarbe zuerst), wird der Kreis in bis zu vier gleiche Segmente aufgeteilt. Gilt für Produktkarten, Produktseite, nachgeladene Farbprodukte sowie Kaufleiste und Vollbild. Ohne Liste bleibt `aico.pd_color_hex` die Quelle.
+- Produktkarten zeigen höchstens sechs Farbpunkte; die Gesamtzahl der Farben steht weiterhin daneben. Farben ohne Farbwert erscheinen als kurzer Text ohne den gemeinsamen Modellnamen («light grey» statt «Magglingen light grey»).
+
 ## [1.0.12] - 2026-10-20
 
 - AICO-Produktinhalte für die vier Hauptkategorien in einer gemeinsamen Produktvorlage vervollständigt. Die Navigation folgt der Kategorie; die gepflegte Grössen-/Auswahlhilfe ist direkt bei den Varianten erreichbar. Keine manuelle Zuweisung separater Produkttemplates nötig.

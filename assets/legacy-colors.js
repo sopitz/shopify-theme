@@ -7,6 +7,29 @@
   const waiting = new Map();
   let active = 0;
   const handlePattern = /^[a-z0-9][a-z0-9_-]*$/;
+  const hexPattern = /^#(?:[\da-f]{3}|[\da-f]{4}|[\da-f]{6}|[\da-f]{8})$/i;
+  const cardLimit = 6;
+
+  function colorsOf(product) {
+    const listed = Array.isArray(product.colors) ? product.colors : [];
+    const colors = [...new Set(listed.filter(color => typeof color === 'string' && hexPattern.test(color)).map(color => color.toUpperCase()))].slice(0, 4);
+    if (colors.length > 1) return colors;
+    return hexPattern.test(product.color || '') ? [product.color] : [];
+  }
+
+  // One colour fills the dot; several share it in equal segments, main colour first.
+  function paint(colors) {
+    if (colors.length < 2) return colors[0] || '';
+    return `conic-gradient(${colors.map((color, index) => `${color} 0 ${Math.floor((index + 1) * 100 / colors.length)}%`).join(', ')})`;
+  }
+
+  // Text swatches drop the words every sibling title starts with ("Magglingen light grey" -> "light grey").
+  function shortLabels(products) {
+    const words = products.map(product => String(product.title).trim().split(/\s+/));
+    let shared = 0;
+    while (words.every(list => list.length > shared + 1 && list[shared].toLowerCase() === words[0][shared].toLowerCase())) shared += 1;
+    return words.map(list => list.slice(shared).join(' '));
+  }
 
   function parse(value) {
     for (let depth = 0; depth < 2 && typeof value === 'string'; depth += 1) {
@@ -72,8 +95,9 @@
           if (!payload) { resolve(null); return; }
           const product = JSON.parse(payload.textContent);
           if (!product || String(product.handle) !== handle || !product.id || typeof product.title !== 'string') { resolve(null); return; }
-          const color = /^#(?:[\da-f]{3}|[\da-f]{4}|[\da-f]{6}|[\da-f]{8})$/i.test(product.color || '') ? product.color : null;
-          resolve({id:product.id, handle, title:product.title, image:product.image || null, options:product.options || [], variants:product.variants || [], productTitle:product.productTitle || product.title, url:new URL(`products/${encodeURIComponent(handle)}`, rootURL(root)).pathname, color});
+          const color = hexPattern.test(product.color || '') ? product.color : null;
+          const colors = colorsOf({color, colors:product.colors});
+          resolve({id:product.id, handle, title:product.title, image:product.image || null, options:product.options || [], variants:product.variants || [], productTitle:product.productTitle || product.title, url:new URL(`products/${encodeURIComponent(handle)}`, rootURL(root)).pathname, color, colors});
         } catch { resolve(null); }
       });
       pump();
@@ -82,19 +106,20 @@
     return result;
   }
 
-  function swatch(product, selected, card) {
+  function swatch(product, selected, card, text) {
+    const fill = paint(colorsOf(product));
     const link = document.createElement('a');
-    link.className = `swatch swatch--labeled${product.color ? '' : ' swatch--text'}${selected ? ' is-selected' : ''}`;
+    link.className = `swatch swatch--labeled${fill ? '' : ' swatch--text'}${selected ? ' is-selected' : ''}`;
     link.href = product.url;
     link.title = product.title;
     link.setAttribute('aria-label', product.title);
     if (selected) link.setAttribute('aria-current', 'page');
-    if (product.color) link.style.setProperty('--swatch-color', product.color);
+    if (fill) link.style.setProperty('--swatch-color', fill);
     if (product.image) {
       link.dataset.cardSwatch = product.image;
     }
     const label = document.createElement('span'); label.className = 'swatch-label';
-    label.textContent = product.title; link.append(label);
+    label.textContent = fill ? product.title : text || product.title; link.append(label);
     return link;
   }
 
@@ -137,7 +162,9 @@
       list.setAttribute('aria-label', `Farben für ${data.current.productTitle || data.current.title}`);
       content.insertBefore(list, actions);
     }
-    list.replaceChildren(...resolved.map((product, index) => swatch(product, index === 0, card)));
+    const shown = card ? resolved.slice(0, cardLimit) : resolved;
+    const texts = shortLabels(shown);
+    list.replaceChildren(...shown.map((product, index) => swatch(product, index === 0, card, texts[index])));
     if (card) {
       const count = document.createElement('span'); count.className = 'swatch-count';
       count.textContent = `${resolved.length} Farben`; list.append(count);
