@@ -128,7 +128,7 @@ test('cart tax note follows Shopify tax inclusion on the current cart',async()=>
 test('product option labels use exact native swatches and leave names without swatch data as text',async()=>{
   const value=(name,swatch)=>({swatch,available:true,toString:()=>name});
   const options=[{name:'Farbe',position:1,selected_value:'Gewebe',values:[value('Gewebe',{image:{src:'/shopify-swatch.jpg'}}),value('Exakter Ton',{color:'#abcdef'}),value('Schwarz',{})]}];
-  const dom=await commerceDocument('main-product',{product:{has_only_default_variant:false,options_with_values:options}});try{
+  const dom=await commerceDocument('main-product',{product:{has_only_default_variant:false,options_with_values:options,metafields:{aico:{pd_color_hex:{value:'#112233'}}}}});try{
     const labels=[...dom.window.document.querySelectorAll('.variant-label')];
     assert.equal(labels[0].querySelector('img').getAttribute('src'),'/shopify-swatch.jpg');
     assert.equal(labels[1].querySelector('.variant-color-dot').style.getPropertyValue('--swatch-color'),'#abcdef');

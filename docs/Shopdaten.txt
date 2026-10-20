@@ -1,5 +1,5 @@
 upswing – Datenübersicht
-Stand: Theme 1.0.8 · 15. Oktober 2026
+Stand: Theme 1.0.9 · 20. Oktober 2026
 
 EINRICHTUNG
 Die vollständige Arbeitsliste steht in Katalog-Einrichtung.html und
@@ -50,8 +50,11 @@ PRODUKTINHALTE
 
 FARBEN UND MODELLE
 - aico.pd_color_v2, mm-google-shopping.color und aico.pd_colors_v2 liefern Namen.
-- Eine Farbfläche braucht upswing.color_hex vom Typ color oder einen nativen
-  Shopify-Swatch. Ohne bestätigten Farbwert bleibt die Auswahl als Text lesbar.
+- Der exakte Farbwert kommt zuerst aus dem bereits vorhandenen aico.pd_color_hex.
+  Ein bestehendes upswing.color_hex bleibt optional kompatibel; danach wird der
+  native ausgewählte Shopify-Swatch verwendet. Kein neues paralleles Farbfeld
+  anlegen. Ohne bestätigten Farbwert bleibt die Auswahl als Text lesbar;
+  aus Farbnamen werden keine Farbtöne geschätzt.
 - Native Farbvarianten haben Vorrang vor einem zusätzlichen Modellfarben-Picker.
 - upswing.model_products und bestehende custom_fields.custom_rel_farbe verbinden
   tatsächliche Farbprodukte. Beziehungen und Zielprodukte im Shop prüfen.

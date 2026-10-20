@@ -1,10 +1,16 @@
 upswing – Katalog-Einrichtung
-Theme 1.0.8 · 15. Oktober 2026
+Theme 1.0.9 · 20. Oktober 2026
 
 Produkte und Collections ausschliesslich aus den echten Shopdaten.
 Keine kopierten Produkte, Collections, Menüs, Farben, Fristen oder Versandbeträge.
 Nicht zugeordnete Katalogbereiche bleiben im Shop verborgen; Hinweise im Editor.
 Ein Theme-Upload legt keine Shop-Ressourcen oder Felddefinitionen an.
+
+BEREITS VORHANDENER EXAKTER FARBWERT – NICHT NOCH EINMAL ANLEGEN
+Der exakte Farbwert kommt zuerst aus aico.pd_color_hex. Ein bestehendes
+upswing.color_hex bleibt optional kompatibel; danach wird der native ausgewählte
+Shopify-Swatch verwendet. Kein neues paralleles Farbfeld anlegen. Ohne bestätigten
+Farbwert bleibt die Auswahl als Text lesbar; aus Namen werden keine Farbtöne geschätzt.
 
 1. VORHANDENE SHOPIFY-RESSOURCEN VERKNÜPFEN
 Diese Angaben gehören in Shopify. Bestehende Produkte, Collections und Menüs weiterverwenden; nur fehlende Ressourcen neu anlegen.
@@ -57,11 +63,6 @@ Fehlende Angabe: Ohne ausgewähltes Bild eine neutrale Platzhalterfläche; kein 
 2. NUR FEHLENDE STRUKTURIERTE DATEN ERGÄNZEN
 Vor dem Anlegen prüfen, ob AICO den Inhalt bereits strukturiert liefert. Dann genügt eine Zuordnung im Sync. Die Beispiele beschreiben ein Format, keine Liefer- oder Produkteigenschaft.
 
-Exakter Farbwert
-Ort / Typ: Produkt · upswing.color_hex · color
-Einrichtung: Nur nötig, wenn kein nativer Shopify-Swatch verfügbar ist. Bestätigten Farbwert je Farbprodukt schicken, zum Beispiel #31536B. Farbnamen bleiben in den bereits vorhandenen AICO-Feldern.
-Fehlende Angabe: Ohne bestätigten Farbwert bleibt die Farbe als lesbarer Text auswählbar. Keine aus Namen geschätzten Farbtöne.
-
 Lieferfrist mit Einheit
 Ort / Typ: Produkt oder Variante · upswing.delivery_time · single_line_text_field
 Einrichtung: Bestätigte Lieferfrist einschliesslich Einheit senden, beispielsweise «4–6 Werktage». Eine Variantenangabe hat Vorrang vor der Produktangabe. Bestände und Abholverfügbarkeit separat korrekt pflegen.
@@ -107,8 +108,8 @@ Fehlende Angabe: Preis, Verfügbarkeit, Filter und Pagination verwenden die echt
 
 AICO-ZUSATZFELDER
 Siehe AICO-Zusatzfelder-Hauptkategorien.html: vier Hauptkategorien, je acht Inhaltsfelder.
-Bereits vorhandene AICO-Farbnamen, Beziehungen, Kurzbeschreibung und technische
-aico_metafields.* weiterverwenden, keine Parallelfelder anlegen.
+Bereits vorhandene AICO-Farbnamen, aico.pd_color_hex, Beziehungen, Kurzbeschreibung
+und technische aico_metafields.* weiterverwenden, keine Parallelfelder anlegen.
 
 PRÜFUNG IM UNVERÖFFENTLICHTEN SHOPIFY-THEME
 1. Eine ausgewählte Collection umbenennen, Beschreibung und Bild ändern: Karten und verknüpfte Einstiege müssen die Änderungen übernehmen.

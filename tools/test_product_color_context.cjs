@@ -2,12 +2,33 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
+const {Liquid} = require('liquidjs');
 const {JSDOM, VirtualConsole} = require('jsdom');
 const script = fs.readFileSync(path.join(__dirname, '../assets/product-media-context.js'), 'utf8');
 const nativeScript = fs.readFileSync(path.join(__dirname, '../assets/upswing.js'), 'utf8');
 const tick = () => new Promise(resolve => setTimeout(resolve, 30));
 
-test('Late legacy colours update the open viewer purchase controls without losing size or quantity', async () => {
+test('Rendered AICO colour dots reach quick-buy and the open viewer without losing size or quantity', async () => {
+  const engine = new Liquid({root:path.join(__dirname, '../snippets'), extname:'.liquid', strictFilters:true});
+  engine.registerFilter('image_url', image => image.src);
+  const colorProducts = [
+    {title:'Aarau black',handle:'kybun-aarau-black-women',name:'Schwarz',hex:' #123ABC '},
+    {title:'Aarau blue',handle:'kybun-aarau-blue-women',name:'Blau',hex:'#C47D02'}
+  ].map(({title,handle,name,hex}, index) => ({id:1001+index,title,handle,url:'/products/'+handle,featured_image:{src:index?'/blue.jpg':'/black.jpg'},options_with_values:[],metafields:{aico:{pd_color_v2:{value:name},pd_color_hex:{type:'single_line_text_field',value:hex}},upswing:{color_hex:{type:'color',value:'#ffffff'}}}}));
+  const renderedSwatches = await Promise.all(colorProducts.map((product,index) => engine.renderFile('product-color-swatch',{color_product:product,selected:index===0})));
+  const colorNames = ['Schwarz','Blau'];
+  const colorBackgrounds = ['rgb(18, 58, 188)','rgb(196, 125, 2)'];
+  const assertAicoDots = container => {
+    const selected = container.querySelector('.product-context-color-value');
+    assert(selected.firstElementChild.classList.contains('product-context-swatch'),'The selected colour dot precedes its readable name');
+    assert.equal(selected.firstElementChild.style.backgroundColor,colorBackgrounds[0]);
+    assert.equal(selected.firstElementChild.nextElementSibling.textContent,colorNames[0]);
+    const choices = [...container.querySelectorAll('.product-context-color-choice')];
+    assert.deepEqual(choices.map(choice=>choice.textContent),colorNames);
+    assert.deepEqual(choices.map(choice=>choice.firstElementChild.style.backgroundColor),colorBackgrounds);
+    assert(choices.every(choice=>choice.firstElementChild.classList.contains('product-context-swatch')),'Each choice keeps its exact AICO dot before the name');
+    assert.equal(container.querySelector('.product-context-swatch img'),null,'AICO colour dots must not turn into product thumbnails');
+  };
   const errors = [];
   const console = new VirtualConsole();
   console.on('jsdomError', error => errors.push(error));
@@ -54,7 +75,9 @@ test('Late legacy colours update the open viewer purchase controls without losin
     assert.deepEqual(warmCalls.at(-1), ['/third.jpg','/black.jpg','/fourth.jpg']);
     const colours = document.createElement('div');
     colours.className='model-colors';
-    colours.innerHTML='<div class="swatches"><a href="/products/kybun-aarau-black-women" aria-current="page" title="Aarau black"><img src="/black.jpg"></a><a href="/products/kybun-aarau-blue-women" title="Aarau blue"><img src="/blue.jpg"></a></div>';
+    colours.innerHTML=`<div class="swatches">${renderedSwatches.join('')}</div>`;
+    assert.deepEqual([...colours.querySelectorAll('.swatch')].map(link=>link.style.getPropertyValue('--swatch-color')),['#123ABC','#C47D02']);
+    assert.equal(colours.querySelector('img'),null);
     document.querySelector('.product-info').prepend(colours);
     const root = document.querySelector('[data-product-section]');
     root.dispatchEvent(new window.CustomEvent('upswing:colors-ready', {bubbles:true}));
@@ -65,10 +88,11 @@ test('Late legacy colours update the open viewer purchase controls without losin
     assert.equal(document.querySelector('[data-context-quantity]').value, '3');
     assert.equal(document.querySelector('form input[name="quantity"]').value, '3');
     assert.equal(viewer.querySelectorAll('[data-context-color-toggle]').length, 1);
-    assert.deepEqual([...viewer.querySelectorAll('.product-context-color-choice')].map(e=>e.textContent), ['Aarau black','Aarau blue']);
+    assertAicoDots(viewer);
     root.dispatchEvent(new window.CustomEvent('upswing:colors-ready', {bubbles:true}));
     await tick();
     assert.equal(viewer.querySelectorAll('[data-context-color-toggle]').length, 1, 'Repeated ready events must not duplicate colour controls');
+    assertAicoDots(viewer);
     const beforeClose = warmCalls.length;
     document.querySelector('[data-viewer-close]').click();
     assert.equal(viewer.open, false);
@@ -76,7 +100,8 @@ test('Late legacy colours update the open viewer purchase controls without losin
     assert.equal(warmCalls.length, beforeClose, 'Restoring focus on close must not restart the pending preload queue');
     assert.ok(clearCalls > 0);
     assert.equal(document.querySelector('[data-product-image-preview] [data-context-options] select'), size);
-    assert.equal(document.querySelector('[data-product-image-preview] [data-context-color-toggle]').textContent, 'Aarau black');
+    assert.equal(document.querySelector('[data-product-image-preview] [data-context-color-toggle]').textContent, 'Schwarz');
+    assertAicoDots(document.querySelector('[data-product-image-preview]'));
     assert.deepEqual(errors, []);
   } finally {dom.window.close();}
 });

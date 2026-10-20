@@ -1,6 +1,6 @@
 # Upswing Shopify Theme
 
-Native Shopify-Theme-Quellen für upswing.ch, Stand **1.0.8**. Die sieben Theme-Ordner liegen direkt im Repository. Installationspakete freigegebener Versionen stehen in den [GitHub Releases](https://github.com/sopitz/shopify-theme/releases).
+Native Shopify-Theme-Quellen für upswing.ch, Stand **1.0.9**. Die sieben Theme-Ordner liegen direkt im Repository. Installationspakete freigegebener Versionen stehen in den [GitHub Releases](https://github.com/sopitz/shopify-theme/releases).
 
 Der Produktkatalog wird im Shopify-Shop gepflegt: Produkte, Varianten, Kollektionen, Menüs, Preise, Bilder und Produktinformationen kommen aus den tatsächlichen Shop-Ressourcen. Die ausgelieferten Produkt- und Kollektionsauswahlen enthalten keine vorbereiteten Handles. Wählen Sie die gewünschten Ressourcen im Theme-Editor und ordnen Sie die Shop-Menüs zu. Nicht verknüpfte Katalogkarten bleiben im Shop verborgen; im Editor helfen Einrichtungshinweise.
 
@@ -21,7 +21,7 @@ Ein Theme-Upload legt keine Produkte, Kollektionen, Seiten, Metafelddefinitionen
 
 Sortimentskarten übernehmen Titel, Ziel, Beschreibung und Bild der ausgewählten Kollektion. Marken verweisen ebenfalls auf echte Kollektionen; ein Bild kann über das optionale Kollektionsmetafeld `upswing.brand_logo` gepflegt werden. Themenkarten verknüpfen eine echte Seite oder Kollektion. Der Produktberater verwendet ausgewählte Kollektionen.
 
-Produktinformationen stammen aus der nativen Beschreibung, vorhandenen AICO-Feldern und optionalen `upswing`-Metafeldern. Versand- und Rückgabebedingungen kommen aus den Shopify-Richtlinien. Lieferfristen stammen ausschliesslich aus `upswing.delivery_time` der Variante oder des Produkts; ohne Frist bleibt die Lieferzeit auf Anfrage. Farbnamen erhalten nur mit einem gepflegten Farbwert oder nativen Shopify-Swatch eine Farbfläche; sonst bleiben sie als Text wählbar.
+Produktinformationen stammen aus der nativen Beschreibung, vorhandenen AICO-Feldern und optionalen `upswing`-Metafeldern. Versand- und Rückgabebedingungen kommen aus den Shopify-Richtlinien. Lieferfristen stammen ausschliesslich aus `upswing.delivery_time` der Variante oder des Produkts; ohne Frist bleibt die Lieferzeit auf Anfrage. Exakte Farbwerte kommen zuerst aus dem bereits vorhandenen `aico.pd_color_hex`, danach aus einem bestehenden `upswing.color_hex` und anschliessend aus dem nativen ausgewählten Shopify-Swatch. Ein neues paralleles Farbfeld ist nicht erforderlich. Ohne bestätigten Farbwert bleibt die Farbe als Text wählbar; aus Farbnamen werden keine Farbtöne geschätzt.
 
 ## Prüfung und lokaler Paketbau
 
@@ -30,7 +30,7 @@ npm ci --ignore-scripts --no-audit --no-fund
 npm test
 python3 tools/validate_schema.py --self-test .
 shopify theme check --path . --fail-level warning
-python3 tools/build_release.py --tag v1.0.8
+python3 tools/build_release.py --tag v1.0.9
 ```
 
 Die lokalen Prüfungen kontrollieren unter anderem Ressourcenbindung, leere und gelöschte Referenzen, Produktinformationen, Farbauswahl, Lieferzeit und Kaufsteuerungen. Die tatsächliche Shopify-Laufzeit mit Shop-Apps, Beständen, Formularzustellung, Versandberechnung, Zahlungsarten und Checkout muss im unveröffentlichten Theme geprüft werden.

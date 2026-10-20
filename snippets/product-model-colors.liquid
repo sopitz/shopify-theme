@@ -52,6 +52,8 @@
       {%- if modern_siblings == blank -%}{% render 'legacy-color-data', product: product, mode: 'pdp', server_resolved: sibling_links %}{%- endif -%}
     </div>
   {%- elsif current_color_label != product.title -%}
-    <p class="option-label">Farbe: <strong>{{ current_color_label | escape }}</strong></p>
+    {%- capture current_color_value -%}{% render 'product-color-value', color_product: product %}{%- endcapture -%}
+    {%- assign current_color_value = current_color_value | strip -%}
+    <p class="option-label">Farbe: <strong class="product-color-name">{% if current_color_value != blank %}<span class="variant-color-dot" style="--swatch-color: {{ current_color_value | escape }}" aria-hidden="true"></span>{% endif %}{{ current_color_label | escape }}</strong></p>
   {%- endif -%}
 {%- endunless -%}

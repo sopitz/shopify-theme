@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.9] - 2026-10-20
+
+- Das vorhandene Produktmetafeld `aico.pd_color_hex` liefert die Farbpunkte für Produktseite, Produktkarten, nachgeladene Farbprodukte sowie die Farbauswahl in Kaufleiste und Vollbild. Es hat Vorrang vor dem bisherigen `upswing.color_hex`; ein zusätzliches Farbfeld ist nicht erforderlich.
+- Fehlende oder ungültige Farbwerte verwenden weiterhin vorhandene gültige Quellen beziehungsweise lesbare Farbnamen. Keine Farben aus Namen geschätzt; native Farbvarianten behalten ihre jeweils eigenen Shopify-Swatches.
+- Einfarbige Produkte zeigen den gepflegten Farbpunkt unmittelbar vor dem Farbnamen. Einrichtungsliste und AICO-Übersicht entsprechend aktualisiert.
+
 ## [1.0.8] - 2026-10-15
 
 - Feste Produkt- und Collection-Auswahlen, kopierte Kategorietexte, Markenlogos, Katalogfotos und Menü-Fallbacks aus dem ausgelieferten Theme entfernt. Echte Shopify-Menüs werden auch ohne Untermenüs verwendet.

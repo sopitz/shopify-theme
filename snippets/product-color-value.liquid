@@ -1,4 +1,28 @@
-{%- assign explicit_color = color_product.metafields.upswing.color_hex.value | strip -%}
+{%- liquid
+  assign explicit_color = ''
+  assign color_sources = 'aico|upswing' | split: '|'
+  for source in color_sources
+    if source == 'aico'
+      assign candidate = color_product.metafields.aico.pd_color_hex.value
+    else
+      assign candidate = color_product.metafields.upswing.color_hex.value
+    endif
+    assign candidate_type = candidate | json | slice: 0
+    if candidate_type != '"'
+      continue
+    endif
+    assign candidate = candidate | strip
+    assign prefix = candidate | slice: 0
+    assign hex = candidate | remove_first: '#' | downcase
+    assign remainder = hex | remove: '0' | remove: '1' | remove: '2' | remove: '3' | remove: '4' | remove: '5' | remove: '6' | remove: '7' | remove: '8' | remove: '9' | remove: 'a' | remove: 'b' | remove: 'c' | remove: 'd' | remove: 'e' | remove: 'f'
+    if prefix == '#' and remainder == blank
+      if hex.size == 3 or hex.size == 4 or hex.size == 6 or hex.size == 8
+        assign explicit_color = candidate
+        break
+      endif
+    endif
+  endfor
+-%}
 {%- if explicit_color != blank -%}
   {{- explicit_color -}}
 {%- else -%}

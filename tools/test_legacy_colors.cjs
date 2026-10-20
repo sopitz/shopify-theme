@@ -72,6 +72,56 @@ async function flush(test, predicate=()=>test.dom.window.document.querySelector(
 }
 
 (async()=>{
+  await check('AICO exact colour wins across PDP, cards and prefetched colour payloads',async()=>{
+    const p=clone(black),sibling=clone(blue);
+    p.metafields.aico={pd_color_v2:{value:'Schwarz'},pd_color_hex:{type:'single_line_text_field',value:'  #343835  '}};
+    p.metafields.upswing.color_hex={type:'color',value:'#111111'};
+    sibling.metafields.aico={pd_color_v2:{value:'Blau'},pd_color_hex:{type:'color',value:'#486782'}};
+    p.metafields.upswing.model_products={value:[sibling]};
+    p.price_min=p.price_max=33000;
+    for(const name of ['product-model-colors','product-card']){
+      const document=new JSDOM(await render(name,p)).window.document;
+      const links=[...document.querySelectorAll('.swatches .swatch')];
+      assert.deepEqual(links.map(a=>a.style.getPropertyValue('--swatch-color')),['#343835','#486782']);
+      assert.deepEqual(links.map(a=>a.textContent.trim()),['Schwarz','Blau']);
+      assert(links.every(a=>!a.classList.contains('swatch--text')));
+      assert.equal(document.querySelectorAll('.swatches img').length,0);
+    }
+    assert.equal(JSON.parse(await render('product-color-json',p)).color,'#343835');
+    const t=createDocument('card',legacy,{current:JSON.parse(await render('product-color-json',p)),products:{[blue.handle]:JSON.parse(await render('product-color-json',sibling))}});
+    await new Promise(resolve=>setTimeout(resolve,15));t.IO.instance.fire();await flush(t);
+    assert.deepEqual([...t.dom.window.document.querySelectorAll('.swatches a')].map(a=>a.style.getPropertyValue('--swatch-color')),['#343835','#486782']);
+    t.dom.window.close();
+  });
+  await check('AICO accepts scalar hex colours and rejects malformed or structured values without guessing',async()=>{
+    const p=clone(black);p.metafields.aico={pd_color_v2:{value:'Blau'}};
+    for(const hex of ['#AbC','#AbCd','#A1B2C3','#A1B2C3D4']){
+      p.metafields.aico.pd_color_hex={value:' '+hex+' '};
+      assert.equal((await render('product-color-value',p,{color_product:p})).trim(),hex);
+    }
+    for(const value of [null,'','   ','Blau','#12','#12345','#GGGGGG','123456','#fff; background:red',['#fff'],{hex:'#fff'},false,123456]){
+      p.metafields.aico.pd_color_hex={value};
+      assert.equal((await render('product-color-value',p,{color_product:p})).trim(),'');
+      assert.equal(JSON.parse(await render('product-color-json',p)).color,null);
+      p.metafields.upswing.color_hex={value:'#123456'};
+      assert.equal((await render('product-color-value',p,{color_product:p})).trim(),'#123456');
+      delete p.metafields.upswing.color_hex;
+    }
+    p.options_with_values=[{name:'Farbe',values:[{selected:true,swatch:{color:'#aabbcc'}}]}];
+    assert.equal((await render('product-color-value',p,{color_product:p})).trim(),'#aabbcc');
+  });
+  await check('A single-colour PDP displays the actual AICO dot immediately before its name',async()=>{
+    const p=clone(black);p.metafields.aico={pd_color_v2:{value:'Schwarz'},pd_color_hex:{value:'#343835'}};
+    let document=new JSDOM(await render('product-model-colors',p)).window.document;
+    assert.equal(document.querySelector('.product-color-name').textContent,'Schwarz');
+    assert.equal(document.querySelector('.product-color-name').firstChild.className,'variant-color-dot');
+    assert.equal(document.querySelector('.variant-color-dot').style.getPropertyValue('--swatch-color'),'#343835');
+    assert.equal(document.querySelector('a'),null,'A single colour needs no extra selector');
+    delete p.metafields.aico.pd_color_hex;
+    document=new JSDOM(await render('product-model-colors',p)).window.document;
+    assert.equal(document.querySelector('.variant-color-dot'),null);
+    assert.equal(document.querySelector('.product-color-name').textContent,'Schwarz');
+  });
   await check('V2 primary colour names remain readable text in cards and PDP without exact swatch data',async()=>{
     const p=product({type:'json',value:legacy});
     p.vendor='kybun';p.type='Damenschuhe';p.price_min=p.price_max=33000;
@@ -173,6 +223,7 @@ async function flush(test, predicate=()=>test.dom.window.document.querySelector(
   });
   await check('native card swatches keep explicit Shopify colours and swatch images',async()=>{
     const p=clone(black);
+    p.metafields.aico={pd_color_hex:{value:'#112233'}};
     const value=(name,swatch)=>({swatch,selected:true,variant:{url:p.url+'?variant=22',featured_image:{src:'/variant-preview.jpg'}},toString:()=>name});
     p.options_with_values=[{name:'Farbe',values:[value('Spezialton',{color:'#aabbcc'}),value('Gewebe',{image:{src:'/native-fabric.jpg'}}),value('Unbekannt',{})]}];
     const doc=new JSDOM(await render('product-card',p)).window.document;
