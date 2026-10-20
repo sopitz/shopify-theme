@@ -22,14 +22,12 @@
 .mega-card-media{height:96px;display:flex;align-items:center;justify-content:center;background:var(--cream);border-radius:7px;margin-bottom:12px;padding:7px}
 .mega-card-media img{height:100%;width:100%;object-fit:contain;mix-blend-mode:multiply}
 .mega-card-copy{min-height:38px}
+.mega-child--has-submenu .mega-card-copy{min-height:0}
 .mega-card-title{font-size:13px;line-height:1.45;font-weight:600;display:block;overflow-wrap:break-word;hyphens:auto}
 .nav-image-placeholder{display:grid;place-items:center;color:var(--muted)}
 .nav-image-placeholder .icon{height:32px;width:32px}
-.mega-submenu{padding:4px 10px 0}
-.mega-submenu-link{display:flex;align-items:center;gap:7px;font-size:12px;line-height:1.5;min-height:38px;padding:6px 0;text-decoration:underline;text-underline-offset:3px}
-.mega-submenu-media{width:22px;flex-shrink:0}
-.mega-submenu-media img{height:24px;width:24px;object-fit:contain}
-.mega-submenu-media .icon{width:16px;height:16px}
+.mega-submenu{padding:0 10px 2px}
+.mega-submenu-link{display:flex;align-items:center;font-size:12px;line-height:1.5;min-height:28px;padding:4px 0;text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere}
 .mobile-nav-summary{display:flex;justify-content:space-between;align-items:center;gap:15px;list-style:none;cursor:pointer;font-size:16px;font-weight:600;min-height:58px;padding:13px 0;border-bottom:1px solid var(--line)}
 .mobile-nav-summary::-webkit-details-marker{display:none}
 .mobile-nav-summary>.icon{width:15px;height:15px;transform:rotate(90deg)}
@@ -37,6 +35,7 @@
 .mobile-nav-all{display:flex!important;justify-content:space-between;align-items:center;gap:12px;font-size:13px;font-weight:600;padding:15px 0!important}
 .mobile-nav-all .icon{width:17px}
 .mobile-nav-link{display:flex!important;align-items:center;gap:14px;padding:10px 0!important;min-height:52px;font-size:14px;line-height:1.5}
+.mobile-nav-link.mobile-nav-sublink{min-height:44px;padding:8px 0!important}
 .mobile-link-media{width:56px;height:47px;flex-shrink:0;background:var(--cream);border-radius:5px;padding:4px;display:flex;justify-content:center;align-items:center}
 .mobile-link-media img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply}
 .mobile-nav-list .mobile-nav-list{padding-left:12px;margin-bottom:15px}
