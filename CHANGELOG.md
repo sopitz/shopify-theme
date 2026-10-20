@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.26] - 2026-10-20
+
+- Warenkorb bis 960 px Breite einspaltig, ohne seitliches Scrollen. Bisher hielt die Zahlungslogo-Reihe die Spalte auf mindestens 460 px; dadurch war die Seite bei 375 px 480 px breit und bei 900 px 925 px breit.
+- Auf Telefonen verkleinern sich die Logos wie in 1.0.20 vorgesehen innerhalb der Zeile, ohne Umbruch (bei 375 px Felder von 30 px). Tablets bis 960 px zeigen die Logos in voller Grösse; der Desktop-Warenkorb ab 961 px bleibt unverändert zweispaltig mit mitlaufender Bestellübersicht.
+- Regression für die geltenden Spalten- und Logo-Regeln bei 320 bis 1600 px ergänzt.
+
 ## [1.0.25] - 2026-10-20
 
 - Die Lieferzeit auf der Produktseite stammt nur noch aus `upswing.delivery_time` der gewählten Variante, ersatzweise des Produkts. Die Zusätze «Sofort verfügbar» und «Online verfügbar» entfallen. Die Abholverfügbarkeit bestimmt die Anzeige nicht mehr, weil Shopify bei Varianten, die ohne Bestand weiterverkauft werden, jeden Abholstandort als verfügbar meldet. Bisher stand deshalb etwa bei ELTEN ohne Bestand «Sofort verfügbar · Lieferzeit: Liefertermin auf Anfrage».
