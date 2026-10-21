@@ -87,7 +87,7 @@
     const result = new Promise(resolve => {
       pending.push(async () => {
         try {
-          const response = await fetch(url.href, {credentials:'same-origin', redirect:'error', cache:'force-cache'});
+          const response = await fetch(url.href, {credentials:'same-origin', redirect:'error', cache:'no-cache'});
           if (!response.ok) { resolve(null); return; }
           const html = new DOMParser().parseFromString(await response.text(), 'text/html');
           const payload = html.querySelector('script[type="application/json"][data-product-color-payload]');

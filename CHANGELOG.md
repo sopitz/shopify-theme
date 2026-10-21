@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.0.29] - 2026-10-21
+
+- Farbdaten der Farbgeschwister werden bei jedem Laden mit Shopify abgeglichen statt dauerhaft aus dem Browser-Cache gelesen. Nach einem AICO-Sync erscheinen neue Farbwerte sofort als Farbpunkt; vorher konnten Karten alte Antworten ohne Farbwert weiter als Text anzeigen.
+
 ## [1.0.28] - 2026-10-20
 
 - Neuer Bereich «Kundenstimmen» aus `upswing.testimonials` (Rich text) nach den Fragen, mit eigenem Eintrag «Stimmen» in der Informationsnavigation.

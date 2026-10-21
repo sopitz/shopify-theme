@@ -126,6 +126,7 @@ async function flush(test, predicate=()=>test.dom.window.document.querySelector(
     assert.equal(links[1].querySelector('.swatch-label').textContent,'grey');
     assert.equal(links[1].title,'Magglingen grey');
     assert.equal(links[2].querySelector('.swatch-label').textContent,'Magglingen fire','Dots keep the full name for screen readers');
+    assert(t.calls.length > 0 && t.calls.every(call=>call.init.cache==='no-cache'),'Colour payloads are revalidated, never served stale from the browser cache');
     t.dom.window.close();
   });
   await check('AICO accepts scalar hex colours and rejects malformed or structured values without guessing',async()=>{
