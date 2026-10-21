@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.0.35] - 2026-10-21
+
+- Farbvarianten ohne nativen Shopify-Swatch (z. B. Airex-Matten mit Farbe anthrazit/blau/rot) zeigen Farbpunkte aus dem AICO-Metafeld `aico.option_value_colors` (Optionsname → Wert → Hex-Liste). Mehrere Werte teilen den Punkt wie bei Produktfarben; gilt für Produktkarten und die Variantenauswahl der Produktseite. Native Swatches haben Vorrang, ohne Eintrag bleibt der Wert als Text.
+
 ## [1.0.34] - 2026-10-21
 
 - Die Produktseite lädt alle Galeriebilder in voller Grösse vor, sobald das Hauptbild angezeigt wird. Ein Klick auf ein beliebiges Vorschaubild wechselt dadurch ohne Nachladen, so wie bisher nur die Nachbarbilder im Vollbild. Die Reihenfolge beginnt beim nächsten Bild nach dem sichtbaren; das sichtbare Bild folgt zuletzt in voller Grösse.

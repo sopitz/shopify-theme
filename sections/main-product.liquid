@@ -104,7 +104,7 @@
                   <legend>{{ option.name | escape }} <span data-option-selected="{{ option.position }}">{{ option.selected_value | escape }}</span></legend>
                   <div class="variant-buttons option-values">
                     {%- for value in option.values -%}
-                      {%- assign option_swatch = value.swatch.color -%}
+                      {%- capture option_swatch -%}{% render 'option-value-paint', product: product, option: option, value: value %}{%- endcapture -%}
                       {%- assign option_swatch_image = value.swatch.image -%}
                       <div class="variant-button{% unless value.available %} is-unavailable{% endunless %}">
                         <input type="radio" id="Option-{{ section.id }}-{{ option.position }}-{{ forloop.index }}" name="options[{{ option.name | escape }}]" value="{{ value | escape }}" data-option-select data-option-position="{{ option.position }}" data-option-value-id="{{ value.id }}"{% if value.product_url %} data-option-product-url="{{ value.product_url }}"{% endif %}{% if value.selected %} checked{% endif %}>

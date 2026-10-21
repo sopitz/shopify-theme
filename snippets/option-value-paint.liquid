@@ -1,0 +1,36 @@
+{%- comment -%}
+  CSS background for a native option value (e.g. Farbe: blau): its Shopify swatch colour,
+  otherwise up to four hex codes AICO sends in aico.option_value_colors
+  ({"<option name>": {"<value name>": ["#RRGGBB", …]}}). Empty when neither exists.
+{%- endcomment -%}
+{%- liquid
+  assign option_value_paint = value.swatch.color | append: ''
+  if option_value_paint == blank
+    assign option_value_name = value | append: ''
+    assign option_value_hexes = product.metafields.aico.option_value_colors.value[option.name][option_value_name]
+    assign option_value_colors = ''
+    assign option_value_count = 0
+    for candidate in option_value_hexes
+      capture option_value_hex
+        render 'product-color-hex', candidate: candidate
+      endcapture
+      assign option_value_hex = option_value_hex | strip
+      if option_value_hex != blank
+        if option_value_count > 0
+          assign option_value_colors = option_value_colors | append: '|'
+        endif
+        assign option_value_colors = option_value_colors | append: option_value_hex
+        assign option_value_count = option_value_count | plus: 1
+      endif
+      if option_value_count == 4
+        break
+      endif
+    endfor
+    if option_value_colors != blank
+      capture option_value_paint
+        render 'color-list-paint', colors: option_value_colors
+      endcapture
+    endif
+  endif
+-%}
+{{- option_value_paint | strip -}}

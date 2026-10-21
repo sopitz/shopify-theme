@@ -1,11 +1,5 @@
 {%- comment -%}
-  CSS background for a colour dot: the single colour, or a circle divided into
-  equal segments (main colour first, clockwise from the top) for up to four.
+  CSS background for a product's colour dot (up to four colours, main colour first).
 {%- endcomment -%}
 {%- capture paint_values -%}{% render 'product-color-values', color_product: color_product %}{%- endcapture -%}
-{%- assign paint_values = paint_values | strip | split: '|' -%}
-{%- if paint_values.size > 1 -%}
-  conic-gradient({% for paint_value in paint_values %}{% assign paint_stop = forloop.index | times: 100 | divided_by: forloop.length | floor %}{{ paint_value }} 0 {{ paint_stop }}%{% unless forloop.last %}, {% endunless %}{% endfor %})
-{%- else -%}
-  {{- paint_values.first -}}
-{%- endif -%}
+{%- render 'color-list-paint', colors: paint_values -%}

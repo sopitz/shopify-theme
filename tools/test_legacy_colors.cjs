@@ -272,6 +272,15 @@ async function flush(test, predicate=()=>test.dom.window.document.querySelector(
     assert.equal(links[2].querySelector('img'),null);
     assert.equal(links[2].style.getPropertyValue('--swatch-color'),'');
   });
+  await check('native colour options without a Shopify swatch use the AICO option value colours',async()=>{
+    const p=clone(black);
+    p.metafields.aico={option_value_colors:{value:{Farbe:{blau:['#1F5FBF'],'schwarz-pink':['#000000','#E75A8D'],rot:['nope']}}}};
+    const value=(name,swatch)=>({swatch,selected:name==='blau',variant:{url:p.url+'?variant=1',featured_image:{src:'/v.jpg'}},toString:()=>name});
+    p.options_with_values=[{name:'Farbe',values:[value('blau',{}),value('schwarz-pink',{}),value('rot',{}),value('gelb',{color:'#F4D000'})]}];
+    const links=[...new JSDOM(await render('product-card',p)).window.document.querySelectorAll('.swatch')];
+    assert.deepEqual(links.map(a=>a.style.getPropertyValue('--swatch-color')),['#1F5FBF','conic-gradient(#000000 0 50%, #E75A8D 0 100%)','','#F4D000']);
+    assert.deepEqual(links.map(a=>a.classList.contains('swatch--text')),[false,false,true,false]);
+  });
   await check('missing/injected handles are hidden and never become hrefs',async()=>{
     const bad={de_CH:[{type:'product',id:1,handle:'missing'},{type:'product',id:2,handle:'../../evil'},{type:'product',id:3,handle:'https://evil.test/products/x'}]};
     const html=await render('product-model-colors',product({type:'json',value:bad}));

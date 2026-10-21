@@ -130,6 +130,17 @@ test('product option labels use exact native swatches and leave names without sw
   }finally{dom.window.close();}
 });
 
+test('product option labels fall back to the AICO option value colours when Shopify has no swatch',async()=>{
+  const value=(name,swatch)=>({swatch,available:true,toString:()=>name});
+  const options=[{name:'Farbe',position:1,selected_value:'blau',values:[value('blau',{}),value('schwarz-pink',{}),value('rot',{})]}];
+  const dom=await commerceDocument('main-product',{product:{has_only_default_variant:false,options_with_values:options,metafields:{aico:{option_value_colors:{value:{Farbe:{blau:['#1F5FBF'],'schwarz-pink':['#000000','#E75A8D']}}}}}}});try{
+    const labels=[...dom.window.document.querySelectorAll('.variant-label')];
+    assert.equal(labels[0].querySelector('.variant-color-dot').style.getPropertyValue('--swatch-color'),'#1F5FBF');
+    assert.equal(labels[1].querySelector('.variant-color-dot').style.getPropertyValue('--swatch-color'),'conic-gradient(#000000 0 50%, #E75A8D 0 100%)');
+    assert.equal(labels[2].querySelector('.variant-color-dot'),null);
+  }finally{dom.window.close();}
+});
+
 function fixture({initialDelivery={text:'Lieferzeit: 2–3 Werktage',status:'fast'},serverVariant='',serverStatus='fast',serverText='Lieferzeit: 2–3 Werktage'}={}) {
   const variants=[variant(11,['36'],initialDelivery),variant(12,['37']),variant(13,['38'])];
   const dom=new JSDOM(`<!doctype html><html class="no-js"><body><section data-product-section>
