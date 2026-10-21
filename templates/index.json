@@ -207,36 +207,121 @@
     },
     "brands": {
       "type": "brand-strip",
+      "settings": {
+        "heading": "Unsere Lieblingsmarken"
+      },
       "blocks": {
         "kybun": {
           "type": "brand",
-          "settings": {}
+          "settings": {
+            "target_type": "page",
+            "page": "kybun",
+            "logo": "shopify://shop_images/logos-kybun.png"
+          }
         },
         "joya": {
           "type": "brand",
-          "settings": {}
-        },
-        "bellicon": {
-          "type": "brand",
-          "settings": {}
-        },
-        "blackroll": {
-          "type": "brand",
-          "settings": {}
+          "settings": {
+            "target_type": "page",
+            "page": "joya",
+            "logo": "shopify://shop_images/logos-joya_ba579377-12ae-4b93-abfd-81b6b2088f1c.png"
+          }
         },
         "leguano": {
           "type": "brand",
-          "settings": {}
+          "settings": {
+            "target_type": "page",
+            "page": "leguano",
+            "logo": "shopify://shop_images/logos-leguano.png"
+          }
+        },
+        "kingnature": {
+          "type": "brand",
+          "settings": {
+            "target_type": "page",
+            "page": "kingnature",
+            "logo": "shopify://shop_images/logos-kingnature.png"
+          }
+        },
+        "anders": {
+          "type": "brand",
+          "settings": {
+            "target_type": "page",
+            "page": "anders",
+            "logo": "shopify://shop_images/logo-anders.png"
+          }
+        },
+        "venenengel": {
+          "type": "brand",
+          "settings": {
+            "target_type": "page",
+            "page": "venenengel",
+            "logo": "shopify://shop_images/logos-venen-engel.png"
+          }
+        },
+        "elten": {
+          "type": "brand",
+          "settings": {
+            "target_type": "page",
+            "page": "elten",
+            "logo": "shopify://shop_images/logos-elten.png"
+          }
+        },
+        "bellabambi": {
+          "type": "brand",
+          "settings": {
+            "target_type": "page",
+            "page": "bellabambi",
+            "logo": "shopify://shop_images/logos-bellabambi.png"
+          }
+        },
+        "bellicon": {
+          "type": "brand",
+          "settings": {
+            "target_type": "page",
+            "page": "bellicon",
+            "logo": "shopify://shop_images/logos-bellicon.png"
+          }
+        },
+        "blackroll": {
+          "type": "brand",
+          "settings": {
+            "target_type": "page",
+            "page": "blackroll",
+            "logo": "shopify://shop_images/logos-blackroll_52997e12-e255-4f1f-8f46-b8e8f244efdb.png"
+          }
+        },
+        "theraband": {
+          "type": "brand",
+          "settings": {
+            "target_type": "page",
+            "page": "theraband",
+            "logo": "shopify://shop_images/logos-theraband.png"
+          }
+        },
+        "pepup": {
+          "type": "brand",
+          "settings": {
+            "target_type": "page",
+            "page": "pepup",
+            "logo": "shopify://shop_images/logos-pepup_e144322b-be05-4bf7-86a1-01d3d6b2c4b4.png"
+          }
         }
       },
       "block_order": [
         "kybun",
         "joya",
+        "leguano",
+        "kingnature",
+        "anders",
+        "venenengel",
+        "elten",
+        "bellabambi",
         "bellicon",
         "blackroll",
-        "leguano"
-      ],
-      "settings": {}
+        "theraband",
+        "pepup"
+      ]
     },
     "knowledge": {
       "type": "knowledge-links",
@@ -271,12 +356,26 @@
         "work",
         "recover"
       ]
+    },
+    "kybun": {
+      "type": "featured-products",
+      "settings": {
+        "eyebrow": "",
+        "heading": "kybun Luftkissenschuhe 🇨🇭",
+        "description": "",
+        "collection": "kybun-schuhe",
+        "product_count": 4,
+        "randomize": true,
+        "link_label": "alle kybun Schuhe",
+        "link_position": "bottom"
+      }
     }
   },
   "order": [
     "hero",
     "needs",
     "categories",
+    "kybun",
     "featured",
     "brands",
     "advice",

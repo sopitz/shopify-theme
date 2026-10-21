@@ -15,8 +15,8 @@ KATALOGQUELLEN
 - Vorhandene AICO- und upswing-Metafelder sowie referenzierte Metaobjects,
   soweit sie befüllt, passend typisiert und für den Storefront-Zugriff verfügbar sind.
 
-Die ausgelieferten Produkt- und Kollektionsauswahlen enthalten keine
-vorbereiteten Handles. Gewünschte Ressourcen im Theme-Editor auswählen.
+Die Startseite enthält die geprüfte Kollektion kybun-schuhe und die zwölf
+bisherigen Markenseiten samt Original-Logos. Weitere Ressourcen im Theme-Editor auswählen.
 Nicht verknüpfte oder gelöschte Katalogkarten bleiben im Shop verborgen;
 im Editor erscheinen Einrichtungshinweise. Leere Produktbereiche bleiben leer.
 Ein Theme-Upload legt keine Shop-Ressourcen oder Felddefinitionen an.
@@ -26,10 +26,14 @@ STARTSEITE UND NAVIGATION
    Kollektionsziele im Shopify-Menü als Ressourcen auswählen und prüfen.
 2. Sortimentswelten: je Block eine Kollektion wählen. Titel, URL, Beschreibung
    und Bild werden direkt von dieser Kollektion übernommen.
-3. Marken-Kollektionen: echte Kollektion wählen. Optional upswing.brand_logo
+3. Unsere Lieblingsmarken: Markenseite und Logo oder echte Kollektion wählen.
+   Bei Kollektionen optional upswing.brand_logo
    als Kollektionsmetafeld vom Typ file_reference, auf Bilder beschränkt,
    pflegen. Danach werden Kollektionsbild oder aktueller Titel verwendet.
-4. Ausgewählte Modelle: einzelne Produkt-Blöcke befüllen oder ohne solche
+4. kybun Luftkissenschuhe: vier zufällige Modelle aus bis zu 50 Produkten der
+   gewählten Kollektion; Button zur gesamten Kollektion. Ohne JavaScript
+   bleiben die ersten vier Modelle sichtbar. Auswahl und Link sind im Editor pflegbar.
+   Ausgewählte Modelle: einzelne Produkt-Blöcke befüllen oder ohne solche
    Blöcke eine Kollektion wählen. Vorhandene Produkt-Blöcke bleiben die Quelle,
    auch wenn eine Auswahl später fehlt; keine automatische Ersatzkollektion.
 5. Themenkarten: target_type, page oder collection wählen. image gilt nur für

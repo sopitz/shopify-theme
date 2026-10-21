@@ -36,12 +36,13 @@ async function render(name, {blocks = [], settings = {}, editor = false} = {}) {
   return new JSDOM(markup).window.document;
 }
 
-test('category and brand schema expose only Shopify collection bindings for catalogue blocks', () => {
-  for (const name of ['category-grid', 'brand-strip']) {
-    const schema = JSON.parse(sources[name].match(/\{% schema %\}([\s\S]*?)\{% endschema %\}/)[1]);
-    assert.deepEqual(schema.blocks[0].settings.map(({id, type}) => ({id, type})), [{id:'collection', type:'collection'}]);
-    assert.doesNotMatch(sources[name], /asset_url|products\.first|block\.settings\.(title|description|name|image|url|fallback_image)/);
-  }
+test('category schema retains collection bindings and brands add explicit page and logo choices', () => {
+  const category = JSON.parse(sources['category-grid'].match(/\{% schema %\}([\s\S]*?)\{% endschema %\}/)[1]);
+  assert.deepEqual(category.blocks[0].settings.map(({id, type}) => ({id, type})), [{id:'collection', type:'collection'}]);
+  const brands = JSON.parse(sources['brand-strip'].match(/\{% schema %\}([\s\S]*?)\{% endschema %\}/)[1]);
+  assert.equal(brands.blocks[0].settings.find(item => item.id === 'target_type').default, 'collection');
+  assert.ok(brands.max_blocks >= 12);
+  assert.deepEqual(brands.blocks[0].settings.filter(item => ['page','logo'].includes(item.id)).map(({id,type})=>({id,type})), [{id:'page',type:'page'},{id:'logo',type:'image_picker'}]);
 });
 
 test('category cards track the selected collection after its title, description, URL and image change', async () => {
@@ -82,7 +83,7 @@ for (const name of ['category-grid', 'brand-strip']) {
     assert.ok(editor.querySelector('section'));
     assert.equal(editor.querySelectorAll('[data-editor-block]').length, blocks.length);
     assert.equal(editor.querySelector('a, img'), null);
-    assert.match(editor.body.textContent, /Kollektion verknüpfen/);
+    assert.match(editor.body.textContent, /Kollektion verknüpfen|Marken-Seite oder Kollektion verknüpfen/);
   });
 }
 
@@ -174,4 +175,71 @@ test('sections with no catalogue bindings give setup instructions only in the ed
     assert.match(editor.body.textContent, /wählen|Wählen/);
     assert.equal(editor.querySelector('a, img, svg'), null);
   }
+});
+
+test('page brands keep their selected page and logo, and deleted pages cannot borrow a collection', async () => {
+  const page = {id:90, title:'Unsere Marke', url:'/pages/our-brand'};
+  const settings = {target_type:'page', page, logo:{src:'/shopify/original-logo.png'}, collection:collection(99)};
+  let document = await render('brand-strip', {blocks:[block(settings)]});
+  assert.equal(document.querySelector('a').getAttribute('href'), page.url);
+  assert.equal(document.querySelector('img').getAttribute('src'), settings.logo.src);
+  assert.equal(document.querySelector('img').alt, page.title);
+  page.url = '/pages/renamed-brand'; page.title = 'Neuer Markenname';
+  document = await render('brand-strip', {blocks:[block(settings)]});
+  assert.equal(document.querySelector('a').getAttribute('href'), page.url);
+  assert.equal(document.querySelector('img').alt, page.title);
+  settings.logo = null;
+  document = await render('brand-strip', {blocks:[block(settings)]});
+  assert.equal(document.querySelector('img'), null);
+  assert.equal(document.querySelector('.brand-name').textContent, page.title);
+  for (const missing of [null, 'deleted-page', {title:'Deleted', url:'/pages/deleted'}]) {
+    settings.page = missing;
+    document = await render('brand-strip', {blocks:[block(settings)]});
+    assert.equal(document.querySelector('section, a, img'), null);
+  }
+});
+
+test('random collection provides a complete no-JS selection and unique sampled cards after enhancement', async () => {
+  const products = Array.from({length:8}, (_, i) => product(100 + i));
+  const selected = collection(100, products);
+  const document = await render('featured-products', {settings:{collection:selected, randomize:true, product_count:4, link_position:'bottom'}});
+  const grid = document.querySelector('[data-featured-random]');
+  assert.equal(grid.querySelectorAll('[data-product-card]').length, 4);
+  assert.equal(grid.querySelectorAll('template').length, 4);
+  assert.equal(document.querySelector('.section-heading a'), null);
+  assert.equal(document.querySelector('.featured-products-action a').getAttribute('href'), selected.url);
+  const dom = new JSDOM(document.body.innerHTML, {runScripts:'outside-only'});
+  dom.window.Math.random = () => 0;
+  dom.window.eval(readFileSync(path.join(root, 'assets/featured-products.js'), 'utf8'));
+  dom.window.document.dispatchEvent(new dom.window.Event('DOMContentLoaded'));
+  const handles = () => [...dom.window.document.querySelectorAll('[data-product-handle]')].map(card=>card.dataset.productHandle);
+  assert.equal(handles().length, 4);
+  assert.equal(new Set(handles()).size, 4);
+  assert.notDeepEqual(handles(), products.slice(0,4).map(product=>product.handle));
+  assert.equal(dom.window.document.querySelector('template'), null);
+  const initial = handles();
+  dom.window.document.body.dispatchEvent(new dom.window.Event('shopify:section:load', {bubbles:true}));
+  assert.deepEqual(handles(), initial, 'existing sections must not reshuffle on editor rebind');
+  const replacement = dom.window.document.createElement('section');
+  replacement.innerHTML = document.body.innerHTML;
+  dom.window.document.body.replaceChildren(replacement);
+  replacement.dispatchEvent(new dom.window.Event('shopify:section:load', {bubbles:true}));
+  assert.equal(handles().length, 4);
+  assert.equal(replacement.querySelector('template'), null);
+});
+
+test('home setup preserves the original twelve brand pages and adds a separate kybun collection row', () => {
+  const template = JSON.parse(readFileSync(path.join(root, 'templates/index.json'), 'utf8'));
+  assert.deepEqual(template.sections.brands.block_order, ['kybun','joya','leguano','kingnature','anders','venenengel','elten','bellabambi','bellicon','blackroll','theraband','pepup']);
+  for (const id of template.sections.brands.block_order) {
+    const settings = template.sections.brands.blocks[id].settings;
+    assert.equal(settings.target_type, 'page');
+    assert.equal(settings.page, id);
+    assert.match(settings.logo, /^shopify:\/\/shop_images\/.+\.png$/);
+  }
+  assert.equal(template.sections.kybun.settings.collection, 'kybun-schuhe');
+  assert.equal(template.sections.kybun.settings.product_count, 4);
+  assert.equal(template.sections.kybun.settings.randomize, true);
+  assert.equal(template.sections.featured.blocks.product0.settings.product, undefined, 'the existing recommendations are preserved');
+  assert.ok(template.order.indexOf('kybun') < template.order.indexOf('brands'));
 });

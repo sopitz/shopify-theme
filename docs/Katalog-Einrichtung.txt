@@ -33,9 +33,9 @@ Einrichtung: Entweder vorhandene Produkte in den Produkt-Blöcken auswählen ode
 Fehlende Angabe: Leere Produkt-Blöcke wechseln nicht automatisch zu einer anderen Quelle. Ohne reale Produkte kein Bereich.
 
 Marken
-Ort / Typ: Startseite → Marken-Kollektionen
-Einrichtung: Die tatsächlichen Marken-Collections auswählen. Titel und Ziel bleiben live. Ein separates Logo kann optional am Collection-Metafeld gepflegt werden; siehe unten.
-Fehlende Angabe: Ohne Logo wird das Collection-Bild verwendet; ohne Bild der aktuelle Collection-Titel. Keine mitgelieferten Markenlogos.
+Ort / Typ: Startseite → Unsere Lieblingsmarken
+Einrichtung: Die zwölf bisherigen Markenseiten und Original-Logos sind zugeordnet. Markenseite und Logo oder eine Collection auswählen. Titel und Ziel bleiben live. Für Collections kann ein Logo am Collection-Metafeld gepflegt werden; siehe unten.
+Fehlende Angabe: Ohne Logo wird das Collection-Bild verwendet; ohne Bild der aktuelle Collection-Titel. Bei Markenseiten wird das gewählte Logo oder der Seitentitel angezeigt.
 
 Themen-Einstiege
 Ort / Typ: Startseite → Einstieg nach Bedürfnis

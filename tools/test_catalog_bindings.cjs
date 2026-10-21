@@ -205,7 +205,7 @@ function checkSettings(values={}, definitions=[], location, editorial=false) {
   const schema = new Map(definitions.filter(item => item.id).map(item => [item.id, item]));
   for (const [id, value] of Object.entries(values)) {
     assert.equal(retired.has(id), false, `${location}/${id}: retired catalog/menu/delivery/shipping setting must be deleted`);
-    if (catalogTypes.has(schema.get(id)?.type)) assert.ok(empty(value), `${location}/${id}: distributed theme must not seed a product or collection handle`);
+    if (catalogTypes.has(schema.get(id)?.type)) assert.ok(empty(value) || (location === 'templates/index.json/sections/kybun/settings' && id === 'collection' && value === 'kybun-schuhe'), `${location}/${id}: distributed theme must not seed a product or collection handle`);
     if (!editorial && typeof value === 'string') {
       const target = value.match(/\/(products|collections)\/([^/?#"'\s]+)/);
       assert.ok(!target || (target[1] === 'collections' && target[2] === 'all'), `${location}/${id}: fixed catalog URL cannot replace a selected Shopify entity`);
@@ -214,7 +214,7 @@ function checkSettings(values={}, definitions=[], location, editorial=false) {
   }
 }
 
-test('distributed configuration and section presets have no catalog handles or retired fallback promises', () => {
+test('distributed configuration permits only the verified home kybun collection and has no retired fallback promises', () => {
   const schemas = new Map();
   for (const filename of readdirSync(path.join(root, 'sections')).filter(name => name.endsWith('.liquid'))) {
     const source = readFileSync(path.join(root, 'sections', filename), 'utf8');

@@ -1,8 +1,8 @@
 # Upswing Shopify Theme
 
-Native Shopify-Theme-Quellen für upswing.ch, Stand **1.0.26**. Die sieben Theme-Ordner liegen direkt im Repository. Installationspakete freigegebener Versionen stehen in den [GitHub Releases](https://github.com/sopitz/shopify-theme/releases).
+Native Shopify-Theme-Quellen für upswing.ch, Stand **1.0.31**. Die sieben Theme-Ordner liegen direkt im Repository. Installationspakete freigegebener Versionen stehen in den [GitHub Releases](https://github.com/sopitz/shopify-theme/releases).
 
-Der Produktkatalog wird im Shopify-Shop gepflegt: Produkte, Varianten, Kollektionen, Menüs, Preise, Bilder und Produktinformationen kommen aus den tatsächlichen Shop-Ressourcen. Die ausgelieferten Produkt- und Kollektionsauswahlen enthalten keine vorbereiteten Handles. Wählen Sie die gewünschten Ressourcen im Theme-Editor und ordnen Sie die Shop-Menüs zu. Nicht verknüpfte Katalogkarten bleiben im Shop verborgen; im Editor helfen Einrichtungshinweise.
+Der Produktkatalog wird im Shopify-Shop gepflegt: Produkte, Varianten, Kollektionen, Menüs, Preise, Bilder und Produktinformationen kommen aus den tatsächlichen Shop-Ressourcen. Die Startseite enthält die bestehende kybun-Schuhkollektion und die zwölf bisherigen Markenseiten samt Original-Logos. Weitere Produkt- und Kollektionsauswahlen bleiben frei konfigurierbar. Wählen Sie die gewünschten Ressourcen im Theme-Editor und ordnen Sie die Shop-Menüs zu. Nicht verknüpfte Katalogkarten bleiben im Shop verborgen; im Editor helfen Einrichtungshinweise.
 
 Die Gestaltung, das Original-Logo, Manrope mit Lizenz sowie die vorhandenen redaktionellen Über-uns- und Filialinhalte bleiben erhalten. Die separate Designvorschau verwendet gekennzeichnete Momentaufnahmen und ist kein Nachweis für aktuelle Shopdaten oder einen funktionierenden Checkout.
 
@@ -19,7 +19,7 @@ Ein Theme-Upload legt keine Produkte, Kollektionen, Seiten, Metafelddefinitionen
 
 ## Datenpflege
 
-Sortimentskarten übernehmen Titel, Ziel, Beschreibung und Bild der ausgewählten Kollektion. Marken verweisen ebenfalls auf echte Kollektionen; ein Bild kann über das optionale Kollektionsmetafeld `upswing.brand_logo` gepflegt werden. Themenkarten verknüpfen eine echte Seite oder Kollektion. Der Produktberater verwendet ausgewählte Kollektionen.
+Sortimentskarten übernehmen Titel, Ziel, Beschreibung und Bild der ausgewählten Kollektion. Marken verweisen auf echte Markenseiten mit ausgewähltem Logo oder auf Kollektionen mit optionalem Bildmetafeld `upswing.brand_logo`. Die kybun-Reihe wählt vier Modelle zufällig aus bis zu 50 Produkten der gewählten Kollektion. Themenkarten verknüpfen eine echte Seite oder Kollektion. Der Produktberater verwendet ausgewählte Kollektionen.
 
 Produktinformationen stammen aus der nativen Beschreibung, vorhandenen AICO-Feldern und optionalen `upswing`-Metafeldern. Versand- und Rückgabebedingungen kommen aus den Shopify-Richtlinien. Lieferfristen stammen ausschliesslich aus `upswing.delivery_time` der Variante oder des Produkts; ohne Frist bleibt die Lieferzeit auf Anfrage. Die Abholverfügbarkeit bestimmt die Anzeige nicht. Mehrfarbige Produkte teilen den Farbpunkt in bis zu vier gleiche Segmente, wenn AICO alle Farbwerte als `aico.pd_colors_hex` (Liste, Hauptfarbe zuerst) liefert. Exakte Einzelfarbwerte kommen zuerst aus dem bereits vorhandenen `aico.pd_color_hex`, danach aus einem bestehenden `upswing.color_hex` und anschliessend aus dem nativen ausgewählten Shopify-Swatch. Ein neues paralleles Farbfeld ist nicht erforderlich. Ohne bestätigten Farbwert bleibt die Farbe als Text wählbar; aus Farbnamen werden keine Farbtöne geschätzt.
 

@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.31] - 2026-10-21
+
+- Startseite ergänzt «kybun Luftkissenschuhe 🇨🇭» mit vier zufällig gewählten Modellen aus der bestehenden Kollektion `kybun-schuhe` und Button «alle kybun Schuhe». Preise, Bilder und Produktlinks kommen aus Shopify. Ohne JavaScript bleiben vier Modelle sichtbar; weitere Kandidaten liegen bis zur Auswahl in inaktiven Templates.
+- «Unsere Lieblingsmarken» enthält die zwölf vorhandenen Original-Logos und Markenseiten in der bisherigen Reihenfolge. Sechs Spalten auf Desktop, drei auf Tablet und zwei auf Mobilgeräten; Logos bleiben farbig und unverzerrt.
+- Marken-Blöcke unterstützen zusätzlich zu bisherigen Kollektionen eine echte Markenseite mit Logo-Auswahl. Fehlende oder gelöschte Ziele bleiben verborgen. Vorhandene Kollektionseinstellungen behalten ihre Bedeutung.
+
 ## [1.0.29] - 2026-10-21
 
 - Farbdaten der Farbgeschwister werden bei jedem Laden mit Shopify abgeglichen statt dauerhaft aus dem Browser-Cache gelesen. Nach einem AICO-Sync erscheinen neue Farbwerte sofort als Farbpunkt; vorher konnten Karten alte Antworten ohne Farbwert weiter als Text anzeigen.
