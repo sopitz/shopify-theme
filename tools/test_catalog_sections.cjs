@@ -172,7 +172,7 @@ test('sections with no catalogue bindings give setup instructions only in the ed
     assert.equal(storefront.querySelector('section, a'), null);
     const editor = await render(name, {editor:true});
     assert.ok(editor.querySelector('section'));
-    assert.match(editor.body.textContent, /wählen|Wählen/);
+    assert.match(editor.body.textContent, /wähle|Wähle/);
     assert.equal(editor.querySelector('a, img, svg'), null);
   }
 });

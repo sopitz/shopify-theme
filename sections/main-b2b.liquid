@@ -1,4 +1,4 @@
-<section class="section-space b2b-page"><div class="container"><div class="advice-grid"><div class="advice-copy"><p class="eyebrow">{{ section.settings.eyebrow | escape }}</p><h1>{{ section.settings.heading | escape }}</h1><div>{{ section.settings.description }}</div><a class="button" href="#BusinessEnquiry">Individuelle Offerte anfragen {% render 'icon', name: 'arrow' %}</a><p class="form-note">Für Unternehmen, Institutionen und Organisationen.</p></div><div class="advice-media">{% if section.settings.image != blank %}{{ section.settings.image | image_url: width: 1200 | image_tag: loading: 'eager' }}{% else %}{{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-image' }}{% endif %}</div></div><div class="b2b-process section-space"><div class="section-heading"><div><p class="eyebrow">GEMEINSAM ZUR PASSENDEN LÖSUNG</p><h2>{{ section.settings.process_heading | escape }}</h2></div></div><div class="needs-grid">{% for block in section.blocks %}<div class="process-card" {{ block.shopify_attributes }}><span class="process-number">0{{ forloop.index }}</span><h3>{{ block.settings.title | escape }}</h3><p>{{ block.settings.description | escape }}</p></div>{% endfor %}</div></div>{% if page.content != blank %}<div class="rte page-width">{{ page.content }}</div>{% endif %}<div class="contact-grid" id="BusinessEnquiry"><div class="contact-copy"><p class="eyebrow">ERZÄHLEN SIE UNS VON IHREM TEAM</p><h2>{{ section.settings.form_heading | escape }}</h2><p>{{ section.settings.form_description | escape }}</p>{% if settings.contact_phone != blank %}<a class="contact-method" href="tel:{{ settings.contact_phone | replace: ' ', '' }}">{% render 'icon', name: 'phone' %} {{ settings.contact_phone | escape }}</a>{% endif %}</div><div class="contact-form-panel">{% form 'contact', id: 'BusinessForm', class: 'contact-form' %}{% if form.posted_successfully? %}<div class="form-success" role="status">Vielen Dank für Ihre Anfrage. Wir melden uns persönlich bei Ihnen.</div>{% endif %}{% if form.errors %}<div class="form-errors" role="alert">{{ form.errors | default_errors }}</div>{% endif %}<input type="hidden" name="contact[Anfragetyp]" value="Firmenkunden / individuelle Offerte"><div class="field"><label for="BusinessCompany">Unternehmen <span aria-hidden="true">*</span></label><input id="BusinessCompany" name="contact[Unternehmen]" type="text" autocomplete="organization" required></div><div class="form-row"><div class="field"><label for="BusinessName">Kontaktperson <span aria-hidden="true">*</span></label><input id="BusinessName" name="contact[name]" type="text" autocomplete="name" value="{{ form.name | escape }}" required></div><div class="field"><label for="BusinessEmail">E-Mail <span aria-hidden="true">*</span></label><input id="BusinessEmail" name="contact[email]" type="email" autocomplete="email" value="{{ form.email | escape }}" required></div></div><div class="form-row"><div class="field"><label for="BusinessPhone">Telefon (optional)</label><input id="BusinessPhone" name="contact[phone]" type="tel" autocomplete="tel"></div><div class="field"><label for="BusinessTeam">Teamgrösse (optional)</label><select id="BusinessTeam" name="contact[Teamgrösse]"><option value="Noch offen">Bitte auswählen</option><option>1–10 Mitarbeitende</option><option>11–50 Mitarbeitende</option><option>51–200 Mitarbeitende</option><option>Über 200 Mitarbeitende</option></select></div></div><div class="field"><label for="BusinessNeed">Ihr Anliegen <span aria-hidden="true">*</span></label><textarea id="BusinessNeed" name="contact[body]" rows="6" placeholder="Welche Produkte interessieren Sie? Wie werden sie eingesetzt? Für wie viele Personen?" required>{{ form.body | escape }}</textarea></div><p class="form-note">Die mit * markierten Felder sind erforderlich.{% if shop.privacy_policy != blank %} Informationen zum Umgang mit Ihren Daten finden Sie in unserer <a href="{{ shop.privacy_policy.url }}">Datenschutzerklärung</a>.{% endif %}</p><button class="button" type="submit">Offerte anfragen {% render 'icon', name: 'arrow' %}</button>{% endform %}</div></div></div></section>
+<section class="section-space b2b-page"><div class="container"><div class="advice-grid"><div class="advice-copy"><p class="eyebrow">{{ section.settings.eyebrow | escape }}</p><h1>{{ section.settings.heading | escape }}</h1><div>{{ section.settings.description }}</div><a class="button" href="#BusinessEnquiry">Individuelle Offerte anfragen {% render 'icon', name: 'arrow' %}</a><p class="form-note">Für Unternehmen, Institutionen und Organisationen.</p></div><div class="advice-media">{% if section.settings.image != blank %}{{ section.settings.image | image_url: width: 1200 | image_tag: loading: 'eager' }}{% else %}{{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-image' }}{% endif %}</div></div><div class="b2b-process section-space"><div class="section-heading"><div><p class="eyebrow">GEMEINSAM ZUR PASSENDEN LÖSUNG</p><h2>{{ section.settings.process_heading | escape }}</h2></div></div><div class="needs-grid">{% for block in section.blocks %}<div class="process-card" {{ block.shopify_attributes }}><span class="process-number">0{{ forloop.index }}</span><h3>{{ block.settings.title | escape }}</h3><p>{{ block.settings.description | escape }}</p></div>{% endfor %}</div></div>{% if page.content != blank %}<div class="rte page-width">{{ page.content }}</div>{% endif %}<div class="contact-grid" id="BusinessEnquiry"><div class="contact-copy"><p class="eyebrow">ERZÄHLEN SIE UNS VON IHREM TEAM</p><h2>{{ section.settings.form_heading | escape }}</h2><p>{{ section.settings.form_description | escape }}</p>{% if settings.contact_phone != blank %}<a class="contact-method" href="tel:{{ settings.contact_phone | replace: ' ', '' }}">{% render 'icon', name: 'phone' %} {{ settings.contact_phone | escape }}</a>{% endif %}</div><div class="contact-form-panel">{% form 'contact', id: 'BusinessForm', class: 'contact-form' %}{% if form.posted_successfully? %}<div class="form-success" role="status">Vielen Dank für deine Anfrage. Wir melden uns persönlich bei dir.</div>{% endif %}{% if form.errors %}<div class="form-errors" role="alert">{{ form.errors | default_errors }}</div>{% endif %}<input type="hidden" name="contact[Anfragetyp]" value="Firmenkunden / individuelle Offerte"><div class="field"><label for="BusinessCompany">Unternehmen <span aria-hidden="true">*</span></label><input id="BusinessCompany" name="contact[Unternehmen]" type="text" autocomplete="organization" required></div><div class="form-row"><div class="field"><label for="BusinessName">Kontaktperson <span aria-hidden="true">*</span></label><input id="BusinessName" name="contact[name]" type="text" autocomplete="name" value="{{ form.name | escape }}" required></div><div class="field"><label for="BusinessEmail">E-Mail <span aria-hidden="true">*</span></label><input id="BusinessEmail" name="contact[email]" type="email" autocomplete="email" value="{{ form.email | escape }}" required></div></div><div class="form-row"><div class="field"><label for="BusinessPhone">Telefon (optional)</label><input id="BusinessPhone" name="contact[phone]" type="tel" autocomplete="tel"></div><div class="field"><label for="BusinessTeam">Teamgrösse (optional)</label><select id="BusinessTeam" name="contact[Teamgrösse]"><option value="Noch offen">Bitte auswählen</option><option>1–10 Mitarbeitende</option><option>11–50 Mitarbeitende</option><option>51–200 Mitarbeitende</option><option>Über 200 Mitarbeitende</option></select></div></div><div class="field"><label for="BusinessNeed">Dein Anliegen <span aria-hidden="true">*</span></label><textarea id="BusinessNeed" name="contact[body]" rows="6" placeholder="Welche Produkte interessieren dich? Wie werden sie eingesetzt? Für wie viele Personen?" required>{{ form.body | escape }}</textarea></div><p class="form-note">Die mit * markierten Felder sind erforderlich.{% if shop.privacy_policy != blank %} Informationen zum Umgang mit deinen Daten findest du in unserer <a href="{{ shop.privacy_policy.url }}">Datenschutzerklärung</a>.{% endif %}</p><button class="button" type="submit">Offerte anfragen {% render 'icon', name: 'arrow' %}</button>{% endform %}</div></div></div></section>
 {% schema %}
 {
   "name": "Firmenkunden",
@@ -13,13 +13,13 @@
       "type": "text",
       "id": "heading",
       "label": "Überschrift",
-      "default": "Mehr Wohlbefinden für Ihre Mitarbeitenden."
+      "default": "Mehr Wohlbefinden für deine Mitarbeitenden."
     },
     {
       "type": "richtext",
       "id": "description",
       "label": "Beschreibung",
-      "default": "<p>Hochwertige Produkte für einen bewegten Arbeitsalltag. Wir helfen Ihnen, die passenden Lösungen für Ihr Team auszuwählen – persönlich, verständlich und auf Ihre Anforderungen abgestimmt.</p>"
+      "default": "<p>Hochwertige Produkte für einen bewegten Arbeitsalltag. Wir helfen dir, die passenden Lösungen für dein Team auszuwählen – persönlich, verständlich und auf deine Anforderungen abgestimmt.</p>"
     },
     {
       "type": "image_picker",
@@ -30,19 +30,19 @@
       "type": "text",
       "id": "process_heading",
       "label": "Prozessüberschrift",
-      "default": "Von Ihrem Anliegen zur passenden Auswahl."
+      "default": "Von deinem Anliegen zur passenden Auswahl."
     },
     {
       "type": "text",
       "id": "form_heading",
       "label": "Formularüberschrift",
-      "default": "Ihre individuelle Offerte."
+      "default": "Deine individuelle Offerte."
     },
     {
       "type": "text",
       "id": "form_description",
       "label": "Formulartext",
-      "default": "Beschreiben Sie uns Ihre Anforderungen. Wir besprechen gemeinsam Produktauswahl, Mengen und nächste Schritte."
+      "default": "Beschreibe uns deine Anforderungen. Wir besprechen gemeinsam Produktauswahl, Mengen und nächste Schritte."
     }
   ],
   "blocks": [
@@ -60,7 +60,7 @@
           "type": "text",
           "id": "description",
           "label": "Beschreibung",
-          "default": "Wir besprechen Ihre Anforderungen und den Einsatz im Arbeitsalltag."
+          "default": "Wir besprechen deine Anforderungen und den Einsatz im Arbeitsalltag."
         }
       ]
     }

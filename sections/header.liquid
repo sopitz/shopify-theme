@@ -12,9 +12,9 @@
     <a href="{{ routes.root_url }}" class="site-logo" style="--logo-width: {{ settings.logo_width }}px" aria-label="{{ shop.name | escape }} – Startseite">
       {% if settings.logo != blank %}{{ settings.logo | image_url: width: 420 | image_tag: width: settings.logo_width, loading: 'eager', alt: shop.name }}{% else %}<img src="{{ 'upswing-logo.png' | asset_url }}" alt="{{ shop.name | escape }}" width="{{ settings.logo_width }}" height="58" loading="eager">{% endif %}
     </a>
-    {% render 'predictive-search-form', id: 'HeaderSearch', class: 'header-search', placeholder: 'Was tut Ihnen gut?', section: section %}
+    {% render 'predictive-search-form', id: 'HeaderSearch', class: 'header-search', placeholder: 'Was tut dir gut?', section: section %}
     <div class="header-actions">
-      <a class="header-advice" href="{{ header_advice_url | escape }}">{% render 'icon', name: 'phone' %}<span>Wir beraten Sie gerne</span></a>
+      <a class="header-advice" href="{{ header_advice_url | escape }}">{% render 'icon', name: 'phone' %}<span>Wir beraten dich gerne</span></a>
       <div class="header-account-cart">
         {% if shop.customer_accounts_enabled %}<a class="icon-button" href="{{ routes.account_url }}" aria-label="Mein Kundenkonto">{% render 'icon', name: 'user' %}</a>{% endif %}
         <a class="icon-button cart-link" href="{{ routes.cart_url }}" aria-label="Warenkorb mit {{ cart.item_count }} Artikeln">{% render 'icon', name: 'bag' %}<span class="cart-count" data-cart-count>{{ cart.item_count }}</span></a>
@@ -43,7 +43,7 @@
       <nav class="desktop-navigation" aria-label="Hauptnavigation">
         <ul class="mega-menu-list">
           {% render 'header-menu-items', mode: 'desktop', links: section.settings.menu.links, header_section: section %}
-          {% if section.settings.menu.links == blank and request.design_mode %}<li class="mega-menu-item"><span class="mega-menu-link">Wählen Sie im Theme-Editor ein Hauptmenü aus.</span></li>{% endif %}
+          {% if section.settings.menu.links == blank and request.design_mode %}<li class="mega-menu-item"><span class="mega-menu-link">Wähle im Theme-Editor ein Hauptmenü aus.</span></li>{% endif %}
           {% if header_guide_url != blank and menu_has_guide == false %}<li class="mega-menu-item mega-menu-utility"><a class="mega-menu-link" href="{{ header_guide_url }}">{{ section.settings.guide_label | escape }}</a></li>{% endif %}
           {% if menu_has_about == false %}{% render 'header-about-menu', mode: 'desktop', header_section: section %}{% endif %}
         </ul>
@@ -55,7 +55,7 @@
     {% render 'predictive-search-form', id: 'MobileSearch', class: 'mobile-search', placeholder: 'Produkte und Marken suchen', section: section %}
     <ul class="mobile-nav-list">
       {% render 'header-menu-items', mode: 'mobile', links: section.settings.menu.links, header_section: section %}
-      {% if section.settings.menu.links == blank and request.design_mode %}<li><span class="mobile-nav-link">Wählen Sie im Theme-Editor ein Hauptmenü aus.</span></li>{% endif %}
+      {% if section.settings.menu.links == blank and request.design_mode %}<li><span class="mobile-nav-link">Wähle im Theme-Editor ein Hauptmenü aus.</span></li>{% endif %}
       {% if header_guide_url != blank and menu_has_guide == false %}<li><a class="mobile-nav-link" href="{{ header_guide_url }}">{{ section.settings.guide_label | escape }}</a></li>{% endif %}
       {% if menu_has_about == false %}{% render 'header-about-menu', mode: 'mobile', header_section: section %}{% endif %}
       {% if header_business_url != blank and menu_has_business == false %}<li><a class="mobile-nav-link" href="{{ header_business_url }}">Für Unternehmen</a></li>{% endif %}

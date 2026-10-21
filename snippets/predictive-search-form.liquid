@@ -2,7 +2,7 @@
   assign search_input_id = id | append: '-' | append: section.id
   assign search_results_id = search_input_id | append: '-Results'
 -%}
-<upswing-predictive-search class="{{ class | escape }}" data-search-url="{{ routes.predictive_search_url | escape }}" data-loading-label="Suchvorschläge werden geladen." data-results-label="Suchvorschläge verfügbar." data-error-label="Suchvorschläge sind gerade nicht verfügbar. Mit Enter können Sie trotzdem suchen.">
+<upswing-predictive-search class="{{ class | escape }}" data-search-url="{{ routes.predictive_search_url | escape }}" data-loading-label="Suchvorschläge werden geladen." data-results-label="Suchvorschläge verfügbar." data-error-label="Suchvorschläge sind gerade nicht verfügbar. Mit Enter kannst du trotzdem suchen.">
   <form class="predictive-search-form" action="{{ routes.search_url }}" method="get" role="search">
     <label class="sr-only" for="{{ search_input_id }}">Produkte, Marken und Informationen suchen</label>
     <input type="search" name="q" id="{{ search_input_id }}" placeholder="{{ placeholder | escape }}" value="{{ search.terms | escape }}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-predictive-input>

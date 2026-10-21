@@ -321,7 +321,7 @@
     listen(add, 'click', () => {
       if (navigating || originalAdd.disabled) return;
       if (!quantity.checkValidity() || !quantity.value) {
-        localError = 'Bitte geben Sie eine gültige Anzahl ein.'; sync(); quantity.focus(); quantity.reportValidity(); return;
+        localError = 'Bitte gib eine gültige Anzahl ein.'; sync(); quantity.focus(); quantity.reportValidity(); return;
       }
       originalQuantity.value = quantity.value;
       const fromViewer = viewerHooks.isOpen?.();
@@ -391,7 +391,7 @@
     const previous = dialog.querySelector('.product-viewer-prev'), next = dialog.querySelector('.product-viewer-next');
     const pane = dialog.querySelector('.product-viewer-purchase');
     const heading = document.createElement('div'); heading.className = 'product-viewer-heading';
-    const eyebrow = document.createElement('span'); eyebrow.className = 'product-viewer-eyebrow'; eyebrow.textContent = 'Ihre Auswahl';
+    const eyebrow = document.createElement('span'); eyebrow.className = 'product-viewer-eyebrow'; eyebrow.textContent = 'Deine Auswahl';
     const title = document.createElement('h2'); title.id = titleId; title.textContent = model;
     const color = document.createElement('span'); color.className = 'product-viewer-color';
     heading.append(eyebrow, title, color); preview.prepend(heading);
@@ -518,7 +518,7 @@
         if (skuRow) skuRow.hidden = true;
         const availability = originalForm.querySelector('[data-product-availability]');
         if (availability) {
-          availability.textContent = missingSize ? 'Die bisherige Schuhgrösse ist in dieser Farbe nicht verfügbar.' : 'Bitte wählen Sie eine passende Ausführung.';
+          availability.textContent = missingSize ? 'Die bisherige Schuhgrösse ist in dieser Farbe nicht verfügbar.' : 'Bitte wähle eine passende Ausführung.';
           availability.dataset.deliveryStatus = 'unavailable'; availability.removeAttribute('data-delivery-variant');
           availability.setAttribute('aria-busy', 'false');
         }

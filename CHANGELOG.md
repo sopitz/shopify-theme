@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.32] - 2026-10-21
+
+- Ansprache im gesamten Theme von «Sie» auf «du» umgestellt: Startseite, Header, Footer, Suche, Kollektionen, Produktseite, Warenkorb, Kontakt- und B2B-Formulare, Geschenkgutschein, Passwortseite, 404 sowie die redaktionellen Beispielseiten (Filialen, Premium Service, Geschichte, Stellen). Verben und Imperative entsprechend angepasst («Entdecke», «findest du», «Schreib uns»).
+- Gespeicherte Editor-Texte in `config/settings_data.json` und den JSON-Templates ebenfalls umgestellt (Footer-Claim, Startseiten-Bänder, B2B-Schritte). Editor-Hinweise für nicht verknüpfte Blöcke verwenden die gleiche Form.
+- Der historische Firmenname «upswing GmbH - für Ihre Gesundheit» in der Chronik bleibt unverändert.
+- Testerwartungen auf die neuen Texte nachgeführt.
+
 ## [1.0.31] - 2026-10-21
 
 - Startseite ergänzt «kybun Luftkissenschuhe 🇨🇭» mit vier zufällig gewählten Modellen aus der bestehenden Kollektion `kybun-schuhe` und Button «alle kybun Schuhe». Preise, Bilder und Produktlinks kommen aus Shopify. Ohne JavaScript bleiben vier Modelle sichtbar; weitere Kandidaten liegen bis zur Auswahl in inaktiven Templates.

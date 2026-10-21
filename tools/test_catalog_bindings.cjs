@@ -33,7 +33,7 @@ async function render(name, {blocks=[], settings={}, editor=false}={}) {
     .replace(/{%-?\s*form\s[^%]+%}/g, '<form>')
     .replace(/{%-?\s*endform\s*-?%}/g, '</form>');
   const markup = await engine.parseAndRender(source, {
-    section:{id:name, settings:{heading:'Auswahl', eyebrow:'WISSEN', description:'Einführung.', advice_heading:'Persönliche Beratung', advice_text:'Wir helfen Ihnen.', ...settings}, blocks},
+    section:{id:name, settings:{heading:'Auswahl', eyebrow:'WISSEN', description:'Einführung.', advice_heading:'Persönliche Beratung', advice_text:'Wir helfen dir.', ...settings}, blocks},
     request:{design_mode:editor}, routes:{root_url:'/de/', all_products_collection_url:'/de/collections/all'},
   });
   return new JSDOM(markup).window.document;

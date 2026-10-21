@@ -5,7 +5,7 @@
     {% assign target_collection = block.settings.collection %}
     {% if target_collection.id != blank and target_collection.url != blank %}
       <a class="need-card" href="{{ target_collection.url }}" {{ block.shopify_attributes }}><span class="need-icon">{% render 'icon', name: block.settings.icon %}</span><div><h2>{{ target_collection.title | escape }}</h2>{% if target_collection.description != blank %}<p>{{ target_collection.description | strip_html | strip | truncate: 180 | escape_once }}</p>{% endif %}<span class="text-link">{{ block.settings.label | escape }}</span></div>{% render 'icon', name: 'arrow' %}</a>
-    {% elsif request.design_mode %}<article class="need-card" {{ block.shopify_attributes }}><div><h2>Collection auswählen</h2><p>Ordnen Sie diesem Einstieg eine vorhandene Collection zu.</p></div></article>{% endif %}
+    {% elsif request.design_mode %}<article class="need-card" {{ block.shopify_attributes }}><div><h2>Collection auswählen</h2><p>Ordne diesem Einstieg eine vorhandene Collection zu.</p></div></article>{% endif %}
   {% endfor %}
 {%- endcapture -%}
 {%- assign guide_cards = guide_cards | strip -%}
@@ -29,25 +29,25 @@
       "type": "text",
       "id": "heading",
       "label": "Überschrift",
-      "default": "Was ist Ihnen im Alltag wichtig?"
+      "default": "Was ist dir im Alltag wichtig?"
     },
     {
       "type": "richtext",
       "id": "description",
       "label": "Einführung",
-      "default": "<p>Starten Sie mit Ihrem Anliegen. Entdecken Sie passende Sortimentswelten und erfahren Sie mehr über Material, Funktion und Anwendung.</p>"
+      "default": "<p>Starte mit deinem Anliegen. Entdecke passende Sortimentswelten und erfahre mehr über Material, Funktion und Anwendung.</p>"
     },
     {
       "type": "text",
       "id": "advice_heading",
       "label": "Beratungsüberschrift",
-      "default": "Ihre Bedürfnisse sind persönlich. Unsere Beratung auch."
+      "default": "Deine Bedürfnisse sind persönlich. Unsere Beratung auch."
     },
     {
       "type": "text",
       "id": "advice_text",
       "label": "Beratungstext",
-      "default": "Wenn Sie bei der Auswahl Unterstützung wünschen, finden wir gemeinsam heraus, welches Produkt zu Ihnen passt."
+      "default": "Wenn du bei der Auswahl Unterstützung wünschst, finden wir gemeinsam heraus, welches Produkt zu dir passt."
     },
     {
       "type": "url",

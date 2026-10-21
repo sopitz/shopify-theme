@@ -51,7 +51,7 @@
           "contact": {
             "type": "contact",
             "settings": {
-              "heading": "Persönlich für Sie",
+              "heading": "Persönlich für dich",
               "menu": ""
             }
           }
@@ -62,7 +62,7 @@
           "contact"
         ],
         "settings": {
-          "description": "Hochwertige Produkte. Persönliche Beratung. Für mehr Leichtigkeit in Ihrem Alltag.",
+          "description": "Hochwertige Produkte. Persönliche Beratung. Für mehr Leichtigkeit in deinem Alltag.",
           "advice_url": "/pages/kontakt",
           "show_payment_icons": true
         }

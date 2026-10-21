@@ -11,7 +11,7 @@
     {%- if recommendation_cards != blank -%}
       <section class="section-space product-recommendations" data-recommendations-content aria-labelledby="RecommendationsTitle-{{ section.id }}">
         <div class="container">
-          <div class="section-heading"><h2 id="RecommendationsTitle-{{ section.id }}">{{ section.settings.heading | default: 'Das könnte Ihnen auch gefallen.' | escape }}</h2></div>
+          <div class="section-heading"><h2 id="RecommendationsTitle-{{ section.id }}">{{ section.settings.heading | default: 'Das könnte dir auch gefallen.' | escape }}</h2></div>
           <div class="product-grid">{{ recommendation_cards }}</div>
         </div>
       </section>
@@ -23,7 +23,7 @@
   "name": "Produktempfehlungen",
   "enabled_on": {"templates": ["product"]},
   "settings": [
-    {"type":"text","id":"heading","label":"Überschrift","default":"Das könnte Ihnen auch gefallen."}
+    {"type":"text","id":"heading","label":"Überschrift","default":"Das könnte dir auch gefallen."}
   ],
   "presets": [{"name":"Produktempfehlungen"}]
 }

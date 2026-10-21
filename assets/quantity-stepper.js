@@ -58,7 +58,7 @@
       if (cartRules()) {
         const value = input.valueAsNumber, min = minimum(), step = increment();
         const valid = Number.isFinite(value) && (value === 0 || (value >= min && Math.abs((value - min) / step - Math.round((value - min) / step)) < 1e-7));
-        input.setCustomValidity(valid ? '' : `Bitte wählen Sie 0 zum Entfernen oder mindestens ${min} in Schritten von ${step}.`);
+        input.setCustomValidity(valid ? '' : `Bitte wähle 0 zum Entfernen oder mindestens ${min} in Schritten von ${step}.`);
       }
     };
     const step = (event, direction) => {

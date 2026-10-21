@@ -135,7 +135,7 @@ test('a blank main menu has only an editor onboarding prompt and keeps about, se
       values.section.settings.menu = links ? {links} : null;
       const document = await headerDocument([], values);
       assert.equal(document.querySelector('.desktop-navigation [href*="/collections/"], #MobileNavigation [href*="/collections/"]'), null);
-      assert.equal(document.body.textContent.includes('Wählen Sie im Theme-Editor ein Hauptmenü aus.'), designMode);
+      assert.equal(document.body.textContent.includes('Wähle im Theme-Editor ein Hauptmenü aus.'), designMode);
       for (const selector of ['.desktop-navigation', '#MobileNavigation']) {
         const nav = document.querySelector(selector);
         assert.ok(nav.querySelector('[href="/pages/ueber-uns"]'));

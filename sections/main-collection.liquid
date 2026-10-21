@@ -19,7 +19,7 @@
     {%- paginate collection.products by section.settings.products_per_page -%}
       <div class="collection-layout">
         <form class="filters-sidebar" action="{{ collection.url }}" method="get" id="CollectionFilters-{{ section.id }}">
-          <div class="filter-heading"><h2>Ihre Auswahl</h2><a class="text-link" href="{{ collection.url }}?sort_by={{ current_sort | url_encode }}">Zurücksetzen</a></div>
+          <div class="filter-heading"><h2>Deine Auswahl</h2><a class="text-link" href="{{ collection.url }}?sort_by={{ current_sort | url_encode }}">Zurücksetzen</a></div>
           {%- for filter in collection.filters -%}
             {%- liquid
               assign show_filter = true
@@ -56,16 +56,16 @@
               </details>
             {%- endif -%}
           {%- endfor -%}
-          {%- if visible_filter_count == 0 -%}<p class="filter-help">Entdecken Sie die Produkte oder lassen Sie sich persönlich beraten.</p>{%- endif -%}
+          {%- if visible_filter_count == 0 -%}<p class="filter-help">Entdecke die Produkte oder lass dich persönlich beraten.</p>{%- endif -%}
           <button class="button filter-apply" type="submit">Auswahl anwenden</button>
-          <div class="filter-consultation"><p class="eyebrow">Noch unsicher?</p><strong>Wir nehmen uns Zeit.</strong><p>Finden Sie gemeinsam mit uns das Produkt, das zu Ihrem Alltag passt.</p><a class="text-link" href="{{ consultation_url }}">Persönliche Beratung</a></div>
+          <div class="filter-consultation"><p class="eyebrow">Noch unsicher?</p><strong>Wir nehmen uns Zeit.</strong><p>Finde gemeinsam mit uns das Produkt, das zu deinem Alltag passt.</p><a class="text-link" href="{{ consultation_url }}">Persönliche Beratung</a></div>
         </form>
         <div class="collection-results">
           <div class="collection-toolbar">
             <p class="result-count" role="status">{{ collection.products_count }} {% if section.settings.model_collection %}{% if collection.products_count == 1 %}Modell{% else %}Modelle{% endif %}{% else %}{% if collection.products_count == 1 %}Produkt{% else %}Produkte{% endif %}{% endif %}</p>
             <div class="sort-control"><label for="CollectionSort-{{ section.id }}">Sortieren</label><select id="CollectionSort-{{ section.id }}" name="sort_by" form="CollectionFilters-{{ section.id }}" data-sort-select data-sort-page-param="{{ paginate.page_param }}">{%- for option in collection.sort_options -%}<option value="{{ option.value | escape }}"{% if option.value == current_sort %} selected{% endif %}>{{ option.name | escape }}</option>{%- endfor -%}</select><button class="text-link sort-apply" type="submit" form="CollectionFilters-{{ section.id }}" data-sort-apply>Anwenden</button></div>
           </div>
-          {%- if section.settings.model_collection -%}<p class="collection-model-note">Ein Modell, alle Farben. Wählen Sie Ihre Farbe direkt beim Produkt.</p>{%- endif -%}
+          {%- if section.settings.model_collection -%}<p class="collection-model-note">Ein Modell, alle Farben. Wähle deine Farbe direkt beim Produkt.</p>{%- endif -%}
           <div class="active-filters" aria-label="Aktive Filter">
             {%- for filter in collection.filters -%}
               {%- for value in filter.active_values -%}<a class="active-filter" href="{{ value.url_to_remove }}">{{ filter.label | escape }}: {{ value.label | escape }} {% render 'icon', name: 'close' %}<span class="visually-hidden">Filter entfernen</span></a>{%- endfor -%}
@@ -78,7 +78,7 @@
             </div>
             {%- if paginate.pages > 1 -%}<nav class="pagination" aria-label="Weitere Produkte">{{ paginate | default_pagination: next: 'Weiter', previous: 'Zurück' }}</nav>{%- endif -%}
           {%- else -%}
-            <div class="empty-state"><h2>Keine Produkte für diese Auswahl.</h2><p>Entfernen Sie einen Filter oder sprechen Sie mit uns über Ihre Wünsche.</p><div class="button-row"><a class="button" href="{{ collection.url }}">Alle Produkte dieser Auswahl</a><a class="button secondary" href="{{ consultation_url }}">Beratung finden</a></div></div>
+            <div class="empty-state"><h2>Keine Produkte für diese Auswahl.</h2><p>Entferne einen Filter oder sprich mit uns über deine Wünsche.</p><div class="button-row"><a class="button" href="{{ collection.url }}">Alle Produkte dieser Auswahl</a><a class="button secondary" href="{{ consultation_url }}">Beratung finden</a></div></div>
           {%- endif -%}
         </div>
       </div>

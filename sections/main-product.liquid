@@ -142,7 +142,7 @@
           <noscript>
             <style>.enhanced-variant-picker,.enhanced-add-button{display:none!important}</style>
             {%- if product.variants_count > 250 -%}
-              <p>Bitte wählen Sie Ihre Variante. Nach jeder Auswahl wird die Seite aktualisiert.</p>
+              <p>Bitte wähle deine Variante. Nach jeder Auswahl wird die Seite aktualisiert.</p>
               {%- for option in product.options_with_values -%}
                 <div class="native-option-links"><strong>{{ option.name | escape }}</strong>
                   {%- for value in option.values -%}
@@ -163,7 +163,7 @@
         </div>
         <div class="product-consultation">
           {% render 'icon', name: 'phone' %}
-          <div><strong>Passt dieses Produkt zu Ihnen?</strong><p>Wir helfen Ihnen bei Auswahl, Passform und Anwendung.</p><a class="text-link" href="{{ onsite_consultation_url | escape }}">Persönliche Beratung finden</a></div>
+          <div><strong>Passt dieses Produkt zu dir?</strong><p>Wir helfen dir bei Auswahl, Passform und Anwendung.</p><a class="text-link" href="{{ onsite_consultation_url | escape }}">Persönliche Beratung finden</a></div>
         </div>
         {%- if section.settings.b2b_url != blank -%}<p class="product-b2b-link">Für Mitarbeitende einkaufen? <a href="{{ section.settings.b2b_url }}">Firmenberatung anfragen</a></p>{%- endif -%}
         {%- if product_knowledge != blank -%}<a class="text-link description-jump" href="#ProductInformation">Alle Produktinformationen lesen {% render 'icon', name: 'arrow' %}</a>{%- endif -%}

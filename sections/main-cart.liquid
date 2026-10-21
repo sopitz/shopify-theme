@@ -2,7 +2,7 @@
 {%- assign onsite_consultation_url = onsite_consultation_url | strip -%}
 <section class="cart-section section-space">
   <div class="container">
-    <div class="section-heading"><div><p class="eyebrow">Ein Schritt zu mehr Wohlbefinden</p><h1>Ihr Warenkorb</h1></div><a class="text-link" href="{{ routes.all_products_collection_url }}">Weiter einkaufen {% render 'icon', name: 'arrow' %}</a></div>
+    <div class="section-heading"><div><p class="eyebrow">Ein Schritt zu mehr Wohlbefinden</p><h1>Dein Warenkorb</h1></div><a class="text-link" href="{{ routes.all_products_collection_url }}">Weiter einkaufen {% render 'icon', name: 'arrow' %}</a></div>
     {%- if cart.item_count > 0 -%}
       <form action="{{ routes.cart_url }}" method="post" id="CartForm-{{ section.id }}" class="cart-layout">
         <div class="cart-items">
@@ -26,10 +26,10 @@
             </article>
           {%- endfor -%}
           <div class="cart-update"><button class="button secondary" type="submit" name="update">Warenkorb aktualisieren</button></div>
-          <div class="cart-note"><label for="CartNote-{{ section.id }}">Anmerkung zur Bestellung (optional)</label><textarea id="CartNote-{{ section.id }}" name="note" rows="3" placeholder="Was möchten Sie uns mitteilen?">{{ cart.note | escape }}</textarea><p>Ihre Anmerkung wird beim Aktualisieren oder Weitergehen zur Kasse gespeichert.</p></div>
+          <div class="cart-note"><label for="CartNote-{{ section.id }}">Anmerkung zur Bestellung (optional)</label><textarea id="CartNote-{{ section.id }}" name="note" rows="3" placeholder="Was möchtest du uns mitteilen?">{{ cart.note | escape }}</textarea><p>Deine Anmerkung wird beim Aktualisieren oder Weitergehen zur Kasse gespeichert.</p></div>
         </div>
         <aside class="cart-summary" aria-label="Bestellübersicht">
-          <h2>Ihre Bestellung</h2><div class="summary-row summary-line"><span>Zwischensumme</span><span>{{ cart.items_subtotal_price | money_with_currency }}</span></div>
+          <h2>Deine Bestellung</h2><div class="summary-row summary-line"><span>Zwischensumme</span><span>{{ cart.items_subtotal_price | money_with_currency }}</span></div>
           {%- for discount in cart.cart_level_discount_applications -%}<div class="summary-row summary-line cart-discount"><span>{{ discount.title | escape }}</span><span>−{{ discount.total_allocated_amount | money_with_currency }}</span></div>{%- endfor -%}
           <div class="summary-row summary-line summary-total"><strong>Warenwert</strong><strong>{{ cart.total_price | money_with_currency }}</strong></div>
           {% render 'cart-free-shipping', threshold: section.settings.free_shipping_threshold, method: section.settings.free_shipping_method %}
@@ -42,7 +42,7 @@
         </aside>
       </form>
     {%- else -%}
-      <div class="empty-state cart-empty">{% render 'icon', name: 'bag' %}<h2>Ihr Warenkorb ist noch leer.</h2><p>Entdecken Sie Produkte für mehr Bewegung, Entlastung und Wohlbefinden.</p><div class="button-row"><a class="button" href="{{ routes.all_products_collection_url }}">Produkte entdecken</a><a class="button secondary" href="{{ onsite_consultation_url | escape }}">Beraten lassen</a></div></div>
+      <div class="empty-state cart-empty">{% render 'icon', name: 'bag' %}<h2>Dein Warenkorb ist noch leer.</h2><p>Entdecke Produkte für mehr Bewegung, Entlastung und Wohlbefinden.</p><div class="button-row"><a class="button" href="{{ routes.all_products_collection_url }}">Produkte entdecken</a><a class="button secondary" href="{{ onsite_consultation_url | escape }}">Beraten lassen</a></div></div>
     {%- endif -%}
   </div>
 </section>

@@ -10,7 +10,7 @@
     },
     "cart": {
       "title": "Warenkorb",
-      "empty": "Ihr Warenkorb ist noch leer."
+      "empty": "Dein Warenkorb ist noch leer."
     }
   },
   "contact": {
@@ -20,7 +20,7 @@
       "phone": "Telefon",
       "comment": "Nachricht",
       "send": "Nachricht senden",
-      "post_success": "Vielen Dank. Ihre Nachricht ist bei uns eingegangen."
+      "post_success": "Vielen Dank. Deine Nachricht ist bei uns eingegangen."
     }
   }
 }

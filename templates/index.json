@@ -20,7 +20,7 @@
           "settings": {
             "icon": "phone",
             "title": "Persönliche Beratung",
-            "text": "Wir nehmen uns Zeit für Sie"
+            "text": "Wir nehmen uns Zeit für dich"
           }
         }
       },
@@ -33,8 +33,8 @@
       "type": "need-navigation",
       "settings": {
         "eyebrow": "IHR ANLIEGEN. IHR EINSTIEG.",
-        "heading": "Was möchten Sie verbessern?",
-        "intro": "Beginnen Sie bei Ihrem Anliegen. Wir erklären die Möglichkeiten und führen Sie zum passenden Sortiment."
+        "heading": "Was möchtest du verbessern?",
+        "intro": "Beginne bei deinem Anliegen. Wir erklären die Möglichkeiten und führen dich zum passenden Sortiment."
       },
       "blocks": {
         "foot": {
@@ -165,7 +165,7 @@
         "benefit1": {
           "type": "benefit",
           "settings": {
-            "text": "Verständliche Antworten auf Ihre Fragen"
+            "text": "Verständliche Antworten auf deine Fragen"
           }
         },
         "benefit2": {
@@ -190,7 +190,7 @@
         "benefit0": {
           "type": "benefit",
           "settings": {
-            "text": "Produktempfehlungen passend zu Ihrem Arbeitsalltag"
+            "text": "Produktempfehlungen passend zu deinem Arbeitsalltag"
           }
         },
         "benefit1": {
@@ -338,7 +338,7 @@
           "type": "guide",
           "settings": {
             "heading": "Mehr Bewegung beim Stehen",
-            "description": "Aktive Stehmatten kennenlernen und die passende Ausführung für Ihren Alltag finden.",
+            "description": "Aktive Stehmatten kennenlernen und die passende Ausführung für deinen Alltag finden.",
             "url": "/pages/kybun-matten"
           }
         },
