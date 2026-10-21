@@ -1,6 +1,6 @@
 # Upswing Shopify Theme
 
-Native Shopify-Theme-Quellen für upswing.ch, Stand **1.0.33**. Die sieben Theme-Ordner liegen direkt im Repository. Installationspakete freigegebener Versionen stehen in den [GitHub Releases](https://github.com/sopitz/shopify-theme/releases).
+Native Shopify-Theme-Quellen für upswing.ch, Stand **1.0.34**. Die sieben Theme-Ordner liegen direkt im Repository. Installationspakete freigegebener Versionen stehen in den [GitHub Releases](https://github.com/sopitz/shopify-theme/releases).
 
 Der Produktkatalog wird im Shopify-Shop gepflegt: Produkte, Varianten, Kollektionen, Menüs, Preise, Bilder und Produktinformationen kommen aus den tatsächlichen Shop-Ressourcen. Die Startseite enthält die bestehende kybun-Schuhkollektion und die zwölf bisherigen Markenseiten samt Original-Logos. Weitere Produkt- und Kollektionsauswahlen bleiben frei konfigurierbar. Wählen Sie die gewünschten Ressourcen im Theme-Editor und ordnen Sie die Shop-Menüs zu. Nicht verknüpfte Katalogkarten bleiben im Shop verborgen; im Editor helfen Einrichtungshinweise.
 

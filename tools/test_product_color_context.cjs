@@ -56,8 +56,9 @@ test('Rendered AICO colour dots reach quick-buy and the open viewer without losi
   window.scrollTo = () => {};
   window.HTMLDialogElement.prototype.showModal = function(){this.open=true;};
   window.HTMLDialogElement.prototype.close = function(){this.open=false;this.dispatchEvent(new window.Event('close'));};
-  const warmCalls = []; let clearCalls = 0;
-  window.upswingGalleryImagePreload = {create:() => ({warm:urls => warmCalls.push([...urls]), clear:() => clearCalls++, destroy(){}})};
+  const warmCalls = [], pageWarmCalls = []; let clearCalls = 0;
+  // The page-wide gallery cache asks for a limit; the viewer's neighbour cache does not.
+  window.upswingGalleryImagePreload = {create:options => ({warm:urls => (options?.limit ? pageWarmCalls : warmCalls).push([...urls]), clear:() => clearCalls++, destroy(){}})};
   document.querySelectorAll('[data-gallery-image]').forEach(button => button.addEventListener('click', () => {document.querySelector('[data-product-image]').src = button.dataset.galleryImage;}));
   try {
     window.eval(script);
@@ -66,6 +67,11 @@ test('Rendered AICO colour dots reach quick-buy and the open viewer without losi
     const size = document.querySelector('[data-context-options] select');
     assert.equal(size.value, '43');
     assert.equal(warmCalls.length, 0, 'A hidden viewer must not start full-size preloads during page sync');
+    assert.deepEqual(pageWarmCalls, [], 'The page-wide prefetch waits for the main image');
+    document.querySelector('[data-product-image]').dispatchEvent(new window.Event('load'));
+    await tick();
+    assert.deepEqual(pageWarmCalls, [['/second.jpg','/third.jpg','/fourth.jpg','/black.jpg']], 'Once the main image is on screen every gallery image is warmed for instant swaps');
+    assert.equal(warmCalls.length, 0, 'The page-wide prefetch leaves the viewer cache idle');
     document.querySelector('[data-product-image-open]').click();
     const viewer = document.querySelector('[data-product-viewer]');
     assert.equal(viewer.open, true);

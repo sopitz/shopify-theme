@@ -556,6 +556,45 @@
       if (opener.isConnected) { opener.before(source); opener.remove(); }
     }};
   };
+  // Download and decode every gallery image once the main image is on screen,
+  // so any thumbnail the customer clicks swaps in without a network round trip.
+  // The viewer keeps its own small neighbour cache; this one covers the page.
+  const bindGalleryPrefetch = (gallery, source) => {
+    const idle = {destroy() {}};
+    const urls = [...gallery.querySelectorAll('[data-gallery-image], .gallery-thumb[data-image]')]
+      .map(button => button.dataset.galleryImage || button.dataset.image || '').filter(Boolean);
+    const connection = navigator.connection;
+    if (urls.length < 2 || connection?.saveData || /(^|-)2g$/.test(connection?.effectiveType || '')) return idle;
+    const loader = window.upswingGalleryImagePreload?.create({limit:urls.length});
+    if (!loader) return idle;
+    const lifetime = new AbortController();
+    let timer = 0, callback = 0;
+    const imageKey = value => { try { return new URL(value, location.href).pathname; } catch (_) { return value; } };
+    const warm = () => {
+      if (lifetime.signal.aborted) return;
+      // Start right after the image on screen; the one on screen comes last so
+      // its full-size copy is ready too when the browser picked a smaller source.
+      const current = imageKey(source.currentSrc || source.getAttribute('src') || '');
+      const index = Math.max(0, urls.findIndex(url => imageKey(url) === current));
+      loader.warm(urls.slice(index + 1).concat(urls.slice(0, index + 1)));
+    };
+    const whenIdle = () => {
+      if (lifetime.signal.aborted) return;
+      if (typeof requestIdleCallback === 'function') callback = requestIdleCallback(warm, {timeout:1500});
+      else timer = setTimeout(warm, 0);
+    };
+    if (source.complete) whenIdle();
+    else {
+      source.addEventListener('load', whenIdle, {once:true, signal:lifetime.signal});
+      source.addEventListener('error', whenIdle, {once:true, signal:lifetime.signal});
+    }
+    return {destroy() {
+      lifetime.abort();
+      if (callback && typeof cancelIdleCallback === 'function') cancelIdleCallback(callback);
+      clearTimeout(timer);
+      loader.destroy();
+    }};
+  };
   const bind = () => {
     for (const [root, controller] of controllers) {
       if (!root.isConnected) { controller.destroy(); controllers.delete(root); }
@@ -663,10 +702,11 @@
       window.visualViewport?.addEventListener('scroll', schedule, {passive:true});
       preview.hidden = false;
       viewer = bindViewer(root, gallery, source, main, preview, overview, purchase, schedule);
+      const galleryPrefetch = bindGalleryPrefetch(gallery, source);
       Object.assign(viewerHooks, {isOpen:viewer.isOpen, close:viewer.close, prepare:viewer.prepare});
       syncImage(); update();
       controllers.set(root,{prepareColor:url => viewer.prepare?.('color', url, true),destroy:() => {
-        viewer.destroy(); purchase.destroy();
+        viewer.destroy(); galleryPrefetch.destroy(); purchase.destroy();
         identity.remove();
         resize.disconnect(); mutation.disconnect(); cancelAnimationFrame(frame);
         source.removeEventListener('load', syncImage); root.removeEventListener('change', syncImage);

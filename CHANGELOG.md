@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.34] - 2026-10-21
+
+- Die Produktseite lädt alle Galeriebilder in voller Grösse vor, sobald das Hauptbild angezeigt wird. Ein Klick auf ein beliebiges Vorschaubild wechselt dadurch ohne Nachladen, so wie bisher nur die Nachbarbilder im Vollbild. Die Reihenfolge beginnt beim nächsten Bild nach dem sichtbaren; das sichtbare Bild folgt zuletzt in voller Grösse.
+- Das Vorladen startet erst nach dem Hauptbild, mit niedriger Priorität und höchstens zwei gleichzeitigen Anfragen. Bei aktiviertem Datensparmodus oder 2G-Verbindung bleibt es aus; der Vollbild-Cache arbeitet dann wie bisher.
+- Der Bild-Cache nimmt auf Wunsch mehr als acht Bilder auf, damit Galerien mit bis zu elf Bildern vollständig bereitliegen. Andere Galerien behalten den bisherigen Deckel.
+- Prüfungen für Reihenfolge, Start nach dem Hauptbild, Datensparmodus, Abbau beim Entfernen der Sektion und den Cache-Deckel ergänzt.
+
 ## [1.0.33] - 2026-10-21
 
 - Google-Bewertungen an allen vier freigegebenen Stellen: als schmale Zeile im Header, als drittes Serviceelement unter dem Startbild, als kompakte Karte beim Kassenbutton im gefüllten Warenkorb und als Leiste oberhalb des Fussbereichs. Schrift, blaue Sterne, Abstände und Links folgen dem Theme; mobile Ansichten passen sich der verfügbaren Breite an.
