@@ -33,6 +33,7 @@
     {{ 'color-swatches.css' | asset_url | stylesheet_tag }}
     {{ 'predictive-search.css' | asset_url | stylesheet_tag }}
     {{ 'customer-reviews.css' | asset_url | stylesheet_tag }}
+    {{ 'sticky-header.css' | asset_url | stylesheet_tag }}
     {{ 'manrope-latin.woff2' | asset_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
     <script>document.documentElement.classList.replace('no-js','js');</script>
     <script src="{{ 'filial-links.js' | asset_url }}" defer="defer"></script>

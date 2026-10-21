@@ -4,12 +4,15 @@
 {%- capture header_advice_url -%}{%- render 'filial-anchor-url', url: section.settings.advice_url, fallback_url: '/pages/kontakt' -%}{%- endcapture -%}
 {%- assign header_advice_url = header_advice_url | strip -%}
 <header class="site-header" data-navigation-root>
+  <div class="header-utility" data-header-utility>
   {% if section.settings.show_reviews %}
     <div class="header-review-bar"><div class="container header-review-inner"><p>Persönlich beraten. Von Kundinnen und Kunden empfohlen.</p>{% render 'customer-review-badge', placement: 'header' %}</div></div>
   {% endif %}
   {% if section.settings.announcement != blank %}
     <div class="announcement-bar"><div class="container announcement-inner"><span>{{ section.settings.announcement | escape }}</span><a href="{{ header_advice_url | escape }}">Persönliche Beratung {% render 'icon', name: 'arrow' %}</a></div></div>
   {% endif %}
+  </div>
+  <div class="header-core" data-header-core>
   <div class="container header-main">
     <button class="icon-button menu-toggle" type="button" data-navigation-mobile-toggle aria-controls="MobileNavigation" aria-expanded="false" aria-label="Menü öffnen">{% render 'icon', name: 'menu' %}</button>
     <a href="{{ routes.root_url }}" class="site-logo" style="--logo-width: {{ settings.logo_width }}px" aria-label="{{ shop.name | escape }} – Startseite">
@@ -17,6 +20,7 @@
     </a>
     {% render 'predictive-search-form', id: 'HeaderSearch', class: 'header-search', placeholder: 'Was tut dir gut?', section: section %}
     <div class="header-actions">
+      <a class="icon-button header-mobile-search" href="{{ routes.search_url }}" aria-label="Suche öffnen">{% render 'icon', name: 'search' %}</a>
       <a class="header-advice" href="{{ header_advice_url | escape }}">{% render 'icon', name: 'phone' %}<span>Wir beraten dich gerne</span></a>
       <div class="header-account-cart">
         {% if shop.customer_accounts_enabled %}<a class="icon-button" href="{{ routes.account_url }}" aria-label="Mein Kundenkonto">{% render 'icon', name: 'user' %}</a>{% endif %}
@@ -64,12 +68,15 @@
       {% if header_business_url != blank and menu_has_business == false %}<li><a class="mobile-nav-link" href="{{ header_business_url }}">Für Unternehmen</a></li>{% endif %}
     </ul>
   </nav>
+  </div>
 </header>
 <script src="{{ 'navigation.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'sticky-header.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
 {
   "name": "Kopfbereich",
+  "class": "shopify-section-header",
   "settings": [
     {
       "type": "checkbox",

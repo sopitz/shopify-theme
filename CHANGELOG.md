@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.36] - 2026-10-21
+
+- Header reduziert: kompakte Logo-/Suchzeile und flachere Hauptnavigation. Beim Scrollen bleiben am Desktop rund 114 px und auf dem Handy 65 px sichtbar; Bewertungs- und Servicezeile scrollen nach oben aus dem Bild.
+- Sticky-Verhalten am tatsächlichen Shopify-Abschnittsrahmen verankert. Höhen passen sich an Logo, Servicetext, Bewertungen und Bildschirmbreite an; Hauptinhalt bleibt ohne Layoutsprung im normalen Seitenfluss.
+- Mobile Kopfzeile zeigt Logo, Suche, Kundenkonto, Warenkorb und Menü in einer Zeile. Suche führt direkt zur nativen Suchseite; das aufklappbare Menü enthält weiterhin das Suchfeld. Bedienelemente bleiben mindestens 44 × 44 px gross.
+- Aufgeklappte Menüs und die Warenkorb-Zusammenfassung berücksichtigen den sichtbaren Header. Produktseiten behalten ihre bestehenden dynamischen Abstände für Galerie und Kaufsteuerung.
+- Automatische Prüfungen für Höhenänderungen, Scrollzustand und wiederholtes Laden/Entladen im Theme-Editor ergänzt.
+
 ## [1.0.35] - 2026-10-21
 
 - Farbvarianten ohne nativen Shopify-Swatch (z. B. Airex-Matten mit Farbe anthrazit/blau/rot) zeigen Farbpunkte aus dem AICO-Metafeld `aico.option_value_colors` (Optionsname → Wert → Hex-Liste). Mehrere Werte teilen den Punkt wie bei Produktfarben; gilt für Produktkarten und die Variantenauswahl der Produktseite. Native Swatches haben Vorrang, ohne Eintrag bleibt der Wert als Text.
