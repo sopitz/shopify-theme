@@ -139,7 +139,7 @@ test('a blank main menu has only an editor onboarding prompt and keeps about, se
       assert.equal(document.body.textContent.includes('Wähle im Theme-Editor ein Hauptmenü aus.'), designMode);
       for (const selector of ['.desktop-navigation', '#MobileNavigation']) {
         const nav = document.querySelector(selector);
-        assert.ok(nav.querySelector('[href="/pages/ueber-uns"]'));
+        assert.ok(nav.querySelector('[href="/pages/upswing-werte"]'));
         assert.ok(nav.querySelector('[href="/pages/geschichte"]'));
         assert.ok(nav.querySelector('[href="/pages/standort-thun"] img[src="/assets/about-thun-1.jpg"]'));
       }

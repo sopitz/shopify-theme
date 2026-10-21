@@ -1,4 +1,4 @@
-{%- capture guide_advice_url -%}{%- render 'filial-anchor-url', url: section.settings.advice_url, fallback_url: '/pages/kontakt' -%}{%- endcapture -%}
+{%- capture guide_advice_url -%}{%- render 'filial-anchor-url', url: section.settings.advice_url, fallback_url: '/pages/contact' -%}{%- endcapture -%}
 {%- assign guide_advice_url = guide_advice_url | strip -%}
 {%- capture guide_cards -%}
   {% for block in section.blocks %}

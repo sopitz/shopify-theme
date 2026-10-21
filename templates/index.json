@@ -40,49 +40,65 @@
         "foot": {
           "type": "need",
           "settings": {
-            "target_type": "page"
+            "target_type": "page",
+            "page": "fersensporn-und-andere-fussschmerzen",
+            "topic_label": "Füsse"
           }
         },
         "back": {
           "type": "need",
           "settings": {
-            "target_type": "page"
+            "target_type": "page",
+            "page": "ruckenschmerzen",
+            "topic_label": "Rücken"
           }
         },
         "joints": {
           "type": "need",
           "settings": {
-            "target_type": "page"
+            "target_type": "page",
+            "page": "arthrose-und-gelenkschmerzen",
+            "topic_label": "Gelenke"
           }
         },
         "legs": {
           "type": "need",
           "settings": {
-            "target_type": "page"
+            "target_type": "page",
+            "page": "venenengel",
+            "topic_label": "Beine"
           }
         },
         "sport": {
           "type": "need",
           "settings": {
-            "target_type": "page"
+            "target_type": "page",
+            "page": "trainingsgeraete",
+            "topic_label": "Training"
           }
         },
         "work": {
           "type": "need",
           "settings": {
-            "target_type": "page"
+            "target_type": "page",
+            "page": "arbeitsplatz",
+            "topic_label": "Arbeitsplatz"
           }
         },
         "mobility": {
           "type": "need",
           "settings": {
-            "target_type": "page"
+            "target_type": "page",
+            "page": "gesundheitsschuhe",
+            "topic_label": "Mobilität"
           }
         },
         "sleep": {
           "type": "need",
           "settings": {
-            "target_type": "page"
+            "target_type": "page",
+            "page": "regeneration-im-schlaf",
+            "topic_label": "Schlaf"
           }
         }
       },
@@ -339,7 +355,7 @@
           "settings": {
             "heading": "Mehr Bewegung beim Stehen",
             "description": "Aktive Stehmatten kennenlernen und die passende Ausführung für deinen Alltag finden.",
-            "url": "/pages/kybun-matten"
+            "url": "/pages/arbeitsplatz"
           }
         },
         "recover": {

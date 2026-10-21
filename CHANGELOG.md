@@ -2,11 +2,19 @@
 
 ## [1.0.36] - 2026-10-21
 
+<<<<<<< HEAD
 - Header reduziert: kompakte Logo-/Suchzeile und flachere Hauptnavigation. Beim Scrollen bleiben am Desktop rund 114 px und auf dem Handy 65 px sichtbar; Bewertungs- und Servicezeile scrollen nach oben aus dem Bild.
 - Sticky-Verhalten am tatsächlichen Shopify-Abschnittsrahmen verankert. Höhen passen sich an Logo, Servicetext, Bewertungen und Bildschirmbreite an; Hauptinhalt bleibt ohne Layoutsprung im normalen Seitenfluss.
 - Mobile Kopfzeile zeigt Logo, Suche, Kundenkonto, Warenkorb und Menü in einer Zeile. Suche führt direkt zur nativen Suchseite; das aufklappbare Menü enthält weiterhin das Suchfeld. Bedienelemente bleiben mindestens 44 × 44 px gross.
 - Aufgeklappte Menüs und die Warenkorb-Zusammenfassung berücksichtigen den sichtbaren Header. Produktseiten behalten ihre bestehenden dynamischen Abstände für Galerie und Kaufsteuerung.
 - Automatische Prüfungen für Höhenänderungen, Scrollzustand und wiederholtes Laden/Entladen im Theme-Editor ergänzt.
+=======
+- SEO-Grundlagen im Layout: Meta-Description mit Fallback-Kette (SEO-Feld, sonst Inhalt der Seite, Kollektion oder des Produkts, sonst Standardtext aus den Theme-Einstellungen), gekürzt auf 155 Zeichen. Titelzusatz als Theme-Einstellung «SEO» (Standard «upswing») statt des vollen Shopnamens. `noindex` für Suchergebnisse sowie Hersteller- und Typlisten. BreadcrumbList-Strukturdaten passend zur sichtbaren Brotkrumennavigation. Organisationsdaten mit Telefon, E-Mail und Profil-Links (sameAs) aus den Einstellungen.
+- Verweise auf nicht vorhandene Seiten korrigiert: `/pages/kontakt` → `/pages/contact`, `/pages/ueber-uns` → `/pages/upswing-werte`, `/pages/firmenkunden` → `/pages/b2b`, `/pages/produktberater` → `/pages/themen`, Wissen-Block «Mehr Bewegung beim Stehen» → `/pages/arbeitsplatz`. Betroffen sind Kopfbereich-Fallbacks, Über-uns-Vorlagen, Produktberater, Artikel, Wissen-Block, gespeicherte Theme-Einstellungen sowie Produkt- und Startseiten-Vorlage.
+- Startseite: Die acht Bedarfs-Einstiege verweisen auf die vorhandenen Themenseiten (Fersensporn, Rückenschmerzen, Arthrose, Venen Engel, Trainingsgeräte, Arbeitsplatz, Gesundheitsschuhe, Regeneration im Schlaf).
+- Neue Seitenvorlagen «Markenseite» (`page.marke`) und «Themenseite» (`page.thema`): Shopify-Seiteninhalt, darunter vier Produkte aus der Kollektion im Seiten-Metafeld `upswing.kollektion` (Typ Kollektion) und der Beratungsaufruf. Ohne Metafeld bleibt die Produktreihe verborgen.
+- Prüfungen: korrigierte Fallback-Ziele und dynamische Metafeld-Quellen in Vorlagen zugelassen.
+>>>>>>> 63afbb4 (Release 1.0.36: SEO-Grundlagen im Layout, tote Verweise korrigiert, Themenseiten-Einstiege, Vorlagen Markenseite und Themenseite)
 
 ## [1.0.35] - 2026-10-21
 

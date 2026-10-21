@@ -1,0 +1,59 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "content_source": "page"
+      }
+    },
+    "models": {
+      "type": "featured-products",
+      "settings": {
+        "eyebrow": "AUS DEM SORTIMENT",
+        "heading": "Aktuelle Modelle",
+        "description": "",
+        "link_label": "Alle anzeigen",
+        "collection": "{{ page.metafields.upswing.kollektion }}",
+        "product_count": 4,
+        "randomize": true,
+        "link_position": "bottom"
+      }
+    },
+    "advice": {
+      "type": "advice-banner",
+      "blocks": {
+        "benefit0": {
+          "type": "benefit",
+          "settings": {
+            "text": "In Ruhe ausprobieren und anprobieren"
+          }
+        },
+        "benefit1": {
+          "type": "benefit",
+          "settings": {
+            "text": "Verständliche Antworten auf deine Fragen"
+          }
+        },
+        "benefit2": {
+          "type": "benefit",
+          "settings": {
+            "text": "Persönliche Beratung in 5 Schweizer Filialen"
+          }
+        }
+      },
+      "block_order": [
+        "benefit0",
+        "benefit1",
+        "benefit2"
+      ],
+      "settings": {
+        "primary_url": "/pages/filialubersicht#Filialen"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "models",
+    "advice"
+  ]
+}

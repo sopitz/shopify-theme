@@ -161,7 +161,7 @@ test('guide missing links never create catalog fallbacks, while editorial advice
     const blocks = [block({collection:selected, title:'Alt', description:'Alttext', url:'/collections/kybun-schuhe'})];
     const storefront = await render('main-guide', {blocks});
     assert.equal(storefront.querySelector('.need-card, .guide-grid, a[href*="/collections/"], a[href*="/products/"]'), null);
-    assert.ok(storefront.querySelector('a[href="/pages/kontakt"]'));
+    assert.ok(storefront.querySelector('a[href="/pages/contact"]'));
     const editor = await render('main-guide', {blocks, editor:true});
     assert.equal(editor.querySelector('a.need-card, a[href*="/collections/"]'), null);
     assert.match(editor.body.textContent, /Collection auswählen/);
@@ -201,11 +201,12 @@ const retired = new Set([
 const catalogTypes = new Set(['product', 'collection', 'product_list', 'collection_list']);
 const editorialTypes = new Set(['main-page', 'main-about-page', 'main-article', 'main-blog', 'main-b2b']);
 function empty(value) { return value == null || value === '' || (Array.isArray(value) && value.length === 0); }
+function dynamicSource(value) { return typeof value === 'string' && /^\{\{\s*(page|product|collection|article|blog)\.metafields\.[a-z0-9_]+\.[a-z0-9_]+\s*\}\}$/.test(value); }
 function checkSettings(values={}, definitions=[], location, editorial=false) {
   const schema = new Map(definitions.filter(item => item.id).map(item => [item.id, item]));
   for (const [id, value] of Object.entries(values)) {
     assert.equal(retired.has(id), false, `${location}/${id}: retired catalog/menu/delivery/shipping setting must be deleted`);
-    if (catalogTypes.has(schema.get(id)?.type)) assert.ok(empty(value) || (location === 'templates/index.json/sections/kybun/settings' && id === 'collection' && value === 'kybun-schuhe'), `${location}/${id}: distributed theme must not seed a product or collection handle`);
+    if (catalogTypes.has(schema.get(id)?.type)) assert.ok(empty(value) || dynamicSource(value) || (location === 'templates/index.json/sections/kybun/settings' && id === 'collection' && value === 'kybun-schuhe'), `${location}/${id}: distributed theme must not seed a product or collection handle`);
     if (!editorial && typeof value === 'string') {
       const target = value.match(/\/(products|collections)\/([^/?#"'\s]+)/);
       assert.ok(!target || (target[1] === 'collections' && target[2] === 'all'), `${location}/${id}: fixed catalog URL cannot replace a selected Shopify entity`);

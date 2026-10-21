@@ -22,12 +22,12 @@
         "settings": {
           "announcement": "",
           "menu": "simon-hauptmen",
-          "advice_url": "/pages/kontakt",
-          "b2b_url": "/pages/firmenkunden",
+          "advice_url": "/pages/contact",
+          "b2b_url": "/pages/b2b",
           "guide_label": "Wissen & Ratgeber",
-          "guide_url": "/pages/produktberater",
+          "guide_url": "/pages/themen",
           "about_label": "Über uns",
-          "about_url": "/pages/ueber-uns",
+          "about_url": "/pages/upswing-werte",
           "about_menu": "simon-ber-uns"
         }
       },
@@ -63,7 +63,7 @@
         ],
         "settings": {
           "description": "Hochwertige Produkte. Persönliche Beratung. Für mehr Leichtigkeit in deinem Alltag.",
-          "advice_url": "/pages/kontakt",
+          "advice_url": "/pages/contact",
           "show_payment_icons": true
         }
       }

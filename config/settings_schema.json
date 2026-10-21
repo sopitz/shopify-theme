@@ -5,7 +5,7 @@
     "theme_version": "1.0.36",
     "theme_author": "Upswing",
     "theme_documentation_url": "https://upswing.ch",
-    "theme_support_url": "https://upswing.ch/pages/kontakt"
+    "theme_support_url": "https://upswing.ch/pages/contact"
   },
   {
     "name": "Logo & Kontakt",
@@ -39,6 +39,35 @@
         "type": "text",
         "id": "contact_email",
         "label": "E-Mail-Adresse"
+      }
+    ]
+  },
+  {
+    "name": "SEO",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Seitentitel und Beschreibung kommen aus den Shopify-SEO-Feldern der Seite, Kollektion oder des Produkts. Diese Einstellungen füllen die Lücken, wenn ein Feld leer ist."
+      },
+      {
+        "type": "text",
+        "id": "seo_title_suffix",
+        "label": "Titelzusatz",
+        "default": "upswing",
+        "info": "Wird mit « · » an jeden Seitentitel angehängt, wenn der Titel den Zusatz nicht schon enthält. Die Startseite verwendet den Shopnamen."
+      },
+      {
+        "type": "textarea",
+        "id": "seo_default_description",
+        "label": "Standard-Beschreibung",
+        "default": "upswing: Gesundheitsschuhe von kybun, Joya und leguano, Trainingsgeräte und Regeneration mit persönlicher Beratung in fünf Schweizer Filialen.",
+        "info": "Gilt für Seiten ohne SEO-Beschreibung und ohne eigenen Inhalt, zum Beispiel die Startseite."
+      },
+      {
+        "type": "textarea",
+        "id": "seo_same_as",
+        "label": "Profile der Firma (sameAs)",
+        "info": "Eine Adresse je Zeile ohne Leerzeichen: Google-Unternehmensprofil, Facebook, Instagram, local.ch. Erscheint in den Organisationsdaten für Suchmaschinen."
       }
     ]
   },
