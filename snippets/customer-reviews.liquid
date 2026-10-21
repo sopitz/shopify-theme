@@ -1,0 +1,19 @@
+{%- assign reviews_url = settings.reviews_url | default: section.settings.reviews_url | default: 'https://share.google/rq63tyE1ku834ANfK' -%}
+<section class="customer-reviews" aria-label="Kundenbewertungen">
+  <upswing-reviews class="container customer-reviews-inner" data-widget-id="{{ settings.reviews_widget_id | default: section.settings.reviews_widget_id | default: 'mt0kalx0rn3kuz7uwle88avzlqbigvq6yttlqkoc' | escape }}">
+    <div class="customer-reviews-copy">
+      <p class="eyebrow">ERFAHRUNGEN MIT UPSWING</p>
+      <h2>Dein Vertrauen bewegt uns.</h2>
+    </div>
+    <div class="customer-reviews-summary">
+      <div class="customer-reviews-rating" data-review-rating hidden>
+        <span class="sr-only" data-review-label></span>
+        <div class="customer-reviews-score" aria-hidden="true"><strong data-review-score></strong><span>/ 5</span></div>
+        <div class="customer-reviews-stars" aria-hidden="true"><span>★★★★★</span><span data-review-stars>★★★★★</span></div>
+      </div>
+      <p class="customer-reviews-source" data-review-count>Kundenbewertungen auf Google</p>
+      <a class="customer-reviews-attribution" href="https://reviewsplugin.com/" target="_blank" rel="noopener noreferrer" data-review-attribution hidden>Reviews by ReviewsPlugin<span class="sr-only"> (öffnet in neuem Tab)</span></a>
+    </div>
+    <a class="button secondary customer-reviews-link" href="{{ reviews_url | escape }}" target="_blank" rel="noopener noreferrer">Bewertungen ansehen {% render 'icon', name: 'arrow' %}<span class="sr-only"> (öffnet in neuem Tab)</span></a>
+  </upswing-reviews>
+</section>

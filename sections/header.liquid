@@ -4,6 +4,9 @@
 {%- capture header_advice_url -%}{%- render 'filial-anchor-url', url: section.settings.advice_url, fallback_url: '/pages/kontakt' -%}{%- endcapture -%}
 {%- assign header_advice_url = header_advice_url | strip -%}
 <header class="site-header" data-navigation-root>
+  {% if section.settings.show_reviews %}
+    <div class="header-review-bar"><div class="container header-review-inner"><p>Persönlich beraten. Von Kundinnen und Kunden empfohlen.</p>{% render 'customer-review-badge', placement: 'header' %}</div></div>
+  {% endif %}
   {% if section.settings.announcement != blank %}
     <div class="announcement-bar"><div class="container announcement-inner"><span>{{ section.settings.announcement | escape }}</span><a href="{{ header_advice_url | escape }}">Persönliche Beratung {% render 'icon', name: 'arrow' %}</a></div></div>
   {% endif %}
@@ -68,6 +71,13 @@
 {
   "name": "Kopfbereich",
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_reviews",
+      "label": "Google-Bewertungen im Header anzeigen",
+      "default": true,
+      "info": "Widget und Google-Link unter Theme-Einstellungen → Google-Bewertungen pflegen."
+    },
     {
       "type": "text",
       "id": "announcement",

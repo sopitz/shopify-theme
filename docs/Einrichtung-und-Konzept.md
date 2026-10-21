@@ -121,6 +121,14 @@ Die bestehenden Filial-, Über-uns-, Chronik-, Team- und Serviceinhalte bleiben 
 
 Die lokale Designvorschau liegt getrennt von den nativen Theme-Quellen. Ihre Beispielprodukte, Preise und Bestände sind gekennzeichnete Momentaufnahmen für die Gestaltung. Lokaler Warenkorb, interaktive Beratung und Vorschauformulare belegen keine aktuelle Shopify-Verfügbarkeit, Formularzustellung oder funktionierende Shop-Zahlung. Für die Freigabe zählt die Prüfung des unveröffentlichten Themes mit den echten Shopdaten.
 
+## Google-Bewertungen
+
+Die Google-Bewertungen erscheinen im Header, als zusätzliches Element in der Servicezeile unter dem Startbild, beim Kassenbutton im gefüllten Warenkorb und oberhalb des Fussbereichs. Jede Platzierung lässt sich im jeweiligen Abschnitt einzeln ein- und ausschalten. Die gemeinsame Widget-ID und der Rezensionslink stehen unter **Theme-Einstellungen → Google-Bewertungen**. Standardmässig verwenden alle Anzeigen das bestehende ReviewsPlugin-Widget `mt0kalx0rn3kuz7uwle88avzlqbigvq6yttlqkoc` und dessen bisherigen Google-Link.
+
+Sterne und Bewertungsanzahl stammen aus der Zusammenfassung aller Filialen, die die vorhandene App öffentlich ausliefert. Es wird weder der Durchschnitt der gefilterten Einzelrezensionen berechnet noch die Zahl 4,6 / 222 im Theme festgeschrieben. Die Aktualisierung und Zusammenfassung der Google-Daten übernimmt weiterhin ReviewsPlugin; das Theme lädt diese beim Annähern an die jeweilige Anzeige. Alle Platzierungen teilen sich denselben Abruf, damit die App pro Seite nur einmal angefragt wird. Eine vom Anbieter verlangte Quellenangabe bleibt sichtbar.
+
+Ohne JavaScript, bei fehlenden Daten oder einem nicht erreichbaren Dienst bleiben «Kundenbewertungen auf Google» und der Rezensionslink sichtbar; es werden keine ungeprüften Sterne angezeigt. Bei einem Widget-Wechsel auch den Google-Link kontrollieren. Die bisherige schwebende App-Einbettung im neuen Theme ausgeschaltet lassen, damit die Bewertungen nicht doppelt erscheinen.
+
 ## Prüfung vor Veröffentlichung
 
 Im unveröffentlichten Shopify-Theme mindestens Folgendes prüfen:

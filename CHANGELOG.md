@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.33] - 2026-10-21
+
+- Google-Bewertungen an allen vier freigegebenen Stellen: als schmale Zeile im Header, als drittes Serviceelement unter dem Startbild, als kompakte Karte beim Kassenbutton im gefüllten Warenkorb und als Leiste oberhalb des Fussbereichs. Schrift, blaue Sterne, Abstände und Links folgen dem Theme; mobile Ansichten passen sich der verfügbaren Breite an.
+- Alle Anzeigen laden Bewertung und Anzahl aus der bestehenden ReviewsPlugin-Zusammenfassung aller Filialen und teilen sich einen einzigen Abruf pro Seite. Keine festgeschriebenen Bewertungszahlen und keine Berechnung aus gefilterten Einzelrezensionen. Ohne JavaScript oder bei einem Dienstausfall bleibt der Google-Link erreichbar.
+- Gemeinsame Widget-ID und Rezensionslink unter «Theme-Einstellungen → Google-Bewertungen» pflegbar; jede Platzierung lässt sich im jeweiligen Abschnitt separat ausschalten. Die schwebende App-Einbettung im neuen Theme ausgeschaltet lassen, um eine doppelte Anzeige zu vermeiden.
+- Funktionsprüfungen für gemeinsame Datenabfrage, richtige Summen, Dienstausfall, ungültige Daten, Quellenangabe und Editor-Neuladen ergänzt. Enthält die aktuellen Startseitenänderungen und die Du-Ansprache aus 1.0.32.
+
 ## [1.0.32] - 2026-10-21
 
 - Ansprache im gesamten Theme von «Sie» auf «du» umgestellt: Startseite, Header, Footer, Suche, Kollektionen, Produktseite, Warenkorb, Kontakt- und B2B-Formulare, Geschenkgutschein, Passwortseite, 404 sowie die redaktionellen Beispielseiten (Filialen, Premium Service, Geschichte, Stellen). Verben und Imperative entsprechend angepasst («Entdecke», «findest du», «Schreib uns»).

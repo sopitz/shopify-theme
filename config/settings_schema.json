@@ -2,7 +2,7 @@
   {
     "name": "theme_info",
     "theme_name": "Upswing Wellbeing",
-    "theme_version": "1.0.32",
+    "theme_version": "1.0.33",
     "theme_author": "Upswing",
     "theme_documentation_url": "https://upswing.ch",
     "theme_support_url": "https://upswing.ch/pages/kontakt"
@@ -132,6 +132,28 @@
         "id": "main_category_training_tags",
         "label": "Bewegung & Training: Produkt-Tags",
         "default": "category_130"
+      }
+    ]
+  },
+  {
+    "name": "Google-Bewertungen",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Gemeinsame Quelle für Header, Servicezeile, Warenkorb und Fussbereich. Die Anzeige lässt sich in jedem Abschnitt separat ausschalten."
+      },
+      {
+        "type": "text",
+        "id": "reviews_widget_id",
+        "label": "ReviewsPlugin Widget-ID",
+        "default": "mt0kalx0rn3kuz7uwle88avzlqbigvq6yttlqkoc",
+        "info": "Die bestehende Zusammenfassung aller Filialen. Sterne und Anzahl aktualisiert die App."
+      },
+      {
+        "type": "url",
+        "id": "reviews_url",
+        "label": "Link zu den Google-Bewertungen",
+        "info": "Ohne eigene Auswahl wird der bisherige Google-Link verwendet."
       }
     ]
   }

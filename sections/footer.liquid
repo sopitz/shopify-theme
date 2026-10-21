@@ -1,5 +1,8 @@
 {%- capture footer_advice_url -%}{%- render 'filial-anchor-url', url: section.settings.advice_url, fallback_url: '/pages/kontakt' -%}{%- endcapture -%}
 {%- assign footer_advice_url = footer_advice_url | strip -%}
+{% if section.settings.show_reviews %}
+  {% render 'customer-reviews', section: section %}
+{% endif %}
 <footer class="site-footer">
   <div class="container footer-grid">
     <div class="footer-brand"><a href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }} – Startseite"><img src="{{ 'upswing-logo.png' | asset_url }}" alt="{{ shop.name | escape }}" width="160" height="44" loading="lazy"></a><p>{{ section.settings.description | escape }}</p><a class="text-link" href="{{ footer_advice_url | escape }}">Wir sind für dich da {% render 'icon', name: 'arrow' %}</a></div>
@@ -13,6 +16,20 @@
 {
   "name": "Fussbereich",
   "settings": [
+    {
+      "type": "header",
+      "content": "Google-Bewertungen"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_reviews",
+      "label": "Bewertungen oberhalb des Fussbereichs anzeigen",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Fussbereich"
+    },
     {
       "type": "text",
       "id": "description",

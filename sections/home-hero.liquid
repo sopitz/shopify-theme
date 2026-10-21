@@ -4,13 +4,19 @@
       <div class="hero-copy"><p class="eyebrow">{{ section.settings.eyebrow | escape }}</p><h1 id="HeroTitle-{{ section.id }}">{% assign hero_heading_lines = section.settings.heading | newline_to_br | split: '<br />' %}{% for line in hero_heading_lines %}{% unless forloop.first %}<br>{% endunless %}{% if forloop.last and forloop.index > 1 and section.settings.italic_last_line %}<em>{{ line | strip | escape }}</em>{% else %}{{ line | strip | escape }}{% endif %}{% endfor %}</h1><div class="hero-description">{{ section.settings.description }}</div><div class="hero-buttons"><a href="{{ section.settings.primary_url | default: '/pages/produktberater' | escape }}" class="button">{{ section.settings.primary_label | escape }} {% render 'icon', name: 'arrow' %}</a><a href="{{ section.settings.secondary_url | default: routes.all_products_collection_url }}" class="button secondary">{{ section.settings.secondary_label | escape }}</a></div><div class="hero-reassurance">{% render 'icon', name: 'check' %}<span>{{ section.settings.reassurance | escape }}</span></div></div>
       <div class="hero-media">{% if section.settings.image != blank %}{{ section.settings.image | image_url: width: 1800 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '480, 720, 1000, 1400, 1800', sizes: '(min-width: 900px) 48vw, 100vw', alt: section.settings.image.alt }}{% else %}<img src="{{ 'hero-mobile.jpg' | asset_url }}" width="1000" height="1250" alt="Bewegung in der Natur – bewusst und mit Leichtigkeit" loading="eager" fetchpriority="high">{% endif %}{% if section.settings.show_badge %}<div class="hero-stamp">{% render 'icon', name: 'leaf' %}<span class="hero-stamp-label"><span>Für mehr</span><span>Wohlbefinden</span></span></div>{% endif %}<div class="hero-image-label"><span>{{ section.settings.image_label | escape }}</span>{% render 'icon', name: 'leaf' %}</div></div>
     </div>
-    <div class="trust-strip" aria-label="Unser Service">{% for block in section.blocks %}<div class="trust-item" {{ block.shopify_attributes }}>{% render 'icon', name: block.settings.icon %}<span><strong>{{ block.settings.title | escape }}</strong><small>{{ block.settings.text | escape }}</small></span></div>{% endfor %}</div>
+    <div class="trust-strip{% if section.settings.show_reviews %} trust-strip-with-reviews{% endif %}" aria-label="Unser Service">{% for block in section.blocks %}<div class="trust-item" {{ block.shopify_attributes }}>{% render 'icon', name: block.settings.icon %}<span><strong>{{ block.settings.title | escape }}</strong><small>{{ block.settings.text | escape }}</small></span></div>{% endfor %}{% if section.settings.show_reviews %}<div class="trust-item trust-item-reviews">{% render 'customer-review-badge', placement: 'service' %}</div>{% endif %}</div>
   </div>
 </section>
 {% schema %}
 {
   "name": "Startseite · Einstieg",
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_reviews",
+      "label": "Google-Bewertungen in der Servicezeile anzeigen",
+      "default": true
+    },
     {
       "type": "checkbox",
       "id": "show_badge",

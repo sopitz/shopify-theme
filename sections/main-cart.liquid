@@ -37,6 +37,7 @@
           {%- if shop.shipping_policy != blank -%}<p class="cart-shipping-note">{% render 'icon', name: 'truck' %}<a href="{{ shop.shipping_policy.url }}">Versandbedingungen</a></p>{%- endif -%}
           <button class="button checkout-button" type="submit" name="checkout">Zur sicheren Kasse {% render 'icon', name: 'arrow' %}</button>
           {% render 'cart-payment-methods', additional_methods: section.settings.additional_payment_methods %}
+          {% if section.settings.show_reviews %}<div class="cart-review-proof"><p class="cart-review-heading">Von Kundinnen und Kunden empfohlen.</p>{% render 'customer-review-badge', placement: 'cart' %}</div>{% endif %}
           <div class="cart-help"><strong>Fragen vor dem Kauf?</strong><p>Wir helfen bei Grösse, Anwendung und Auswahl.</p><a class="text-link" href="{{ onsite_consultation_url | escape }}">Persönliche Beratung</a></div>
           {%- if shop.refund_policy != blank -%}<a class="text-link" href="{{ shop.refund_policy.url }}">Rückgabe- und Erstattungsbedingungen</a>{%- endif -%}
         </aside>
@@ -50,6 +51,12 @@
 {
   "name": "Warenkorb",
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_reviews",
+      "label": "Google-Bewertungen beim Kassenbutton anzeigen",
+      "default": true
+    },
     {
       "type": "text",
       "id": "additional_payment_methods",

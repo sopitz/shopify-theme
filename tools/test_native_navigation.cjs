@@ -8,6 +8,7 @@ const {Liquid} = require('liquidjs');
 const repo = path.resolve(__dirname, '..');
 const engine = new Liquid({root:path.join(repo, 'snippets'), extname:'.liquid', strictFilters:true});
 engine.registerFilter('asset_url', name => `/assets/${name}`);
+engine.registerFilter('stylesheet_tag', url => `<link rel="stylesheet" href="${url}">`);
 engine.registerFilter('image_url', image => image.src);
 engine.registerFilter('image_tag', url => `<img src="${url}" alt="">`);
 engine.registerFilter('payment_type_svg_tag', () => '<svg></svg>');
