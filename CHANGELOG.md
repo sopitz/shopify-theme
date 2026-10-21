@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.0.38] - 2026-10-21
+
+- Restliche Rückfallziele auf vorhandene Seiten umgestellt: Kopfbereich (Firmen, Ratgeber, Über uns, Beratung), Fussbereich (Beratung und Service-Liste ohne Menü), Startseiten-Hero, Firmen-Banner und Beratungs-Banner verweisen auf `/pages/b2b`, `/pages/themen`, `/pages/upswing-werte` und `/pages/contact`. Damit bleibt im Theme kein fester Verweis auf eine nicht vorhandene Seite; offen sind nur Menüeinträge im Shop (`/collections/bewegung`, `/collections/regeneration`).
+
 ## [1.0.37] - 2026-10-21
 
 - SEO-Grundlagen im Layout: Meta-Description mit Fallback-Kette (SEO-Feld, sonst Inhalt der Seite, Kollektion oder des Produkts, sonst Standardtext aus den Theme-Einstellungen), gekürzt auf 155 Zeichen. Titelzusatz als Theme-Einstellung «SEO» (Standard «upswing») statt des vollen Shopnamens. `noindex` für Suchergebnisse sowie Hersteller- und Typlisten. BreadcrumbList-Strukturdaten passend zur sichtbaren Brotkrumennavigation. Organisationsdaten mit Telefon, E-Mail und Profil-Links (sameAs) aus den Einstellungen.

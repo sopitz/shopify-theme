@@ -1,7 +1,7 @@
-{%- assign header_business_url = section.settings.b2b_url | default: '/pages/firmenkunden' -%}
-{%- assign header_guide_url = section.settings.guide_url | default: '/pages/produktberater' -%}
-{%- assign header_about_url = section.settings.about_url | default: '/pages/ueber-uns' -%}
-{%- capture header_advice_url -%}{%- render 'filial-anchor-url', url: section.settings.advice_url, fallback_url: '/pages/kontakt' -%}{%- endcapture -%}
+{%- assign header_business_url = section.settings.b2b_url | default: '/pages/b2b' -%}
+{%- assign header_guide_url = section.settings.guide_url | default: '/pages/themen' -%}
+{%- assign header_about_url = section.settings.about_url | default: '/pages/upswing-werte' -%}
+{%- capture header_advice_url -%}{%- render 'filial-anchor-url', url: section.settings.advice_url, fallback_url: '/pages/contact' -%}{%- endcapture -%}
 {%- assign header_advice_url = header_advice_url | strip -%}
 <header class="site-header" data-navigation-root>
   <div class="header-utility" data-header-utility>
