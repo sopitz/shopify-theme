@@ -7,7 +7,7 @@ const {JSDOM, VirtualConsole} = require('jsdom');
 const tick = () => new Promise(resolve => setTimeout(resolve, 0));
 const flush = async () => { await tick(); await tick(); };
 
-function fixture() {
+function fixture(options) {
   const errors = [];
   const virtualConsole = new VirtualConsole();
   virtualConsole.on('jsdomError', error => errors.push(error));
@@ -63,7 +63,7 @@ function fixture() {
   }
   window.Image = ControlledImage;
   window.eval(fs.readFileSync(path.join(__dirname, '../assets/gallery-image-preload.js'), 'utf8'));
-  const loader = window.upswingGalleryImagePreload.create();
+  const loader = window.upswingGalleryImagePreload.create(options);
   return {
     window, loader, images, errors,
     get maxActive() { return maxActive; },
@@ -214,4 +214,35 @@ test('Retain up to eight decoded images and evict the oldest ready entry', async
     await state.succeed(state.requests(urls[0])[1]);
     assert.deepEqual(state.errors, []);
   } finally { state.close(); }
+});
+
+test('A caller-defined limit retains a whole product gallery beyond eight images', async () => {
+  const state = fixture({limit:11});
+  const urls = Array.from({length:11}, (_, index) => `https://cdn.example.test/gallery-${index}.jpg?width=1400`);
+  try {
+    state.loader.warm(urls);
+    await flush();
+    assert.equal(state.images.length, 2, 'Concurrency stays at two even for a full gallery');
+    while (state.images.some(image => image.loading)) await state.succeed(state.images.find(image => image.loading));
+    assert.deepEqual(state.images.map(image => image.src), urls, 'Every requested image is downloaded once');
+    state.loader.warm(urls);
+    await flush();
+    assert.equal(state.images.length, 11, 'All eleven decoded images stay reusable');
+    assert.ok(state.maxActive <= 2);
+    assert.deepEqual(state.errors, []);
+  } finally { state.close(); }
+});
+
+test('Invalid limits fall back to the default of eight', async () => {
+  for (const limit of [undefined, 0, -3, 'many', NaN]) {
+    const state = fixture({limit});
+    const urls = Array.from({length:9}, (_, index) => `https://cdn.example.test/default-${index}.jpg`);
+    try {
+      state.loader.warm(urls);
+      await flush();
+      while (state.images.some(image => image.loading)) await state.succeed(state.images.find(image => image.loading));
+      assert.equal(state.images.length, 8, `Limit ${String(limit)} keeps the default cap`);
+      assert.deepEqual(state.errors, []);
+    } finally { state.close(); }
+  }
 });

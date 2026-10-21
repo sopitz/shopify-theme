@@ -1,6 +1,6 @@
 {
   "name": "upswing-shopify-theme",
-  "version": "1.0.33",
+  "version": "1.0.34",
   "private": true,
   "scripts": {
     "test": "node --test tools/test_*.cjs"

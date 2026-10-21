@@ -1,7 +1,10 @@
-/* Keep nearby full-size gallery images downloaded and decoded before navigation. */
+/* Keep full-size gallery images downloaded and decoded before navigation. */
 (() => {
   if (window.upswingGalleryImagePreload) return;
-  window.upswingGalleryImagePreload = { create() {
+  window.upswingGalleryImagePreload = { create(options) {
+    // Retain eight decoded images unless the caller asks for a larger gallery.
+    const requested = Math.floor(Number(options?.limit));
+    const limit = requested > 0 ? requested : 8;
     const cache = new Map(), active = new Set();
     let queue = [], wanted = new Set(), destroyed = false;
     const key = value => {
@@ -13,7 +16,7 @@
     };
     const trim = () => {
       for (const [url, entry] of cache) {
-        if (cache.size <= 8) break;
+        if (cache.size <= limit) break;
         if (!active.has(entry) && !wanted.has(url)) cache.delete(url);
       }
     };
@@ -48,7 +51,7 @@
     return {
       warm(urls) {
         if (destroyed) return;
-        const candidates = [...new Set(urls.map(key).filter(Boolean))].slice(0, 8);
+        const candidates = [...new Set(urls.map(key).filter(Boolean))].slice(0, limit);
         wanted = new Set(candidates); queue = [];
         for (const [url, entry] of cache) if (!entry.image && !wanted.has(url)) cache.delete(url);
         for (const url of candidates) {
