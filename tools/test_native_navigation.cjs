@@ -111,7 +111,8 @@ test('third-level cards distinguish an exact parent prefix without changing full
   assert.equal(computedStyle(document.querySelector('.mega-submenu')).display, 'contents');
   for (const card of document.querySelectorAll('.mega-card-grid .mega-card')) {
     assert.equal(computedStyle(card).padding, '9px 10px');
-    assert.equal(computedStyle(card.querySelector('.mega-card-media')).height, '96px');
+    assert.equal(computedStyle(card.querySelector('.mega-card-media')).height, 'auto');
+    assert.equal(computedStyle(card.querySelector('.mega-card-media')).aspectRatio, '1/1');
   }
   assert.equal(computedStyle(document.querySelector('.mega-card-parent-title')).fontWeight, '400');
   assert.equal(computedStyle(document.querySelector('.mega-card-category-title')).fontWeight, '600');

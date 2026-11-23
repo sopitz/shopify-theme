@@ -20,7 +20,7 @@
 .mega-child{min-width:0}
 .mega-card{display:block;padding:9px 10px;border-radius:9px;transition:background .15s}
 .mega-card:hover{background:var(--sage)}
-.mega-card-media{height:96px;display:flex;align-items:center;justify-content:center;background:var(--cream);border-radius:7px;margin-bottom:12px;padding:7px}
+.mega-card-media{height:auto;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;background:var(--cream);border-radius:7px;margin-bottom:12px;padding:7px}
 .mega-card-media img{height:100%;width:100%;object-fit:contain;mix-blend-mode:multiply}
 .mega-card-copy{min-height:38px}
 .mega-card-title{font-size:13px;line-height:1.45;font-weight:600;display:block;overflow-wrap:break-word;hyphens:auto}
