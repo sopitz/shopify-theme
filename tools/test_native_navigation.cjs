@@ -63,7 +63,7 @@ test('renamed nested collections use the current Shopify target, label and image
   assert.equal(document.querySelector('[src*="nav-schuhe-"]'), null);
 });
 
-test('third-level cards distinguish an exact parent prefix without changing full titles, nesting or targets', async () => {
+test('subcategory image cards share a visual group with their parent while preserving accessible titles and targets', async () => {
   const titles = ['Venen Engel Massagegeräte', 'Venen Engel Zubehör', 'Venen Engel Mietgeräte', 'Venen Engels Beratung', 'Tipps für Venen Engel', 'Venen Engel', 'Venen Engel Zubehör & <Pflege>', 'Venen Engel ', 'Venen Engel  Zubehör', ' Venen Engel Zubehör'];
   const grandchildren = titles.map((title, index) => link(title, `/de/collections/engel-${index}?view=nav&sort_by=title`, {
     current:index === 1, type:'collection_link', object:{image:{src:`/shopify/grandchild-${index}.jpg`}},
@@ -98,24 +98,35 @@ test('third-level cards distinguish an exact parent prefix without changing full
       assert.ok(anchors.every(anchor => anchor.childElementCount === 0), 'Mobile third-level links remain escaped text without thumbnails');
     }
   }
-  assert.equal(document.querySelector('.mega-card-title').textContent, 'Venen Engel');
+  assert.equal(document.querySelector('.mega-group-heading').textContent, 'Venen Engel');
+  assert.equal(document.querySelector('.mega-group-overview .mega-card-title').textContent, 'Übersicht');
+  assert.equal(document.querySelector('.mega-group-overview').getAttribute('href'), child.url);
+  assert.equal(document.querySelector('.mega-group-overview').getAttribute('aria-label'), 'Venen Engel – Übersicht');
   assert.equal(document.querySelector('.mega-card img').getAttribute('src'), '/shopify/venen-engel.jpg');
   assert.equal(document.querySelectorAll('.mega-card-grid > li').length, 2);
-  assert.deepEqual([...document.querySelectorAll('.mega-card-grid .mega-card-title')].map(title => title.textContent), ['Venen Engel', ...titles, 'Schlafen']);
+  assert.deepEqual([...document.querySelectorAll('.mega-card-grid .mega-card-title')].map(title => title.textContent), ['Übersicht', ...titles, 'Schlafen']);
   assert.equal(JSON.stringify(links), originalMenu);
   const style = document.createElement('style');
   style.textContent = readFileSync(path.join(repo, 'assets/mega-menu.css'), 'utf8');
   document.head.append(style);
   const computedStyle = element => document.defaultView.getComputedStyle(element);
-  assert.equal(computedStyle(document.querySelector('.mega-child--has-submenu')).display, 'contents');
+  assert.equal(computedStyle(document.querySelector('.mega-child--has-submenu')).display, 'grid');
+  assert.equal(document.querySelector('.mega-child--has-submenu').style.getPropertyValue('--mega-group-columns'), '5', 'Large groups stay within the five-column menu');
   assert.equal(computedStyle(document.querySelector('.mega-submenu')).display, 'contents');
+  assert.equal(computedStyle(document.querySelector('.mega-group-heading')).position, 'absolute');
+  assert.equal(computedStyle(document.querySelector('.mega-group-overview .mega-card-title')).fontWeight, '500');
+  for (const anchor of document.querySelectorAll('.mega-submenu-link')) {
+    assert.equal(computedStyle(anchor.querySelector('.mega-card-title')).fontWeight, '500');
+    const prefix = anchor.querySelector('.mega-card-parent-title');
+    if (prefix) assert.equal(computedStyle(prefix).display, 'none');
+  }
   for (const card of document.querySelectorAll('.mega-card-grid .mega-card')) {
     assert.equal(computedStyle(card).padding, '9px 10px');
     assert.equal(computedStyle(card.querySelector('.mega-card-media')).height, 'auto');
     assert.equal(computedStyle(card.querySelector('.mega-card-media')).aspectRatio, '1/1');
   }
   assert.equal(computedStyle(document.querySelector('.mega-card-parent-title')).fontWeight, '400');
-  assert.equal(computedStyle(document.querySelector('.mega-card-category-title')).fontWeight, '600');
+  assert.equal(computedStyle(document.querySelector('.mega-card-category-title').parentElement).fontWeight, '500');
   for (const [parentTitle, title, expectedSplit] of [
     ['', ' Zubehör', false],
     ['Venen & <Engel>', 'Venen & <Engel> Zubehör & <Pflege>', true],
