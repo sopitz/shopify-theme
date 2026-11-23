@@ -4,7 +4,7 @@
       "type": "main-product",
       "settings": {
         "consultation_url": "/pages/filialubersicht",
-        "b2b_url": "/pages/firmenkunden"
+        "b2b_url": "/pages/b2b"
       }
     },
     "related": {

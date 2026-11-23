@@ -1,7 +1,7 @@
 {% liquid
   assign about_title = header_section.settings.about_label | default: 'Über uns'
-  assign about_url = header_section.settings.about_url | default: about_link.url | default: '/pages/ueber-uns'
-  assign about_advice_url = header_section.settings.advice_url | default: '/pages/kontakt'
+  assign about_url = header_section.settings.about_url | default: about_link.url | default: '/pages/upswing-werte'
+  assign about_advice_url = header_section.settings.advice_url | default: '/pages/contact'
   assign about_links = header_section.settings.about_menu.links
   if about_links == blank and about_link.links != blank
     assign about_links = about_link.links

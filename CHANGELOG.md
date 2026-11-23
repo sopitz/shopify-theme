@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.0.37] - 2026-11-23
+## [1.0.39] - 2026-11-23
 
 - Desktop-Navigation mit grösseren quadratischen Bildern. Unterkategorien stehen mit der Übersicht in einer gemeinsamen Gruppe unter der zugehörigen Überschrift; Haupt- und Unterebene behalten eine klare typografische Reihenfolge.
 - Neue Kollektionsvorlage `kybun`: kurzer Einstieg und Sprunglinks oberhalb der Produkte, Sohlenvergleich und aufklappbare Fragen darunter. Die vollständige Shopify-Kollektionsbeschreibung bleibt erhalten und wird unterhalb der Produktliste angezeigt. Andere Kollektionen lassen sich über denselben Abschnitt individuell einrichten.
@@ -8,6 +8,18 @@
 - Filter auf geführten Kategorieseiten mobil aufklappbar und am Desktop geöffnet. Ohne verfügbare Filter nutzt das Produktgitter die volle Breite; Sortierung und native Shopify-Filterformulare bleiben erhalten.
 - Lokale Desktop-/Mobilprüfung sowie Regressionen für Navigation, Inhalte, Metafelder, Tastaturbedienung und Theme-Editor-Lebenszyklus ergänzt. Die Shopify-Vorschau mit echtem Shop-Katalog steht zur Prüfung bereit.
 - Einrichtung: Im unveröffentlichten Theme die Kollektionsvorlage `kybun` mit der tatsächlichen kybun-Kollektion voranzeigen. Die Vorlage wird durch den Upload nicht automatisch zugewiesen; den optionalen Miet-Schuh-Link im FAQ über die Kollektionsauswahl verknüpfen.
+
+## [1.0.38] - 2026-10-21
+
+- Restliche Rückfallziele auf vorhandene Seiten umgestellt: Kopfbereich (Firmen, Ratgeber, Über uns, Beratung), Fussbereich (Beratung und Service-Liste ohne Menü), Startseiten-Hero, Firmen-Banner und Beratungs-Banner verweisen auf `/pages/b2b`, `/pages/themen`, `/pages/upswing-werte` und `/pages/contact`. Damit bleibt im Theme kein fester Verweis auf eine nicht vorhandene Seite; offen sind nur Menüeinträge im Shop (`/collections/bewegung`, `/collections/regeneration`).
+
+## [1.0.37] - 2026-10-21
+
+- SEO-Grundlagen im Layout: Meta-Description mit Fallback-Kette (SEO-Feld, sonst Inhalt der Seite, Kollektion oder des Produkts, sonst Standardtext aus den Theme-Einstellungen), gekürzt auf 155 Zeichen. Titelzusatz als Theme-Einstellung «SEO» (Standard «upswing») statt des vollen Shopnamens. `noindex` für Suchergebnisse sowie Hersteller- und Typlisten. BreadcrumbList-Strukturdaten passend zur sichtbaren Brotkrumennavigation. Organisationsdaten mit Telefon, E-Mail und Profil-Links (sameAs) aus den Einstellungen.
+- Verweise auf nicht vorhandene Seiten korrigiert: `/pages/kontakt` → `/pages/contact`, `/pages/ueber-uns` → `/pages/upswing-werte`, `/pages/firmenkunden` → `/pages/b2b`, `/pages/produktberater` → `/pages/themen`, Wissen-Block «Mehr Bewegung beim Stehen» → `/pages/arbeitsplatz`. Betroffen sind Kopfbereich-Fallbacks, Über-uns-Vorlagen, Produktberater, Artikel, Wissen-Block, gespeicherte Theme-Einstellungen sowie Produkt- und Startseiten-Vorlage.
+- Startseite: Die acht Bedarfs-Einstiege verweisen auf die vorhandenen Themenseiten (Fersensporn, Rückenschmerzen, Arthrose, Venen Engel, Trainingsgeräte, Arbeitsplatz, Gesundheitsschuhe, Regeneration im Schlaf).
+- Neue Seitenvorlagen «Markenseite» (`page.marke`) und «Themenseite» (`page.thema`): Shopify-Seiteninhalt, darunter vier Produkte aus der Kollektion im Seiten-Metafeld `upswing.kollektion` (Typ Kollektion) und der Beratungsaufruf. Ohne Metafeld bleibt die Produktreihe verborgen.
+- Prüfungen: korrigierte Fallback-Ziele und dynamische Metafeld-Quellen in Vorlagen zugelassen.
 
 ## [1.0.36] - 2026-10-21
 

@@ -1,4 +1,4 @@
-{%- assign knowledge_more_url = section.settings.more_url | default: '/pages/produktberater' -%}
+{%- assign knowledge_more_url = section.settings.more_url | default: '/pages/themen' -%}
 <section class="section-space knowledge-section" aria-labelledby="Knowledge-{{ section.id }}">
   <div class="container">
     <div class="section-heading"><div><p class="eyebrow">{{ section.settings.eyebrow | escape }}</p><h2 id="Knowledge-{{ section.id }}">{{ section.settings.heading | escape }}</h2></div>{% if knowledge_more_url != blank %}<a class="text-link" href="{{ knowledge_more_url }}">{{ section.settings.more_label | escape }} {% render 'icon', name: 'arrow' %}</a>{% endif %}</div>
