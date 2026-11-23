@@ -1,6 +1,6 @@
 # Upswing Shopify Theme
 
-Native Shopify-Theme-Quellen für upswing.ch, Stand **1.0.36**. Die sieben Theme-Ordner liegen direkt im Repository. Installationspakete freigegebener Versionen stehen in den [GitHub Releases](https://github.com/sopitz/shopify-theme/releases).
+Native Shopify-Theme-Quellen für upswing.ch, Stand **1.0.37**. Die sieben Theme-Ordner liegen direkt im Repository. Installationspakete freigegebener Versionen stehen in den [GitHub Releases](https://github.com/sopitz/shopify-theme/releases).
 
 Der Produktkatalog wird im Shopify-Shop gepflegt: Produkte, Varianten, Kollektionen, Menüs, Preise, Bilder und Produktinformationen kommen aus den tatsächlichen Shop-Ressourcen. Die Startseite enthält die bestehende kybun-Schuhkollektion und die zwölf bisherigen Markenseiten samt Original-Logos. Weitere Produkt- und Kollektionsauswahlen bleiben frei konfigurierbar. Wählen Sie die gewünschten Ressourcen im Theme-Editor und ordnen Sie die Shop-Menüs zu. Nicht verknüpfte Katalogkarten bleiben im Shop verborgen; im Editor helfen Einrichtungshinweise.
 
@@ -14,6 +14,8 @@ Die Gestaltung, das Original-Logo, Manrope mit Lizenz sowie die vorhandenen reda
 4. Mit dem echten Katalog im Entwurf Navigation, Produkt- und Kollektionsseiten, Varianten, Warenkorb, Formularzustellung und Checkout prüfen. Die Veröffentlichung erfolgt anschliessend bewusst im Shopify-Admin.
 
 Ein Theme-Upload legt keine Produkte, Kollektionen, Seiten, Metafelddefinitionen oder Metaobjects an und verändert keine Katalogdaten. Ein leerer Testshop braucht zuerst passende Shop-Ressourcen.
+
+**Neue Kategorieseite prüfen:** Im Theme-Editor des unveröffentlichten Themes die Kollektionsvorlage `kybun` auswählen und mit der tatsächlichen kybun-Kollektion voranzeigen. Diese Vorlage enthält den kurzen Einstieg, die Kaufhilfe und FAQ. Der Upload weist sie keiner Kollektion automatisch zu. Texte und Produktmerkmale lassen sich im Abschnitt «Kollektion & Filter» pflegen; fehlende Metafeldwerte bleiben verborgen. Für den optionalen Miet-Schuh-Link im entsprechenden FAQ-Block die echte Kollektion auswählen.
 
 [Einrichtung und Konzept](docs/Einrichtung-und-Konzept.md) · [Katalog-Checkliste als Text](docs/Katalog-Einrichtung.txt) · [Datenübersicht](docs/Shopdaten.txt) · [AICO-Zusatzfelder für vier Hauptkategorien](docs/AICO-Zusatzfelder-Hauptkategorien.html) · [Änderungen je Version](CHANGELOG.md)
 
@@ -30,7 +32,7 @@ npm ci --ignore-scripts --no-audit --no-fund
 npm test
 python3 tools/validate_schema.py --self-test .
 shopify theme check --path . --fail-level warning
-python3 tools/build_release.py --tag v1.0.36
+python3 tools/build_release.py --tag v1.0.37
 ```
 
 Die lokalen Prüfungen kontrollieren unter anderem Ressourcenbindung, leere und gelöschte Referenzen, Produktinformationen, Farbauswahl, Lieferzeit und Kaufsteuerungen. Die tatsächliche Shopify-Laufzeit mit Shop-Apps, Beständen, Formularzustellung, Versandberechnung, Zahlungsarten und Checkout muss im unveröffentlichten Theme geprüft werden.

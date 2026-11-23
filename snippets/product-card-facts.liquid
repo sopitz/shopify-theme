@@ -1,0 +1,33 @@
+{%- comment -%}
+  Optional merchant-selected product attributes. Paths must identify a typed
+  namespace.key metafield; titles, tags and untyped JSON are not fact sources.
+{%- endcomment -%}
+{%- assign previous_fact_path = '' -%}
+{%- capture fact_rows -%}
+  {%- for fact_index in (1..2) -%}
+    {%- liquid
+      if fact_index == 1
+        assign fact_path = card_fact_1_key | strip
+        assign fact_label = card_fact_1_label | strip
+      else
+        assign fact_path = card_fact_2_key | strip
+        assign fact_label = card_fact_2_label | strip
+      endif
+      assign fact_parts = fact_path | split: '.'
+      assign fact_namespace = fact_parts | first
+      assign fact_key = fact_parts | last
+      assign reconstructed_path = fact_namespace | append: '.' | append: fact_key
+    -%}
+    {%- if fact_label != blank and fact_parts.size == 2 and fact_namespace != blank and fact_key != blank and reconstructed_path == fact_path and fact_path != previous_fact_path -%}
+      {%- capture fact_value -%}{% render 'product-metafield-value', field: product.metafields[fact_namespace][fact_key] %}{%- endcapture -%}
+      {%- assign fact_value = fact_value | strip -%}
+      {%- assign fact_text = fact_value | strip_html | replace: '&nbsp;', ' ' | replace: '&#160;', ' ' | replace: '&#xA0;', ' ' | replace: '&#xa0;', ' ' | replace: ' ', ' ' | strip -%}
+      {%- if fact_text != blank -%}
+        <div><dt>{{ fact_label | escape }}</dt><dd>{{ fact_value }}</dd></div>
+        {%- assign previous_fact_path = fact_path -%}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- assign fact_rows = fact_rows | strip -%}
+{%- if fact_rows != blank -%}<dl class="product-card-facts">{{ fact_rows }}</dl>{%- endif -%}

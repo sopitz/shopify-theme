@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.0.37] - 2026-11-23
+
+- Desktop-Navigation mit grösseren quadratischen Bildern. Unterkategorien stehen mit der Übersicht in einer gemeinsamen Gruppe unter der zugehörigen Überschrift; Haupt- und Unterebene behalten eine klare typografische Reihenfolge.
+- Neue Kollektionsvorlage `kybun`: kurzer Einstieg und Sprunglinks oberhalb der Produkte, Sohlenvergleich und aufklappbare Fragen darunter. Die vollständige Shopify-Kollektionsbeschreibung bleibt erhalten und wird unterhalb der Produktliste angezeigt. Andere Kollektionen lassen sich über denselben Abschnitt individuell einrichten.
+- Produktkarten zeigen auf Wunsch bis zu zwei vorhandene, typisierte Produktmetafelder; für kybun sind Obermaterial und Schuhart vorbelegt. Fehlende Werte bleiben verborgen; ohne Merkmale erscheint der bestehende Kurztext.
+- Filter auf geführten Kategorieseiten mobil aufklappbar und am Desktop geöffnet. Ohne verfügbare Filter nutzt das Produktgitter die volle Breite; Sortierung und native Shopify-Filterformulare bleiben erhalten.
+- Lokale Desktop-/Mobilprüfung sowie Regressionen für Navigation, Inhalte, Metafelder, Tastaturbedienung und Theme-Editor-Lebenszyklus ergänzt. Die Shopify-Vorschau mit echtem Shop-Katalog steht zur Prüfung bereit.
+- Einrichtung: Im unveröffentlichten Theme die Kollektionsvorlage `kybun` mit der tatsächlichen kybun-Kollektion voranzeigen. Die Vorlage wird durch den Upload nicht automatisch zugewiesen; den optionalen Miet-Schuh-Link im FAQ über die Kollektionsauswahl verknüpfen.
+
 ## [1.0.36] - 2026-10-21
 
 - Header reduziert: kompakte Logo-/Suchzeile und flachere Hauptnavigation. Beim Scrollen bleiben am Desktop rund 114 px und auf dem Handy 65 px sichtbar; Bewertungs- und Servicezeile scrollen nach oben aus dem Bild.

@@ -1,0 +1,32 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-collection",
+      "settings": {
+        "products_per_page": 24,
+        "consultation_url": "/pages/filialubersicht",
+        "model_collection": false,
+        "intro_text": "<p>Entdecke kybun Schuhe für Damen und Herren. Vergleiche Modelle und Sohlen oder lass dich bei der Auswahl persönlich beraten.</p>",
+        "show_quick_links": true,
+        "products_link_label": "Schuhe ansehen",
+        "guide_link_label": "Sohlen vergleichen",
+        "guide_heading": "Die kybun Sohlen im Vergleich",
+        "faq_heading": "Häufige Fragen zu kybun",
+        "show_product_facts": true,
+        "card_fact_1_key": "aico_metafields.obermaterial_list",
+        "card_fact_1_label": "Obermaterial",
+        "card_fact_2_key": "aico_metafields.schuhart_list",
+        "card_fact_2_label": "Schuhart"
+      },
+      "blocks": {
+        "tropo": {"type": "guide", "settings": {"heading": "Tropo", "body": "<p>Die Tropo-Sohle ist etwas stabiler und eignet sich gut für den Einstieg.</p>"}},
+        "strato": {"type": "guide", "settings": {"heading": "Strato", "body": "<p>Die Strato-Sohle hat einen ausgeprägten Trampolin-Effekt. Vergleiche das Gehgefühl am besten bei einer Anprobe.</p>"}},
+        "try_on": {"type": "faq", "settings": {"question": "Wo kann ich kybun Schuhe ausprobieren?", "answer": "<p>In unseren Filialen in Thun, Rüti ZH, Zürich, Winterthur und Basel kannst du verschiedene Modelle anprobieren und vergleichen. <a href=\"/pages/filialubersicht#Filialen\">Filialen und Beratung ansehen</a>.</p>"}},
+        "brands": {"type": "faq", "settings": {"question": "Was ist der Unterschied zwischen kybun und Joya?", "answer": "<p>kybun hat einen stärkeren Trampolin-Effekt und fordert die Muskulatur intensiver. Joya ist stabiler und dämpfend – viele Kundinnen und Kunden empfinden Joya als einfacheren Einstieg.</p>"}},
+        "rental": {"type": "faq", "settings": {"question": "Kann ich kybun Schuhe zu Hause ausprobieren?", "answer": "<p>Mit dem Miet-Schuh-Angebot kannst du kybun Schuhe zu Hause ausprobieren. Lass dich zu den verfügbaren Modellen und den Konditionen persönlich beraten.</p>", "link_label": "Miet-Schuh-Angebot ansehen"}}
+      },
+      "block_order": ["tropo", "strato", "try_on", "brands", "rental"]
+    }
+  },
+  "order": ["main"]
+}

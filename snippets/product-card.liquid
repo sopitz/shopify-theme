@@ -51,6 +51,10 @@
   -%}
   {%- capture card_copy -%}{% render 'product-intro', product: product %}{%- endcapture -%}
   {%- assign card_copy = card_copy | replace: '</p>', ' ' | replace: '</li>', ' ' | replace: '<br>', ' ' | replace: '<br/>', ' ' | replace: '<br />', ' ' | strip_html | strip -%}
+  {%- capture card_facts_markup -%}
+    {%- if card_facts -%}{% render 'product-card-facts', product: product, card_fact_1_key: card_fact_1_key, card_fact_1_label: card_fact_1_label, card_fact_2_key: card_fact_2_key, card_fact_2_label: card_fact_2_label %}{%- endif -%}
+  {%- endcapture -%}
+  {%- assign card_facts_markup = card_facts_markup | strip -%}
   <article class="product-card" data-product-card data-product-handle="{{ product.handle }}"{% if card_hover_image %} data-card-secondary-image="{{ card_hover_image | image_url: width: 720 }}" data-card-secondary-alt="{{ card_hover_image.alt | default: card_alt | escape }}"{% endif %}>
     <a class="product-media" href="{{ product.url }}" aria-label="{{ card_title | escape }} ansehen">
       {%- if card_image -%}
@@ -66,7 +70,9 @@
         {%- if product.type != blank -%}<p class="product-type">{{ product.type | escape }}</p>{%- endif -%}
       </div>
       <h3 class="product-title"><a href="{{ product.url }}">{{ card_title | escape }}</a></h3>
-      {%- if card_copy != blank -%}
+      {%- if card_facts_markup != blank -%}
+        {{ card_facts_markup }}
+      {%- elsif card_copy != blank -%}
         <p class="product-copy">{{ card_copy | truncate: 115 | escape_once }}</p>
       {%- endif -%}
       <div class="product-price">{% render 'price', product: product, from_price: model_min_price, show_from: show_from %}</div>
