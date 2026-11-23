@@ -1,0 +1,60 @@
+{
+  "sections": {
+    "main": {
+      "type": "consultation-bookings",
+      "settings": {
+        "heading": "Dein Beratungstermin",
+        "intro": "<p>Wähle dein Thema und die passende Filiale. Auf unserer Buchungsseite kannst du deinen Termin auswählen.</p>"
+      },
+      "blocks": {
+        "venen_engel": {
+          "type": "booking",
+          "settings": {
+            "title": "Venen Engel",
+            "description": "<p>Lerne die Massagegeräte kennen, probiere die Anwendung vor Ort aus und stelle deine Fragen zu Modellen und Manschetten.</p>",
+            "icon": "leaf",
+            "thun_url": "https://outlook.office365.com/owa/calendar/ThunVenenEngelBuchung1%40upswing.ch/bookings/",
+            "zurich_url": "https://outlook.office.com/book/VenenEngelZrich%40upswing.ch/",
+            "winterthur_url": "https://outlook.office365.com/book/upswingWinterthurVenenEngelBuchung%40upswing.ch/",
+            "ruti_url": "https://outlook.office365.com/owa/calendar/RtiVenenEngelBuchung%40upswing.ch/bookings/",
+            "basel_url": "https://outlook.office365.com/owa/calendar/BaselVenenEngelBeratung%40upswing.ch/bookings/"
+          }
+        },
+        "bellicon": {
+          "type": "booking",
+          "settings": {
+            "title": "bellicon",
+            "description": "<p>Teste das Schwinggefühl und vergleiche Modelle, Grössen und Seilstärken mit persönlicher Beratung.</p>",
+            "icon": "move",
+            "thun_url": "https://outlook.office365.com/owa/calendar/ThunbelliconTrampolinBeratung1%40upswing.ch/bookings/",
+            "zurich_url": "https://outlook.office.com/book/ZrichbelliconTrampolinBeratung%40upswing.ch/?ismsaljsauthenabled=",
+            "winterthur_url": "https://outlook.office365.com/owa/calendar/WinterthurbelliconTrampolinBeratung%40upswing.ch/bookings/",
+            "ruti_url": "https://outlook.office365.com/owa/calendar/RtibelliconTrampolinBeratung1%40upswing.ch/bookings/",
+            "basel_url": "https://outlook.office365.com/owa/calendar/BaselbelliconTrampolinBeratung1%40upswing.ch/bookings/"
+          }
+        },
+        "blackroll": {
+          "type": "booking",
+          "settings": {
+            "title": "BLACKROLL Matratze",
+            "description": "<p>Probiere die BLACKROLL Recovery Base beim Probeliegen aus und vergleiche die verschiedenen Einstellungen.</p>",
+            "icon": "moon",
+            "thun_url": "https://outlook.office365.com/owa/calendar/ThunBLACKROLLSchlafberatung%40upswing.ch/bookings/",
+            "zurich_url": "https://outlook.office.com/book/ZrichBLACKROLLSchlafberatung%40upswing.ch/?ismsaljsauthenabled=",
+            "winterthur_url": "https://outlook.office365.com/owa/calendar/WinterthurBLACKROLLSchlafberatung%40upswing.ch/bookings/",
+            "ruti_url": "https://outlook.office.com/book/RtiZHBLACKROLLSchlafberatung%40upswing.ch/",
+            "basel_url": "https://outlook.office365.com/owa/calendar/BaselBLACKROLLSchlafberatung%40upswing.ch/bookings/"
+          }
+        }
+      },
+      "block_order": [
+        "venen_engel",
+        "bellicon",
+        "blackroll"
+      ]
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

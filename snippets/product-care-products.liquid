@@ -1,0 +1,100 @@
+{%- comment -%}
+  Care choices come from explicit product references or product links already
+  written in the product's care instructions. Never infer suitable care from a
+  product name, brand, material, tag, or an arbitrary collection.
+{%- endcomment -%}
+{%- capture structured_care -%}{% render 'product-metafield-content', field: product.metafields.upswing.care %}{%- endcapture -%}
+{%- liquid
+  assign native_care = ''
+  assign care_headings = 'pflege,schuhpflege,pflegehinweise' | split: ','
+  assign care_heading_levels = 'h2,h3' | split: ','
+  for care_level in care_heading_levels
+    assign opening_heading = care_level | prepend: '<'
+    assign closing_heading = care_level | prepend: '</' | append: '>'
+    assign heading_sections = product.description | split: opening_heading
+    for heading_section in heading_sections offset: 1
+      assign heading_markup = heading_section | split: closing_heading | first
+      assign complete_heading = opening_heading | append: heading_markup | append: closing_heading
+      assign heading_text = complete_heading | strip_html | replace: '&nbsp;', ' ' | replace: ' ', ' ' | strip | downcase
+      if care_headings contains heading_text
+        assign native_care = heading_section | remove_first: heading_markup | remove_first: closing_heading | split: '<h2' | first | split: '<h3' | first
+        break
+      endif
+    endfor
+    if native_care != blank
+      break
+    endif
+  endfor
+  assign care_links = structured_care | append: native_care | replace: "'", '"' | split: 'href="'
+  assign seen_care_products = '|'
+  assign care_product_count = 0
+  assign care_lookup_count = 0
+  assign seen_care_handles = '|'
+  assign care_references = product.metafields.upswing.care_products
+  assign shop_products_prefix = shop.url | append: '/products/'
+  assign shop_collections_prefix = shop.url | append: '/collections/'
+  assign localized_products_prefix = routes.root_url | default: '/' | append: 'products/'
+  assign localized_collections_prefix = routes.root_url | default: '/' | append: 'collections/'
+-%}
+{%- capture care_product_cards -%}
+  {%- if care_references.type == 'list.product_reference' -%}
+    {%- for care_product in care_references.value -%}
+      {%- assign care_product_key = care_product.id | prepend: '|' | append: '|' -%}
+      {%- if care_product.id != blank and care_product.url != blank and care_product.id != product.id and care_product.available -%}
+        {%- unless seen_care_products contains care_product_key -%}
+          {% render 'product-card', product: care_product %}
+          {%- assign seen_care_products = seen_care_products | append: care_product_key -%}
+          {%- assign care_product_count = care_product_count | plus: 1 -%}
+          {%- if care_product_count == 4 -%}{%- break -%}{%- endif -%}
+        {%- endunless -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+  {%- if care_product_count < 4 -%}
+    {%- for care_link in care_links offset: 1 -%}
+      {%- liquid
+        assign care_url = care_link | split: '"' | first | split: '?' | first | split: '#' | first
+        assign care_url_allowed = false
+        assign care_url_prefix = care_url | slice: 0, 10
+        assign local_product_prefix = care_url | slice: 0, localized_products_prefix.size
+        assign local_collection_prefix = care_url | slice: 0, localized_collections_prefix.size
+        assign absolute_product_prefix = care_url | slice: 0, shop_products_prefix.size
+        assign absolute_collection_prefix = care_url | slice: 0, shop_collections_prefix.size
+        if care_url_prefix == '/products/' or local_product_prefix == localized_products_prefix
+          assign care_url_allowed = true
+        elsif local_collection_prefix == localized_collections_prefix and care_url contains '/products/'
+          assign care_url_allowed = true
+        elsif shop.url != blank and absolute_product_prefix == shop_products_prefix
+          assign care_url_allowed = true
+        elsif shop.url != blank and absolute_collection_prefix == shop_collections_prefix and care_url contains '/products/'
+          assign care_url_allowed = true
+        endif
+      -%}
+      {%- if care_url_allowed -%}
+        {%- assign care_handle = care_url | split: '/products/' | last | split: '/' | first -%}
+        {%- assign care_handle_key = care_handle | prepend: '|' | append: '|' -%}
+        {%- if seen_care_handles contains care_handle_key -%}{%- continue -%}{%- endif -%}
+        {%- if care_lookup_count >= 8 -%}{%- break -%}{%- endif -%}
+        {%- assign seen_care_handles = seen_care_handles | append: care_handle_key -%}
+        {%- assign care_lookup_count = care_lookup_count | plus: 1 -%}
+        {%- assign care_product = all_products[care_handle] -%}
+        {%- assign care_product_key = care_product.id | prepend: '|' | append: '|' -%}
+        {%- if care_product.id != blank and care_product.url != blank and care_product.id != product.id and care_product.available -%}
+          {%- unless seen_care_products contains care_product_key -%}
+            {% render 'product-card', product: care_product %}
+            {%- assign seen_care_products = seen_care_products | append: care_product_key -%}
+            {%- assign care_product_count = care_product_count | plus: 1 -%}
+            {%- if care_product_count == 4 -%}{%- break -%}{%- endif -%}
+          {%- endunless -%}
+        {%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+{%- endcapture -%}
+{%- assign care_product_cards = care_product_cards | strip -%}
+{%- if care_product_cards != blank -%}
+  <section class="product-care-products" id="ProductCareProducts" aria-labelledby="ProductCareProductsTitle" data-product-care-products>
+    <div class="product-section-heading"><p class="eyebrow">Aus den Pflegehinweisen</p><h2 id="ProductCareProductsTitle">Passende Pflegeprodukte</h2><p>Die in den Pflegehinweisen verknüpften Produkte auf einen Blick.</p></div>
+    <div class="product-grid">{{ care_product_cards }}</div>
+  </section>
+{%- endif -%}

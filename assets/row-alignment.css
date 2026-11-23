@@ -34,22 +34,24 @@
   .knowledge-card>p{grid-row:3}
   .knowledge-card>.text-link{grid-row:4;margin-top:0;align-self:end;justify-self:start}
 
-  .product-grid>.product-card,.product-grid>div:has(>.product-card){display:grid;grid-template-rows:subgrid;grid-row:span 7;row-gap:0}
-  .product-grid>div>.product-card{display:grid;grid-template-rows:subgrid;grid-row:1 / -1;row-gap:0}
+  .product-grid>.product-card,.product-grid>div:has(>.product-card){display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:subgrid;grid-row:span 7;row-gap:0}
+  .product-grid>div>.product-card{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:subgrid;grid-row:1 / -1;row-gap:0}
   .product-grid>.search-result-card{grid-row:span 7;display:flex;flex-direction:column;min-width:0}
   .search-result-card>.text-link{margin-top:auto;align-self:flex-start}
   .product-grid .product-card>.product-media{grid-row:1}
   .product-grid .product-card>.product-brand{grid-row:2}
   .product-grid .product-card>.product-title{grid-row:3}
-  .product-grid .product-card>.product-copy{grid-row:4}
+  .product-grid .product-card>.product-copy,.product-grid .product-card>.product-card-facts{grid-row:4}
   .product-grid .product-card>.product-price{grid-row:5;margin-top:0}
   .product-grid .product-card>.product-bottom{display:grid;grid-template-rows:subgrid;grid-template-columns:minmax(0,1fr);grid-row:6 / -1;row-gap:0;align-self:stretch}
   .product-bottom>.swatches{grid-row:1;align-self:start}
   .product-bottom>.model-link{grid-row:2;align-self:end;justify-self:start}
-  .product-grid .product-card>.product-card-content{display:grid;grid-template-rows:subgrid;grid-row:2 / -1;row-gap:0}
+  .product-grid .product-card>.product-card-content{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:subgrid;grid-row:2 / -1;row-gap:0}
+  .product-grid .product-card>:is(.product-media,.product-brand,.product-card-meta,.product-title,.product-copy,.product-card-facts,.product-price,.product-bottom,.product-card-content){grid-column:1}
+  .product-grid .product-card-content>:is(.product-brand,.product-card-meta,.product-title,.product-copy,.product-card-facts,.product-price,.swatches,.product-card-actions){grid-column:1}
   .product-card-content>.product-brand{grid-row:1}
   .product-card-content>.product-title{grid-row:2}
-  .product-card-content>.product-copy{grid-row:3}
+  .product-card-content>.product-copy,.product-card-content>.product-card-facts{grid-row:3}
   .product-card-content>.product-price{grid-row:4;margin-top:0}
   .product-card-content>.swatches{grid-row:5;align-self:start}
   .product-card-content>.product-card-actions{grid-row:6;margin-top:8px;align-self:end}

@@ -1,0 +1,14 @@
+{%- comment -%}Service signals use existing shop policies and the actual consultation destination, without fixed shipping or return promises.{%- endcomment -%}
+{%- capture product_trust_items -%}
+  {%- if consultation_url != blank -%}
+    <li>{% render 'icon', name: 'phone' %}<div><strong>Persönlich beraten</strong><a href="{{ consultation_url | escape }}">Beratung und Anprobe vor Ort</a></div></li>
+  {%- endif -%}
+  {%- if shop.shipping_policy.url != blank -%}
+    <li>{% render 'icon', name: 'truck' %}<div><strong>Versand transparent</strong><a href="{{ shop.shipping_policy.url }}">Versandbedingungen ansehen</a></div></li>
+  {%- endif -%}
+  {%- if shop.refund_policy.url != blank -%}
+    <li>{% render 'icon', name: 'return' %}<div><strong>Rückgabe und Umtausch</strong><a href="{{ shop.refund_policy.url }}">Bedingungen ansehen</a></div></li>
+  {%- endif -%}
+{%- endcapture -%}
+{%- assign product_trust_items = product_trust_items | strip -%}
+{%- if product_trust_items != blank -%}<ul class="product-trust" aria-label="Service und Sicherheit beim Einkauf">{{ product_trust_items }}</ul>{%- endif -%}

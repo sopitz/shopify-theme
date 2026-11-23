@@ -39,20 +39,21 @@
   text-align:right;
 }
 .product-card-content>.product-title,.product-card>.product-title{
+  min-width:0;
   margin:0 0 4px;
   font-size:22px;
   line-height:1.2;
   hyphens:none;
+  overflow-wrap:anywhere;
 }
 .product-card-content>.product-copy,.product-card>.product-copy{
-  min-height:0;
+  min-height:auto;
   margin:0 0 8px;
   font-size:13px;
   line-height:1.5;
-  display:-webkit-box;
-  -webkit-box-orient:vertical;
-  -webkit-line-clamp:2;
-  overflow:hidden;
+  display:block;
+  overflow:visible;
+  overflow-wrap:anywhere;
 }
 .product-card-content>.product-price,.product-card>.product-price{
   margin-top:auto;

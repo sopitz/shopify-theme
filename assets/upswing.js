@@ -158,6 +158,11 @@ document.documentElement.classList.replace('no-js', 'js');
           const skuRow = container.querySelector('[data-product-sku-row]');
           if (sku) sku.textContent = '';
           if (skuRow) skuRow.hidden = true;
+          const compare = container.querySelector('[data-product-compare-price]');
+          const comparison = container.querySelector('[data-product-compare-wrapper]');
+          if (compare) compare.hidden = true;
+          if (comparison) comparison.hidden = true;
+          container.querySelector('[data-product-price-container]')?.classList.remove('price--sale');
           return;
         }
         idField.disabled = false;
@@ -170,7 +175,11 @@ document.documentElement.classList.replace('no-js', 'js');
         if (sku) sku.textContent = variant.sku || '';
         if (skuRow) skuRow.hidden = !variant.sku;
         const compare = container.querySelector('[data-product-compare-price]');
-        if (compare) { compare.textContent = variant.compare_at_formatted || ''; compare.hidden = !(variant.compare_at_price > variant.price); }
+        const onSale = Number.isFinite(variant.price) && Number.isFinite(variant.compare_at_price) && variant.compare_at_price > variant.price;
+        if (compare) { compare.textContent = onSale ? variant.compare_at_formatted || '' : ''; compare.hidden = !onSale; }
+        const comparison = container.querySelector('[data-product-compare-wrapper]');
+        if (comparison) comparison.hidden = !onSale;
+        container.querySelector('[data-product-price-container]')?.classList.toggle('price--sale', onSale);
         updateDelivery(variant);
         const quantity = form.querySelector('[data-product-quantity]');
         if (quantity && variant.quantity_rule) {

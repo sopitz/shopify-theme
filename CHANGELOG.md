@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.0.40] - 2026-11-23
+
+- Produktkarten zeigen umgebrochene Kurztexte vollständig innerhalb des bestehenden Auszugs. Gemeinsame Subgrid-Zeilen halten Karten, Preise und Aktionen innerhalb einer Produktreihe auf gleicher Höhe.
+- Kollektionsseiten verwenden die vorhandene AICO-Synchronisierung: konfigurierbare Elternpfade werden nur in angezeigten Titeln entfernt; gespeicherte Titel, Handles, Tags und automatische Regeln bleiben erhalten. Vorhandene JSON-Felder `custom_fields.faq` und `custom_fields.good_to_know` werden gelesen, ohne neue ERP-Felder vorauszusetzen.
+- Kategorietexte erscheinen einmal unter den Produkten. FAQ und Informationstext nutzen die volle Inhaltsbreite; bekannte native FAQ-Absätze werden ohne Textkopie aufklappbar. Doppelte geerbte Einträge und bereits im Text enthaltene Fragen werden unterdrückt. Manuelle Theme-Blöcke bleiben als Ersatz oder ausdrücklich wählbare Quelle verfügbar.
+- Native Shopify-Filter unterstützen vorhandene Farben, Muster und Filterbilder mit sichtbarer Textalternative. Obermaterial und Schuhart kommen aus den bestehenden Produktfeldern; zusätzliche Filter müssen mit einer befüllten Datenquelle in Search & Discovery eingerichtet werden. Anleitung: [Filter einrichten](https://github.com/sopitz/shopify-theme/blob/v1.0.40/docs/Collection-Filter-Einrichtung.md).
+- Produktseiten erhalten ruhige, einheitliche Informationsbereiche, Links zu vorhandenen Versand- und Rückgaberichtlinien sowie Beratung. Bereits im Pflegeabschnitt verlinkte, verfügbare Pflegeprodukte erscheinen als Karten; alternativ wird eine vorhandene Produktreferenzliste unterstützt.
+- Echte Reduktionen zeigen «Statt»-Preise und ein Prozent-Badge. Vergleichspreis, Rabattanzeige und Kaufsteuerung folgen dem tatsächlich angezeigten Preis und Variantenwechsel; mehrdeutige Modell- oder Variantenpreise erzeugen keinen Rabatt.
+- Haupttitel auf Inhalts-, Produkt- und Kollektionsseiten sind kompakter. Redaktionelle Fotos auf Geschichte-, Team- und Filialseiten behalten ihr natürliches Seitenverhältnis.
+- Neue Seitenvorlagen `beratung` und `termine` zeigen Venen Engel, bellicon und BLACKROLL Matratze mit den bestehenden Buchungslinks für fünf Filialen. Die Kompatibilitätsvorlage `page.kybun` verwendet die bestätigte bestehende Kollektion und unterstützt die bereits zugewiesene Markenseite.
+- Einrichtung im unveröffentlichten Theme: Kollektion mit `?view=kybun`, Beratungsseite mit `?view=beratung` oder `?view=termine` prüfen. Neue Vorlagen werden nicht automatisch zugewiesen. Fehlende Produktmerkmale bleiben Datenpflege; zusätzliche Filter benötigen Search & Discovery. [Prüfliste für Shopify](https://github.com/sopitz/shopify-theme/blob/v1.0.40/docs/Template-Pruefung.md).
+- Prüfung: 265 Funktionstests, Schema-Selbsttests, offizieller Shopify Theme Check und lokale Desktop-/Mobilprüfungen für die betroffenen Produktkarten. Die vollständige Shopify-Laufzeit mit Apps, Beständen, Buchungskalendern und Checkout bleibt im unveröffentlichten Theme zu prüfen. Das Release aktiviert kein Theme im Shop.
+
 ## [1.0.39] - 2026-11-23
 
 - Desktop-Navigation mit grösseren quadratischen Bildern. Unterkategorien stehen mit der Übersicht in einer gemeinsamen Gruppe unter der zugehörigen Überschrift; Haupt- und Unterebene behalten eine klare typografische Reihenfolge.

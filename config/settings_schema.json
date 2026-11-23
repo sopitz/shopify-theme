@@ -2,7 +2,7 @@
   {
     "name": "theme_info",
     "theme_name": "Upswing Wellbeing",
-    "theme_version": "1.0.39",
+    "theme_version": "1.0.40",
     "theme_author": "Upswing",
     "theme_documentation_url": "https://upswing.ch",
     "theme_support_url": "https://upswing.ch/pages/contact"
@@ -68,6 +68,18 @@
         "id": "seo_same_as",
         "label": "Profile der Firma (sameAs)",
         "info": "Eine Adresse je Zeile ohne Leerzeichen: Google-Unternehmensprofil, Facebook, Instagram, local.ch. Erscheint in den Organisationsdaten für Suchmaschinen."
+      }
+    ]
+  },
+  {
+    "name": "Kollektionsnamen",
+    "settings": [
+      {
+        "type": "textarea",
+        "id": "collection_title_parent_paths",
+        "label": "Übergeordnete Importpfade",
+        "default": "Schuhe Pflegemittel & Zubehör\nSchuhe",
+        "info": "Ein bestätigter Elternpfad je Zeile. Nur der längste exakte Anfang mit folgendem Leerzeichen wird für die Anzeige entfernt. Katalogtitel, Tags, Handles und URLs bleiben unverändert. Leer lassen, um die Originaltitel anzuzeigen."
       }
     ]
   },

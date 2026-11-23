@@ -95,6 +95,8 @@
 {%- capture specifications_content -%}{% render 'product-metafield-content', field: product.metafields.upswing.specifications %}{%- endcapture -%}
 {%- capture faq_content -%}{% render 'product-metafield-content', field: product.metafields.upswing.faq %}{%- endcapture -%}
 {%- capture testimonials_content -%}{% render 'product-metafield-content', field: product.metafields.upswing.testimonials %}{%- endcapture -%}
+{%- capture product_care_products -%}{% render 'product-care-products', product: product %}{%- endcapture -%}
+{%- assign product_care_products = product_care_products | strip -%}
 {%- liquid
   assign testimonials_content = testimonials_content | strip
   assign video_embed_url = ''
@@ -252,7 +254,7 @@
     assign has_structured_information = true
   endif
   assign has_product_information = false
-  if has_structured_information or has_native_description or knowledge_intro != blank or short_description_content != blank
+  if has_structured_information or has_native_description or knowledge_intro != blank or short_description_content != blank or product_care_products != blank
     assign has_product_information = true
   endif
 -%}
@@ -324,6 +326,7 @@
         {% if has_structured_information %}</details>{% endif %}
       </section>
     {%- endif -%}
-    <footer class="product-help-band"><div><h3>Noch eine Frage offen?</h3><p>Besprich deine Auswahl persönlich mit unserem Beratungsteam.</p></div><a class="button light" href="{{ consultation_url | escape }}">Beratung finden</a></footer>
+    {{ product_care_products }}
+    <footer class="product-help-band"><div><h3>Noch eine Frage offen?</h3><p>Besprich deine Auswahl persönlich mit unserem Beratungsteam.</p></div><a class="button secondary" href="{{ consultation_url | escape }}">Beratung finden</a></footer>
   </section>
 {%- endif -%}

@@ -6,30 +6,57 @@
 -%}
 {%- capture consultation_url -%}{%- render 'filial-anchor-url', url: consultation_url, fallback_url: '/pages/filialubersicht' -%}{%- endcapture -%}
 {%- assign consultation_url = consultation_url | strip -%}
+{%- capture collection_display_title -%}{%- render 'collection-display-title', collection: collection -%}{%- endcapture -%}
+{%- assign collection_display_title = collection_display_title | strip -%}
 {%- assign intro_text = section.settings.intro_text | strip_html | replace: '&nbsp;', ' ' | replace: '&#160;', ' ' | replace: '&#xA0;', ' ' | replace: '&#xa0;', ' ' | replace: ' ', ' ' | strip -%}
+{%- assign native_description = collection.description -%}
+{%- assign has_native_faq = false -%}
+{%- if native_description contains '<h2>Häufige Fragen</h2>' -%}
+  {%- capture native_faq_heading -%}<h2 id="CollectionNativeFaq-{{ section.id }}">Häufige Fragen</h2>{%- endcapture -%}
+  {%- assign native_description = native_description | replace_first: '<h2>Häufige Fragen</h2>', native_faq_heading -%}
+  {%- assign has_native_faq = true -%}
+{%- endif -%}
+{%- assign description_text = collection.description | strip_html | replace: '&nbsp;', ' ' | replace: '&#160;', ' ' | replace: '&#xA0;', ' ' | replace: '&#xa0;', ' ' | replace: ' ', ' ' | strip_newlines | strip | downcase -%}
+{%- capture aico_guide_present -%}{% render 'collection-aico-items', field: collection.metafields.custom_fields.good_to_know, mode: 'guide', output: 'has_content' %}{%- endcapture -%}
+{%- capture aico_faq_present -%}{% render 'collection-aico-items', field: collection.metafields.custom_fields.faq, mode: 'faq', output: 'has_content' %}{%- endcapture -%}
+{%- assign aico_guide_present = aico_guide_present | strip -%}
+{%- assign aico_faq_present = aico_faq_present | strip -%}
+{%- assign editor_content_allowed = false -%}
+{%- if section.settings.content_source == 'editor' or description_text == blank -%}{%- assign editor_content_allowed = true -%}{%- endif -%}
 {%- capture guide_cards -%}
-  {%- for block in section.blocks -%}
-    {%- assign guide_text = block.settings.body | strip_html | replace: '&nbsp;', ' ' | replace: '&#160;', ' ' | replace: '&#xA0;', ' ' | replace: '&#xa0;', ' ' | replace: ' ', ' ' | strip -%}
-    {%- if block.type == 'guide' and block.settings.heading != blank and guide_text != blank -%}
-      <article class="collection-guide-card" {{ block.shopify_attributes }}><h3>{{ block.settings.heading | escape }}</h3><div class="rte">{{ block.settings.body }}</div></article>
-    {%- endif -%}
-  {%- endfor -%}
+  {%- if section.settings.content_source != 'editor' and aico_guide_present == 'true' -%}
+    {% render 'collection-aico-items', field: collection.metafields.custom_fields.good_to_know, mode: 'guide', description: collection.description %}
+  {%- elsif editor_content_allowed -%}
+    {%- for block in section.blocks -%}
+      {%- assign guide_text = block.settings.body | strip_html | replace: '&nbsp;', ' ' | replace: '&#160;', ' ' | replace: '&#xA0;', ' ' | replace: '&#xa0;', ' ' | replace: ' ', ' ' | strip -%}
+      {%- assign normalized_guide_text = guide_text | strip_newlines | downcase -%}
+      {%- if block.type == 'guide' and block.settings.heading != blank and guide_text != blank -%}
+        {%- unless description_text contains normalized_guide_text -%}<article class="collection-guide-card" {{ block.shopify_attributes }}><h3>{{ block.settings.heading | escape }}</h3><div class="rte">{{ block.settings.body }}</div></article>{%- endunless -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
 {%- endcapture -%}
 {%- assign guide_cards = guide_cards | strip -%}
 {%- capture faq_items -%}
-  {%- for block in section.blocks -%}
-    {%- assign answer_text = block.settings.answer | strip_html | replace: '&nbsp;', ' ' | replace: '&#160;', ' ' | replace: '&#xA0;', ' ' | replace: '&#xa0;', ' ' | replace: ' ', ' ' | strip -%}
-    {%- if block.type == 'faq' and block.settings.question != blank and answer_text != blank -%}
-      <details class="collection-faq-item" {{ block.shopify_attributes }}><summary>{{ block.settings.question | escape }}{% render 'icon', name: 'chevron' %}</summary><div class="rte">{{ block.settings.answer }}{% if block.settings.related_collection.url != blank and block.settings.link_label != blank %}<p><a class="text-link" href="{{ block.settings.related_collection.url }}">{{ block.settings.link_label | escape }}</a></p>{% endif %}</div></details>
-    {%- endif -%}
-  {%- endfor -%}
+  {%- if section.settings.content_source != 'editor' and aico_faq_present == 'true' -%}
+    {% render 'collection-aico-items', field: collection.metafields.custom_fields.faq, mode: 'faq', description: collection.description %}
+  {%- elsif editor_content_allowed -%}
+    {%- for block in section.blocks -%}
+      {%- assign answer_text = block.settings.answer | strip_html | replace: '&nbsp;', ' ' | replace: '&#160;', ' ' | replace: '&#xA0;', ' ' | replace: '&#xa0;', ' ' | replace: ' ', ' ' | strip -%}
+      {%- assign normalized_question = block.settings.question | strip_html | replace: ' ', ' ' | strip_newlines | strip | downcase -%}
+      {%- if block.type == 'faq' and normalized_question != blank and answer_text != blank -%}
+        {%- unless description_text contains normalized_question -%}<details class="collection-faq-item" {{ block.shopify_attributes }}><summary>{{ block.settings.question | escape }}{% render 'icon', name: 'chevron' %}</summary><div class="rte">{{ block.settings.answer }}{% if block.settings.related_collection.url != blank and block.settings.link_label != blank %}<p><a class="text-link" href="{{ block.settings.related_collection.url }}">{{ block.settings.link_label | escape }}</a></p>{% endif %}</div></details>{%- endunless -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
 {%- endcapture -%}
 {%- assign faq_items = faq_items | strip -%}
 {%- capture shortcut_links -%}
   {%- if section.settings.show_quick_links -%}
     <a class="category-chip" href="#CollectionProducts-{{ section.id }}">{{ section.settings.products_link_label | default: 'Produkte ansehen' | escape }}{% render 'icon', name: 'arrow' %}</a>
     {%- if guide_cards != blank -%}<a class="category-chip" href="#CollectionGuide-{{ section.id }}">{{ section.settings.guide_link_label | default: 'Auswahlhilfe' | escape }}{% render 'icon', name: 'arrow' %}</a>{%- endif -%}
-    {%- if faq_items != blank -%}<a class="category-chip" href="#CollectionFaq-{{ section.id }}">Fragen &amp; Antworten{% render 'icon', name: 'arrow' %}</a>{%- endif -%}
+    {%- if description_text != blank -%}<a class="category-chip" href="#CollectionDescription-{{ section.id }}">Wissenswertes{% render 'icon', name: 'arrow' %}</a>{%- endif -%}
+    {%- if has_native_faq -%}<a class="category-chip" href="#CollectionNativeFaq-{{ section.id }}">Fragen &amp; Antworten{% render 'icon', name: 'arrow' %}</a>{%- elsif faq_items != blank -%}<a class="category-chip" href="#CollectionFaq-{{ section.id }}">Fragen &amp; Antworten{% render 'icon', name: 'arrow' %}</a>{%- endif -%}
   {%- endif -%}
   {%- for block in section.blocks -%}
     {%- if block.type == 'shortcut' and block.settings.url != blank and block.settings.label != blank -%}<a class="category-chip" href="{{ block.settings.url }}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}{% render 'icon', name: 'arrow' %}</a>{%- endif -%}
@@ -38,15 +65,15 @@
 {%- assign shortcut_links = shortcut_links | strip -%}
 {%- liquid
   assign is_guided_collection = false
-  if intro_text != blank or guide_cards != blank or faq_items != blank
+  if intro_text != blank or guide_cards != blank or faq_items != blank or description_text != blank
     assign is_guided_collection = true
   endif
 -%}
 <section class="collection-section section-space{% if is_guided_collection %} collection-section--guided{% endif %}" id="Collection-{{ section.id }}">
   <div class="container">
-    <nav class="breadcrumbs" aria-label="Brotkrumennavigation"><a href="{{ routes.root_url }}">Startseite</a><span aria-hidden="true">/</span><span>{{ collection.title | escape }}</span></nav>
+    <nav class="breadcrumbs" aria-label="Brotkrumennavigation"><a href="{{ routes.root_url }}">Startseite</a><span aria-hidden="true">/</span><span>{{ collection_display_title | escape }}</span></nav>
     <header class="collection-header">
-      <div><p class="eyebrow">Mit Beratung zur passenden Wahl</p><h1>{{ collection.title | escape }}</h1>{% if intro_text != blank %}<div class="rte collection-intro">{{ section.settings.intro_text }}</div>{% endif %}</div>
+      <div><p class="eyebrow">Mit Beratung zur passenden Wahl</p><h1>{{ collection_display_title | escape }}</h1>{% if intro_text != blank %}<div class="rte collection-intro">{{ section.settings.intro_text }}</div>{% endif %}</div>
       <a class="button secondary" href="{{ consultation_url }}">Bei der Auswahl helfen lassen {% render 'icon', name: 'arrow' %}</a>
     </header>
     {%- if shortcut_links != blank -%}
@@ -77,10 +104,8 @@
                   {%- case filter.type -%}
                     {%- when 'boolean', 'list' -%}
                       {%- for value in filter.values -%}
-                        <label class="filter-value{% if value.count == 0 and value.active == false %} is-disabled{% endif %}" for="Filter-{{ section.id }}-{{ forloop.parentloop.index }}-{{ forloop.index }}">
-                          <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value | escape }}" id="Filter-{{ section.id }}-{{ forloop.parentloop.index }}-{{ forloop.index }}"{% if value.active %} checked{% endif %}{% if value.count == 0 and value.active == false %} disabled{% endif %}>
-                          <span>{{ value.label | escape }}</span><span class="filter-count">{{ value.count }}</span>
-                        </label>
+                        {%- capture filter_input_id -%}Filter-{{ section.id }}-{{ forloop.parentloop.index }}-{{ forloop.index }}{%- endcapture -%}
+                        {% render 'collection-filter-option', value: value, input_id: filter_input_id %}
                       {%- endfor -%}
                     {%- when 'price_range' -%}
                       <div class="price-range">
@@ -126,26 +151,23 @@
         </div>
       </div>
     {%- endpaginate -%}
+    {% if collection.description != blank %}
+      <section class="collection-description-block" id="CollectionDescription-{{ section.id }}" aria-labelledby="CollectionDescriptionTitle-{{ section.id }}">
+        <h2 class="collection-information-title" id="CollectionDescriptionTitle-{{ section.id }}">Wissenswertes zu {{ collection_display_title | escape }}</h2>
+        <div class="rte collection-description">{{ native_description }}</div>
+      </section>
+    {% endif %}
     {% if guide_cards != blank %}
       <section class="collection-buying-guide" id="CollectionGuide-{{ section.id }}" aria-labelledby="CollectionGuideTitle-{{ section.id }}">
-        <div class="collection-guidance-heading"><h2 id="CollectionGuideTitle-{{ section.id }}">{{ section.settings.guide_heading | default: 'Hilfe bei der Auswahl' | escape }}</h2><a class="text-link" href="{{ consultation_url }}">Persönlich beraten lassen {% render 'icon', name: 'arrow' %}</a></div>
+        <div class="collection-guidance-heading"><h2 id="CollectionGuideTitle-{{ section.id }}">{% if section.settings.content_source != 'editor' and aico_guide_present == 'true' %}{{ section.settings.aico_guide_heading | default: 'Gut zu wissen' | escape }}{% else %}{{ section.settings.guide_heading | default: 'Hilfe bei der Auswahl' | escape }}{% endif %}</h2><a class="text-link" href="{{ consultation_url }}">Persönlich beraten lassen {% render 'icon', name: 'arrow' %}</a></div>
         <div class="collection-guide-grid">{{ guide_cards }}</div>
       </section>
     {% endif %}
     {% if faq_items != blank %}
       <section class="collection-faq" id="CollectionFaq-{{ section.id }}" aria-labelledby="CollectionFaqTitle-{{ section.id }}">
-        <h2 id="CollectionFaqTitle-{{ section.id }}">{{ section.settings.faq_heading | default: 'Häufige Fragen' | escape }}</h2>
+        <h2 id="CollectionFaqTitle-{{ section.id }}">{% if description_text != blank and section.settings.content_source != 'editor' %}Weitere Fragen &amp; Antworten{% else %}{{ section.settings.faq_heading | default: 'Häufige Fragen' | escape }}{% endif %}</h2>
         <div class="collection-faq-list">{{ faq_items }}</div>
       </section>
-    {% endif %}
-    {% if collection.description != blank %}
-      <div class="collection-description-block" id="CollectionDescription-{{ section.id }}">
-        {% if guide_cards != blank or faq_items != blank %}
-          <details class="collection-description-details"><summary>Mehr über {{ collection.title | escape }}{% render 'icon', name: 'chevron' %}</summary><div class="rte collection-description">{{ collection.description }}</div></details>
-        {% else %}
-          <div class="rte collection-description">{{ collection.description }}</div>
-        {% endif %}
-      </div>
     {% endif %}
   </div>
 </section>
@@ -153,17 +175,19 @@
 {
   "name": "Kollektion & Filter",
   "settings": [
+    {"type": "select", "id": "content_source", "label": "Quelle für Kaufhilfe und FAQ", "default": "aico", "options": [{"value": "aico", "label": "AICO-Inhalte bevorzugen"}, {"value": "editor", "label": "Theme-Blöcke verwenden"}], "info": "Liest custom_fields.good_to_know und custom_fields.faq (JSON). Der Kategorietext erscheint einmal. Ohne AICO-Inhalte und Kategorietext dienen Theme-Blöcke als Ersatz."},
+    {"type": "text", "id": "aico_guide_heading", "label": "Überschrift der AICO-Kaufhilfe", "default": "Gut zu wissen"},
     {"type": "richtext", "id": "intro_text", "label": "Kurze Orientierung oberhalb der Produkte"},
-    {"type": "checkbox", "id": "show_quick_links", "label": "Sprunglinks zu Produkten und Kaufhilfe anzeigen", "default": false},
+    {"type": "checkbox", "id": "show_quick_links", "label": "Sprunglinks zu Produkten und Kaufhilfe anzeigen", "default": true},
     {"type": "text", "id": "products_link_label", "label": "Sprunglink zu den Produkten", "default": "Produkte ansehen"},
     {"type": "text", "id": "guide_link_label", "label": "Sprunglink zur Kaufhilfe", "default": "Auswahlhilfe"},
     {"type": "text", "id": "guide_heading", "label": "Überschrift der Kaufhilfe", "default": "Hilfe bei der Auswahl"},
     {"type": "text", "id": "faq_heading", "label": "Überschrift der Fragen", "default": "Häufige Fragen"},
-    {"type": "checkbox", "id": "show_product_facts", "label": "Geprüfte Merkmale auf Produktkarten anzeigen", "default": false},
-    {"type": "text", "id": "card_fact_1_key", "label": "Metafeld für Merkmal 1", "info": "Vorhandenes Produktmetafeld als namespace.key. Fehlende Werte bleiben verborgen."},
-    {"type": "text", "id": "card_fact_1_label", "label": "Bezeichnung für Merkmal 1"},
-    {"type": "text", "id": "card_fact_2_key", "label": "Metafeld für Merkmal 2", "info": "Vorhandenes Produktmetafeld als namespace.key. Keine Ableitung aus Produktnamen."},
-    {"type": "text", "id": "card_fact_2_label", "label": "Bezeichnung für Merkmal 2"},
+    {"type": "checkbox", "id": "show_product_facts", "label": "Geprüfte Merkmale auf Produktkarten anzeigen", "default": true},
+    {"type": "text", "id": "card_fact_1_key", "label": "Metafeld für Merkmal 1", "default": "aico_metafields.obermaterial_list", "info": "Vorhandenes Produktmetafeld als namespace.key. Fehlende Werte bleiben verborgen."},
+    {"type": "text", "id": "card_fact_1_label", "label": "Bezeichnung für Merkmal 1", "default": "Obermaterial"},
+    {"type": "text", "id": "card_fact_2_key", "label": "Metafeld für Merkmal 2", "default": "aico_metafields.schuhart_list", "info": "Vorhandenes Produktmetafeld als namespace.key. Keine Ableitung aus Produktnamen."},
+    {"type": "text", "id": "card_fact_2_label", "label": "Bezeichnung für Merkmal 2", "default": "Schuhart"},
     {
       "type": "range",
       "id": "products_per_page",

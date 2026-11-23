@@ -198,6 +198,7 @@ const retired = new Set([
   'delivery_stock_days', 'delivery_standard_days', 'delivery_standard_vendors', 'delivery_extended_days', 'delivery_extended_vendors',
   'shipping_threshold',
 ]);
+const verifiedKybunLocations = new Set(['templates/index.json/sections/kybun/settings', 'templates/page.kybun.json/sections/models/settings']);
 const catalogTypes = new Set(['product', 'collection', 'product_list', 'collection_list']);
 const editorialTypes = new Set(['main-page', 'main-about-page', 'main-article', 'main-blog', 'main-b2b']);
 function empty(value) { return value == null || value === '' || (Array.isArray(value) && value.length === 0); }
@@ -206,7 +207,7 @@ function checkSettings(values={}, definitions=[], location, editorial=false) {
   const schema = new Map(definitions.filter(item => item.id).map(item => [item.id, item]));
   for (const [id, value] of Object.entries(values)) {
     assert.equal(retired.has(id), false, `${location}/${id}: retired catalog/menu/delivery/shipping setting must be deleted`);
-    if (catalogTypes.has(schema.get(id)?.type)) assert.ok(empty(value) || dynamicSource(value) || (location === 'templates/index.json/sections/kybun/settings' && id === 'collection' && value === 'kybun-schuhe'), `${location}/${id}: distributed theme must not seed a product or collection handle`);
+    if (catalogTypes.has(schema.get(id)?.type)) assert.ok(empty(value) || dynamicSource(value) || (verifiedKybunLocations.has(location) && id === 'collection' && value === 'kybun-schuhe'), `${location}/${id}: distributed theme must not seed a product or collection handle`);
     if (!editorial && typeof value === 'string') {
       const target = value.match(/\/(products|collections)\/([^/?#"'\s]+)/);
       assert.ok(!target || (target[1] === 'collections' && target[2] === 'all'), `${location}/${id}: fixed catalog URL cannot replace a selected Shopify entity`);
@@ -215,7 +216,7 @@ function checkSettings(values={}, definitions=[], location, editorial=false) {
   }
 }
 
-test('distributed configuration permits only the verified home kybun collection and has no retired fallback promises', () => {
+test('distributed configuration permits only the verified home and existing kybun page selections and has no retired fallback promises', () => {
   const schemas = new Map();
   for (const filename of readdirSync(path.join(root, 'sections')).filter(name => name.endsWith('.liquid'))) {
     const source = readFileSync(path.join(root, 'sections', filename), 'utf8');
@@ -254,4 +255,16 @@ test('distributed configuration permits only the verified home kybun collection 
     for (const definition of schema.blocks || []) checkDefaults(definition.settings, `sections/${name}/blocks/${definition.type}/defaults`, editorialTypes.has(name));
     for (const [index, preset] of (schema.presets || []).entries()) checkInstance({type:name, ...preset}, `sections/${name}/presets/${index}`);
   }
+});
+
+
+test('the kybun page compatibility selection is restricted to the verified resource and exact template slot', () => {
+  const definitions = [{id:'collection',type:'collection'}];
+  assert.doesNotThrow(() => checkSettings({collection:'kybun-schuhe'},definitions,'templates/page.kybun.json/sections/models/settings'));
+  assert.throws(() => checkSettings({collection:'unverified-handle'},definitions,'templates/page.kybun.json/sections/models/settings'));
+  assert.throws(() => checkSettings({collection:'kybun-schuhe'},definitions,'templates/page.marke.json/sections/models/settings'));
+  const template=readThemeJson(path.join(root,'templates/page.kybun.json'));
+  assert.equal(template.sections.models.type,'featured-products');
+  assert.equal(template.sections.models.settings.collection,'kybun-schuhe');
+  assert.equal(template.sections.main.type,'main-page');
 });

@@ -1,0 +1,35 @@
+{%- comment -%}
+  AICO collection JSON is already parsed by Shopify: [{question, answer}].
+  Native description content takes priority; inherited identical entries appear
+  once. output: 'has_content' detects valid source data before that deduplication.
+  Answers use the existing trusted-prose export guard, not a general sanitizer.
+{%- endcomment -%}
+{%- assign array_opening = field.value | json | slice: 0, 1 -%}
+{%- if field.type == 'json' and array_opening == '[' -%}
+  {%- if mode == 'guide' or mode == 'faq' -%}
+    {%- assign description_text = description | strip_html | newline_to_br | replace: '<br />', ' ' | strip_newlines | replace: '&nbsp;', ' ' | replace: '&#160;', ' ' | replace: '&#xA0;', ' ' | replace: '&#xa0;', ' ' | replace: ' ', ' ' | replace: '&amp;', '&' | replace: '&quot;', '"' | replace: '&#39;', "'" | replace: '  ', ' ' | replace: '  ', ' ' | replace: '  ', ' ' | replace: '  ', ' ' | replace: '  ', ' ' | replace: '  ', ' ' | downcase | strip -%}
+    {%- assign seen_signatures = '' -%}
+    {%- for item in field.value -%}
+      {%- assign item_opening = item | json | slice: 0, 1 -%}
+      {%- unless item_opening == '{' -%}{%- continue -%}{%- endunless -%}
+      {%- assign question_opening = item.question | json | slice: 0, 1 -%}
+      {%- unless question_opening == '"' -%}{%- continue -%}{%- endunless -%}
+      {%- assign question = item.question | replace: ' ', ' ' | strip -%}
+      {%- assign question_text = question | strip_html | newline_to_br | replace: '<br />', ' ' | strip_newlines | replace: '&nbsp;', ' ' | replace: '&#160;', ' ' | replace: '&#xA0;', ' ' | replace: '&#xa0;', ' ' | replace: ' ', ' ' | replace: '&amp;', '&' | replace: '&quot;', '"' | replace: '&#39;', "'" | replace: '  ', ' ' | replace: '  ', ' ' | replace: '  ', ' ' | replace: '  ', ' ' | replace: '  ', ' ' | replace: '  ', ' ' | downcase | strip -%}
+      {%- capture answer -%}{% render 'product-json-html', html: item.answer %}{%- endcapture -%}
+      {%- assign answer = answer | strip -%}
+      {%- if question_text == blank or answer == blank -%}{%- continue -%}{%- endif -%}
+      {%- if output == 'has_content' -%}true{%- break -%}{%- endif -%}
+      {%- if description_text contains question_text -%}{%- continue -%}{%- endif -%}
+      {%- assign answer_text = answer | strip_html | newline_to_br | replace: '<br />', ' ' | strip_newlines | replace: '&nbsp;', ' ' | replace: '&#160;', ' ' | replace: '&#xA0;', ' ' | replace: '&#xa0;', ' ' | replace: ' ', ' ' | replace: '&amp;', '&' | replace: '&quot;', '"' | replace: '&#39;', "'" | replace: '  ', ' ' | replace: '  ', ' ' | replace: '  ', ' ' | replace: '  ', ' ' | replace: '  ', ' ' | replace: '  ', ' ' | downcase | strip -%}
+      {%- capture signature -%}[{{ question_text | json }},{{ answer_text | json }}]{%- endcapture -%}
+      {%- if seen_signatures contains signature -%}{%- continue -%}{%- endif -%}
+      {%- assign seen_signatures = seen_signatures | append: signature -%}
+      {%- if mode == 'guide' -%}
+        <article class="collection-guide-card"><h3>{{ question | escape }}</h3><div class="rte">{{ answer }}</div></article>
+      {%- else -%}
+        <details class="collection-faq-item"><summary>{{ question | escape }}{% render 'icon', name: 'chevron' %}</summary><div class="rte">{{ answer }}</div></details>
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+{%- endif -%}

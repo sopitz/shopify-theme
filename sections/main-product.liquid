@@ -26,8 +26,9 @@
 <section class="product-section section-space" id="Product-{{ section.id }}" data-product-section data-product-media-context data-product-context-kind="{{ context_kind | escape }}" data-product-context-brand="{{ product.vendor | escape }}" data-section-id="{{ section.id }}" data-product-url="{{ product.url }}">
   <div class="container">
     <nav class="breadcrumbs" aria-label="Brotkrumennavigation">
+      {%- capture product_breadcrumb_collection_title -%}{% render 'collection-display-title', collection: collection %}{%- endcapture -%}
       <a href="{{ routes.root_url }}">Startseite</a><span aria-hidden="true">/</span>
-      <a href="{{ collection.url | default: routes.all_products_collection_url }}">{{ collection.title | default: 'Alle Produkte' | escape }}</a><span aria-hidden="true">/</span>
+      <a href="{{ collection.url | default: routes.all_products_collection_url }}">{{ product_breadcrumb_collection_title | strip | default: 'Alle Produkte' | escape }}</a><span aria-hidden="true">/</span>
       <span>{{ model_title | escape }}</span>
     </nav>
     <div class="product-detail" data-product-overview>
@@ -156,15 +157,8 @@
           </noscript>
           <div class="product-form-error" data-product-error role="alert" hidden></div>
         {%- endform -%}
-        <div class="product-purchase-notes">
-          {%- if shop.shipping_policy != blank -%}<p>{% render 'icon', name: 'truck' %}<a href="{{ shop.shipping_policy.url }}">Versandbedingungen</a></p>{%- endif -%}
-          {%- if product.metafields.upswing.delivery_note != blank -%}<div class="delivery-note">{{ product.metafields.upswing.delivery_note | metafield_tag }}</div>{%- endif -%}
-          {%- if shop.refund_policy != blank -%}<p>{% render 'icon', name: 'return' %}<a href="{{ shop.refund_policy.url }}">Rückgabe- und Erstattungsbedingungen</a></p>{%- endif -%}
-        </div>
-        <div class="product-consultation">
-          {% render 'icon', name: 'phone' %}
-          <div><strong>Passt dieses Produkt zu dir?</strong><p>Wir helfen dir bei Auswahl, Passform und Anwendung.</p><a class="text-link" href="{{ onsite_consultation_url | escape }}">Persönliche Beratung finden</a></div>
-        </div>
+        {% render 'product-trust', consultation_url: onsite_consultation_url %}
+        {%- if product.metafields.upswing.delivery_note != blank -%}<div class="product-purchase-notes"><div class="delivery-note">{{ product.metafields.upswing.delivery_note | metafield_tag }}</div></div>{%- endif -%}
         {%- if section.settings.b2b_url != blank -%}<p class="product-b2b-link">Für Mitarbeitende einkaufen? <a href="{{ section.settings.b2b_url }}">Firmenberatung anfragen</a></p>{%- endif -%}
         {%- if product_knowledge != blank -%}<a class="text-link description-jump" href="#ProductInformation">Alle Produktinformationen lesen {% render 'icon', name: 'arrow' %}</a>{%- endif -%}
       </div>

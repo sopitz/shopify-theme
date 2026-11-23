@@ -1,0 +1,7 @@
+/* Compare-at amounts belong to the same offer as the displayed current price. */
+.price{display:inline-flex;align-items:baseline;flex-wrap:wrap;column-gap:8px;row-gap:2px}
+.price-comparison{display:inline-flex;align-items:baseline;gap:4px;color:var(--muted);font-size:.75em;font-weight:400;white-space:nowrap}
+.price .price-comparison s{margin-left:0;font-size:1em}
+.price-comparison[hidden]{display:none}
+.product-media>.product-sale-badge{position:absolute;top:14px;right:14px;z-index:2;display:inline-flex;align-items:center;min-height:26px;padding:4px 10px;border-radius:20px;background:var(--forest);color:#fff;font-size:12px;font-weight:700;line-height:1.4;letter-spacing:.01em}
+@media(max-width:600px){.product-media>.product-sale-badge{top:10px;right:10px;min-height:24px;padding:3px 8px;font-size:11px}}

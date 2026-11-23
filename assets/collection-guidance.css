@@ -30,20 +30,27 @@
 .collection-guide-card .rte{font-size:15px;line-height:1.7;color:var(--muted)}
 .collection-guide-card .rte p:last-child{margin-bottom:0}
 .collection-faq>h2{margin-bottom:22px}
-.collection-faq-list{max-width:900px;border-top:1px solid var(--line)}
-.collection-faq-item,.collection-description-details{border-bottom:1px solid var(--line)}
-.collection-faq-item summary,.collection-description-details summary{display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:58px;padding:17px 0;list-style:none;cursor:pointer;font-size:15px;font-weight:600;line-height:1.5}
-.collection-faq-item summary::-webkit-details-marker,.collection-description-details summary::-webkit-details-marker{display:none}
-.collection-faq-item summary .icon,.collection-description-details summary .icon{width:15px;height:15px;transform:rotate(90deg)}
-.collection-faq-item[open]>summary .icon,.collection-description-details[open]>summary .icon{transform:rotate(-90deg)}
-.collection-faq-item>.rte,.collection-description-details>.rte{padding:0 26px 20px 0;font-size:15px;line-height:1.8;max-width:780px}
+.collection-faq-list{width:100%;max-width:none;border-top:1px solid var(--line)}
+.collection-faq-item{border-bottom:1px solid var(--line)}
+.collection-faq-item summary{display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:58px;padding:17px 0;list-style:none;cursor:pointer;font-size:15px;font-weight:600;line-height:1.5}
+.collection-faq-item summary::-webkit-details-marker{display:none}
+.collection-faq-item summary .icon{width:15px;height:15px;transform:rotate(90deg)}
+.collection-faq-item[open]>summary .icon{transform:rotate(-90deg)}
+.collection-faq-item>.rte{padding:0 26px 20px 0;font-size:15px;line-height:1.8;max-width:none}
 .collection-faq-item>.rte p:last-child{margin-bottom:0}
-.collection-description-details{border-bottom:0;max-width:900px}
+.collection-description-block .collection-description{max-width:none;font-size:15px;line-height:1.8}
+.collection-description-block{margin-top:56px;padding-top:36px;border-top:1px solid var(--line)}
+.collection-information-title{font-size:clamp(25px,2.5vw,34px);line-height:1.2;letter-spacing:-.03em;margin-bottom:24px}
+.collection-description h2[id]{scroll-margin-top:150px}
 .product-card-facts{margin:0 0 14px;display:grid;gap:4px;font-size:12px;line-height:1.55;color:var(--muted)}
 .product-card-facts>div{display:flex;flex-wrap:wrap;gap:0 6px}
 .product-card-facts dt{font-weight:400}
 .product-card-facts dt::after{content:':'}
 .product-card-facts dd{margin:0;color:var(--ink);overflow-wrap:anywhere}
 @media(max-width:820px){.collection-guidance-heading{display:block}.collection-guidance-heading>.text-link{margin-top:12px}.collection-guide-card{padding:22px}.collection-guide-grid{gap:14px}}
-@media(max-width:600px){.collection-header .collection-intro{font-size:14px}.collection-buying-guide,.collection-faq{margin-top:44px}.collection-guide-grid{grid-template-columns:1fr}.collection-guide-card h3{font-size:21px}.collection-guide-card .rte,.collection-faq-item>.rte{font-size:14px}.collection-faq-item summary,.collection-description-details summary{font-size:14px}.product-card-facts{font-size:11px}}
+@media(max-width:600px){.collection-header .collection-intro{font-size:14px}.collection-buying-guide,.collection-faq{margin-top:44px}.collection-guide-grid{grid-template-columns:1fr}.collection-guide-card h3{font-size:21px}.collection-guide-card .rte,.collection-faq-item>.rte{font-size:14px}.collection-faq-item summary{font-size:14px}.product-card-facts{font-size:11px}}
 @media(max-width:600px){.collection-section--guided .collection-header>.button{margin-top:14px}.collection-section--guided .collection-shortcuts{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px}.collection-section--guided .category-chip{white-space:nowrap;flex-shrink:0}}
+
+.collection-faq-marker::before{content:"+";font-size:20px;font-weight:400}
+.collection-faq-item[open] .collection-faq-marker::before{content:"−"}
+.collection-description .collection-faq-list{margin-block:20px 28px}

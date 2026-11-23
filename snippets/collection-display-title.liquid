@@ -1,0 +1,27 @@
+{%- comment -%}
+  Presentation-only collection name. Match an explicitly configured parent
+  path and its following space at the start of the original title. Return
+  plain text; callers must escape it for HTML or serialize it with json.
+{%- endcomment -%}
+{%- liquid
+  assign original_title = collection.title | default: ''
+  assign display_title = original_title
+  assign matched_length = 0
+  assign parent_paths = settings.collection_title_parent_paths | newline_to_br | split: '<br />'
+  for configured_path in parent_paths
+    assign parent_path = configured_path | strip
+    if parent_path != blank
+      assign parent_prefix = parent_path | append: ' '
+      assign prefix_length = parent_prefix | size
+      assign title_prefix = original_title | slice: 0, prefix_length
+      if title_prefix == parent_prefix and prefix_length > matched_length
+        assign remaining_title = original_title | remove_first: parent_prefix | strip
+        if remaining_title != blank
+          assign display_title = remaining_title
+          assign matched_length = prefix_length
+        endif
+      endif
+    endif
+  endfor
+-%}
+{{- display_title -}}

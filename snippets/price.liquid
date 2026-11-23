@@ -4,16 +4,21 @@
   assign comparison = priced_item.compare_at_price
   if from_price != blank
     assign amount = from_price
+    if priced_item.price != amount
+      assign comparison = nil
+    endif
+  endif
+  if show_from
     assign comparison = nil
   endif
 -%}
-<span class="price{% if comparison > amount %} price--sale{% endif %}">
+<span class="price{% if comparison > amount %} price--sale{% endif %}"{% if live %} data-product-price-container{% endif %}>
   {%- if show_from -%}<span class="price-prefix">ab </span>{%- endif -%}
   <span{% if live %} data-product-price{% endif %}>{{ amount | money_with_currency }}</span>
   {%- if comparison > amount -%}
-    <s{% if live %} data-product-compare-price{% endif %}>{{ comparison | money_with_currency }}</s>
+    <span class="price-comparison"{% if live %} data-product-compare-wrapper{% endif %}><span class="price-comparison-label">Statt </span><s{% if live %} data-product-compare-price{% endif %}>{{ comparison | money_with_currency }}</s></span>
   {%- elsif live -%}
-    <s data-product-compare-price hidden></s>
+    <span class="price-comparison" data-product-compare-wrapper hidden><span class="price-comparison-label">Statt </span><s data-product-compare-price hidden></s></span>
   {%- endif -%}
 </span>
 {%- if priced_item.unit_price_measurement -%}

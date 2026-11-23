@@ -62,6 +62,7 @@
       {%- else -%}
         {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
       {%- endif -%}
+      {% render 'product-sale-badge', product: product, from_price: model_min_price, show_from: show_from %}
       {%- unless card_available -%}<span class="product-badge">Zurzeit nicht verfügbar</span>{%- endunless -%}
     </a>
     <div class="product-card-content">

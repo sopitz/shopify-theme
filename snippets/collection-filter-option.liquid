@@ -1,0 +1,22 @@
+{%- comment -%}
+  Render an existing Shopify list/boolean filter value. Visuals are exclusively
+  native value.image or value.swatch.image/color; labels never imply a colour.
+  The caller supplies a unique input_id for this filter and value.
+{%- endcomment -%}
+{%- liquid
+  assign filter_image = value.image | default: value.swatch.image
+  assign filter_color = value.swatch.color | append: ''
+  assign filter_disabled = false
+  if value.count == 0 and value.active == false
+    assign filter_disabled = true
+  endif
+-%}
+<label class="filter-value collection-filter-option{% if filter_disabled %} is-disabled{% endif %}" for="{{ input_id | escape }}">
+  <input type="checkbox" name="{{ value.param_name | escape }}" value="{{ value.value | escape }}" id="{{ input_id | escape }}"{% if value.active %} checked{% endif %}{% if filter_disabled %} disabled{% endif %}>
+  {%- if filter_image != blank -%}
+    <span class="collection-filter-option__visual{% if value.image != blank %} collection-filter-option__visual--image{% endif %}" aria-hidden="true">{{ filter_image | image_url: width: 64 | image_tag: loading: 'lazy', widths: '32, 64', sizes: '32px', width: 32, height: 32, alt: '' }}</span>
+  {%- elsif filter_color != blank -%}
+    <span class="collection-filter-option__visual" aria-hidden="true" style="--collection-filter-color: {{ filter_color | escape }}"></span>
+  {%- endif -%}
+  <span class="collection-filter-option__label">{{ value.label | escape }}</span><span class="filter-count">{{ value.count }}</span>
+</label>

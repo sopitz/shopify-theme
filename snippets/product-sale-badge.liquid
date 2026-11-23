@@ -1,0 +1,28 @@
+{%- comment -%}
+  A card may show a model-wide starting price. Only advertise a discount when
+  that amount is the displayed product's own selected variant price, with no
+  varying-price range. Sibling maxima never establish a comparison price.
+{%- endcomment -%}
+{%- liquid
+  assign badge_item = variant | default: product.selected_or_first_available_variant | default: product
+  assign badge_amount = badge_item.price
+  assign badge_comparison = badge_item.compare_at_price
+  assign badge_percent = 0
+  assign badge_matches = true
+  if from_price != blank and from_price != badge_amount
+    assign badge_matches = false
+  endif
+  assign badge_amount_type = badge_amount | json | slice: 0, 1
+  assign badge_comparison_type = badge_comparison | json | slice: 0, 1
+  assign numeric_openings = '0,1,2,3,4,5,6,7,8,9' | split: ','
+  unless numeric_openings contains badge_amount_type
+    assign badge_matches = false
+  endunless
+  unless numeric_openings contains badge_comparison_type
+    assign badge_matches = false
+  endunless
+  if badge_matches and show_from != true and badge_amount > 0 and badge_comparison > badge_amount
+    assign badge_percent = badge_comparison | minus: badge_amount | times: 100.0 | divided_by: badge_comparison | floor
+  endif
+-%}
+{%- if badge_percent > 0 -%}<span class="product-sale-badge" aria-label="{{ badge_percent }} % Rabatt">−{{ badge_percent }} %</span>{%- endif -%}
