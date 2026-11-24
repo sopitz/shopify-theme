@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.43] - 2026-11-24
+
+- Navigationsbilder werden nach dem Seitenaufbau in Leerlaufphasen mit niedriger Priorität vorbereitet. Die Warteschlange verwendet die vorhandenen responsiven Bilder, begrenzt gleichzeitige Hintergrundanfragen und priorisiert das Menü bei Hover oder Tastaturfokus. Datensparmodus, langsame Verbindungen, kleine Touch-Ansichten und ausgeblendete Tabs werden für automatisches Vorladen berücksichtigt.
+- Neun Bildvorgaben für Ratgeber, Beratungen und Kurse verwenden die bereits vorhandenen Originalfotografien. Ein echter Menüpunkt „Wissen & Ratgeber“ unterdrückt weiterhin den automatisch ergänzten Link.
+- Die separate Shopify-Navigation `[Simon] Hauptmenü` wurde mit dem bisherigen Menü abgeglichen: leguano-Aktion, Venen-Engel-Aktion, Geschenkideen sowie vorhandene Ratgeber, Beratungen und Kurse ergänzt; zwei nicht vorhandene Sortimentsziele durch echte Kollektionen ersetzt. Diese Menüeinträge sind Shopify-Daten und werden durch das Installationspaket nicht neu angelegt. Das Live-Theme und sein eigenes Menü bleiben unverändert.
+- Enthält sämtliche Seitenmigrationen und Produktverbesserungen aus 1.0.41/1.0.42. Das Theme bleibt im Shop unveröffentlicht.
+
 ## [1.0.42] - 2026-11-24
 
 - Das weisse anderS.-Logo erhält auf der migrierten Markenseite dieselbe dunkle Logofläche wie die übrigen weissen Markenlogos. Die Zuordnung und der Kontrast aller zwölf Markenlogos sind als Regression geprüft.

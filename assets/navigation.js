@@ -7,6 +7,131 @@
   const controllers = new WeakMap();
   const desktopViewport = window.matchMedia('(min-width: 1101px)');
   const fineHover = window.matchMedia('(hover: hover) and (pointer: fine)');
+  // Warm the existing responsive elements, never a second guessed CDN URL.
+  // This keeps the browser's srcset/sizes choice and its normal image cache key.
+  const warmedSources = new Set();
+  const imageKey = image => {
+    const src = image.getAttribute('src');
+    if (!src && !image.getAttribute('srcset')) return '';
+    let url = '';
+    try { if (src) { const parsed = new URL(src, document.baseURI); if (!/^https?:$/.test(parsed.protocol)) return ''; url = parsed.href; } }
+    catch { return ''; }
+    const picture = image.parentElement?.matches('picture') ? [...image.parentElement.querySelectorAll('source')].map(source => ['srcset', 'sizes', 'media', 'type'].map(name => source.getAttribute(name) || '')) : [];
+    return JSON.stringify([url, ...['srcset', 'sizes', 'crossorigin', 'referrerpolicy'].map(name => image.getAttribute(name) || ''), picture]);
+  };
+  const rememberImage = key => {
+    if (warmedSources.size >= 128) warmedSources.delete(warmedSources.values().next().value);
+    warmedSources.add(key);
+  };
+  const createImageWarmer = (root, items, lifetime) => {
+    const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    const jobs = [];
+    const attempted = new Set();
+    const seen = key => attempted.has(key) || warmedSources.has(key);
+    let destroyed = false;
+    let loaded = document.readyState === 'complete';
+    let running = 0;
+    let idle = 0;
+    let fallback = 0;
+    const listen = (target, type, callback) => target?.addEventListener?.(type, callback, { signal: lifetime.signal });
+    const visible = () => !document.hidden && document.visibilityState !== 'hidden' && root.isConnected;
+    const automaticAllowed = () => loaded && visible() && desktopViewport.matches && fineHover.matches && !connection?.saveData && !['slow-2g', '2g', '3g'].includes(connection?.effectiveType) && !(typeof connection?.downlink === 'number' && connection.downlink > 0 && connection.downlink < 1.5);
+    const cancelIdle = () => {
+      if (idle) window.cancelIdleCallback?.(idle);
+      window.clearTimeout(fallback);
+      idle = 0; fallback = 0;
+    };
+    const enqueue = (panel, intent) => {
+      const images = [...panel.querySelectorAll('img')];
+      if (intent) images.reverse(); // Unshift the requested panel in DOM order.
+      for (const image of images) {
+        const key = imageKey(image);
+        if (!key || seen(key)) continue;
+        if (image.complete && image.naturalWidth > 0) { attempted.add(key); rememberImage(key); continue; }
+        const existing = jobs.findIndex(job => job.key === key);
+        if (existing >= 0) {
+          if (intent) { const [job] = jobs.splice(existing, 1); job.intent = true; jobs.unshift(job); }
+          continue;
+        }
+        const job = { image, key, intent };
+        if (intent) jobs.unshift(job); else jobs.push(job);
+      }
+    };
+    const start = job => {
+      if (destroyed || !job.image.isConnected || seen(job.key)) return;
+      attempted.add(job.key);
+      rememberImage(job.key);
+      const image = job.image;
+      if (image.complete && image.naturalWidth > 0) return;
+      running++;
+      let finished = false;
+      const done = () => {
+        if (finished) return;
+        finished = true; running--;
+        image.removeEventListener('load', done); image.removeEventListener('error', done);
+        if (!destroyed) { pumpIntent(); schedule(); }
+      };
+      image.addEventListener('load', done, { once: true, signal: lifetime.signal });
+      image.addEventListener('error', done, { once: true, signal: lifetime.signal });
+      image.setAttribute('fetchpriority', 'low');
+      if (!image.hasAttribute('decoding')) image.setAttribute('decoding', 'async');
+      image.setAttribute('loading', 'eager');
+    };
+    const pumpIntent = () => {
+      if (destroyed || !visible() || !desktopViewport.matches) return;
+      while (running < 4) {
+        const index = jobs.findIndex(job => job.intent);
+        if (index < 0) break;
+        start(jobs.splice(index, 1)[0]);
+      }
+    };
+    const schedule = () => {
+      if (destroyed || idle || fallback || !automaticAllowed() || running >= 2 || !jobs.some(job => !job.intent)) return;
+      const work = () => {
+        idle = 0; fallback = 0;
+        if (destroyed || !automaticAllowed()) return;
+        while (running < 2) {
+          const index = jobs.findIndex(job => !job.intent);
+          if (index < 0) break;
+          const job = jobs.splice(index, 1)[0];
+          if (seen(job.key)) continue;
+          start(job);
+        }
+      };
+      // Optional work has no timeout that could force it into a busy frame.
+      if (window.requestIdleCallback) idle = window.requestIdleCallback(work);
+      else fallback = window.setTimeout(work, 1500);
+    };
+    const resume = () => {
+      cancelIdle();
+      pumpIntent();
+      if (!automaticAllowed()) return;
+      items.forEach(item => enqueue(item.querySelector('[data-nav-panel]'), false));
+      pumpIntent(); schedule();
+    };
+    listen(window, 'load', () => { loaded = true; resume(); });
+    listen(document, 'visibilitychange', resume);
+    listen(connection, 'change', resume);
+    listen(desktopViewport, 'change', resume);
+    listen(fineHover, 'change', resume);
+    resume();
+    return {
+      intent(panel) {
+        if (destroyed || !visible() || !desktopViewport.matches) return;
+        enqueue(panel, true); pumpIntent();
+      },
+      reveal(panel) {
+        // Opening the menu is ordinary demand, including Save-Data.
+        // Promote its actual images; queued copies cannot create new requests.
+        panel.querySelectorAll('img').forEach(image => {
+          const key = imageKey(image); if (key) { attempted.add(key); rememberImage(key); }
+          if (image.getAttribute('fetchpriority') === 'low') image.setAttribute('fetchpriority', 'auto');
+          image.setAttribute('loading', 'eager');
+        });
+      },
+      destroy() { destroyed = true; cancelIdle(); jobs.length = 0; }
+    };
+  };
   const rootsWithin = scope => {
     const roots = [];
     if (scope instanceof Element && scope.matches('[data-navigation-root]')) roots.push(scope);
@@ -18,6 +143,7 @@
     const lifetime = new AbortController();
     const listen = (target, type, callback) => target?.addEventListener(type, callback, { signal: lifetime.signal });
     const items = [...root.querySelectorAll('[data-nav-item]')].filter(item => item.querySelector('[data-nav-toggle]') && item.querySelector('[data-nav-panel]'));
+    const images = createImageWarmer(root, items, lifetime);
     const mobileButton = root.querySelector('[data-navigation-mobile-toggle]');
     const mobilePanel = root.querySelector('[data-navigation-mobile-panel]');
     const toggleLabels = new WeakMap();
@@ -51,6 +177,7 @@
       const menuTitle = item.querySelector('.mega-menu-link')?.textContent.trim() || 'Produkte';
       button.setAttribute('aria-label', `${menuTitle} – Untermenü schliessen`);
       panel.hidden = false;
+      images.reveal(panel);
       item.classList.add('is-open');
       root.setAttribute('data-desktop-navigation-open', '');
       if (focusTarget) {
@@ -94,8 +221,10 @@
       listen(item, 'pointerenter', event => {
         if (!desktopViewport.matches || !fineHover.matches || event.pointerType === 'touch') return;
         clearHoverTimers();
+        images.intent(panel);
         if (activeItem !== item) openTimer = window.setTimeout(() => openDesktop(item), 140);
       });
+      listen(item, 'focusin', () => { if (desktopViewport.matches) images.intent(panel); });
       listen(item, 'pointerleave', () => {
         if (!desktopViewport.matches || !fineHover.matches) return;
         clearHoverTimers();
@@ -144,6 +273,7 @@
     desktopViewport.addEventListener('change', resetForViewport);
     return {
       destroy() {
+        images.destroy();
         closeDesktop(); closeMobile();
         window.clearTimeout(focusTimer);
         lifetime.abort();

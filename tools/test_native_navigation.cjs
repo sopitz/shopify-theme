@@ -141,6 +141,43 @@ test('subcategory image cards share a visual group with their parent while prese
   }
 });
 
+test('the knowledge menu keeps all topic and consultation links with original page photos and no duplicate guide entry', async () => {
+  const settingsSource = readFileSync(path.join(repo, 'config/settings_data.json'), 'utf8');
+  const savedHeader = JSON.parse(settingsSource.slice(settingsSource.indexOf('{'))).current.sections.header;
+  const requiredPages = [
+    'fersensporn-und-andere-fussschmerzen', 'ruckenschmerzen', 'arthrose-und-gelenkschmerzen', 'regeneration-im-schlaf',
+    'venen-engel-beratung-buchen', 'bellicon-beratung-buchen', 'blackroll-base-beratung-buchen',
+    'sypoba-training-in-thun', 'bellicon-training-ruti-zh',
+  ];
+  const blocks = savedHeader.block_order.map(id => savedHeader.blocks[id]);
+  const pageLinks = requiredPages.map(handle => {
+    const matching = blocks.filter(block => block.type === 'menu_image' && block.settings.url === `/pages/${handle}`);
+    assert.equal(matching.length, 1, `${handle}: exactly one configured navigation photo`);
+    const photo = matching[0].settings.image.replace('shopify://shop_images/', '');
+    const nativeSource = readFileSync(path.join(repo, 'snippets', handle.includes('beratung-buchen') || handle.includes('training-') ? 'migrated-service-pages.liquid' : 'migrated-topic-hub-pages.liquid'), 'utf8');
+    const pageSource = nativeSource.split(`when '${handle}'`)[1]?.split('{%- when ')[0];
+    assert.ok(pageSource, `${handle}: original migrated page exists`);
+    assert.equal(pageSource.match(/'([^']+)'\s*\|\s*file_img_url/)[1], photo, `${handle}: navigation uses its original hero photo`);
+    return link(matching[0].settings.title, `/pages/${handle}`, {type:'page_link', object:{}});
+  });
+  const menu = [link('Wissen & Ratgeber', '/pages/themen', {links:pageLinks})];
+  const values = context(menu);
+  values.section.settings.guide_url = '/pages/themen';
+  values.section.blocks = blocks.map(block => ({...block, settings:{...block.settings, image:{src:block.settings.image.replace('shopify://shop_images/', '/shopify/files/')}}}));
+  const document = await headerDocument(menu, values);
+  assert.equal(document.querySelectorAll('.desktop-navigation .mega-menu-list > li > .mega-menu-trigger > a[href="/pages/themen"]').length, 1);
+  assert.equal(document.querySelectorAll('.desktop-navigation .mega-menu-list > li > a[href="/pages/themen"]').length, 0, 'Automatic guide link is suppressed by the configured menu');
+  for (const selector of ['.desktop-navigation .mega-card', '#MobileNavigation .mobile-nav-link']) {
+    for (const pageLink of pageLinks) {
+      const card = document.querySelector(`${selector}[href="${pageLink.url}"]`);
+      const sourceBlock = blocks.find(block => block.settings.url === pageLink.url);
+      assert.ok(card, `${selector}: ${pageLink.url} remains reachable`);
+      assert.equal(card.querySelector('img').getAttribute('src'), sourceBlock.settings.image.replace('shopify://shop_images/', '/shopify/files/'));
+      assert.equal(card.textContent.trim(), pageLink.title);
+    }
+  }
+});
+
 test('a blank main menu has only an editor onboarding prompt and keeps about, search, account and cart', async () => {
   for (const links of [[], undefined]) {
     for (const designMode of [false, true]) {

@@ -30,7 +30,92 @@
           "about_label": "Über uns",
           "about_url": "/pages/upswing-werte",
           "about_menu": "simon-ber-uns"
-        }
+        },
+        "blocks": {
+          "nav_fersensporn": {
+            "type": "menu_image",
+            "settings": {
+              "title": "Fersensporn & Fussschmerzen",
+              "url": "/pages/fersensporn-und-andere-fussschmerzen",
+              "image": "shopify://shop_images/hero-fersensporn-nagel2.png"
+            }
+          },
+          "nav_ruecken": {
+            "type": "menu_image",
+            "settings": {
+              "title": "Rückenschmerzen",
+              "url": "/pages/ruckenschmerzen",
+              "image": "shopify://shop_images/hero-rueckenschmerzen.png"
+            }
+          },
+          "nav_arthrose": {
+            "type": "menu_image",
+            "settings": {
+              "title": "Arthrose & Gelenkschmerzen",
+              "url": "/pages/arthrose-und-gelenkschmerzen",
+              "image": "shopify://shop_images/hero-arthrose.png"
+            }
+          },
+          "nav_schlaf": {
+            "type": "menu_image",
+            "settings": {
+              "title": "Regeneration im Schlaf",
+              "url": "/pages/regeneration-im-schlaf",
+              "image": "shopify://shop_images/hero-blackroll-base2.png"
+            }
+          },
+          "nav_venen_beratung": {
+            "type": "menu_image",
+            "settings": {
+              "title": "Venen Engel Beratung",
+              "url": "/pages/venen-engel-beratung-buchen",
+              "image": "shopify://shop_images/hero-venen-engel2.png"
+            }
+          },
+          "nav_bellicon_beratung": {
+            "type": "menu_image",
+            "settings": {
+              "title": "bellicon Beratung",
+              "url": "/pages/bellicon-beratung-buchen",
+              "image": "shopify://shop_images/hero-bellicon2.png"
+            }
+          },
+          "nav_blackroll_beratung": {
+            "type": "menu_image",
+            "settings": {
+              "title": "BLACKROLL Matratzenberatung",
+              "url": "/pages/blackroll-base-beratung-buchen",
+              "image": "shopify://shop_images/hero-blackroll-base2.png"
+            }
+          },
+          "nav_sypoba_training": {
+            "type": "menu_image",
+            "settings": {
+              "title": "Sypoba Training in Thun",
+              "url": "/pages/sypoba-training-in-thun",
+              "image": "shopify://shop_images/hero-sypoba-3.png"
+            }
+          },
+          "nav_bellicon_training": {
+            "type": "menu_image",
+            "settings": {
+              "title": "bellicon Training in Rüti ZH",
+              "url": "/pages/bellicon-training-ruti-zh",
+              "image": "shopify://shop_images/hero-bellicon2.png"
+            }
+          }
+        },
+        "block_order": [
+          "nav_fersensporn",
+          "nav_ruecken",
+          "nav_arthrose",
+          "nav_schlaf",
+          "nav_venen_beratung",
+          "nav_bellicon_beratung",
+          "nav_blackroll_beratung",
+          "nav_sypoba_training",
+          "nav_bellicon_training"
+        ]
       },
       "footer": {
         "type": "footer",
