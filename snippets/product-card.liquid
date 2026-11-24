@@ -115,7 +115,8 @@
         {% render 'legacy-color-data', product: product, mode: 'card' %}
       {%- endif -%}
       <div class="product-card-actions">
-        <a class="text-link model-link" href="{{ product.url }}">Modell entdecken {% render 'icon', name: 'arrow' %}</a>
+        <a class="text-link model-link" href="{{ product.url }}">{% if quickshop %}Produkt ansehen{% else %}Modell entdecken{% endif %} {% render 'icon', name: 'arrow' %}</a>
+        {%- if quickshop -%}{% render 'product-care-quickshop', product: product, section: section %}{%- endif -%}
       </div>
     </div>
   </article>

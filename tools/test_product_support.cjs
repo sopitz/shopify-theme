@@ -65,6 +65,17 @@ test('structured care links are supported and duplicate native links do not crea
   try{assert.deepEqual(handles(dom.window.document),['cream']);}finally{dom.window.close();}
 });
 
+test('an explicit care list is authoritative and never filled with unselected description links',async()=>{
+  const product=base();
+  product.description='<h2>Pflege</h2><a href="/products/unselected">Frühere Empfehlung</a>';
+  product.metafields.upswing.care_products={type:'list.product_reference',value:[item(11,'selected')]};
+  const dom=await care(product,{unselected:item(12,'unselected')});
+  try{assert.deepEqual(handles(dom.window.document),['selected']);}finally{dom.window.close();}
+  product.metafields.upswing.care_products.value=[];
+  const empty=await care(product,{unselected:item(12,'unselected')});
+  try{assert.equal(empty.window.document.querySelector('[data-product-care-products]'),null);}finally{empty.window.close();}
+});
+
 test('service elements bind actual policy URLs and consultation without fixed free-shipping or exchange claims',async()=>{
   const dom=new JSDOM(await engine.renderFile('product-trust',{shop:{shipping_policy:{url:'/policies/shipping-policy'},refund_policy:{url:'/policies/refund-policy'}},consultation_url:'/pages/filialubersicht#Filialen'}));
   try{

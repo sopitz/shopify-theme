@@ -1,0 +1,74 @@
+/* Theme-owned page families. Loaded only for native Shopify Page routes. */
+.migrated-page{padding-bottom:64px;overflow-wrap:break-word}
+.migration-container{width:min(100% - 64px,1360px);margin-inline:auto}
+.migration-hero,.migration-story{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:center;gap:48px}
+.migration-hero{padding-block:28px 48px}
+.migration-hero--text{grid-template-columns:minmax(0,1fr);max-width:960px}
+.migration-hero>*,.migration-story>*,.migration-grid>*,.migration-card-grid>*{min-width:0}
+.migration-hero h1{font-size:clamp(30px,3.2vw,44px);line-height:1.15;letter-spacing:-.035em}
+.migration-eyebrow{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--link);margin-bottom:16px}
+.migration-lead{font-size:18px;line-height:1.8;color:var(--muted);margin-top:24px}
+.migration-copy{font-size:16px;line-height:1.85;color:var(--muted)}
+.migration-copy h1,.migration-copy h2,.migration-copy h3{color:var(--ink)}
+.migration-copy p+p,.migration-copy p+ul,.migration-copy p+ol{margin-top:16px}
+.migration-copy a:not(.button){text-decoration:underline;text-underline-offset:3px}
+.migration-section{margin-top:48px;padding-block:12px}
+.migration-section-heading{max-width:900px;margin-bottom:28px}
+.migration-section h2,.migration-section-heading h2{font-size:clamp(27px,2.7vw,36px);line-height:1.22}
+.migration-section-heading p{margin-top:16px;color:var(--muted);line-height:1.8}
+.migration-media{margin:0;min-width:0}
+.migration-media>img,.migration-card-media>img{display:block;width:100%;height:auto;object-fit:contain;border-radius:12px}
+.migration-hero .migration-media>img{max-height:560px}
+.migration-media figcaption{font-size:12px;line-height:1.6;color:var(--muted);margin-top:10px}
+.migration-media iframe,.migration-media video,.migration-section iframe,.migration-section video{display:block;width:100%;max-width:100%;border:0;border-radius:12px}
+.migration-media iframe{aspect-ratio:16/9;height:auto}
+.migration-grid,.migration-card-grid,.migration-benefits-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;align-items:stretch}
+.migration-grid--two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.migration-card,.migration-link-card,.migration-benefit{min-width:0;padding:28px;border:1px solid var(--line);border-radius:12px;background:var(--cream)}
+.migration-card,.migration-link-card{display:flex;flex-direction:column}
+.migration-link-card{text-decoration:none;color:inherit}
+.migration-card h2,.migration-card h3,.migration-link-card h2,.migration-link-card h3,.migration-benefit h2,.migration-benefit h3{font-size:24px;line-height:1.3;margin-bottom:14px}
+.migration-card p,.migration-link-card p,.migration-benefit p{font-size:15px;line-height:1.8;color:var(--muted)}
+.migration-card>.text-link,.migration-link-card>.text-link{margin-top:auto;padding-top:20px;align-self:flex-start}
+.migration-card-media{display:block;margin:0 0 22px}
+.migration-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:26px}
+.migration-story+.migration-story{margin-top:48px}
+.migration-story:nth-child(even)>.migration-media{order:2}
+.migration-faq,.migration-faq-list{max-width:100%}
+.migration-faq details,.migration-faq-list details{border-bottom:1px solid var(--line)}
+.migration-faq details:first-child,.migration-faq-list details:first-child{border-top:1px solid var(--line)}
+.migration-faq summary,.migration-faq-list summary{display:flex;justify-content:space-between;gap:18px;list-style:none;min-height:56px;padding:18px 0;cursor:pointer;font-size:17px;font-weight:600;line-height:1.6;color:var(--ink)}
+.migration-faq summary::-webkit-details-marker,.migration-faq-list summary::-webkit-details-marker{display:none}
+.migration-faq summary>span[aria-hidden],.migration-faq-list summary>span[aria-hidden]{flex:none;font-size:24px;line-height:1.2}
+.migration-faq details[open]>summary>span[aria-hidden],.migration-faq-list details[open]>summary>span[aria-hidden]{transform:rotate(45deg)}
+.migration-faq details>.migration-copy,.migration-faq-list details>.migration-copy,.migration-faq details>div,.migration-faq-list details>div{padding-bottom:24px}
+.migration-trust,.migration-locations{padding:32px;border-radius:12px;background:var(--cream)}
+.migration-products .product-grid,.migration-product-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.migration-brand-hero-media{position:relative}
+.migration-brand-logo{position:absolute;left:20px;bottom:20px;max-width:calc(100% - 40px);padding:14px 20px;border-radius:8px;background:var(--white)}
+.migration-brand-logo--dark{background:var(--ink)}
+.migration-brand-logo img{display:block;width:auto;height:auto;max-width:180px;max-height:70px;object-fit:contain}
+.migration-form{max-width:760px}
+.migration-form .field+.field{margin-top:18px}
+.migration-embed{width:100%;max-width:100%;min-width:0}
+@media(max-width:900px){
+  .migration-hero,.migration-story{gap:30px}
+  .migration-grid,.migration-card-grid,.migration-benefits-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:700px){
+  .migrated-page{padding-bottom:40px}
+  .migration-container{width:calc(100% - 32px)}
+  .migration-hero,.migration-story{grid-template-columns:minmax(0,1fr);gap:24px}
+  .migration-hero{padding-block:16px 28px}
+  .migration-hero .migration-media>img{max-height:none}
+  .migration-story:nth-child(even)>.migration-media{order:initial}
+  .migration-section{margin-top:30px}
+  .migration-lead{font-size:16px;margin-top:18px}
+  .migration-copy{font-size:15px}
+  .migration-grid,.migration-card-grid,.migration-benefits-grid,.migration-grid--two{grid-template-columns:minmax(0,1fr);gap:18px}
+  .migration-card,.migration-link-card,.migration-benefit,.migration-trust,.migration-locations{padding:22px}
+  .migration-products .product-grid,.migration-product-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+  .migration-actions>.button{max-width:100%}
+  .migration-brand-logo{left:14px;bottom:14px;padding:10px 14px}
+  .migration-brand-logo img{max-width:140px;max-height:54px}
+}

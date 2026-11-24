@@ -1,4 +1,10 @@
-{% render 'about-page-content', page: page, page_kind: section.settings.page_kind, section: section %}
+{%- capture migrated_page -%}{% render 'migrated-page-content', page: page, section: section, respect_editorial: true %}{%- endcapture -%}
+{%- assign migrated_page = migrated_page | strip -%}
+{%- if migrated_page != blank -%}
+  {{ migrated_page }}
+{%- else -%}
+  {% render 'about-page-content', page: page, page_kind: section.settings.page_kind, section: section %}
+{%- endif -%}
 {% schema %}
 {
   "name": "Über uns & Filialen",

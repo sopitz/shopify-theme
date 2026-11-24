@@ -117,6 +117,8 @@ test('the real contact page keeps its native Shopify contact form and its existi
   const contact = readThemeJson(path.join(root, 'templates/page.contact.json'));
   assert.equal(contact.sections.main.type, 'main-contact');
   const contactSource = readFileSync(path.join(root, 'sections/main-contact.liquid'), 'utf8');
-  assert.match(contactSource, /{% form 'contact', id: contact_form_id/);
-  assert.match(contactSource, /name="contact\[body\]"/);
+  assert.match(contactSource, /render 'native-contact-page', page: page, section: section/);
+  const formSource = readFileSync(path.join(root, 'snippets/native-contact-page.liquid'), 'utf8');
+  assert.match(formSource, /{% form 'contact', id: contact_form_id/);
+  assert.match(formSource, /name="contact\[body\]"/);
 });

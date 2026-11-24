@@ -2,7 +2,7 @@
   {
     "name": "theme_info",
     "theme_name": "Upswing Wellbeing",
-    "theme_version": "1.0.40",
+    "theme_version": "1.0.41",
     "theme_author": "Upswing",
     "theme_documentation_url": "https://upswing.ch",
     "theme_support_url": "https://upswing.ch/pages/contact"
@@ -68,6 +68,17 @@
         "id": "seo_same_as",
         "label": "Profile der Firma (sameAs)",
         "info": "Eine Adresse je Zeile ohne Leerzeichen: Google-Unternehmensprofil, Facebook, Instagram, local.ch. Erscheint in den Organisationsdaten für Suchmaschinen."
+      }
+    ]
+  },
+  {
+    "name": "Venen Engel Produktfinder",
+    "settings": [
+      {
+        "type": "collection",
+        "id": "venen_engel_collection",
+        "label": "Kollektion mit Geräten und Zubehör",
+        "info": "Optional: vollständiges Sortiment für den Produktfinder. Ohne Auswahl wird die geprüfte bestehende Venen-Engel-Kollektion verwendet. Fehlende oder nicht verfügbare Bestandteile sind nicht als vollständiges Paket bestellbar."
       }
     ]
   },

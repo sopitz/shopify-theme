@@ -1,6 +1,6 @@
 # Upswing Shopify Theme
 
-Native Shopify-Theme-Quellen für upswing.ch, Stand **1.0.40**. Die sieben Theme-Ordner liegen direkt im Repository. Installationspakete freigegebener Versionen stehen in den [GitHub Releases](https://github.com/sopitz/shopify-theme/releases).
+Native Shopify-Theme-Quellen für upswing.ch, Stand **1.0.41**. Die sieben Theme-Ordner liegen direkt im Repository. Installationspakete freigegebener Versionen stehen in den [GitHub Releases](https://github.com/sopitz/shopify-theme/releases).
 
 Der Produktkatalog wird im Shopify-Shop gepflegt: Produkte, Varianten, Kollektionen, Menüs, Preise, Bilder und Produktinformationen kommen aus den tatsächlichen Shop-Ressourcen. Die Startseite enthält die bestehende kybun-Schuhkollektion und die zwölf bisherigen Markenseiten samt Original-Logos. Weitere Produkt- und Kollektionsauswahlen bleiben frei konfigurierbar. Wählen Sie die gewünschten Ressourcen im Theme-Editor und ordnen Sie die Shop-Menüs zu. Nicht verknüpfte Katalogkarten bleiben im Shop verborgen; im Editor helfen Einrichtungshinweise.
 
@@ -23,6 +23,10 @@ Ein Theme-Upload legt keine Produkte, Kollektionen, Seiten, Metafelddefinitionen
 
 Die [Prüfliste der Template-Änderungen](docs/Template-Pruefung.md) beschreibt die AICO-Anbindung ohne Änderungen am ERP, die vorhandenen Produktdaten, neue Beratungsvorlagen und die lokal geprüften Fälle. [Zusätzliche Filter in Shopify einrichten](docs/Collection-Filter-Einrichtung.md). Vor der Aktivierung im Shop die tatsächlichen Daten und Vorlagen im unveröffentlichten Theme prüfen.
 
+Die [Seitenmigration](docs/Seitenmigration.md) übernimmt die 41 am 24.11.2026 öffentlich erfassten Pages in das neue Design. Marken, Themen, Sortimentsübersichten, Beratungsbuchungen, Kurse und Geschäftskunden erhalten ihre bestehenden Inhalte und Funktionen. Die Migration liegt im Theme; Page-Objekte, URLs und globale Vorlagenzuweisungen werden nicht verändert. Die tatsächlichen alten Suffixe und Shopify-Forms müssen im unveröffentlichten Theme geprüft werden.
+
+[Pflegeprodukte je Produkt](docs/Pflegeprodukte-Metafeld.md) werden über `upswing.care_products` als Produktreferenzliste verknüpft und unter der Beschreibung mit aktuellen Preisen und Schnellkauf angezeigt. Das Theme legt dieses Feld nicht selbst im Shop an.
+
 ## Datenpflege
 
 Sortimentskarten übernehmen Titel, Ziel, Beschreibung und Bild der ausgewählten Kollektion. Marken verweisen auf echte Markenseiten mit ausgewähltem Logo oder auf Kollektionen mit optionalem Bildmetafeld `upswing.brand_logo`. Die kybun-Reihe wählt vier Modelle zufällig aus bis zu 50 Produkten der gewählten Kollektion. Themenkarten verknüpfen eine echte Seite oder Kollektion. Der Produktberater verwendet ausgewählte Kollektionen.
@@ -36,7 +40,7 @@ npm ci --ignore-scripts --no-audit --no-fund
 npm test
 python3 tools/validate_schema.py --self-test .
 shopify theme check --path . --fail-level warning
-python3 tools/build_release.py --tag v1.0.40
+python3 tools/build_release.py --tag v1.0.41
 ```
 
 Die lokalen Prüfungen kontrollieren unter anderem Ressourcenbindung, leere und gelöschte Referenzen, Produktinformationen, Farbauswahl, Lieferzeit und Kaufsteuerungen. Die tatsächliche Shopify-Laufzeit mit Shop-Apps, Beständen, Formularzustellung, Versandberechnung, Zahlungsarten und Checkout muss im unveröffentlichten Theme geprüft werden.

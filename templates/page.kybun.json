@@ -16,7 +16,8 @@
         "collection": "kybun-schuhe",
         "product_count": 4,
         "randomize": true,
-        "link_position": "bottom"
+        "link_position": "bottom",
+        "hide_on_migrated_page": true
       }
     },
     "advice": {
@@ -47,7 +48,8 @@
         "benefit2"
       ],
       "settings": {
-        "primary_url": "/pages/filialubersicht#Filialen"
+        "primary_url": "/pages/filialubersicht#Filialen",
+        "hide_on_migrated_page": true
       }
     }
   },

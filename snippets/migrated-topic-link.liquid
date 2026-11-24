@@ -1,0 +1,32 @@
+{%- comment -%}Verified migrated editorial destinations resolve current Shopify resource URLs; missing resources keep the original copy without a dead link.{%- endcomment -%}
+{%- liquid
+  assign migration_link_path = target_url | split: '?' | first | split: '#' | first
+  assign migration_link_suffix = target_url | remove_first: migration_link_path
+  assign migration_link_url = target_url
+  assign migration_link_valid = false
+  assign migration_link_resource = nil
+  if migration_link_path contains '/collections/'
+    assign migration_link_handle = migration_link_path | split: '/collections/' | last | split: '/' | first
+    assign migration_link_resource = collections[migration_link_handle]
+  elsif migration_link_path contains '/products/'
+    assign migration_link_handle = migration_link_path | split: '/products/' | last | split: '/' | first
+    assign migration_link_resource = all_products[migration_link_handle]
+  elsif migration_link_path contains '/pages/'
+    assign migration_link_handle = migration_link_path | split: '/pages/' | last | split: '/' | first
+    assign migration_link_resource = pages[migration_link_handle]
+  elsif target_url != blank
+    assign migration_link_scheme = target_url | slice: 0, 8
+    assign migration_link_first = target_url | slice: 0, 1
+    if migration_link_scheme == 'https://' or migration_link_first == '#'
+      assign migration_link_valid = true
+    endif
+  endif
+  if migration_link_resource.id != blank and migration_link_resource.url != blank
+    assign migration_link_url = migration_link_resource.url | append: migration_link_suffix
+    assign migration_link_valid = true
+  endif
+-%}
+{%- capture migration_link_content -%}{% if content_html != blank %}{{ content_html }}{% else %}{{ label | escape }}{% endif %}{%- endcapture -%}
+{%- if migration_link_valid -%}<a{% if class_name != blank %} class="{{ class_name | escape }}"{% endif %}{% if aria_label != blank %} aria-label="{{ aria_label | escape }}"{% endif %} href="{{ migration_link_url | escape }}">{{ migration_link_content }}</a>
+{%- elsif block -%}<article{% if class_name != blank %} class="{{ class_name | escape }}"{% endif %}>{{ migration_link_content }}</article>
+{%- else -%}<span>{{ migration_link_content }}</span>{%- endif -%}

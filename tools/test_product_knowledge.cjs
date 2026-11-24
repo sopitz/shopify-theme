@@ -180,7 +180,7 @@ test('unknown JSON content and empty rich-text fields never masquerade as produc
   p.metafields.custom_fields.small_description=plain({de_CH:'Unbekannte Quelle'},'json');
   const dom=await knowledge(p);try{
     const document=dom.window.document;
-    assert.equal(document.querySelector('#ProductInformationTitle').textContent,'Produkt verstehen.');assert.equal(document.querySelector('.product-knowledge-lead'),null);
+    assert.equal(document.querySelector('#ProductInformationTitle').textContent,'Produktinformationen');assert.equal(document.querySelector('.product-knowledge-lead'),null);
     assert.equal(document.querySelector('#ProductEveryday'),null);assert.equal(document.querySelector('#ProductDetails'),null);assert.equal(document.querySelector('#ProductQuestions'),null);
     assert.equal(document.querySelector('[data-native-product-description]').innerHTML,p.description);assert(!document.body.textContent.includes('[object Object]'));assert(!document.body.textContent.includes('Nicht interpretieren'));
   }finally{dom.window.close();}
@@ -278,7 +278,7 @@ test('JSON titles, labels and questions accept only nonempty strings and skip in
   };
   const dom=await knowledge(p);try{
     const document=dom.window.document;
-    assert.equal(document.querySelector('#ProductInformationTitle').textContent,'Produkt verstehen.');
+    assert.equal(document.querySelector('#ProductInformationTitle').textContent,'Produktinformationen');
     assert.equal(document.querySelector('.product-knowledge-lead'),null);
     assert.deepEqual([...document.querySelectorAll('.product-feature h3')].map(node=>node.textContent),['Gültiges Merkmal','Gültig ohne optionales Label']);
     assert.equal(document.querySelector('.product-feature-number').textContent,'Live-Label');

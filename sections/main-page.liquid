@@ -1,7 +1,13 @@
+{%- capture migrated_page -%}{% render 'migrated-page-content', page: page, section: section, respect_editorial: true %}{%- endcapture -%}
+{%- assign migrated_page = migrated_page | strip -%}
 {%- capture about_kind -%}{% render 'about-page-kind', page: page %}{%- endcapture -%}
 {%- assign about_kind = about_kind | strip -%}
-{%- if about_kind != blank -%}
+{%- if migrated_page != blank -%}
+  {{ migrated_page }}
+{%- elsif about_kind != blank -%}
   {% render 'about-page-content', page: page, page_kind: about_kind, section: section %}
+{%- elsif section.settings.content_source == 'editor' or section.blocks.size > 0 or section.settings.heading != blank or section.settings.intro != blank or section.settings.image != blank or section.settings.eyebrow != blank -%}
+  {% render 'about-page-content', page: page, section: section %}
 {%- else -%}
   <section class="section-space page-section"><div class="container page-width"><p class="eyebrow">{{ shop.name | escape }}</p><h1>{{ page.title | escape }}</h1><div class="rte">{{ page.content }}</div></div></section>
 {%- endif -%}

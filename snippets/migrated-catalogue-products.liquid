@@ -1,0 +1,34 @@
+{%- comment -%}
+  Shared migrated-page catalogue. Handles come from verified source links;
+  Shopify supplies the current products, images, prices and destinations.
+  Optional randomization reuses the theme's existing featured-products runtime.
+{%- endcomment -%}
+{%- liquid
+  assign migration_collection = collections[collection_handle]
+  assign migration_visible_count = limit | default: 4 | at_least: 1 | at_most: 50
+  assign migration_pool_count = migration_visible_count
+  if randomize
+    assign migration_pool_count = 50
+  endif
+  assign migration_card_count = 0
+-%}
+{%- if migration_collection.id != blank and migration_collection.url != blank and migration_collection.products_count > 0 -%}
+  {%- capture migration_product_cards -%}
+    {%- for migration_product in migration_collection.products limit: migration_pool_count -%}
+      {%- if migration_product.id != blank and migration_product.url != blank -%}
+        {%- assign migration_card_count = migration_card_count | plus: 1 -%}
+        {%- if randomize and migration_card_count > migration_visible_count -%}<template data-featured-candidate>{%- endif -%}
+        <div>{% render 'product-card', product: migration_product %}</div>
+        {%- if randomize and migration_card_count > migration_visible_count -%}</template>{%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+  {%- assign migration_product_cards = migration_product_cards | strip -%}
+  {%- if migration_product_cards != blank -%}
+    <section class="migration-section migration-products"><div class="migration-container">
+      <div class="migration-section-heading"><h2>{{ heading | default: migration_collection.title | escape }}</h2><a class="text-link" href="{{ migration_collection.url | escape }}">{{ link_label | default: 'Alle anzeigen' | escape }} {% render 'icon', name: 'arrow' %}</a></div>
+      {%- if description_html != blank -%}<div class="migration-copy rte">{{ description_html }}</div>{%- endif -%}
+      <div class="product-grid migration-product-grid"{% if randomize %} data-featured-random data-featured-count="{{ migration_visible_count }}"{% endif %}>{{ migration_product_cards }}</div>
+    </div></section>
+  {%- endif -%}
+{%- endif -%}

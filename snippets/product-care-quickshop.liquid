@@ -1,0 +1,35 @@
+{%- comment -%}Explicit care recommendations use native Shopify variant and quantity rules.{%- endcomment -%}
+{%- liquid
+  assign quickshop_id = 'CareQuickshop-' | append: section.id | append: '-' | append: product.id
+  assign quickshop_variant = product.selected_or_first_available_variant
+  assign quickshop_count = product.variants_count | default: product.variants.size
+  assign quickshop_can_add = false
+  if product.available and quickshop_count > 0 and quickshop_count <= 250 and product.requires_selling_plan != true
+    assign quickshop_can_add = true
+  endif
+-%}
+{%- if quickshop_can_add -%}
+  {%- if quickshop_count > 1 -%}<details class="care-quickshop"><summary class="button secondary small">Schnell auswählen<span class="visually-hidden">: {{ product.title | escape }}</span></summary>{%- endif -%}
+  <form action="{{ routes.cart_add_url }}" method="post" class="care-quickshop-form" data-care-quickshop data-cart-url="{{ routes.cart_url }}" data-product-title="{{ product.title | escape }}">
+    <input type="hidden" name="form_type" value="product">
+    <input type="hidden" name="utf8" value="✓">
+    {%- if quickshop_count > 1 -%}
+      <label for="{{ quickshop_id }}-variant">Ausführung</label>
+      <select id="{{ quickshop_id }}-variant" name="id" required data-quickshop-variant>
+        <option value="" selected>Bitte auswählen</option>
+        {%- for variant in product.variants -%}
+          <option value="{{ variant.id }}"{% unless variant.available %} disabled{% endunless %} data-available="{{ variant.available }}" data-price-text="{{ variant.price | money_with_currency | escape }}" data-min="{{ variant.quantity_rule.min | default: 1 }}" data-step="{{ variant.quantity_rule.increment | default: 1 }}"{% if variant.quantity_rule.max %} data-max="{{ variant.quantity_rule.max }}"{% endif %}>{{ variant.title | escape }} · {{ variant.price | money_with_currency }}{% unless variant.available %} · Nicht verfügbar{% endunless %}</option>
+        {%- endfor -%}
+      </select>
+      <p class="care-quickshop-price" data-quickshop-price></p>
+    {%- else -%}
+      <input type="hidden" name="id" value="{{ quickshop_variant.id }}" data-quickshop-variant data-available="{{ quickshop_variant.available }}">
+    {%- endif -%}
+    {%- if quickshop_count > 1 -%}<label for="{{ quickshop_id }}-quantity">Menge</label>{%- endif -%}
+    <input id="{{ quickshop_id }}-quantity" type="{% if quickshop_count > 1 %}number{% else %}hidden{% endif %}" name="quantity" value="{{ quickshop_variant.quantity_rule.min | default: 1 }}" min="{{ quickshop_variant.quantity_rule.min | default: 1 }}" step="{{ quickshop_variant.quantity_rule.increment | default: 1 }}"{% if quickshop_variant.quantity_rule.max %} max="{{ quickshop_variant.quantity_rule.max }}"{% endif %} inputmode="numeric" required data-quickshop-quantity>
+    <button class="button small" type="submit" data-quickshop-submit{% if quickshop_count == 1 and quickshop_variant.available == false %} disabled{% endif %}>{% if quickshop_count == 1 and quickshop_variant.quantity_rule.min > 1 %}{{ quickshop_variant.quantity_rule.min }} Stück in den Warenkorb{% else %}In den Warenkorb{% endif %}<span class="visually-hidden">: {{ product.title | escape }}</span></button>
+    <p class="care-quickshop-message" role="status" aria-live="polite" data-quickshop-message></p>
+    <a class="text-link care-quickshop-cart" href="{{ routes.cart_url }}" data-quickshop-cart hidden>Warenkorb ansehen</a>
+  </form>
+  {%- if quickshop_count > 1 -%}</details>{%- endif -%}
+{%- endif -%}

@@ -80,6 +80,7 @@
     {{ 'typography.css' | asset_url | stylesheet_tag }}
     {{ 'mega-menu.css' | asset_url | stylesheet_tag }}
     {{ 'about-pages.css' | asset_url | stylesheet_tag }}
+    {% if request.page_type == 'page' %}{{ 'page-migration.css' | asset_url | stylesheet_tag }}{% endif %}
     {{ 'contact-locations.css' | asset_url | stylesheet_tag }}
     {{ 'product-media-context.css' | asset_url | stylesheet_tag }}
     {{ 'quantity-stepper.css' | asset_url | stylesheet_tag }}
@@ -102,6 +103,10 @@
     <script src="{{ 'quantity-stepper.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'legacy-colors.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'product-recommendations.js' | asset_url }}" defer="defer"></script>
+    {% if request.page_type == 'product' %}
+      <script src="{{ 'product-description.js' | asset_url }}" defer="defer"></script>
+      <script src="{{ 'product-care-quickshop.js' | asset_url }}" defer="defer"></script>
+    {% endif %}
     <script src="{{ 'gallery-image-preload.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'product-cards.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'product-media-context.js' | asset_url }}" defer="defer"></script>

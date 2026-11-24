@@ -1,0 +1,12 @@
+{%- comment -%}Theme-owned migration only; never writes or replaces Shopify Page data.{%- endcomment -%}
+{%- capture resolved_migration_family -%}{%- render 'page-migration-family', page: page, section: section, respect_editorial: respect_editorial, include_editorial: include_editorial -%}{%- endcapture -%}
+{%- assign resolved_migration_family = resolved_migration_family | strip -%}
+{%- case resolved_migration_family -%}
+  {%- when 'brand' -%}{%- render 'migrated-brand-pages', page: page, section: section -%}
+  {%- when 'topic-hub' -%}{%- render 'migrated-topic-hub-pages', page: page, section: section -%}
+  {%- when 'service' -%}{%- render 'migrated-service-pages', page: page, section: section -%}
+  {%- when 'editorial' -%}
+    {%- capture migrated_about_kind -%}{%- render 'about-page-kind', page: page -%}{%- endcapture -%}
+    {%- assign migrated_about_kind = migrated_about_kind | strip -%}
+    {%- render 'about-page-content', page: page, page_kind: migrated_about_kind, section: section -%}
+{%- endcase -%}

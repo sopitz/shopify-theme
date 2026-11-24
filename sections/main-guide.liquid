@@ -1,3 +1,8 @@
+{%- capture migrated_page -%}{% render 'migrated-page-content', page: page, section: section, include_editorial: true %}{%- endcapture -%}
+{%- assign migrated_page = migrated_page | strip -%}
+{%- if migrated_page != blank -%}
+  {{ migrated_page }}
+{%- else -%}
 {%- capture guide_advice_url -%}{%- render 'filial-anchor-url', url: section.settings.advice_url, fallback_url: '/pages/contact' -%}{%- endcapture -%}
 {%- assign guide_advice_url = guide_advice_url | strip -%}
 {%- capture guide_cards -%}
@@ -15,6 +20,7 @@
   {% if page.content != blank %}<div class="page-width rte">{{ page.content }}</div>{% endif %}
   <div class="guide-advice"><h2>{{ section.settings.advice_heading | escape }}</h2><p>{{ section.settings.advice_text | escape }}</p><a class="button" href="{{ guide_advice_url | escape }}">Persönliche Beratung {% render 'icon', name: 'arrow' %}</a><a class="text-link" href="/pages/filialubersicht#Filialen">Vor Ort ausprobieren</a></div>
 </div></section>
+{%- endif -%}
 {% schema %}
 {
   "name": "Produktberater",

@@ -1,0 +1,24 @@
+{%- comment -%}
+  Preserve the store's existing Shopify Forms instances and observed official
+  extension bootstrap; do not replace their fields, consent or workflow with a
+  different contact form. IDs and loader are from the current live service pages.
+  An installed Forms app embed takes precedence over this isolated loader fallback.
+{%- endcomment -%}
+{%- if form_id == '1131525' or form_id == '1129036' -%}
+  {%- assign migrated_form_root = 'MigratedForms-' | append: section_id | append: '-' | append: form_id -%}
+  <div class="migration-form" aria-label="{{ title | escape }}">
+    <div id="{{ migrated_form_root }}" data-migrated-shopify-form data-form-root="true" data-forms-id="forms-root-{{ form_id }}" data-forms-text-color="#202020" data-forms-button-background-color="#202020" data-forms-button-label-color="#ffffff" data-forms-links-color="#1878b9" data-forms-errors-color="#e02229" data-forms-text-alignment="left" data-forms-alignment="flex-start" data-forms-padding-top="0" data-forms-padding-right="0" data-forms-padding-bottom="24" data-forms-padding-left="0"></div>
+    <noscript><p>Für das Registrierungsformular aktiviere bitte JavaScript. Bei Fragen erreichst du uns unter <a href="tel:+41332219888">033 221 98 88</a>.</p></noscript>
+  </div>
+  <script>
+    (() => {
+      window.ShopifyForms = {...window.ShopifyForms, currentPageType: 'page'};
+      if (document.querySelector('script[src*="/forms-"][src$="/shopify-forms-loader.js"]')) return;
+      const loader = document.createElement('script');
+      loader.src = 'https://cdn.shopify.com/extensions/01a20936-5558-7b97-9ae7-6c0834a419d6/forms-2795/assets/shopify-forms-loader.js';
+      loader.type = 'text/javascript';
+      loader.defer = true;
+      document.head.appendChild(loader);
+    })();
+  </script>
+{%- endif -%}

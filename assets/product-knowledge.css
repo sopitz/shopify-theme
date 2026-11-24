@@ -96,3 +96,68 @@
 .product-care-products .product-section-heading>p:last-child{font-size:14px;line-height:1.7;color:var(--muted);margin-top:12px}
 @media(max-width:1100px){.product-trust{grid-template-columns:1fr;gap:14px}.product-trust strong{font-size:13px}.product-trust a{font-size:12px}}
 @media(max-width:600px){.product-knowledge .product-feature,.product-knowledge .product-suitability,.product-knowledge .product-technical,.product-knowledge .product-practical,.product-knowledge .product-story-grid>article{padding:22px}.product-knowledge .product-feature .rte,.product-knowledge .product-feature p,.product-knowledge .product-knowledge-copy{font-size:14px}.product-knowledge .product-detail-grid,.product-knowledge .product-story-grid{gap:16px}.product-knowledge .product-help-band{padding:22px}.product-care-products{margin-top:36px}}
+
+/* Open editorial sections, with information hierarchy rather than nested panels. */
+.product-knowledge .product-knowledge-heading{max-width:850px;margin-bottom:26px}
+.product-knowledge .product-knowledge-heading h2{font-size:clamp(25px,2.3vw,32px);line-height:1.25}
+.product-knowledge .product-feature,
+.product-knowledge .product-suitability,
+.product-knowledge .product-technical,
+.product-knowledge .product-practical,
+.product-knowledge .product-story-grid>article{background:transparent;border:0;border-top:1px solid var(--line);border-radius:0;padding:25px 0}
+.product-knowledge .product-feature h3,
+.product-knowledge .product-story-grid h3,
+.product-knowledge .product-suitability h3,
+.product-knowledge .product-technical>h3,
+.product-knowledge .product-practical h3{font-size:clamp(20px,1.9vw,24px);line-height:1.35;letter-spacing:-.02em}
+.product-knowledge .product-section-heading .eyebrow{display:none}
+.product-knowledge .product-section-heading h2{font-size:clamp(23px,2.1vw,29px)}
+.product-knowledge .product-knowledge-copy{font-size:16px;line-height:1.8}
+.product-knowledge .product-native-description{margin:0;max-width:none;font-size:16px;line-height:1.8;color:var(--muted)}
+.product-native-description :is(p,li,span,div){font-family:inherit!important}
+.product-description-intro{max-width:76ch;margin-bottom:32px}
+.product-description-intro>p:first-child{font-size:17px;line-height:1.8}
+.product-description-section{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,2fr);gap:clamp(28px,5vw,80px);padding:34px 0;border-top:1px solid var(--line);scroll-margin-top:150px}
+.product-knowledge .product-native-description .product-description-section>h2{margin:0;font-size:clamp(21px,1.9vw,25px);line-height:1.35;letter-spacing:-.02em;color:var(--ink)}
+.product-description-section-body{min-width:0}
+.product-description-section-body>p:first-child{margin-top:0}
+.product-description-section-body>p:last-child{margin-bottom:0}
+.product-native-description a{color:var(--link);text-decoration:underline;text-underline-offset:3px}
+.product-native-description :is(ul,ol){padding-left:22px;margin:14px 0 22px}
+.product-native-description li+li{margin-top:7px}
+.product-native-description :is(img,video){max-width:100%;height:auto;object-fit:contain}
+.product-native-description table{display:block;max-width:100%;overflow-x:auto;border-collapse:collapse}
+.product-native-description :is(th,td){padding:12px 14px;text-align:left;border-bottom:1px solid var(--line)}
+.product-description-section--faq{grid-template-columns:minmax(0,1fr);gap:20px}
+.product-description-question{border-bottom:1px solid var(--line)}
+.product-description-question>summary{display:flex;align-items:center;justify-content:space-between;gap:24px;list-style:none;cursor:pointer;min-height:64px;padding:16px 0;color:var(--ink);font-size:16px;line-height:1.5}
+.product-description-question>summary::-webkit-details-marker{display:none}
+.product-description-question>summary:after{content:'+';font-size:24px;line-height:1;flex:none;font-weight:400}
+.product-description-question[open]>summary:after{content:'−'}
+.product-description-question>summary>strong{font-weight:600}
+.product-description-answer{padding:0 40px 22px 0}
+.product-knowledge .product-help-band{background:transparent;border:0;border-top:1px solid var(--line);border-radius:0;padding:28px 0;margin-top:36px}
+.product-knowledge .product-help-band h3{font-size:23px}
+.product-care-products{border-top:1px solid var(--line);padding-top:34px}
+.product-care-products .product-card-actions{flex-direction:column;align-items:stretch;align-self:stretch;justify-content:flex-start;gap:10px}
+.product-care-products .product-card-actions>.model-link{align-self:flex-start}
+.care-quickshop{width:100%;min-width:0}
+.care-quickshop>summary{width:100%;list-style:none;text-align:center;cursor:pointer}
+.care-quickshop>summary::-webkit-details-marker{display:none}
+.care-quickshop-form{width:100%;min-width:0;display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+.care-quickshop>.care-quickshop-form{padding-top:15px}
+.care-quickshop-form label{font-size:12px;color:var(--muted)}
+.care-quickshop-form :is(select,input,button){width:100%;min-width:0;min-height:44px}
+.care-quickshop-form input[name=quantity]{max-width:110px}
+.care-quickshop-form .care-quickshop-price{font-size:14px;font-weight:600;margin:0;color:var(--ink)}
+.care-quickshop-message{font-size:12px;line-height:1.6;margin:0;color:var(--muted)}
+.care-quickshop-message:empty,.care-quickshop-price:empty{display:none}
+.care-quickshop-form .care-quickshop-cart{font-size:12px;justify-self:start}
+@media(max-width:700px){
+  .product-description-section{grid-template-columns:minmax(0,1fr);gap:16px;padding:26px 0;scroll-margin-top:100px}
+  .product-description-intro{margin-bottom:26px}
+  .product-description-intro>p:first-child{font-size:16px}
+  .product-knowledge .product-native-description,.product-knowledge .product-knowledge-copy{font-size:15px;line-height:1.8}
+  .product-description-question>summary{font-size:15px;gap:16px}
+  .product-description-answer{padding-right:0}
+}

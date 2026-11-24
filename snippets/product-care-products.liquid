@@ -42,7 +42,7 @@
       {%- assign care_product_key = care_product.id | prepend: '|' | append: '|' -%}
       {%- if care_product.id != blank and care_product.url != blank and care_product.id != product.id and care_product.available -%}
         {%- unless seen_care_products contains care_product_key -%}
-          {% render 'product-card', product: care_product %}
+          {% render 'product-card', product: care_product, quickshop: true, section: section %}
           {%- assign seen_care_products = seen_care_products | append: care_product_key -%}
           {%- assign care_product_count = care_product_count | plus: 1 -%}
           {%- if care_product_count == 4 -%}{%- break -%}{%- endif -%}
@@ -50,7 +50,7 @@
       {%- endif -%}
     {%- endfor -%}
   {%- endif -%}
-  {%- if care_product_count < 4 -%}
+  {%- if care_product_count < 4 and care_references.type != 'list.product_reference' -%}
     {%- for care_link in care_links offset: 1 -%}
       {%- liquid
         assign care_url = care_link | split: '"' | first | split: '?' | first | split: '#' | first
@@ -81,7 +81,7 @@
         {%- assign care_product_key = care_product.id | prepend: '|' | append: '|' -%}
         {%- if care_product.id != blank and care_product.url != blank and care_product.id != product.id and care_product.available -%}
           {%- unless seen_care_products contains care_product_key -%}
-            {% render 'product-card', product: care_product %}
+            {% render 'product-card', product: care_product, quickshop: true, section: section %}
             {%- assign seen_care_products = seen_care_products | append: care_product_key -%}
             {%- assign care_product_count = care_product_count | plus: 1 -%}
             {%- if care_product_count == 4 -%}{%- break -%}{%- endif -%}
@@ -94,7 +94,7 @@
 {%- assign care_product_cards = care_product_cards | strip -%}
 {%- if care_product_cards != blank -%}
   <section class="product-care-products" id="ProductCareProducts" aria-labelledby="ProductCareProductsTitle" data-product-care-products>
-    <div class="product-section-heading"><p class="eyebrow">Aus den Pflegehinweisen</p><h2 id="ProductCareProductsTitle">Passende Pflegeprodukte</h2><p>Die in den Pflegehinweisen verknüpften Produkte auf einen Blick.</p></div>
+    <div class="product-section-heading"><h2 id="ProductCareProductsTitle">Passende Pflegeprodukte</h2></div>
     <div class="product-grid">{{ care_product_cards }}</div>
   </section>
 {%- endif -%}

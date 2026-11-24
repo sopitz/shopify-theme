@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.41] - 2026-11-24
+
+- Die 41 öffentlich erfassten Pages sind im neuen Theme angebunden: zwölf Markenseiten, vier Themen-/Ratgeberseiten, sechs Sortimentsübersichten, neun Beratungs-/Kurs-/Geschäftskunden-/Serviceseiten und zehn bereits vorhandene redaktionelle Seiten. Die bestehenden URLs, Page-Objekte und globalen Vorlagenzuweisungen werden nicht geändert. Native gefüllte Seiteninhalte und ausdrücklich konfigurierte Editor-Aufbauten behalten Vorrang.
+- Originale Marken- und Thementexte, 107 beantwortete Marken-FAQ, Bilder, Katalogziele, externe Partnerlinks und die 15 bestehenden Beratungs-Kalenderlinks übernommen. Produktreihen verwenden aktuelle Shopify-Ressourcen und Preise. Die bisher leere Themen-Page bietet eine Übersicht der vier bestehenden Ratgeber.
+- Venen-Engel-Produktfinder mit Fragen, Gerätewahl, Mess-/Passformschritten und Zubehör in das neue Design übertragen. Varianten, Preise und Verfügbarkeit kommen aus dem aktuellen Shopify-Katalog. Messwerte werden nicht mehr abgerundet; fehlende, ausverkaufte oder nicht belegte Kombinationen erzeugen kein unvollständiges Kaufpaket. Ein Warenkorb-Hinzufügen wird als einzelne Anfrage gesendet und bei unklarem Ergebnis nicht automatisch wiederholt.
+- Drei vorhandene Beratungsseiten bleiben als eigene Themen erreichbar. Sypoba-Kurs und Medical-Partner-Registrierung binden die bestehenden Shopify-Forms-Instanzen ein; es werden keine Ersatzformulare mit anderen Feldern angelegt. Kontakt und Fachhandels-B2B behalten native Shopify-Kontaktformulare und die bestehende Zielgruppe.
+- Den tatsächlichen Stellen-PDF-Download und anders.swiss-Link wiederhergestellt. Fehlende Originalgrafiken bei Werte und Premium Service ergänzt; eine nicht belegte historische Bildzuordnung neutralisiert.
+- Pflegeprodukte je Produkt aus `upswing.care_products` (Liste von Produktreferenzen): bis zu vier verfügbare Empfehlungen in gepflegter Reihenfolge, mit Produktlink, aktuellem Preis und Schnellkauf. Varianten werden ausdrücklich ausgewählt, Mengenregeln berücksichtigt und unklare Warenkorbantworten gegen doppelte Anfragen abgesichert. Ohne gesetztes Listenfeld bleiben ausdrücklich verlinkte Pflegeprodukte aus den vorhandenen Pflegehinweisen der Ersatz.
+- Den unteren Produktinformationsbereich vereinfacht: offene, ruhige Textabschnitte, einheitliche Überschriften, weniger verschachtelte Boxen und aufklappbare native FAQ. Die vorhandenen Texte, Links, Medien und Sprunganker bleiben erhalten; ohne JavaScript ist die vollständige Beschreibung weiterhin lesbar.
+- Prüfung: Funktionstests für Seitenrouting, vollständige Inhalte, Ressourcen, Konfigurator, Pflegeproduktlisten, Schnellkauf und Text-Erhalt; Schema-Selbsttests und offizieller Shopify Theme Check. Lokale Vorschauen nutzen gekennzeichnete Katalogaufnahmen und übertragen keine Warenkorb-, Formular- oder Buchungsdaten.
+- Vor Aktivierung im Shop: tatsächliche Vorlagen-Suffixe, Shopify-Forms-App und alle 41 URLs im unveröffentlichten Theme prüfen. [Seitenmigration](https://github.com/sopitz/shopify-theme/blob/v1.0.41/docs/Seitenmigration.md) · [Pflegeprodukte-Metafeld](https://github.com/sopitz/shopify-theme/blob/v1.0.41/docs/Pflegeprodukte-Metafeld.md). Das Release schaltet kein Theme live.
+
 ## [1.0.40] - 2026-11-23
 
 - Produktkarten zeigen umgebrochene Kurztexte vollständig innerhalb des bestehenden Auszugs. Gemeinsame Subgrid-Zeilen halten Karten, Preise und Aktionen innerhalb einer Produktreihe auf gleicher Höhe.

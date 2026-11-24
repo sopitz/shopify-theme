@@ -1,0 +1,20 @@
+{%- assign service_form_id = 'ServiceContact-' | append: section_id -%}
+{%- assign service_name_id = service_form_id | append: '-Name' -%}
+{%- assign service_email_id = service_form_id | append: '-Email' -%}
+{%- assign service_phone_id = service_form_id | append: '-Phone' -%}
+{%- assign service_body_id = service_form_id | append: '-Body' -%}
+<div class="contact-form-panel">
+  {% form 'contact', id: service_form_id, class: 'contact-form' %}
+    {% if form.posted_successfully? %}<div class="form-success" role="status">Vielen Dank. Deine Nachricht ist bei uns eingegangen.</div>{% endif %}
+    {% if form.errors %}<div class="form-errors" role="alert">{{ form.errors | default_errors }}</div>{% endif %}
+    {% if enquiry_type != blank %}<input type="hidden" name="contact[Anfragetyp]" value="{{ enquiry_type | escape }}">{% endif %}
+    <div class="form-row">
+      <div class="field"><label for="{{ service_name_id }}">Name</label><input id="{{ service_name_id }}" name="contact[name]" type="text" autocomplete="name" value="{{ form.name | default: customer.name | escape }}"></div>
+      <div class="field"><label for="{{ service_email_id }}">E-Mail-Adresse <span aria-hidden="true">*</span></label><input id="{{ service_email_id }}" name="contact[email]" type="email" autocomplete="email" value="{{ form.email | default: customer.email | escape }}" required></div>
+    </div>
+    <div class="field"><label for="{{ service_phone_id }}">Telefonnummer (optional)</label><input id="{{ service_phone_id }}" name="contact[phone]" type="tel" autocomplete="tel" value="{{ form.phone | escape }}"></div>
+    <div class="field"><label for="{{ service_body_id }}">Deine Nachricht</label><textarea id="{{ service_body_id }}" name="contact[body]" rows="6">{{ form.body | escape }}</textarea></div>
+    <p class="form-note">Die mit * markierten Felder sind erforderlich.{% if shop.privacy_policy.url != blank %} Informationen zum Umgang mit deinen Daten findest du in unserer <a href="{{ shop.privacy_policy.url }}">Datenschutzerklärung</a>.{% endif %}</p>
+    <button class="button" type="submit">Nachricht senden {% render 'icon', name: 'arrow' %}</button>
+  {% endform %}
+</div>

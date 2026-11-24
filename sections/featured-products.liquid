@@ -1,3 +1,10 @@
+{%- assign hide_migrated_extra = false -%}
+{%- if request.page_type == 'page' and section.settings.hide_on_migrated_page -%}
+  {%- capture migrated_extra_family -%}{% render 'page-migration-family', page: page, section: section, include_editorial: true %}{%- endcapture -%}
+  {%- assign migrated_extra_family = migrated_extra_family | strip -%}
+  {%- if migrated_extra_family != blank -%}{%- assign hide_migrated_extra = true -%}{%- endif -%}
+{%- endif -%}
+{%- unless hide_migrated_extra -%}
 {%- liquid
   assign featured_collection = section.settings.collection
   assign featured_product_count = 0
@@ -69,6 +76,7 @@
     </div>
   </section>
 {%- endif -%}
+{%- endunless -%}
 {% schema %}
 {
   "name": "Ausgewählte Modelle",
@@ -137,6 +145,13 @@
           "label": "Button unter den Produkten"
         }
       ]
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_on_migrated_page",
+      "label": "Bei migriertem Seiteninhalt ausblenden",
+      "default": false,
+      "info": "Verhindert doppelte Produkt- und Beratungsbereiche bei übernommenen Seiten. Gilt nur bei leerem Shopify-Seiteninhalt; für einen eigenen Editor-Aufbau bei Bedarf deaktivieren."
     }
   ],
   "blocks": [

@@ -1,0 +1,66 @@
+{%- comment -%}
+  Native replacement for the existing Venen Engel product finder on /pages/venenengel.
+  The migrated SKU/fit rules live in the companion asset; commerce values always
+  come from the current Shopify variants below, never from the captured page.
+  This exact fallback is the verified source shop's Venen Engel collection.
+{%- endcomment -%}
+{%- liquid
+  assign ve_collection = section.settings.venen_engel_collection | default: settings.venen_engel_collection
+  if ve_collection == blank
+    assign ve_collection = collections['venen-engel-222']
+  endif
+  assign ve_root_id = 'VenenEngel-' | append: section.id | append: '-' | append: page.id
+  assign ve_locale_root = routes.root_url | default: '/'
+  assign ve_root_last = ve_locale_root | slice: -1, 1
+  unless ve_root_last == '/'
+    assign ve_locale_root = ve_locale_root | append: '/'
+  endunless
+  assign ve_booking_url = ve_locale_root | append: 'pages/venen-engel-beratung-buchen'
+  assign ve_currency = cart.currency.iso_code | default: shop.currency
+-%}
+{%- capture ve_json_lt -%}\u003c{%- endcapture -%}
+{{ 'venen-engel-configurator.css' | asset_url | stylesheet_tag }}
+<section id="{{ ve_root_id | escape }}" class="ve-cfg" data-venen-engel-configurator aria-labelledby="{{ ve_root_id | escape }}-heading">
+  <div class="ve-box">
+    <header class="ve-head">
+      <p class="ve-kicker">Venen Engel Produktfinder</p>
+      <h2 id="{{ ve_root_id | escape }}-heading" class="ve-title">Welcher Venen Engel passt zu dir?</h2>
+      <p class="ve-intro">Beantworte ein paar kurze Fragen. Am Ende siehst du dein Gerät mit allem Zubehör, das du brauchst, inklusive der richtigen Erweiterungen für deinen Umfang.</p>
+    </header>
+    <div class="ve-card">
+      <div class="ve-bar">
+        <button type="button" class="ve-back" data-ve-back disabled>← Zurück</button>
+        <div class="ve-prog" aria-hidden="true"><i data-ve-prog></i></div>
+        <span class="ve-count" data-ve-count aria-live="polite"></span>
+      </div>
+      <div class="ve-cartmsg" data-ve-cartmsg role="status" hidden></div>
+      <div class="ve-screen" data-ve-screen>
+        <p class="ve-lead">Der Produktfinder wird geladen …</p>
+        <p><a class="button secondary" href="{{ ve_booking_url | escape }}">Persönlich beraten lassen</a></p>
+      </div>
+    </div>
+    <noscript><p>Bitte aktiviere JavaScript für den Produktfinder oder <a href="{{ ve_booking_url | escape }}">buche eine persönliche Beratung</a>.</p></noscript>
+  </div>
+  <script type="application/json" data-ve-data>
+    {"settings":{"store_url":{{ ve_booking_url | json | replace: '<', ve_json_lt }},"cart_url":{{ routes.cart_url | json | replace: '<', ve_json_lt }},"root_url":{{ ve_locale_root | json | replace: '<', ve_json_lt }},"currency":{{ ve_currency | json }},"locale":{{ request.locale.iso_code | json }},"redirect":true},
+    {%- if ve_collection != blank -%}
+      {%- paginate ve_collection.products by 250 -%}
+        "catalogue_complete":{% if paginate.pages > 1 %}false{% else %}true{% endif %},"products":[
+        {%- assign ve_comma = '' -%}
+        {%- for ve_product in ve_collection.products -%}
+          {%- for ve_variant in ve_product.variants -%}
+            {%- if ve_variant.sku != blank -%}
+              {%- assign ve_image = ve_variant.featured_image | default: ve_product.featured_image -%}
+              {{- ve_comma -}}{"sku":{{ ve_variant.sku | json | replace: '<', ve_json_lt }},"id":{{ ve_variant.id | json }},"price":{{ ve_variant.price | json }},"compare":{{ ve_variant.compare_at_price | default: 0 | json }},"available":{{ ve_variant.available | json }},"title":{{ ve_product.title | json | replace: '<', ve_json_lt }},"variant_title":{{ ve_variant.title | json | replace: '<', ve_json_lt }},"url":{{ ve_product.url | append: '?variant=' | append: ve_variant.id | json | replace: '<', ve_json_lt }},"image":{% if ve_image != blank %}{{ ve_image | image_url: width: 360 | json | replace: '<', ve_json_lt }}{% else %}null{% endif %}}
+              {%- assign ve_comma = ',' -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endfor -%}
+        ]
+      {%- endpaginate -%}
+    {%- else -%}
+      "catalogue_complete":false,"products":[]
+    {%- endif -%}}
+  </script>
+</section>
+<script src="{{ 'venen-engel-configurator.js' | asset_url }}" defer></script>

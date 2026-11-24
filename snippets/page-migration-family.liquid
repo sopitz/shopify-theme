@@ -1,0 +1,27 @@
+{%- comment -%}
+  Exact routes for the empty-body pages captured on 24 November 2026.
+  Native Page content always wins. Editorial sections can also preserve explicit
+  replacement settings/blocks by passing respect_editorial: true.
+{%- endcomment -%}
+{%- liquid
+  assign migration_allowed = true
+  if page.content != blank
+    assign migration_allowed = false
+  endif
+  if respect_editorial
+    if section.settings.content_source == 'editor' or section.blocks.size > 0
+      assign migration_allowed = false
+    elsif section.settings.heading != blank or section.settings.intro != blank or section.settings.image != blank or section.settings.eyebrow != blank
+      assign migration_allowed = false
+    endif
+  endif
+-%}
+{%- if migration_allowed -%}
+  {%- case page.handle -%}
+    {%- when 'anders', 'bellabambi', 'bellicon', 'blackroll', 'elten', 'joya', 'kingnature', 'kybun', 'leguano', 'pepup', 'theraband', 'venenengel' -%}brand
+    {%- when 'arthrose-und-gelenkschmerzen', 'fersensporn-und-andere-fussschmerzen', 'regeneration-im-schlaf', 'ruckenschmerzen', 'aktionen', 'arbeitsplatz', 'gesundheitsschuhe', 'themen', 'trainingsgeraete', 'vitalitaet' -%}topic-hub
+    {%- when 'b2b', 'medical-partner-werden', 'bellicon-beratung-buchen', 'blackroll-base-beratung-buchen', 'venen-engel-beratung-buchen', 'bellicon-training-ruti-zh', 'sypoba-training-in-thun', 'contact', 'versandinformationen' -%}service
+    {%- when 'ueber-uns', 'upswing-werte', 'geschichte', 'offene-stellen', 'premium-service', 'filialubersicht', 'standort-thun', 'standort-ruti-zh', 'standort-zurich', 'standort-winterthur', 'standort-basel' -%}
+      {%- if include_editorial -%}editorial{%- endif -%}
+  {%- endcase -%}
+{%- endif -%}

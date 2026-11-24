@@ -69,7 +69,7 @@
   if faqs_field.type == 'json' and faqs_opening != '['
     assign information_faqs = nil
   endif
-  assign knowledge_heading = 'Produkt verstehen.'
+  assign knowledge_heading = 'Produktinformationen'
   assign heading_field = product.metafields.upswing.knowledge_heading
   assign heading_opening = heading_field.value | json | slice: 0, 1
   if heading_field.type == 'single_line_text_field' or heading_field.type == blank
@@ -261,7 +261,6 @@
 {%- if has_product_information -%}
   <section class="product-knowledge" id="ProductInformation" aria-labelledby="ProductInformationTitle">
     <div class="product-knowledge-heading">
-      <p class="eyebrow">Gut informiert entscheiden</p>
       <h2 id="ProductInformationTitle">{{ knowledge_heading | escape }}</h2>
       {%- if knowledge_intro != blank -%}<p class="product-knowledge-lead">{{ knowledge_intro | escape | newline_to_br }}</p>{%- elsif short_description_content != blank -%}<div class="rte product-knowledge-lead">{{ short_description_content }}</div>{%- endif -%}
     </div>
