@@ -27,18 +27,18 @@
 <div class="migration-media"><img src="{{ '23-09-kn-in-Eisen-Vida-Single-04-2040x1360.jpg' | file_img_url: '1600x' }}" alt="" width="2040" height="1360" loading="lazy"></div>
 <div class="migration-copy rte"><p>Die Kraft der Natur, wissenschaftlich vereint.</p>
     <p>kingnature steht für naturbelassene Nahrungsergänzungsmittel und Naturkosmetik von höchster Güte. Wir setzen auf wissenschaftlich geprüfte Pflanzenextrakte, Mikronährstoffe und Vitalstoffe, die sich in ihrer Wirkung perfekt ergänzen.</p>
-{%- assign migration_link_resource = collections['kingnature'] -%}{%- if migration_link_resource.id != blank and migration_link_resource.url != blank -%}<a href="{{ migration_link_resource.url }}">
+<div class="migration-actions" role="group" aria-label="Nächste Schritte">{%- assign migration_link_resource = collections['kingnature'] -%}{%- if migration_link_resource.id != blank and migration_link_resource.url != blank -%}<a class="button" href="{{ migration_link_resource.url }}">
   Produkte entdecken
 </a>{%- else -%}
   Produkte entdecken
-{%- endif -%}</div></div></section>
+{%- endif -%}</div></div></div></section>
 {% capture migration_brand_products_heading %}Aktuelle kingnature Bestseller{% endcapture %}
 
 {% capture migration_brand_products_intro %}<p>Entdecken Sie unsere beliebtesten Produkte für Ihre Gesundheit.</p>{% endcapture %}
 
 {% capture migration_brand_products_link %}Produkte entdecken{% endcapture %}
 
-{% render 'migrated-catalogue-products', collection_handle: 'kingnature', heading: migration_brand_products_heading, description_html: migration_brand_products_intro, link_label: migration_brand_products_link, limit: 4, randomize: true %}
+{% render 'migrated-catalogue-products', collection_handle: 'kingnature', heading: migration_brand_products_heading, description_html: migration_brand_products_intro, link_label: migration_brand_products_link, limit: 8, randomize: true %}
 <section class="migration-section migration-faq"><div class="migration-container"><div class="migration-section-heading"><h2>Fragen und Antworten</h2></div><div class="migration-faq-list">
 <details><summary>Wo werden die Produkte von kingnature hergestellt?<span aria-hidden="true">+</span></summary><div class="migration-copy rte"><p>Die meisten Kingnature Nahrungsergänzungsmittel werden in der eigenen Produktionsstätte in Wädenswil am Zürichsee hergestellt. Als Schweizer Unternehmen legt Kingnature besonderen Wert auf kontrollierte Herstellungsprozesse, hochwertige Rohstoffe und eine sorgfältige Verarbeitung. Einzelne Rohstoffe stammen aus dem Ausland, wenn sie in der Schweiz nicht oder nicht in ausreichender Qualität verfügbar sind.</p></div></details>
 <details><summary>Sind Kingnature Nahrungsergänzungsmittel Swiss Made?<span aria-hidden="true">+</span></summary><div class="migration-copy rte"><p>Ja. Kingnature produziert den grössten Teil seiner Nahrungsergänzungsmittel in der Schweiz. Die eigene Produktionsstätte befindet sich in Wädenswil am Zürichsee. Die Herstellung erfolgt unter kontrollierten Bedingungen und unter Berücksichtigung der geltenden Schweizer Vorschriften.</p></div></details>

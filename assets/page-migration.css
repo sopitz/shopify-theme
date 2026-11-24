@@ -44,6 +44,7 @@
 .migration-faq details>.migration-copy,.migration-faq-list details>.migration-copy,.migration-faq details>div,.migration-faq-list details>div{padding-bottom:24px}
 .migration-trust,.migration-locations{padding:32px;border-radius:12px;background:var(--cream)}
 .migration-products .product-grid,.migration-product-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.migrated-brand-page .migration-benefits-grid:has(>.migration-benefit:nth-child(4)),.migrated-brand-page .migration-product-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
 .migration-brand-hero-media{position:relative}
 .migration-brand-logo{position:absolute;left:20px;bottom:20px;max-width:calc(100% - 40px);padding:14px 20px;border-radius:8px;background:var(--white)}
 .migration-brand-logo--dark{background:var(--ink)}
@@ -54,6 +55,7 @@
 @media(max-width:900px){
   .migration-hero,.migration-story{gap:30px}
   .migration-grid,.migration-card-grid,.migration-benefits-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .migrated-brand-page .migration-benefits-grid:has(>.migration-benefit:nth-child(4)),.migrated-brand-page .migration-product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media(max-width:700px){
   .migrated-page{padding-bottom:40px}
@@ -68,7 +70,12 @@
   .migration-grid,.migration-card-grid,.migration-benefits-grid,.migration-grid--two{grid-template-columns:minmax(0,1fr);gap:18px}
   .migration-card,.migration-link-card,.migration-benefit,.migration-trust,.migration-locations{padding:22px}
   .migration-products .product-grid,.migration-product-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+  .migrated-brand-page .migration-benefits-grid:has(>.migration-benefit:nth-child(4)),.migrated-brand-page .migration-product-grid{grid-template-columns:minmax(0,1fr)}
   .migration-actions>.button{max-width:100%}
   .migration-brand-logo{left:14px;bottom:14px;padding:10px 14px}
   .migration-brand-logo img{max-width:140px;max-height:54px}
 }
+
+/* Standalone brand actions share native buttons; inline references stay links. */
+.migrated-brand-page .migration-actions{align-items:stretch}
+.migrated-brand-page .migration-actions>.button{max-width:100%;white-space:normal;text-align:center;text-decoration:none}

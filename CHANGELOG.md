@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.45] - 2026-11-24
+
+- Markenseiten zeigen vorhandene Vorteilsgruppen mit mindestens vier Karten und Produktreihen in vier Desktop-Spalten, zwei Tablet-Spalten und einer mobilen Spalte. Dreiergruppen und andere Seiten-/Kollektionsraster behalten ihre bisherige Darstellung; die gemeinsamen Kartenhöhen bleiben erhalten.
+- Die elf Markenseiten mit verifizierter Shopify-Kollektion wählen bis zu acht echte aktuelle Produkte ohne Duplikate aus. Damit entstehen am Desktop zwei vollständige Reihen, sofern der Katalog genügend Produkte enthält. Die vorhandenen Kollektionen lieferten bei der öffentlichen Prüfung jeweils mindestens 18 verfügbare Produkte; BellaBambi 28. Bellicon behält seinen vorhandenen externen Shop-Einstieg und erhält keine erfundene Produktreihe.
+- Die vorhandenen Aktionen aller zwölf Markenseiten erscheinen als klar getrennte native Buttons. Beratungs- und Shop-Einstieg bei Bellicon stehen gemeinsam als primäre und sekundäre Aktion; bestehende Ziele, Ressourcenprüfungen und redaktionelle Inhalte bleiben erhalten.
+- Die Performance-Dokumentation ergänzt die tatsächliche Desktop-Nachmessung von 1.0.44: Score 96 statt 98, LCP 1,2 statt 1,0 Sekunden, TBT 0 statt 60 ms, CLS 0,001 statt 0,002 und geschätztes verbleibendes Bild-Einsparpotenzial 63 statt 253 KiB. Diese einzelne Labormessung belegt keinen Anstieg des Gesamtscores.
+- Enthält die Bild-, Stylesheet- und Barrierefreiheitsänderungen aus 1.0.44. Das Release veröffentlicht kein Theme im Shopify-Shop.
+
 ## [1.0.44] - 2026-11-24
 
 - Die im PageSpeed-Bericht beanstandeten Theme-Bilder für Startseiten-Hero, Thun-Beratung und Logo nutzen responsive Shopify-CDN-Grössen mit `srcset` und passenden `sizes`. Originalmotive, Bildausschnitte, hohe Auflösungen und die Ladepriorität des Hauptbilds bleiben erhalten. Händlerauswahlen verwenden weiterhin native Shopify-Bildressourcen.

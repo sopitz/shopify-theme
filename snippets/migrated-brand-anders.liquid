@@ -27,18 +27,18 @@
 <div class="migration-media"><img src="{{ 'anders-holzkugel.jpg' | file_img_url: '1600x' }}" alt="" width="1264" height="843" loading="lazy"></div>
 <div class="migration-copy rte"><p>Was macht anderS. so besonders?</p>
     <p>Die Marke anderS. steht für durchdachtes Zubehör sowie Gesundheitsprodukte, die Ihren Alltag erleichtern. Ob elastische Schnürsenkel ohne Binden, ergonomische Zehenspreizer oder effektive Trainingsgeräte – anderS. bietet Lösungen für mehr Wohlbefinden, einfache Pflege sowie optimale Unterstützung bei Bewegung oder Sport.</p>
-{%- assign migration_link_resource = collections['anders-1'] -%}{%- if migration_link_resource.id != blank and migration_link_resource.url != blank -%}<a href="{{ migration_link_resource.url }}">
+<div class="migration-actions" role="group" aria-label="Nächste Schritte">{%- assign migration_link_resource = collections['anders-1'] -%}{%- if migration_link_resource.id != blank and migration_link_resource.url != blank -%}<a class="button" href="{{ migration_link_resource.url }}">
   Produkte entdecken
 </a>{%- else -%}
   Produkte entdecken
-{%- endif -%}</div></div></section>
+{%- endif -%}</div></div></div></section>
 {% capture migration_brand_products_heading %}Beliebte Produkte{% endcapture %}
 
 {% capture migration_brand_products_intro %}<p>Helfer für Fussgesundheit, Training, Alltagskomfort</p>{% endcapture %}
 
 {% capture migration_brand_products_link %}Produkte entdecken{% endcapture %}
 
-{% render 'migrated-catalogue-products', collection_handle: 'anders-1', heading: migration_brand_products_heading, description_html: migration_brand_products_intro, link_label: migration_brand_products_link, limit: 4, randomize: true %}
+{% render 'migrated-catalogue-products', collection_handle: 'anders-1', heading: migration_brand_products_heading, description_html: migration_brand_products_intro, link_label: migration_brand_products_link, limit: 8, randomize: true %}
 <section class="migration-section migration-faq"><div class="migration-container"><div class="migration-section-heading"><h2>Fragen und Antworten</h2></div><div class="migration-faq-list">
 <details><summary>Für wen sind die elastischen Schnürsenkel von anderS. geeignet?<span aria-hidden="true">+</span></summary><div class="migration-copy rte"><p>Sie sind ideal für Sportler, Alltagsschuhe sowie besonders für Personen, die das Schuhanziehen vereinfachen oder auf das Binden verzichten möchten.</p></div></details>
 <details><summary>Wie hilft der anderS. Wadendehner bei Fuss- sowie Wadenbeschwerden?<span aria-hidden="true">+</span></summary><div class="migration-copy rte"><p>Das gezielte Dehnen stärkt, entlastet Muskel- sowie Sehnensegmente (z. B. bei Achillessehnenproblemen oder verkürzter Wadenmuskulatur) und fördert die Beweglichkeit.</p></div></details>

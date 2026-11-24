@@ -27,18 +27,18 @@
 <div class="migration-media"><img src="{{ 'pepup-pflegeset.jpg' | file_img_url: '1600x' }}" alt="" width="1099" height="960" loading="lazy"></div>
 <div class="migration-copy rte"><h2>Was macht PepUp besonders?</h2>
     <p>PepUp ist die Revolution in der Schuh- und Lederpflege: Statt aggressiver Lösungs- und Konservierungsmittel setzt die Marke auf hochwertige Bio-Pflanzenöle, Kärntner Lärchenharz und Aktiv-Silber. Die Pflegeprodukte sind nicht nur biologisch voll abbaubar, sondern nähren das Material tiefenwirksam, erhalten die Atmungsaktivität von Membranen und schützen Mensch, Material und Umwelt. Ob Glattleder, Rauleder, Synthetik, Sneaker oder Fussbettungen – PepUp verlängert die Lebensdauer deiner Schuhe auf natürliche Weise.</p>
-{%- assign migration_link_resource = collections['pepup-1'] -%}{%- if migration_link_resource.id != blank and migration_link_resource.url != blank -%}<a href="{{ migration_link_resource.url }}">
+<div class="migration-actions" role="group" aria-label="Nächste Schritte">{%- assign migration_link_resource = collections['pepup-1'] -%}{%- if migration_link_resource.id != blank and migration_link_resource.url != blank -%}<a class="button" href="{{ migration_link_resource.url }}">
   Produkte entdecken
 </a>{%- else -%}
   Produkte entdecken
-{%- endif -%}</div></div></section>
+{%- endif -%}</div></div></div></section>
 {% capture migration_brand_products_heading %}Beliebte PepUp Produkte entdecken{% endcapture %}
 
 {% capture migration_brand_products_intro %}<p>Finde die optimale Pflege für deine Schuhe.</p>{% endcapture %}
 
 {% capture migration_brand_products_link %}Produkte entdecken{% endcapture %}
 
-{% render 'migrated-catalogue-products', collection_handle: 'pepup-1', heading: migration_brand_products_heading, description_html: migration_brand_products_intro, link_label: migration_brand_products_link, limit: 4, randomize: true %}
+{% render 'migrated-catalogue-products', collection_handle: 'pepup-1', heading: migration_brand_products_heading, description_html: migration_brand_products_intro, link_label: migration_brand_products_link, limit: 8, randomize: true %}
 <section class="migration-section migration-faq"><div class="migration-container"><div class="migration-section-heading"><h2>Fragen und Antworten</h2></div><div class="migration-faq-list">
 <details><summary>Wofür kann ich das PepUp Zauberelixier / den Lederbalsam überall verwenden?<span aria-hidden="true">+</span></summary><div class="migration-copy rte"><p>Das Produkt ist ein echter Allrounder für Glattleder aller Art: Schuhe, Lederjacken, Gürtel, Handtaschen, Geldbörsen und sogar Holz- oder Ledermöbel sowie Autoledersitze. Nicht geeignet ist das Elixier für Rauleder (Rau- oder Wildleder), da die enthaltenen Öle und Wachse die florale Oberfläche verkleben würden.</p></div></details>
 <details><summary>Wie wende ich PepUp am besten an, um das optimale Ergebnis zu erzielen?<span aria-hidden="true">+</span></summary><div class="migration-copy rte"><p>Nimm mit dem mitgelieferten Schwamm oder einem weichen Tuch eine sehr kleine Menge PepUp auf und trage sie hauchdünn und gleichmässig in kreisenden Bewegungen auf das Material auf. Lass das Produkt kurz einziehen – die Öle dringen tief in die Poren ein, um das Leder geschmeidig zu machen und zu imprägnieren. Ein Polieren ist meist gar nicht nötig, da PepUp von selbst trocken einzieht und einen seidigen Glanz hinterlässt.</p></div></details>

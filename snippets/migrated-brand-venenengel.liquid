@@ -27,18 +27,18 @@
 <div class="migration-media"><img src="{{ '311479978_5285427598172579_6963246619400778073_n.jpg' | file_img_url: '1600x' }}" alt="" width="1080" height="1080" loading="lazy"></div>
 <div class="migration-copy rte"><h2>Was macht die Venen Engel Technologie so besonders?</h2>
     <p>Venen Engel nutzt eine fortschrittliche Druckwellenmassage mit sequenziellen Luftkammern. Die Manschetten füllen sich nacheinander von den Füssen aufwärts mit Luft. Diese gleitende Bewegung imitiert die natürliche Muskelpumpe, fördert den Abtransport angestauter Flüssigkeiten.<br><br>Durch die überlappende Kammertechnologie entstehen keine Unterbrechungen beim Druckaufbau. Das Ergebnis: Ein absolut gleichmässiges, angenehmes Massagegefühl für spürbar leichtere Beine.</p>
-{%- assign migration_link_resource = collections['venen-engel-massagegerate'] -%}{%- if migration_link_resource.id != blank and migration_link_resource.url != blank -%}<a href="{{ migration_link_resource.url }}">
+<div class="migration-actions" role="group" aria-label="Nächste Schritte">{%- assign migration_link_resource = collections['venen-engel-massagegerate'] -%}{%- if migration_link_resource.id != blank and migration_link_resource.url != blank -%}<a class="button" href="{{ migration_link_resource.url }}">
   Modelle entdecken
 </a>{%- else -%}
   Modelle entdecken
-{%- endif -%}</div></div></section>
+{%- endif -%}</div></div></div></section>
 {% capture migration_brand_products_heading %}Beliebte Venen Engel Modelle{% endcapture %}
 
 {% capture migration_brand_products_intro %}<p>Passendes Gerät für Ihre individuellen Bedürfnisse</p>{% endcapture %}
 
 {% capture migration_brand_products_link %}Modelle entdecken{% endcapture %}
 
-{% render 'migrated-catalogue-products', collection_handle: 'venen-engel-massagegerate', heading: migration_brand_products_heading, description_html: migration_brand_products_intro, link_label: migration_brand_products_link, limit: 4, randomize: true %}
+{% render 'migrated-catalogue-products', collection_handle: 'venen-engel-massagegerate', heading: migration_brand_products_heading, description_html: migration_brand_products_intro, link_label: migration_brand_products_link, limit: 8, randomize: true %}
 <section class="migration-section migration-faq"><div class="migration-container"><div class="migration-section-heading"><h2>Fragen und Antworten</h2></div><div class="migration-faq-list">
 <details><summary>Welche Zubehör-Teile und Erweiterungen sind für Venen Engel erhältlich?<span aria-hidden="true">+</span></summary><div class="migration-copy rte"><p>Ergänzend zu den klassischen Leggings und Beinmanschetten führen wir funktionale Ergänzungen für den gesamten Körper. Dazu zählen Arm- und Bauchmanschetten, vollständige Hosenmanschetten sowie flexible Erweiterungslaschen. Damit lässt sich die Passform exakt an jeden Körperbau anpassen.</p></div></details>
 <details><summary>Kann ich den Venen Engel vor dem Kauf in einer upswing.ch Filiale testen?<span aria-hidden="true">+</span></summary><div class="migration-copy rte"><p>Ja, Sie können die unterschiedlichen Kompressionsgeräte direkt vor Ort in unseren Schweizer Filialen ausprobieren. Lassen Sie sich von unserem Fachpersonal persönlich beraten und testen Sie das Massagegefühl hautnah, bevor Sie sich entscheiden.</p></div></details>

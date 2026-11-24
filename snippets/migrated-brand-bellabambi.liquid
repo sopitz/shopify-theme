@@ -27,18 +27,18 @@
 <div class="migration-media"><img src="{{ 'Schmerzfrei-durch-cupping-kiesling8.jpg' | file_img_url: '1600x' }}" alt="" width="1500" height="1500" loading="lazy"></div>
 <div class="migration-copy rte"><h2>Was macht die<br>BellaBambi Unterdruckmassage so besonders?</h2>
     <p>BellaBambi nutzt das Prinzip des traditionellen Schröpfens in einer modernen, sanften Form. Durch Zusammendrücken und Aufsetzen der Cups entsteht ein Vakuum, das die untersten Hautschichten sanft anhebt.</p><p>Diese mechanische Reizung regt die Durchblutung tief im Gewebe an, macht verklebte Faszien wieder geschmeidig. Dank unterschiedlicher Intensitätsstufen lässt sich der Druck perfekt an empfindliche sowie stark verspannte Körperregionen anpassen.</p>
-{%- assign migration_link_resource = collections['bella-bambi'] -%}{%- if migration_link_resource.id != blank and migration_link_resource.url != blank -%}<a href="{{ migration_link_resource.url }}">
+<div class="migration-actions" role="group" aria-label="Nächste Schritte">{%- assign migration_link_resource = collections['bella-bambi'] -%}{%- if migration_link_resource.id != blank and migration_link_resource.url != blank -%}<a class="button" href="{{ migration_link_resource.url }}">
   Modelle entdecken
 </a>{%- else -%}
   Modelle entdecken
-{%- endif -%}</div></div></section>
+{%- endif -%}</div></div></div></section>
 {% capture migration_brand_products_heading %}Aktuelle BellaBambi Produkte{% endcapture %}
 
 {% capture migration_brand_products_intro %}<p>Passender Saugknopf für Ihren Haut- sowie Gewebetyp</p>{% endcapture %}
 
 {% capture migration_brand_products_link %}Modelle entdecken{% endcapture %}
 
-{% render 'migrated-catalogue-products', collection_handle: 'bella-bambi', heading: migration_brand_products_heading, description_html: migration_brand_products_intro, link_label: migration_brand_products_link, limit: 4, randomize: true %}
+{% render 'migrated-catalogue-products', collection_handle: 'bella-bambi', heading: migration_brand_products_heading, description_html: migration_brand_products_intro, link_label: migration_brand_products_link, limit: 8, randomize: true %}
 <section class="migration-section migration-faq"><div class="migration-container"><div class="migration-section-heading"><h2>Fragen und Antworten</h2></div><div class="migration-faq-list">
 <details><summary>Wie funktioniert die Faszienmassage mit BellaBambi?<span aria-hidden="true">+</span></summary><div class="migration-copy rte"><p>Durch das Ausdrücken der Luft vor dem Aufsetzen entsteht auf der Haut ein Vakuum. Dieser Unterdruck hebt das Gewebe leicht an, dehnt die Faszien, regt die Zirkulation im Gewebe spürbar an.</p></div></details>
 <details><summary>Welche verschiedenen BellaBambi Intensitäten gibt es?<span aria-hidden="true">+</span></summary><div class="migration-copy rte"><p>Es gibt vier Härtegrade aus hautfreundlichem Silikon: Sensitive (gelb, sehr sanft), Vitality (orange, mittel), Intense (rot, stark) sowie CUSTOMERS / PRO (brombeer, sehr stark für Profis).</p></div></details>

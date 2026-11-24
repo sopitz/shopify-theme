@@ -216,13 +216,56 @@ test('brand catalogue cards always use current native product data and hide abse
       assert.ok(catalogue.textContent.includes('CHF 123.45'), handle);
       assert.ok(catalogue.querySelector('a[href="/products/current-live-model"]'), handle);
       assert.ok(catalogue.querySelector('a[href="/collections/current-verified-destination"]'), handle);
-      assert.equal(catalogue.querySelector('[data-featured-count]').dataset.featuredCount, '4', handle);
+      assert.equal(catalogue.querySelector('[data-featured-count]').dataset.featuredCount, '8', handle);
     } finally {dom.window.close();}
     const missing = await render(handle);
     try {
       assert.equal(missing.window.document.querySelector('.migration-products,[data-product-card]'), null, handle);
       assert.equal(missing.window.document.querySelector(`a[href="/collections/${collectionHandle}"]`), null, handle);
     } finally {missing.window.close();}
+  }
+});
+
+test('each brand shelf shows eight distinct real products when available and keeps smaller catalogues honest', async () => {
+  const products = Array.from({length:12}, (_, index) => {
+    const id = index + 1;
+    const image = {id, src:`/shopify/current-brand-colour-${id}.jpg`, alt:`Echte Farbe ${id}`};
+    return {id, handle:`current-brand-colour-${id}`, title:`Aktuelles Produkt Farbe ${id}`, url:`/products/current-brand-colour-${id}`,
+      available:true, price:10000 + id, price_min:10000 + id, price_max:10000 + id,
+      featured_image:image, images:[image], description:'<p>Vollständiger aktueller Produkttext.</p>',
+      // Real colour products can share a model family; the brand shelf must not
+      // drop them and leave a partial second row when eight products exist.
+      metafields:{upswing:{model_name:{value:index < 6 ? 'Gemeinsame Modellfamilie' : `Modell ${id}`}}}};
+  });
+  const runtime = readFileSync(path.join(root, 'assets/featured-products.js'), 'utf8');
+  for (const [handle, collectionHandle] of Object.entries(collectionHandles)) {
+    for (const availableCount of [5, 8, 12]) {
+      const current = products.slice(0, availableCount);
+      const collection = {id:91, title:'Echte aktuelle Markenkollektion', url:'/collections/current-brand', products_count:current.length, products:current};
+      const dom = await render(handle, {collections:{[collectionHandle]:collection}});
+      try {
+        const doc = dom.window.document;
+        const grid = doc.querySelector('.migration-product-grid');
+        const count = Math.min(8, availableCount);
+        const checkCards = () => {
+          const cards = [...grid.querySelectorAll('[data-product-card]')];
+          assert.equal(cards.length, count, `${handle}: ${availableCount} actual products`);
+          assert.equal(new Set(cards.map(card => card.dataset.productHandle)).size, count, `${handle}: no duplicate products`);
+          assert.equal(new Set(cards.map(card => card.querySelector('.product-title a').getAttribute('href'))).size, count, `${handle}: no duplicate destinations`);
+          for (const card of cards) {
+            assert.ok(current.some(product => product.handle === card.dataset.productHandle), `${handle}: only actual supplied products`);
+            assert.ok(card.querySelector('.product-media img'), `${handle}: native product images`);
+          }
+        };
+        checkCards();
+        assert.equal(grid.querySelectorAll('template[data-featured-candidate]').length, Math.max(0, availableCount - 8));
+        // Execute the actual native random selection with no browser/network.
+        Function('document', runtime)(doc);
+        doc.dispatchEvent(new doc.defaultView.Event('DOMContentLoaded'));
+        checkCards();
+        assert.equal(grid.querySelectorAll('template[data-featured-candidate]').length, 0);
+      } finally {dom.window.close();}
+    }
   }
 });
 

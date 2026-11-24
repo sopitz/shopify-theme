@@ -22,9 +22,33 @@ Felddaten tatsächlicher Besucher waren für diese Vorschau nicht vorhanden.
 | Cumulative Layout Shift | 0,002 |
 | Speed Index | 1,1 s |
 
-Die folgenden Änderungen gehören zu Version 1.0.44. Die Ausgangswerte bleiben
-als Vergleich erhalten; eine neue PageSpeed-Messung erfolgt nach der
-Synchronisierung des Releases mit der Shopify-Vorschau.
+Die beschriebenen Performance-Änderungen gehören zu Version 1.0.44. Die
+Ausgangswerte bleiben als Vergleich zur folgenden Nachmessung erhalten.
+
+## Nachmessung mit Version 1.0.44
+
+Die erneute Desktop-Messung vom 24. November 2026, 23:05 Uhr GMT+2, verwendete
+weiterhin Lighthouse 13.6.0 und das unveröffentlichte Vorschautheme.
+
+| Messgrösse | Ausgangsmessung | Nachmessung 1.0.44 |
+|---|---:|---:|
+| Performance | 98 | 96 |
+| Barrierefreiheit | 97 | 97 |
+| Best Practices | 92 | 92 |
+| SEO | 69 | 69 |
+| First Contentful Paint | 0,6 s | 0,6 s |
+| Largest Contentful Paint | 1,0 s | 1,2 s |
+| Total Blocking Time | 60 ms | 0 ms |
+| Cumulative Layout Shift | 0,002 | 0,001 |
+| Speed Index | 1,1 s | 1,1 s |
+| Geschätztes verbleibendes Bild-Einsparpotenzial | 253 KiB | 63 KiB |
+
+Der Gesamtscore fiel in dieser Messung von 98 auf 96. Der LCP betrug
+1,2 statt 1,0 Sekunden. Gleichzeitig sanken die gemessene
+Blockierungszeit, Layoutverschiebung und das gemeldete Bild-Einsparpotenzial.
+Aus zwei einzelnen Labormessungen lässt sich keine dauerhafte Verbesserung des
+Gesamtscores oder eine eindeutige Ursache für dessen Änderung ableiten. Die
+Vorschau-/Plattformgrenzen im folgenden Abschnitt gelten weiterhin.
 
 ## Umgesetzte Änderungen
 

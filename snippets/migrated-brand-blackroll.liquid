@@ -27,18 +27,18 @@
 <div class="migration-media"><img src="{{ 'Blackroll-73.jpg' | file_img_url: '1600x' }}" alt="" width="1000" height="667" loading="lazy"></div>
 <div class="migration-copy rte"><h2>Was macht die BLACKROLL® Eigenmassage so besonders?</h2>
     <p>Das Rollen auf der Faszienrolle nutzt das Prinzip der myofaszialen Selbstentspannung. Durch das eigene Körpergewicht wird gezielter Druck auf Muskeln sowie das umliegende Bindegewebe ausgeübt.<br><br>Diese mechanische Reizung fördert den Flüssigkeitsaustausch im Gewebe, verbessert die Nährstoffversorgung der Faszien und löst Schmerzpunkte (Triggerpunkte). Egal ob zur Erwärmung vor dem Training oder zur Regeneration am Feierabend – BLACKROLL® Produkte lassen sich ideal in jeden Alltag integrieren.</p>
-{%- assign migration_link_resource = collections['blackroll-faszientraining'] -%}{%- if migration_link_resource.id != blank and migration_link_resource.url != blank -%}<a href="{{ migration_link_resource.url }}">
+<div class="migration-actions" role="group" aria-label="Nächste Schritte">{%- assign migration_link_resource = collections['blackroll-faszientraining'] -%}{%- if migration_link_resource.id != blank and migration_link_resource.url != blank -%}<a class="button" href="{{ migration_link_resource.url }}">
   BLACKROLL® Sortiment entdecken
 </a>{%- else -%}
   BLACKROLL® Sortiment entdecken
-{%- endif -%}</div></div></section>
+{%- endif -%}</div></div></div></section>
 {% capture migration_brand_products_heading %}Aktuelle BLACKROLL® Produkte{% endcapture %}
 
 {% capture migration_brand_products_intro %}<p>Passende Tools für Faszien, Muskeln, Mobilität</p>{% endcapture %}
 
 {% capture migration_brand_products_link %}BLACKROLL® Sortiment entdecken{% endcapture %}
 
-{% render 'migrated-catalogue-products', collection_handle: 'blackroll-faszientraining', heading: migration_brand_products_heading, description_html: migration_brand_products_intro, link_label: migration_brand_products_link, limit: 4, randomize: true %}
+{% render 'migrated-catalogue-products', collection_handle: 'blackroll-faszientraining', heading: migration_brand_products_heading, description_html: migration_brand_products_intro, link_label: migration_brand_products_link, limit: 8, randomize: true %}
 <section class="migration-section migration-faq"><div class="migration-container"><div class="migration-section-heading"><h2>Fragen und Antworten</h2></div><div class="migration-faq-list">
 <details><summary>Was ist der Unterschied zwischen schnellem und langsamem Rollen bei den Übungen?<span aria-hidden="true">+</span></summary><div class="migration-copy rte"><p>Die Rollgeschwindigkeit bestimmt das Trainingsziel:</p><ul><li><strong>Schnelles, dynamisches Rollen</strong>: Aktiviert das Gewebe vor dem Sport. Es regt den Stoffwechsel sowie die Durchblutung an und bereitet die Muskeln ideal auf Belastungen vor.</li><li><strong>Langsames, tiefes Rollen</strong>: Dient der Erholung und Schmerzlinderung nach dem Training oder am Feierabend. Hierbei arbeiten Sie sich langsam millimeterweise vor, um verklebte Faszien zu lösen und den Muskeltonus zu senken.</li></ul></div></details>
 <details><summary>Soll man beim Ausrollen nur in eine Richtung (zum Herzen) oder hin und her rollen?<span aria-hidden="true">+</span></summary><div class="migration-copy rte"><p>Für die klassische Faszien- und Muskelregeneration ist dynamisches Vor- und Zurückrollen völlig unbedenklich und extrem effektiv. Wer gezielt den venösen Rückfluss und den Abtransport von Stoffwechselabbauprodukten unterstützen möchte, kann den Hauptdruck schiebend in Richtung Herz ausüben und auf dem Rückweg den Druck leicht herausnehmen.</p></div></details>
