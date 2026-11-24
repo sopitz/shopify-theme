@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.42] - 2026-11-24
+
+- Das weisse anderS.-Logo erhält auf der migrierten Markenseite dieselbe dunkle Logofläche wie die übrigen weissen Markenlogos. Die Zuordnung und der Kontrast aller zwölf Markenlogos sind als Regression geprüft.
+- Enthält alle Seitenmigrationen, Beratungs-Konfiguratoren und Produktverbesserungen aus 1.0.41. Das Release aktiviert kein Theme im Shop.
+
 ## [1.0.41] - 2026-11-24
 
 - Die 41 öffentlich erfassten Pages sind im neuen Theme angebunden: zwölf Markenseiten, vier Themen-/Ratgeberseiten, sechs Sortimentsübersichten, neun Beratungs-/Kurs-/Geschäftskunden-/Serviceseiten und zehn bereits vorhandene redaktionelle Seiten. Die bestehenden URLs, Page-Objekte und globalen Vorlagenzuweisungen werden nicht geändert. Native gefüllte Seiteninhalte und ausdrücklich konfigurierte Editor-Aufbauten behalten Vorrang.

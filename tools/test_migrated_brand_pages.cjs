@@ -172,6 +172,35 @@ test('all 12 exact brands retain every original answered FAQ, benefit, trust fac
   }
 });
 
+test('white brand logos have dark backgrounds while existing coloured logos retain their light panels', async () => {
+  // The source anderS.png has 73,965 visible pixels, all white. Its transparent
+  // canvas needs the same dark panel as the six existing white/negative logos.
+  const logos = {
+    anders:['anderS.png', true],
+    kybun:['Logo_kybun_Switzerland_neg.png', true],
+    joya:['JOYA_Logo_White_RGB.png', true],
+    kingnature:['kingnature_logo_weiss.png', true],
+    venenengel:['VE_Logo_primary_CMYK_white_Zeichenflache-1.png', true],
+    bellabambi:['2016-09-29_bellabambi_logo-web-500x96_WEISS.png', true],
+    bellicon:['new-bellicon-Logo-2022---white-logotype-521X142.png', true],
+    leguano:['logos-leguano.png', false],
+    elten:['Elten-Logo-Take-a-walk-on-the-safe-side-cmyk.png', false],
+    blackroll:['BLACKROLL_Logo_Softblack_RGB.png', false],
+    theraband:['theraband-logo_2b04b074-84d8-403e-98c7-1f2decf01642.png', false],
+    pepup:['pepup-logo-myproduct.png', false],
+  };
+  for (const [handle, [filename, dark]] of Object.entries(logos)) {
+    const dom = await render(handle);
+    try {
+      const panel = dom.window.document.querySelector('.migration-brand-logo');
+      assert.equal(panel.classList.contains('migration-brand-logo--dark'), dark, `${handle}: logo contrast`);
+      assert.equal(new URL(panel.querySelector('img').src).pathname, '/cdn/shop/files/' + encodeURIComponent(filename), `${handle}: original logo identity`);
+    } finally {dom.window.close();}
+  }
+  const css = readFileSync(path.join(root, 'assets/page-migration.css'), 'utf8');
+  assert.match(css, /\.migration-brand-logo--dark\s*\{\s*background:\s*var\(--ink\)/);
+});
+
 test('brand catalogue cards always use current native product data and hide absent catalogue resources', async () => {
   for (const [handle, collectionHandle] of Object.entries(collectionHandles)) {
     const product = {id:78, handle:'current-live-model', title:'Aktuelles Modell aus Shopify', url:'/products/current-live-model',
