@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.0.44] - 2026-11-24
+
+- Die im PageSpeed-Bericht beanstandeten Theme-Bilder für Startseiten-Hero, Thun-Beratung und Logo nutzen responsive Shopify-CDN-Grössen mit `srcset` und passenden `sizes`. Originalmotive, Bildausschnitte, hohe Auflösungen und die Ladepriorität des Hauptbilds bleiben erhalten. Händlerauswahlen verwenden weiterhin native Shopify-Bildressourcen.
+- Funktionsbezogene Stylesheets werden passend zum Seitentyp oder zum tatsächlich gerenderten Inhalt geladen. Gemeinsame Navigation und Produktkarten sowie dynamisch ergänzte Abschnitte im Theme-Editor behalten ihre erforderlichen Stile.
+- Die Google-Bewertungszeile reserviert im Kopfbereich Platz für die tatsächlich geladenen Werte. Produktkartenlinks benennen ihr konkretes Produkt auch für assistive Technik, bei unverändertem sichtbarem Linktext und Ziel.
+- Aktive Hauptmenüpunkte erhalten keine zusätzliche Text-Unterstreichung mehr. Die bestehende Menüöffnungs-/Hover-Markierung und der sichtbare Tastaturfokus bleiben erhalten; aktive Unterpunkte behalten ihre bisherige Darstellung.
+- Der Desktop-Ausgangsbericht mit 98 Performance, 97 Barrierefreiheit, 92 Best Practices und 69 SEO sowie die Vorschau-/Plattformgrenzen sind in [Performance-Review-2026-11-24.md](https://github.com/sopitz/shopify-theme/blob/v1.0.44/docs/Performance-Review-2026-11-24.md) dokumentiert. Neue Messwerte folgen erst nach der Synchronisierung; die Indexierungssperre der unveröffentlichten Vorschau bleibt bestehen.
+- Enthält alle Seiten-, Produkt- und Navigationsänderungen aus 1.0.41 bis 1.0.43. Das Theme bleibt im Shop unveröffentlicht.
+
 ## [1.0.43] - 2026-11-24
 
 - Navigationsbilder werden nach dem Seitenaufbau in Leerlaufphasen mit niedriger Priorität vorbereitet. Die Warteschlange verwendet die vorhandenen responsiven Bilder, begrenzt gleichzeitige Hintergrundanfragen und priorisiert das Menü bei Hover oder Tastaturfokus. Datensparmodus, langsame Verbindungen, kleine Touch-Ansichten und ausgeblendete Tabs werden für automatisches Vorladen berücksichtigt.

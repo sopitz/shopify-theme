@@ -75,3 +75,11 @@
 .about-store-overview .icon{width:16px;height:16px}
 @media(max-width:1100px){.site-header .about-store-grid{gap:14px 12px;padding-bottom:18px}.site-header .about-store-grid .about-store-card{font-size:14px}.about-store-image{aspect-ratio:3/2}.site-header .about-store-overview{margin-top:8px}}
 @media(prefers-reduced-motion:reduce){.about-store-image img{transition:none}.about-store-card:hover .about-store-image img{transform:none}}
+
+/* Shared navigation styles stay available without editorial page styles. */
+.about-menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:90px;padding:8px 0 22px;max-width:900px}
+.about-menu-group h3{font-size:21px;margin-bottom:16px}
+.about-menu-group ul{list-style:none;padding:0;margin:0}
+.about-menu-group li a{color:var(--link);font-size:15px;min-height:44px;padding:9px 0;display:inline-flex;line-height:1.6}
+.about-menu-group a:hover{text-decoration:underline;text-underline-offset:4px}
+.about-menu-group .about-menu-link-all{font-weight:600}

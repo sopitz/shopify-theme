@@ -75,20 +75,20 @@
     {{ 'theme-components.css' | asset_url | stylesheet_tag }}
     {{ 'commerce-components.css' | asset_url | stylesheet_tag }}
     {{ 'need-topics.css' | asset_url | stylesheet_tag }}
-    {{ 'product-information.css' | asset_url | stylesheet_tag }}
-    {{ 'product-knowledge.css' | asset_url | stylesheet_tag }}
+    {% if request.design_mode or request.page_type == 'product' or content_for_layout contains 'product-information' %}{{ 'product-information.css' | asset_url | stylesheet_tag }}{% endif %}
+    {% if request.design_mode or request.page_type == 'product' or content_for_layout contains 'product-knowledge' or content_for_layout contains 'product-native-description' or content_for_layout contains 'product-care-products' %}{{ 'product-knowledge.css' | asset_url | stylesheet_tag }}{% endif %}
     {{ 'typography.css' | asset_url | stylesheet_tag }}
     {{ 'mega-menu.css' | asset_url | stylesheet_tag }}
-    {{ 'about-pages.css' | asset_url | stylesheet_tag }}
-    {% if request.page_type == 'page' %}{{ 'page-migration.css' | asset_url | stylesheet_tag }}{% endif %}
-    {{ 'contact-locations.css' | asset_url | stylesheet_tag }}
-    {{ 'product-media-context.css' | asset_url | stylesheet_tag }}
-    {{ 'quantity-stepper.css' | asset_url | stylesheet_tag }}
+    {% if request.design_mode or content_for_layout contains 'about-page' or content_for_layout contains 'editorial-' %}{{ 'about-pages.css' | asset_url | stylesheet_tag }}{% endif %}
+    {% if request.design_mode or request.page_type == 'page' or content_for_layout contains 'migrated-page' %}{{ 'page-migration.css' | asset_url | stylesheet_tag }}{% endif %}
+    {% if request.design_mode or content_for_layout contains 'contact-location' %}{{ 'contact-locations.css' | asset_url | stylesheet_tag }}{% endif %}
+    {% if request.design_mode or request.page_type == 'product' or content_for_layout contains 'data-product-media-context' %}{{ 'product-media-context.css' | asset_url | stylesheet_tag }}{% endif %}
+    {% if request.design_mode or request.page_type == 'product' or request.page_type == 'cart' or content_for_layout contains 'data-quantity-stepper' or content_for_layout contains 'quantity-input' %}{{ 'quantity-stepper.css' | asset_url | stylesheet_tag }}{% endif %}
     {{ 'row-alignment.css' | asset_url | stylesheet_tag }}
     {{ 'product-cards.css' | asset_url | stylesheet_tag }}
     {{ 'price-discounts.css' | asset_url | stylesheet_tag }}
-    {{ 'collection-guidance.css' | asset_url | stylesheet_tag }}
-    {{ 'collection-filters.css' | asset_url | stylesheet_tag }}
+    {% if request.design_mode or request.page_type == 'collection' or content_for_layout contains 'collection-section' or content_for_layout contains 'product-card-facts' %}{{ 'collection-guidance.css' | asset_url | stylesheet_tag }}{% endif %}
+    {% if request.design_mode or request.page_type == 'collection' or content_for_layout contains 'collection-filter-option' %}{{ 'collection-filters.css' | asset_url | stylesheet_tag }}{% endif %}
     {{ 'color-swatches.css' | asset_url | stylesheet_tag }}
     {{ 'predictive-search.css' | asset_url | stylesheet_tag }}
     {{ 'customer-reviews.css' | asset_url | stylesheet_tag }}

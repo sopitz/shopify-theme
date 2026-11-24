@@ -20,7 +20,7 @@
 .header-advice .icon { width: 19px; }
 .main-nav > nav { display: flex; align-items: center; flex-wrap: wrap; gap: 28px; min-width: 0; }
 .main-nav > nav > a { display: inline-flex; align-items: center; min-height: 50px; }
-.main-nav a[aria-current="page"] { text-decoration: underline; text-underline-offset: 6px; }
+.main-nav a[aria-current="page"]:not(.mega-menu-link) { text-decoration: underline; text-underline-offset: 6px; }
 .main-nav summary { white-space: nowrap; }
 .main-nav summary .icon { width: 14px; height: 14px; }
 .nav-dropdown-panel { position: absolute; left: 0; top: 100%; z-index: 24; min-width: 245px; max-width: 340px; padding: 15px 20px; border: 1px solid var(--line); background: #fff; border-radius: 0 0 10px 10px; box-shadow: 0 14px 28px rgba(var(--shadow-rgb),.08); }

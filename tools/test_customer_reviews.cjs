@@ -14,6 +14,7 @@ const tick = () => new Promise(resolve => setImmediate(resolve));
 async function markup(settings = {}, {type = 'footer', globals = {}} = {}) {
   const liquid = new Liquid({root: path.join(root, 'snippets'), extname: '.liquid', strictFilters: true});
   liquid.registerFilter('asset_url', value => `/assets/${value}`);
+  liquid.registerFilter('asset_img_url', (name, size) => `/assets/${name.replace(/(\.[^.]+)$/, `_${size}$1`)}`);
   liquid.registerFilter('stylesheet_tag', value => `<link rel="stylesheet" href="${value}">`);
   liquid.registerFilter('payment_type_svg_tag', () => '');
   liquid.registerFilter('image_url', image => image?.src || '');

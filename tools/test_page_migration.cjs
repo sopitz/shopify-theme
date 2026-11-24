@@ -33,6 +33,7 @@ const nativeBody = '<section data-native-body><h2>Native &amp; unverändert ✅<
 function engine() {
   const liquid = new Liquid({root:path.join(root, 'snippets'), extname:'.liquid', strictFilters:true});
   liquid.registerFilter('asset_url', name => `/assets/${name}`);
+  liquid.registerFilter('asset_img_url', (name, size) => `/assets/${name.replace(/(\.[^.]+)$/, `_${size}$1`)}`);
   liquid.registerFilter('file_img_url', name => `https://upswing.ch/cdn/shop/files/${name}?width=1600`);
   liquid.registerFilter('stylesheet_tag', url => `<link rel="stylesheet" href="${escape(url)}">`);
   liquid.registerFilter('script_tag', url => `<script src="${escape(url)}"></script>`);

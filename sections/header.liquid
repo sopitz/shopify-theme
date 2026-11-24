@@ -1,3 +1,10 @@
+{%- liquid
+  assign header_logo_width = settings.logo_width | default: 180
+  assign header_logo_slot = header_logo_width | at_most: 156
+  assign header_logo_mobile_slot = header_logo_width | at_most: 112
+  assign header_logo_small_slot = header_logo_width | at_most: 88
+-%}
+{%- capture header_logo_sizes -%}(max-width: 360px) {{ header_logo_small_slot }}px, (max-width: 600px) {{ header_logo_mobile_slot }}px, {{ header_logo_slot }}px{%- endcapture -%}
 {%- assign header_business_url = section.settings.b2b_url | default: '/pages/b2b' -%}
 {%- assign header_guide_url = section.settings.guide_url | default: '/pages/themen' -%}
 {%- assign header_about_url = section.settings.about_url | default: '/pages/upswing-werte' -%}
@@ -16,7 +23,7 @@
   <div class="container header-main">
     <button class="icon-button menu-toggle" type="button" data-navigation-mobile-toggle aria-controls="MobileNavigation" aria-expanded="false" aria-label="Menü öffnen">{% render 'icon', name: 'menu' %}</button>
     <a href="{{ routes.root_url }}" class="site-logo" style="--logo-width: {{ settings.logo_width }}px" aria-label="{{ shop.name | escape }} – Startseite">
-      {% if settings.logo != blank %}{{ settings.logo | image_url: width: 420 | image_tag: width: settings.logo_width, loading: 'eager', alt: shop.name }}{% else %}<img src="{{ 'upswing-logo.png' | asset_url }}" alt="{{ shop.name | escape }}" width="{{ settings.logo_width }}" height="58" loading="eager">{% endif %}
+      {% if settings.logo != blank %}{{ settings.logo | image_url: width: 420 | image_tag: width: header_logo_width, widths: '88, 112, 156, 224, 312, 420', sizes: header_logo_sizes, loading: 'eager', alt: shop.name }}{% else %}{% render 'responsive-asset-image', filename: 'upswing-logo.png', default_width: 156, widths: '88, 112, 156, 224, 312, 460', sizes: header_logo_sizes, width: header_logo_width, height: 58, alt: shop.name, loading: 'eager' %}{% endif %}
     </a>
     {% render 'predictive-search-form', id: 'HeaderSearch', class: 'header-search', placeholder: 'Was tut dir gut?', section: section %}
     <div class="header-actions">

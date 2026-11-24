@@ -41,9 +41,13 @@
 .header-review-bar { background: var(--sage); border-bottom: 1px solid var(--line); }
 .header-review-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .header-review-inner > p { font-size: 11px; color: var(--muted); }
-.review-badge--header .review-badge-link { min-height: 38px; gap: 10px; }
-.review-badge--header .review-badge-summary { display: flex; align-items: center; gap: 12px; }
-.review-badge--header .review-badge-count { color: var(--ink); }
+/* Keep the header stable when the honest Google link becomes a live summary. */
+.review-badge--header { width: 336px; max-width: 100%; flex-shrink: 0; }
+.review-badge--header .review-badge-link { display: flex; width: 100%; min-height: 38px; gap: 10px; }
+.review-badge--header .review-badge-summary { display: grid; grid-template-columns: 140px minmax(0, 1fr); align-items: center; gap: 12px; flex: 1; min-height: 24px; }
+.review-badge--header .review-badge-fallback { grid-column: 1 / -1; grid-row: 1; }
+.review-badge--header .review-badge-rating { grid-column: 1; grid-row: 1; }
+.review-badge--header .review-badge-count { grid-column: 2; grid-row: 1; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .review-badge--header .review-badge-link > .icon { width: 14px; height: 14px; color: var(--link); }
 html:has(.header-review-bar) { scroll-padding-top: 195px; }
 body:has(.header-review-bar) .cart-summary { top: 215px; }
@@ -67,7 +71,8 @@ body:has(.header-review-bar) .cart-summary { top: 215px; }
 @media (max-width: 540px) {
   .customer-reviews-inner { flex-direction: column; align-items: flex-start; gap: 18px; padding-block: 28px; }
   .customer-reviews-copy { flex-basis: auto; }
-  .review-badge--header .review-badge-summary { gap: 8px; }
+  .review-badge--header { width: 271px; }
+  .review-badge--header .review-badge-summary { grid-template-columns: 108px minmax(0, 1fr); gap: 8px; }
   .review-badge--header .review-badge-max { display: none; }
   .review-badge--header .review-badge-count { font-size: 10px; }
   .review-badge--header .customer-reviews-stars { font-size: 13px; }
